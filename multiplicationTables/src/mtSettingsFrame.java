@@ -194,7 +194,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         if(tenToggleButton.isSelected()) {settingsInterface.rows.add(10);}
         
         //Hide settings window
-        this.show(false);
+        this.setVisible(false);
     }//GEN-LAST:event_okButtonMouseClicked
     
     /**
