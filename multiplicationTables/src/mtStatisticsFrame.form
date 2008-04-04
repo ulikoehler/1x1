@@ -33,16 +33,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="resultsScrollPane" alignment="0" pref="162" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="1">
                               <Component id="falseSolvedDescriptorLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="falseSolvedLabel" pref="108" max="32767" attributes="0"/>
+                              <Component id="falseSolvedLabel" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -50,44 +49,55 @@
                                   <Component id="correctSolvedDescriptorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="rightSolvedLabel" pref="106" max="32767" attributes="0"/>
-                                  <Component id="overallSolvedLabel" alignment="0" pref="106" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="overallSolvedLabel" max="32767" attributes="1"/>
+                                  <Component id="rightSolvedLabel" alignment="0" pref="46" max="32767" attributes="1"/>
                               </Group>
                           </Group>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="nameDescriptorLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nameLabel" min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="resultsScrollPane" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="nameDescriptorLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="nameLabel" min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace pref="56" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="overallSolvedDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="overallSolvedLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="overallSolvedDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="overallSolvedLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="correctSolvedDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rightSolvedLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="nameDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="falseSolvedDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="falseSolvedLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="32" max="32767" attributes="0"/>
+                      <Component id="nameLabel" min="-2" pref="13" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="correctSolvedDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="rightSolvedLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
-                  <Component id="nameDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="nameLabel" alignment="3" pref="15" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="falseSolvedDescriptorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="falseSolvedLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="resultsScrollPane" min="-2" pref="205" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+              <Component id="resultsScrollPane" min="-2" pref="228" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

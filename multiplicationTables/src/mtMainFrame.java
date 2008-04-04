@@ -75,6 +75,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             {
                 solvesThisRun = 0; //Reset Counter
                 solved = new boolean[maxRow][maxRow]; //Reset array
+                solvingValues = new int[maxRow][maxRow]; //Reset solving values
             }
     }
     
@@ -269,13 +270,14 @@ public class mtMainFrame extends javax.swing.JFrame {
         statisticsFrame.setRightSolved(rightSolved);
         statisticsFrame.setFalseSolved(falseSolved);
         //Update statistics table
-        for(int i = 1; i < 10; i++)
+        for(int i = 0; i < 9; i++)
         {
             for(int j = 0; j < 9; j++)
             {
                 //First set background color of the appropriate cell
-                if(solvingValues[i-1][j] == (i*j+1)) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=green align=center margin=0px>" + Integer.toString(solvingValues[i-1][j]) + "</div>", i, j);}
-                else {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=red align=center margin=0px>" + Integer.toString(solvingValues[i-1][j]) + "</div>", i, j);}
+                if(solved[i][j]) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=dimgray align=center>  </div>", i, j+1);}
+                else if(solvingValues[i][j] == (i+1)*(j+1)) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=green align=center> " + Integer.toString(solvingValues[i][j]) + " </div>", i, j+1);}
+                else {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=red align=center> " + Integer.toString(solvingValues[i][j]) + " </div>", i, j+1);}
             }
         }
         
