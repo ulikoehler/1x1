@@ -34,7 +34,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         nameDescriptorLabel = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
         resultsScrollPane = new javax.swing.JScrollPane();
-        resultsTable = new javax.swing.JTable(10,10);
+        resultsTable = new javax.swing.JTable(11,10);
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
 
@@ -64,13 +64,19 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         resultsTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         resultsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {1, null, null, null, null, null, null, null, null, null},
+                {2, null, null, null, null, null, null, null, null, null},
+                {3, null, null, null, null, null, null, null, null, null},
+                {4, null, null, null, null, null, null, null, null, null},
+                {5, null, null, null, null, null, null, null, null, null},
+                {6, null, null, null, null, null, null, null, null, null},
+                {7, null, null, null, null, null, null, null, null, null},
+                {8, null, null, null, null, null, null, null, null, null},
+                {9, null, null, null, null, null, null, null, null, null},
+                {10, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "","1","2","3","4","5","6","7","8","9","10"
             }
         ));
         resultsScrollPane.setViewportView(resultsTable);
