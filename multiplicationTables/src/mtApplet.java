@@ -156,7 +156,7 @@ public class mtApplet extends javax.swing.JApplet {
     
     //Global variables
     private Random rand;
-    private mtSettingsFrame settingsFrame;
+    private mtSettingsFrame settingsFrame = new mtSettingsFrame();
     private mtSettingsInterface settingsInterface;
     private int result;
     

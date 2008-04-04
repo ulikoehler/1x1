@@ -50,7 +50,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         nameField = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         rowsLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         rowsLabel.setText("Reihen:");
