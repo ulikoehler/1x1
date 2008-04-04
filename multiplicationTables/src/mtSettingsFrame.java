@@ -46,6 +46,8 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         askOnceToggleButton = new javax.swing.JToggleButton();
         okButton = new javax.swing.JButton();
 
+        setTitle("Einstellungen");
+
         rowsLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         rowsLabel.setText("Reihen:");
 

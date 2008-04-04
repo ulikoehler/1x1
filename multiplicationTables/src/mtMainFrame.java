@@ -31,8 +31,11 @@ public class mtMainFrame extends javax.swing.JFrame {
     private mtSettingsInterface settings;
     private int correctResult;   
     private boolean[][] solved = new boolean[maxRow][maxRow];
+    private int[][] solvingValues = new int[maxRow][maxRow];
     private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
     private int solvesThisRun = 0; //Number of exercises already solved this run
+    int firstFactor;
+    int secondFactor;
     //Statistics counters
     private int overallSolved; //Overall solved exercises for this name
     private int rightSolved; //Exercises the name has anwered correctly
@@ -48,8 +51,6 @@ public class mtMainFrame extends javax.swing.JFrame {
         boolean askOnce = settings.options[0];
         
         //Predeclare variables and initialize vectorElements
-        int firstFactor;
-        int secondFactor;
         int vectorElements = settings.rows.size();
         //Calculate max solves this run
         maxSolvesThisRun = vectorElements * vectorElements;
@@ -99,6 +100,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         showStatisticsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("1x1");
 
         okButton.setText("OK");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -259,6 +261,11 @@ public class mtMainFrame extends javax.swing.JFrame {
             falseSolved++;
         }
         overallSolved++;
+        //Write value into solving array
+        solvingValues[firstFactor-1][secondFactor-1] = result;
+        
+        //Update statistics
+        
         generateNewExercise();
     }//GEN-LAST:event_okButtonMouseClicked
 
@@ -273,6 +280,8 @@ public class mtMainFrame extends javax.swing.JFrame {
         overallSolved = 0;
         rightSolved = 0;
         falseSolved = 0;
+        //Write name into statistics frame
+        statisticsFrame.setName(nameField.getText());
     }//GEN-LAST:event_nameFieldFocusLost
 
     private void showStatisticsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showStatisticsButtonMouseClicked

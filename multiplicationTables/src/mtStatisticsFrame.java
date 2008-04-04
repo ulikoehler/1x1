@@ -17,6 +17,28 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         initComponents();
     }
     
+    ///GUI Setters
+    
+    public void setName(String name)
+    {
+        nameLabel.setText(name);
+    }
+    
+    public void setOverallSolved(int overallSolved)
+    {
+        overallSolvedLabel.setText(Integer.toString(overallSolved));
+    }
+    
+    public void setRightSolved(int rightSolved)
+    {
+        rightSolvedLabel.setText(Integer.toString(rightSolved));
+    }
+    
+    public void setFalseSolved(int falseSolved)
+    {
+        falseSolvedLabel.setText(Integer.toString(falseSolved));
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -37,6 +59,8 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         resultsTable = new javax.swing.JTable(11,10);
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+
+        setTitle("Statistiken");
 
         overallSolvedDescriptorLabel.setText("Gesamt:");
         overallSolvedDescriptorLabel.setToolTipText("Gesamt gelöste Aufgaben");
@@ -132,8 +156,8 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                     .addComponent(falseSolvedDescriptorLabel)
                     .addComponent(falseSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(resultsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
-                .addGap(75, 75, 75))
+                .addComponent(resultsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80))
         );
 
         pack();
@@ -161,7 +185,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel overallSolvedDescriptorLabel;
     private javax.swing.JLabel overallSolvedLabel;
     private javax.swing.JScrollPane resultsScrollPane;
-    private javax.swing.JTable resultsTable;
+    public javax.swing.JTable resultsTable;
     private javax.swing.JLabel rightSolvedLabel;
     // End of variables declaration//GEN-END:variables
     
