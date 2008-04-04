@@ -1,5 +1,6 @@
 
 import java.util.Random;
+import java.lang.*;
 
 /*
  * mtApplet.java
@@ -141,6 +142,8 @@ public class mtApplet extends javax.swing.JApplet {
     //Global variables
     private Random rand;
     private mtSettingsFrame settingsFrame;
+    private mtSettingsInterface settingsInterface;
+    private int result;
     
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         // TODO add your handling code here:
@@ -149,6 +152,18 @@ public class mtApplet extends javax.swing.JApplet {
     
     private void generateNewExercise()
     {
+        //Get up-to-date version of settings intercae
+        settingsInterface = settingsFrame.getSettingsInterface();
+        
+        //Generate random numbers
+        int vectorElements = settingsInterface.rows.size();
+        int firstFactor = settingsInterface.rows.elementAt(rand.nextInt(vectorElements)).intValue();
+        int secondFactor = settingsInterface.rows.elementAt(rand.nextInt(vectorElements)).intValue();
+        
+        firstFactorLabel.setText(Integer.toString(firstFactor));
+        secondFactorLabel.setText(Integer.toString(secondFactor));
+        
+        result = firstFactor * secondFactor;
         
     }
     
