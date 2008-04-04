@@ -274,8 +274,8 @@ public class mtMainFrame extends javax.swing.JFrame {
             for(int j = 0; j < 9; j++)
             {
                 //First set background color of the appropriate cell
-                if(solvingValues[i-1][j] == (i*j+1)) {statisticsFrame.resultsTable.setValueAt("<html><p bgcolor=green>" + Integer.toString(solvingValues[i-1][j]) + "</p>", i, j);}
-                else {statisticsFrame.resultsTable.setValueAt("<html><p bgcolor=red>" + Integer.toString(solvingValues[i-1][j]) + "</p>", i, j);}
+                if(solvingValues[i-1][j] == (i*j+1)) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=green align=center margin=0px>" + Integer.toString(solvingValues[i-1][j]) + "</div>", i, j);}
+                else {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=red align=center margin=0px>" + Integer.toString(solvingValues[i-1][j]) + "</div>", i, j);}
             }
         }
         

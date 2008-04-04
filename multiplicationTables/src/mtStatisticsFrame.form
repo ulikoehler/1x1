@@ -33,23 +33,28 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="falseSolvedDescriptorLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="falseSolvedLabel" pref="108" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="overallSolvedDescriptorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="correctSolvedDescriptorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="resultsScrollPane" alignment="0" pref="162" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="rightSolvedLabel" pref="106" max="32767" attributes="0"/>
-                          <Component id="overallSolvedLabel" alignment="0" pref="106" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="falseSolvedDescriptorLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="falseSolvedLabel" pref="108" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="overallSolvedDescriptorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="correctSolvedDescriptorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="rightSolvedLabel" pref="106" max="32767" attributes="0"/>
+                                  <Component id="overallSolvedLabel" alignment="0" pref="106" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -57,11 +62,6 @@
               <Component id="nameDescriptorLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="nameLabel" min="-2" pref="100" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="380" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="resultsScrollPane" min="-2" pref="559" max="-2" attributes="0"/>
-              <EmptySpace pref="26" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -156,11 +156,13 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="resultsTable">
           <Properties>
-            <Property name="autoCreateRowSorter" type="boolean" value="true"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                 <BevelBorder/>
               </Border>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {1, null, null, null, null, null, null, null, null, null},&#xa;        {2, null, null, null, null, null, null, null, null, null},&#xa;        {3, null, null, null, null, null, null, null, null, null},&#xa;        {4, null, null, null, null, null, null, null, null, null},&#xa;        {5, null, null, null, null, null, null, null, null, null},&#xa;        {6, null, null, null, null, null, null, null, null, null},&#xa;        {7, null, null, null, null, null, null, null, null, null},&#xa;        {8, null, null, null, null, null, null, null, null, null},&#xa;        {9, null, null, null, null, null, null, null, null, null},&#xa;        {10, null, null, null, null, null, null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;10&quot;&#xa;    }&#xa;)" type="code"/>
