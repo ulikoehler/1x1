@@ -1,3 +1,6 @@
+
+import java.util.Vector;
+
 /*
  * mtSettingsFrame.java
  *
@@ -15,6 +18,8 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     /** Creates new form mtSettingsFrame */
     public mtSettingsFrame() {
         initComponents();
+        ///Set default options to avoid Nullpointer exceptions
+        settingsInterface.options[1] = true;
     }
     
     //Variables
@@ -178,6 +183,11 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         // TODO add your handling code here:
         //Get list of options
+        
+        //Reset variables
+        settingsInterface.options[1] = false;
+        settingsInterface.rows.removeAllElements();
+        
         if(askOnceToggleButton.isSelected())
         {settingsInterface.options[1] = true;}
         
@@ -204,6 +214,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new mtSettingsFrame().setVisible(true);
+                
             }
         });
     }
