@@ -140,6 +140,7 @@ public class mtApplet extends javax.swing.JApplet {
     
     //Global variables
     private Random rand;
+    private mtSettingsFrame settingsFrame;
     
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         // TODO add your handling code here:

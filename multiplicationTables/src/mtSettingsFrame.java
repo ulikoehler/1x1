@@ -17,6 +17,9 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         initComponents();
     }
     
+    //Variables
+    private mtSettingsInterface settingsInterface;
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -37,6 +40,10 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         nineToggleButton = new javax.swing.JToggleButton();
         tenToggleButton = new javax.swing.JToggleButton();
         optionsLabel = new javax.swing.JLabel();
+        askOnceToggleButton = new javax.swing.JToggleButton();
+        nameLabel = new java.awt.Label();
+        nameField = new javax.swing.JTextField();
+        okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +83,22 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         optionsLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         optionsLabel.setText("Optionen:");
 
+        askOnceToggleButton.setSelected(true);
+        askOnceToggleButton.setText("Keine Doppelten Aufgaben");
+        askOnceToggleButton.setToolTipText("Aufgaben nur einmal stellen, bis alle ");
+
+        nameLabel.setText("Name:");
+
+        nameField.setText("Kein Name");
+        nameField.setToolTipText("Name des Schülers");
+
+        okButton.setText("OK");
+        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                okButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,41 +118,84 @@ public class mtSettingsFrame extends javax.swing.JFrame {
                     .addComponent(twoToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(oneToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(optionsLabel)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(optionsLabel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(askOnceToggleButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rowsLabel)
-                    .addComponent(optionsLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(oneToggleButton)
-                .addGap(4, 4, 4)
-                .addComponent(twoToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(threeToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fourToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fiveToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sixToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sevenToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(eightToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nineToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tenToggleButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rowsLabel)
+                            .addComponent(optionsLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(oneToggleButton)
+                            .addComponent(askOnceToggleButton))
+                        .addGap(4, 4, 4)
+                        .addComponent(twoToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(threeToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fourToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fiveToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sixToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sevenToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(eightToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nineToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tenToggleButton)
+                            .addComponent(okButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+        // TODO add your handling code here:
+        //Get list of options
+        if(askOnceToggleButton.isSelected())
+        {settingsInterface.options[1] = true;}
+        
+        //Get vector of selected rows
+        if(oneToggleButton.isSelected()) {settingsInterface.rows.add(1);}
+        if(twoToggleButton.isSelected()) {settingsInterface.rows.add(2);}
+        if(threeToggleButton.isSelected()) {settingsInterface.rows.add(3);}
+        if(fourToggleButton.isSelected()) {settingsInterface.rows.add(4);}
+        if(fiveToggleButton.isSelected()) {settingsInterface.rows.add(5);}
+        if(sixToggleButton.isSelected()) {settingsInterface.rows.add(6);}
+        if(sevenToggleButton.isSelected()) {settingsInterface.rows.add(7);}
+        if(eightToggleButton.isSelected()) {settingsInterface.rows.add(8);}
+        if(nineToggleButton.isSelected()) {settingsInterface.rows.add(9);}
+        if(tenToggleButton.isSelected()) {settingsInterface.rows.add(10);}
+        
+        //Hide settings window
+        this.show(false);
+    }//GEN-LAST:event_okButtonMouseClicked
     
     /**
      * @param args the command line arguments
@@ -143,10 +209,14 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton askOnceToggleButton;
     private javax.swing.JToggleButton eightToggleButton;
     private javax.swing.JToggleButton fiveToggleButton;
     private javax.swing.JToggleButton fourToggleButton;
+    private javax.swing.JTextField nameField;
+    private java.awt.Label nameLabel;
     private javax.swing.JToggleButton nineToggleButton;
+    private javax.swing.JButton okButton;
     private javax.swing.JToggleButton oneToggleButton;
     private javax.swing.JLabel optionsLabel;
     private javax.swing.JLabel rowsLabel;
@@ -156,5 +226,9 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton threeToggleButton;
     private javax.swing.JToggleButton twoToggleButton;
     // End of variables declaration//GEN-END:variables
+
+    public mtSettingsInterface getSettingsInterface() {
+        return settingsInterface;
+    }
     
 }
