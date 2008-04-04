@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.util.Random;
 
 /*
@@ -20,7 +21,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     }
     
     
-    //Some custom code
+    ///Custom code
     //Constants
     static final int maxRow = 10;
     //Global variables
@@ -30,7 +31,12 @@ public class mtMainFrame extends javax.swing.JFrame {
     private int correctResult;   
     private boolean[][] solved = new boolean[maxRow][maxRow];
     private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
-    private int solvesThisRun = 0; //Number of exercises already solved
+    private int solvesThisRun = 0; //Number of exercises already solved this run
+    //Statistics counters
+    private int overallSolved; //Overall solved exercises for this name
+    private int rightSolved; //Exercises the name has anwered correctly
+    private int falseSolved; //Exercises the name has anwered wrong   
+    
     
     private void generateNewExercise()
     {
@@ -81,6 +87,8 @@ public class mtMainFrame extends javax.swing.JFrame {
         mainPanel = new java.awt.Panel();
         okButton = new javax.swing.JButton();
         correctnessLabel = new javax.swing.JLabel();
+        nameLabel = new java.awt.Label();
+        nameField = new javax.swing.JTextField();
         firstFactorLabel = new javax.swing.JLabel();
         secondFactorLabel = new javax.swing.JLabel();
         multLabel = new javax.swing.JLabel();
@@ -99,6 +107,16 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         correctnessLabel.setFont(new java.awt.Font("Tahoma", 1, 36));
         correctnessLabel.setForeground(new java.awt.Color(0, 255, 0));
+
+        nameLabel.setText("Name:");
+
+        nameField.setText("Kein Name");
+        nameField.setToolTipText("Name des Schülers");
+        nameField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nameFieldFocusLost(evt);
+            }
+        });
 
         firstFactorLabel.setFont(new java.awt.Font("Tahoma", 0, 48));
         firstFactorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -141,10 +159,6 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(correctnessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(showSettingsFrameButton))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addComponent(firstFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -154,13 +168,22 @@ public class mtMainFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(isLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(resultField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(resultField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(correctnessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(8, 8, 8)
+                                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(showSettingsFrameButton))))))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(21, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(isLabel)
@@ -171,15 +194,19 @@ public class mtMainFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(multLabel)
                         .addGap(21, 21, 21)))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(correctnessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(showSettingsFrameButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showSettingsFrameButton)
+                        .addGap(18, 18, 18)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(59, 59, 59))
         );
 
@@ -187,17 +214,15 @@ public class mtMainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 636, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
@@ -210,12 +235,15 @@ public class mtMainFrame extends javax.swing.JFrame {
         {
             correctnessLabel.setForeground(Color.GREEN);
             correctnessLabel.setText("RICHTIG!");
+            rightSolved++;
         }
         else
         {
             correctnessLabel.setForeground(Color.RED);
             correctnessLabel.setText("FALSCH:" + Integer.toString(correctResult));
+            falseSolved++;
         }
+        overallSolved++;
         generateNewExercise();
     }//GEN-LAST:event_okButtonMouseClicked
 
@@ -223,6 +251,14 @@ public class mtMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         settingsFrame.setVisible(true);
     }//GEN-LAST:event_showSettingsFrameButtonMouseClicked
+
+    private void nameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameFieldFocusLost
+        // TODO add your handling code here:
+        //Reset statistics counters 
+        overallSolved = 0;
+        rightSolved = 0;
+        falseSolved = 0;
+    }//GEN-LAST:event_nameFieldFocusLost
     
     /**
      * @param args the command line arguments
@@ -241,6 +277,8 @@ public class mtMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel isLabel;
     private java.awt.Panel mainPanel;
     private javax.swing.JLabel multLabel;
+    private javax.swing.JTextField nameField;
+    private java.awt.Label nameLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField resultField;
     private javax.swing.JLabel secondFactorLabel;
