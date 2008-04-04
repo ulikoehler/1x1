@@ -1,4 +1,5 @@
 
+import java.util.Random;
 import java.util.Vector;
 
 /*
@@ -15,15 +16,16 @@ import java.util.Vector;
  */
 public class mtSettingsFrame extends javax.swing.JFrame {
     
+    //Variables
+    private mtSettingsInterface settingsInterface;
+    
     /** Creates new form mtSettingsFrame */
     public mtSettingsFrame() {
         initComponents();
         ///Set default options to avoid Nullpointer exceptions
-        settingsInterface.options[1] = true;
+        settingsInterface.options[0] = true;
     }
     
-    //Variables
-    private mtSettingsInterface settingsInterface;
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -49,8 +51,6 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         nameLabel = new java.awt.Label();
         nameField = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         rowsLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         rowsLabel.setText("Reihen:");
@@ -185,11 +185,11 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         //Get list of options
         
         //Reset variables
-        settingsInterface.options[1] = false;
+        settingsInterface.options[0] = false;
         settingsInterface.rows.removeAllElements();
         
         if(askOnceToggleButton.isSelected())
-        {settingsInterface.options[1] = true;}
+        {settingsInterface.options[0] = true;}
         
         //Get vector of selected rows
         if(oneToggleButton.isSelected()) {settingsInterface.rows.add(1);}
