@@ -1,5 +1,4 @@
 
-import java.awt.Color;
 import java.util.Random;
 
 /*
@@ -7,8 +6,6 @@ import java.util.Random;
  *
  * Created on 4. April 2008, 19:45
  */
-
-
 
 /**
  *
@@ -24,28 +21,53 @@ public class mtMainFrame extends javax.swing.JFrame {
     
     
     //Some custom code
+    //Constants
+    static final int maxRow = 10;
     //Global variables
     private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
     private mtSettingsInterface settings;
-    private int correctResult;       
+    private int correctResult;   
+    private boolean[][] solved = new boolean[maxRow][maxRow];
+    private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
+    private int solvesThisRun = 0; //Number of exercises already solved
     
     private void generateNewExercise()
     {
         //Get up-to-date version of settings intercae
         settings = settingsFrame.getSettingsInterface();
         
+        //Check if exercises should be questioned more than once per run
+        boolean askOnce = settings.options[0];
         
-        //Generate random numbers
+        //Predeclare variables and initialize vectorElements
+        int firstFactor;
+        int secondFactor;
         int vectorElements = settings.rows.size();
-        int firstFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
-        int secondFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
+        //Calculate max solves this run
+        maxSolvesThisRun = vectorElements * vectorElements;
+        //Generate random numbers and check if this exercise has already been solved
+        while(true)
+            {
+            firstFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
+            secondFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
+            if(!(solved[firstFactor-1][secondFactor-1]) || !(askOnce)) {break;}
+            }
         
         firstFactorLabel.setText(Integer.toString(firstFactor));
         secondFactorLabel.setText(Integer.toString(secondFactor));
-        
         correctResult = firstFactor * secondFactor;
         
+        //Mark exercise as solved
+        solved[firstFactor-1][secondFactor-1] = true;
+        
+        //Increment solvesThisRun and reset array if greater than maxSolvesThisRun
+        solvesThisRun++;
+        if(solvesThisRun == maxSolvesThisRun)
+            {
+                solvesThisRun = 0; //Reset Counter
+                solved = new boolean[maxRow][maxRow]; //Reset array
+            }
     }
     
     /** This method is called from within the constructor to

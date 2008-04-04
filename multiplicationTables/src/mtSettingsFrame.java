@@ -1,6 +1,4 @@
 
-import java.util.Random;
-import java.util.Vector;
 
 /*
  * mtSettingsFrame.java
