@@ -27,6 +27,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     //Global variables
     private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
+    private mtStatisticsFrame statisticsFrame = new mtStatisticsFrame();
     private mtSettingsInterface settings;
     private int correctResult;   
     private boolean[][] solved = new boolean[maxRow][maxRow];
@@ -95,6 +96,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         isLabel = new javax.swing.JLabel();
         resultField = new javax.swing.JTextField();
         showSettingsFrameButton = new javax.swing.JButton();
+        showStatisticsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -146,6 +148,14 @@ public class mtMainFrame extends javax.swing.JFrame {
             }
         });
 
+        showStatisticsButton.setText("Statistiken");
+        showStatisticsButton.setToolTipText("Statistiken anzeigen");
+        showStatisticsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showStatisticsButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -177,8 +187,11 @@ public class mtMainFrame extends javax.swing.JFrame {
                                         .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(8, 8, 8)
                                         .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(showSettingsFrameButton))))))
-                .addContainerGap(91, Short.MAX_VALUE))
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addComponent(showSettingsFrameButton)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(showStatisticsButton)))))))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +215,9 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addComponent(correctnessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showSettingsFrameButton)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(showSettingsFrameButton)
+                            .addComponent(showStatisticsButton))
                         .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -216,7 +231,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,6 +274,11 @@ public class mtMainFrame extends javax.swing.JFrame {
         rightSolved = 0;
         falseSolved = 0;
     }//GEN-LAST:event_nameFieldFocusLost
+
+    private void showStatisticsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showStatisticsButtonMouseClicked
+        // TODO add your handling code here:
+        statisticsFrame.setVisible(true);
+    }//GEN-LAST:event_showStatisticsButtonMouseClicked
     
     /**
      * @param args the command line arguments
@@ -283,6 +303,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField resultField;
     private javax.swing.JLabel secondFactorLabel;
     private javax.swing.JButton showSettingsFrameButton;
+    private javax.swing.JButton showStatisticsButton;
     // End of variables declaration//GEN-END:variables
     
 }
