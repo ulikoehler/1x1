@@ -265,6 +265,19 @@ public class mtMainFrame extends javax.swing.JFrame {
         solvingValues[firstFactor-1][secondFactor-1] = result;
         
         //Update statistics
+        statisticsFrame.setOverallSolved(overallSolved);
+        statisticsFrame.setRightSolved(rightSolved);
+        statisticsFrame.setFalseSolved(falseSolved);
+        //Update statistics table
+        for(int i = 1; i < 10; i++)
+        {
+            for(int j = 0; j < 9; j++)
+            {
+                //First set background color of the appropriate cell
+                if(solvingValues[i-1][j] == (i*j+1)) {statisticsFrame.resultsTable.setValueAt("<html><p bgcolor=green>" + Integer.toString(solvingValues[i-1][j]) + "</p>", i, j);}
+                else {statisticsFrame.resultsTable.setValueAt("<html><p bgcolor=red>" + Integer.toString(solvingValues[i-1][j]) + "</p>", i, j);}
+            }
+        }
         
         generateNewExercise();
     }//GEN-LAST:event_okButtonMouseClicked
