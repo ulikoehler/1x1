@@ -33,13 +33,12 @@ public class multiplicationTablesApplet extends java.applet.Applet {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        editingPanel = new java.awt.Panel();
+        mainPanel = new java.awt.Panel();
         firstFactorField = new javax.swing.JTextField();
         multLabel = new java.awt.Label();
         secondFactorField = new javax.swing.JTextField();
-        okPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
-        resultsPanel = new javax.swing.JPanel();
+        correctnessLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
@@ -47,42 +46,74 @@ public class multiplicationTablesApplet extends java.applet.Applet {
         firstFactorField.setColumns(2);
         firstFactorField.setFont(new java.awt.Font("Tahoma", 0, 36));
         firstFactorField.setToolTipText("Erster Faktor");
-        editingPanel.add(firstFactorField);
 
         multLabel.setAlignment(java.awt.Label.CENTER);
         multLabel.setFont(new java.awt.Font("Dialog", 0, 36));
-        multLabel.setText("x");
-        editingPanel.add(multLabel);
+        multLabel.setText("X");
 
         secondFactorField.setColumns(2);
         secondFactorField.setFont(new java.awt.Font("Tahoma", 0, 36));
         secondFactorField.setToolTipText("Erster Faktor");
-        editingPanel.add(secondFactorField);
-
-        add(editingPanel, java.awt.BorderLayout.NORTH);
 
         okButton.setText("OK");
-        okButton.setMaximumSize(new java.awt.Dimension(47, 23));
-        okButton.setMinimumSize(new java.awt.Dimension(47, 23));
-        okPanel.add(okButton);
 
-        add(okPanel, java.awt.BorderLayout.CENTER);
+        correctnessLabel.setFont(new java.awt.Font("Tahoma", 1, 36));
+        correctnessLabel.setForeground(new java.awt.Color(0, 255, 0));
+        correctnessLabel.setText("RICHTIG!");
 
-        jLabel1.setText("jLabel1");
-        resultsPanel.add(jLabel1);
+        jLabel1.setText("Name:");
 
-        add(resultsPanel, java.awt.BorderLayout.SOUTH);
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(firstFactorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(multLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(secondFactorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(correctnessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(114, Short.MAX_VALUE))
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(secondFactorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(firstFactorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(multLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(correctnessLabel)
+                .addGap(14, 14, 14))
+        );
+
+        add(mainPanel, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Panel editingPanel;
+    private javax.swing.JLabel correctnessLabel;
     private javax.swing.JTextField firstFactorField;
     private javax.swing.JLabel jLabel1;
+    private java.awt.Panel mainPanel;
     private java.awt.Label multLabel;
     private javax.swing.JButton okButton;
-    private javax.swing.JPanel okPanel;
-    private javax.swing.JPanel resultsPanel;
     private javax.swing.JTextField secondFactorField;
     // End of variables declaration//GEN-END:variables
     
