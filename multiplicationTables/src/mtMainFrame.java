@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.util.Random;
 
 /*
@@ -18,40 +19,32 @@ public class mtMainFrame extends javax.swing.JFrame {
     /** Creates new form mtMainFrame */
     public mtMainFrame() {
         initComponents();
+        generateNewExercise();
     }
     
     
     //Some custom code
     //Global variables
-    private Random rand;
+    private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
-    private mtSettingsInterface settingsInterface;
-    private int result;
-    
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {                                      
-        // TODO add your handling code here:
-        
-    }                                     
-
-    private void showSettingsFrameButtonMouseClicked(java.awt.event.MouseEvent evt) {                                                     
-        // TODO add your handling code here:
-        settingsFrame.setVisible(true);
-    }                                                    
+    private mtSettingsInterface settings;
+    private int correctResult;       
     
     private void generateNewExercise()
     {
         //Get up-to-date version of settings intercae
-        settingsInterface = settingsFrame.getSettingsInterface();
+        settings = settingsFrame.getSettingsInterface();
+        
         
         //Generate random numbers
-        int vectorElements = settingsInterface.rows.size();
-        int firstFactor = settingsInterface.rows.elementAt(rand.nextInt(vectorElements)).intValue();
-        int secondFactor = settingsInterface.rows.elementAt(rand.nextInt(vectorElements)).intValue();
+        int vectorElements = settings.rows.size();
+        int firstFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
+        int secondFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
         
         firstFactorLabel.setText(Integer.toString(firstFactor));
         secondFactorLabel.setText(Integer.toString(secondFactor));
         
-        result = firstFactor * secondFactor;
+        correctResult = firstFactor * secondFactor;
         
     }
     
@@ -84,7 +77,6 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         correctnessLabel.setFont(new java.awt.Font("Tahoma", 1, 36));
         correctnessLabel.setForeground(new java.awt.Color(0, 255, 0));
-        correctnessLabel.setText("RICHTIG!");
 
         firstFactorLabel.setFont(new java.awt.Font("Tahoma", 0, 48));
         firstFactorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -145,7 +137,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(secondFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,7 +150,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(correctnessLabel))
+                        .addComponent(correctnessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addComponent(showSettingsFrameButton)))
@@ -176,10 +168,10 @@ public class mtMainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 284, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,6 +179,18 @@ public class mtMainFrame extends javax.swing.JFrame {
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         // TODO add your handling code here:
+        int result = Integer.parseInt(resultField.getText());
+        if (result == correctResult)
+        {
+            correctnessLabel.setForeground(Color.GREEN);
+            correctnessLabel.setText("RICHTIG!");
+        }
+        else
+        {
+            correctnessLabel.setForeground(Color.RED);
+            correctnessLabel.setText("FALSCH:" + Integer.toString(correctResult));
+        }
+        generateNewExercise();
     }//GEN-LAST:event_okButtonMouseClicked
 
     private void showSettingsFrameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showSettingsFrameButtonMouseClicked

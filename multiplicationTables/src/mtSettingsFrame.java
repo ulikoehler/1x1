@@ -17,13 +17,11 @@ import java.util.Vector;
 public class mtSettingsFrame extends javax.swing.JFrame {
     
     //Variables
-    private mtSettingsInterface settingsInterface;
+    private mtSettingsInterface settingsInterface = new mtSettingsInterface();
     
     /** Creates new form mtSettingsFrame */
     public mtSettingsFrame() {
         initComponents();
-        ///Set default options to avoid Nullpointer exceptions
-        settingsInterface.options[0] = true;
     }
     
     
