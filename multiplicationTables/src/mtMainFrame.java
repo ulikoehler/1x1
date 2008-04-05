@@ -30,8 +30,8 @@ public class mtMainFrame extends javax.swing.JFrame {
     private mtStatisticsFrame statisticsFrame = new mtStatisticsFrame();
     private mtSettingsInterface settings;
     private int correctResult;   
-    private boolean[][] solved = new boolean[maxRow][maxRow];
-    private int[][] solvingValues = new int[maxRow][maxRow];
+    public boolean[][] solved = new boolean[maxRow][maxRow];
+    public int[][] solvingValues = new int[maxRow][maxRow];
     private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
     private int solvesThisRun = 0; //Number of exercises already solved this run
     int firstFactor;

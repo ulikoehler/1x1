@@ -1,3 +1,9 @@
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+
 /*
  * mtStatisticsFrame.java
  *
@@ -16,6 +22,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     public mtStatisticsFrame() {
         initComponents();
     }
+    
+    //Semiglobal variables
+    JFileChooser saveFileDialog = new JFileChooser();
     
     ///GUI Setters
     
@@ -47,6 +56,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
         overallSolvedDescriptorLabel = new javax.swing.JLabel();
         correctSolvedDescriptorLabel = new javax.swing.JLabel();
         falseSolvedDescriptorLabel = new javax.swing.JLabel();
@@ -59,6 +69,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         resultsTable = new javax.swing.JTable(11,10);
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        saveMenuItem = new javax.swing.JMenuItem();
 
         setTitle("Statistiken");
 
@@ -106,6 +117,15 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         resultsScrollPane.setViewportView(resultsTable);
 
         fileMenu.setText("Datei");
+
+        saveMenuItem.setText("Speichern");
+        saveMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveMenuItemMouseClicked(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
         menuBar.add(fileMenu);
 
         setJMenuBar(menuBar);
@@ -168,6 +188,44 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveMenuItemMouseClicked
+        // TODO add your handling code here:
+        //Show save dialog
+        int returnVal = saveFileDialog.showSaveDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            //Initalize save file output stream
+            BufferedWriter fout = null;
+            try
+                {fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFileDialog.getSelectedFile())));}
+            catch (FileNotFoundException ex)
+                {Logger.getLogger(mtStatisticsFrame.class.getName()).log(Level.SEVERE, null, ex);}
+            
+            //Write data to file 
+            try
+                {
+                    fout.write("Name:" + nameLabel.getText()); //Write name
+                    fout.write("Gesamt gelöst:" + overallSolvedLabel.getText());
+                    fout.write("Richtig gelöst:" + rightSolvedLabel.getText());
+                    fout.write("Falsch gelöst:" + falseSolvedLabel.getText());
+                    //Write table
+                    for(int i = 0; i < 9; i++)
+                    {
+                        for(int j = 0; j < 9; j++)
+                        {
+                            //First set background color of the appropriate cell
+                            if(!solved[i][j]) {fout.write("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div><br/>", i+1, j+1);}
+                            else if(solvingValues[i][j] == (i+1)*(j+1)) {fout.write("<html><div bgcolor=green align=center>&#160;" + Integer.toString(parent-solvingValues[i][j]) + "&#160;</div><br/>", i+1, j+1);}
+                            else {fout.write("<html><div bgcolor=red align=center>&#160;" + Integer.toString(solvingValues[i][j]) + "&#160;</div>", i+1, j+1);}
+                        }
+                    }
+                }
+            catch (IOException ex)
+                {Logger.getLogger(mtStatisticsFrame.class.getName()).log(Level.SEVERE, null, ex);}
+        }
+        
+    }//GEN-LAST:event_saveMenuItemMouseClicked
     
     /**
      * @param args the command line arguments
@@ -185,6 +243,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel falseSolvedDescriptorLabel;
     private javax.swing.JLabel falseSolvedLabel;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel nameDescriptorLabel;
     private javax.swing.JLabel nameLabel;
@@ -193,6 +252,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane resultsScrollPane;
     public javax.swing.JTable resultsTable;
     private javax.swing.JLabel rightSolvedLabel;
+    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
     
 }
