@@ -2,7 +2,7 @@
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 
 /*
  * mtStatisticsFrame.java
@@ -25,7 +25,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     }
     
     //Semiglobal variables
-    private JFileChooser saveFileDialog = new JFileChooser();
+    private JFileChooser saveFileDialog = new JFileChooser();;
     private mtMainFrame parentFrame;
     
     ///GUI Setters
