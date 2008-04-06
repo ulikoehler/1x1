@@ -27,11 +27,11 @@ public class mtMainFrame extends javax.swing.JFrame {
     //Global variables
     private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
-    private mtStatisticsFrame statisticsFrame = new mtStatisticsFrame();
+    private mtStatisticsFrame statisticsFrame = new mtStatisticsFrame(this);
     private mtSettingsInterface settings;
     private int correctResult;   
-    public boolean[][] solved = new boolean[maxRow][maxRow];
-    public int[][] solvingValues = new int[maxRow][maxRow];
+    private boolean[][] solved = new boolean[maxRow][maxRow];
+    private int[][] solvingValues = new int[maxRow][maxRow];
     private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
     private int solvesThisRun = 0; //Number of exercises already solved this run
     int firstFactor;
@@ -276,8 +276,8 @@ public class mtMainFrame extends javax.swing.JFrame {
             {
                 //First set background color of the appropriate cell
                 if(!solved[i][j]) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);}
-                else if(solvingValues[i][j] == (i+1)*(j+1)) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(solvingValues[i][j]) + "&#160;</div>", i+1, j+1);}
-                else {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(solvingValues[i][j]) + "&#160;</div>", i+1, j+1);}
+                else if(getSolvingValues()[i][j] == (i+1)*(j+1)) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
+                else {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
             }
         }
         
@@ -329,5 +329,13 @@ public class mtMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton showSettingsFrameButton;
     private javax.swing.JButton showStatisticsButton;
     // End of variables declaration//GEN-END:variables
+
+    public boolean[][] getSolved() {
+        return solved;
+    }
+
+    public int[][] getSolvingValues() {
+        return solvingValues;
+    }
     
 }

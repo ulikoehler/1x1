@@ -19,12 +19,14 @@ import javax.swing.JFileChooser;
 public class mtStatisticsFrame extends javax.swing.JFrame {
     
     /** Creates new form mtStatisticsFrame */
-    public mtStatisticsFrame() {
+    public mtStatisticsFrame(mtMainFrame pFrame) {
         initComponents();
+        parentFrame = pFrame;
     }
     
     //Semiglobal variables
-    JFileChooser saveFileDialog = new JFileChooser();
+    private JFileChooser saveFileDialog = new JFileChooser();
+    private mtMainFrame parentFrame;
     
     ///GUI Setters
     
@@ -215,9 +217,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                         for(int j = 0; j < 9; j++)
                         {
                             //First set background color of the appropriate cell
-                            if(!solved[i][j]) {fout.write("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div><br/>", i+1, j+1);}
-                            else if(solvingValues[i][j] == (i+1)*(j+1)) {fout.write("<html><div bgcolor=green align=center>&#160;" + Integer.toString(parent-solvingValues[i][j]) + "&#160;</div><br/>", i+1, j+1);}
-                            else {fout.write("<html><div bgcolor=red align=center>&#160;" + Integer.toString(solvingValues[i][j]) + "&#160;</div>", i+1, j+1);}
+                            if(!parentFrame.getSolved()[i][j]) {fout.write("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div><br/>", i+1, j+1);}
+                            else if(parentFrame.getSolvingValues()[i][j] == (i+1)*(j+1)) {fout.write("<html><div bgcolor=green align=center>&#160;" + Integer.toString(parentFrame.getSolvingValues()[i][j]) + "&#160;</div><br/>", i+1, j+1);}
+                            else {fout.write("<html><div bgcolor=red align=center>&#160;" + Integer.toString(parentFrame.getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
                         }
                     }
                 }
@@ -226,17 +228,7 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_saveMenuItemMouseClicked
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new mtStatisticsFrame().setVisible(true);
-            }
-        });
-    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel correctSolvedDescriptorLabel;
@@ -254,5 +246,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel rightSolvedLabel;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    public void setParentFrame(mtMainFrame parentFrame) {
+        this.parentFrame = parentFrame;
+    }
     
 }
