@@ -45,6 +45,9 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         optionsLabel = new javax.swing.JLabel();
         askOnceToggleButton = new javax.swing.JToggleButton();
         okButton = new javax.swing.JButton();
+        multCheckBox = new javax.swing.JCheckBox();
+        plusCheckBox = new javax.swing.JCheckBox();
+        minusCheckBox = new javax.swing.JCheckBox();
 
         setTitle("Einstellungen");
 
@@ -95,6 +98,15 @@ public class mtSettingsFrame extends javax.swing.JFrame {
             }
         });
 
+        multCheckBox.setFont(new java.awt.Font("Tahoma", 1, 18));
+        multCheckBox.setText("X");
+
+        plusCheckBox.setFont(new java.awt.Font("Tahoma", 1, 18));
+        plusCheckBox.setText("+");
+
+        minusCheckBox.setFont(new java.awt.Font("Tahoma", 1, 18));
+        minusCheckBox.setText("-");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,12 +128,14 @@ public class mtSettingsFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(optionsLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(askOnceToggleButton, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(multCheckBox)
                             .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(askOnceToggleButton, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(127, 127, 127)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(plusCheckBox)
+                            .addComponent(minusCheckBox))))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,22 +148,31 @@ public class mtSettingsFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(oneToggleButton)
                     .addComponent(askOnceToggleButton))
-                .addGap(4, 4, 4)
-                .addComponent(twoToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(threeToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fourToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fiveToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sixToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sevenToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(eightToggleButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nineToggleButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(twoToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(threeToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fourToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fiveToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sixToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sevenToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(eightToggleButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nineToggleButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(multCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(plusCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(minusCheckBox)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tenToggleButton)
@@ -167,6 +190,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         //Reset variables
         settingsInterface.options[0] = false;
         settingsInterface.rows.removeAllElements();
+        settingsInterface.operators.removeAllElements();
         
         if(askOnceToggleButton.isSelected())
         {settingsInterface.options[0] = true;}
@@ -182,6 +206,11 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         if(eightToggleButton.isSelected()) {settingsInterface.rows.add(8);}
         if(nineToggleButton.isSelected()) {settingsInterface.rows.add(9);}
         if(tenToggleButton.isSelected()) {settingsInterface.rows.add(10);}
+        
+        //Get vector of selected operators
+        if(multCheckBox.isSelected()) {settingsInterface.operators.add(mtOperator.MULT);}
+        if(plusCheckBox.isSelected()) {settingsInterface.operators.add(mtOperator.PLUS);}
+        if(minusCheckBox.isSelected()) {settingsInterface.operators.add(mtOperator.MINUS);}
         
         //Hide settings window
         this.setVisible(false);
@@ -204,10 +233,13 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton eightToggleButton;
     private javax.swing.JToggleButton fiveToggleButton;
     private javax.swing.JToggleButton fourToggleButton;
+    private javax.swing.JCheckBox minusCheckBox;
+    private javax.swing.JCheckBox multCheckBox;
     private javax.swing.JToggleButton nineToggleButton;
     private javax.swing.JButton okButton;
     private javax.swing.JToggleButton oneToggleButton;
     private javax.swing.JLabel optionsLabel;
+    private javax.swing.JCheckBox plusCheckBox;
     private javax.swing.JLabel rowsLabel;
     private javax.swing.JToggleButton sevenToggleButton;
     private javax.swing.JToggleButton sixToggleButton;

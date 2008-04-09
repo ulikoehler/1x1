@@ -6,6 +6,8 @@ import java.util.Vector;
  * and open the template in the editor.
  */
 
+//Enums
+
 /**
  *
  * @author User
@@ -13,13 +15,16 @@ import java.util.Vector;
 public class mtSettingsInterface
 {
 public Vector<Integer> rows = new Vector<Integer>();
+public Vector<mtOperator> operators = new Vector<mtOperator>();
 public boolean[] options = new boolean[1];
 
 public mtSettingsInterface()
     {
         ///Set default options to avoid Nullpointer exceptions
+        //Init options array
         options[0] = true;
         
+        //Init rows vector
         rows.add(1);
         rows.add(2);
         rows.add(3);
@@ -30,5 +35,8 @@ public mtSettingsInterface()
         rows.add(8);
         rows.add(9);
         rows.add(10);
+        
+        //Init operators vector
+        operators.add(mtOperator.MULT);
     }
 }
