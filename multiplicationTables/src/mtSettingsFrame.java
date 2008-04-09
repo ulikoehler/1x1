@@ -192,8 +192,9 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         settingsInterface.rows.removeAllElements();
         settingsInterface.operators.removeAllElements();
         
+        //Get list of options
         if(askOnceToggleButton.isSelected())
-        {settingsInterface.options[0] = true;}
+            {settingsInterface.options[0] = true;}
         
         //Get vector of selected rows
         if(oneToggleButton.isSelected()) {settingsInterface.rows.add(1);}

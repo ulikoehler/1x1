@@ -50,10 +50,16 @@ public class mtMainFrame extends javax.swing.JFrame {
         //Check if exercises should be questioned more than once per run
         boolean askOnce = settings.options[0];
         
-        //Predeclare variables and initialize vectorElements
+        //Predeclare variables and initialize vector size variables
         int vectorElements = settings.rows.size();
+        int operators = settings.operators.size();
+        
         //Calculate max solves this run
         maxSolvesThisRun = vectorElements * vectorElements;
+        
+        //Generate index number of a random operator
+        int operatorIndex = rand.nextInt(operators);
+        
         //Generate random numbers and check if this exercise has already been solved
         while(true)
             {
@@ -62,9 +68,34 @@ public class mtMainFrame extends javax.swing.JFrame {
             if(!(solved[firstFactor-1][secondFactor-1]) || !(askOnce)) {break;}
             }
         
+        //Update GUI (factors
         firstFactorLabel.setText(Integer.toString(firstFactor));
         secondFactorLabel.setText(Integer.toString(secondFactor));
-        correctResult = firstFactor * secondFactor;
+        
+        //Update GUI and calculate correct result depending on the selected operator
+        switch(settings.operators.elementAt(operatorIndex+1)) //Add 1 to avoid ArrayIndeyOutOfBounds exception
+            {
+            case MULT:
+                {
+                    correctResult = firstFactor * secondFactor;
+                    operatorLabel.setText("<html>&#9679");
+                    break;
+                }
+            case PLUS:
+                {
+                    correctResult = firstFactor + secondFactor;
+                    operatorLabel.setText("+");
+                    break;
+                }
+            case MINUS:
+                {
+                    correctResult = firstFactor - secondFactor;
+                    operatorLabel.setText("-");
+                    break;
+                }
+            default: break;
+            }
+        
         
         //Mark exercise as solved
         solved[firstFactor-1][secondFactor-1] = true;
@@ -94,7 +125,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         nameField = new javax.swing.JTextField();
         firstFactorLabel = new javax.swing.JLabel();
         secondFactorLabel = new javax.swing.JLabel();
-        multLabel = new javax.swing.JLabel();
+        operatorLabel = new javax.swing.JLabel();
         isLabel = new javax.swing.JLabel();
         resultField = new javax.swing.JTextField();
         showSettingsFrameButton = new javax.swing.JButton();
@@ -131,9 +162,9 @@ public class mtMainFrame extends javax.swing.JFrame {
         secondFactorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         secondFactorLabel.setText("2");
 
-        multLabel.setFont(new java.awt.Font("Tahoma", 0, 24));
-        multLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        multLabel.setText("<html>&#9679");
+        operatorLabel.setFont(new java.awt.Font("Tahoma", 0, 24));
+        operatorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        operatorLabel.setText("<html>&#9679");
 
         isLabel.setFont(new java.awt.Font("Tahoma", 0, 48));
         isLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -175,7 +206,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                                 .addGap(4, 4, 4)
                                 .addComponent(firstFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(multLabel)
+                                .addComponent(operatorLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(secondFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -208,7 +239,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addComponent(secondFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(firstFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addComponent(multLabel)
+                        .addComponent(operatorLabel)
                         .addGap(21, 21, 21)))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
@@ -320,10 +351,10 @@ public class mtMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel firstFactorLabel;
     private javax.swing.JLabel isLabel;
     private java.awt.Panel mainPanel;
-    private javax.swing.JLabel multLabel;
     private javax.swing.JTextField nameField;
     private java.awt.Label nameLabel;
     private javax.swing.JButton okButton;
+    private javax.swing.JLabel operatorLabel;
     private javax.swing.JTextField resultField;
     private javax.swing.JLabel secondFactorLabel;
     private javax.swing.JButton showSettingsFrameButton;
