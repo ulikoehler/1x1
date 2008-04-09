@@ -63,7 +63,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         
         //Get random operator
         int operatorIndex = rand.nextInt(operators);
-        settings.operators.elementAt(operatorIndex+1);
+        op = settings.operators.elementAt(operatorIndex);
         
         //Set reference to the appropriate 2-dimensional solved array (depending on operator
         boolean[][] solved = null;
@@ -163,6 +163,11 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Math Trainer");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         okButton.setText("OK");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -394,6 +399,12 @@ public class mtMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         statisticsFrame.setVisible(true);
     }//GEN-LAST:event_showStatisticsButtonMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        //Quit application
+        System.exit(0);
+        
+    }//GEN-LAST:event_formWindowClosed
     
     /**
      * @param args the command line arguments
