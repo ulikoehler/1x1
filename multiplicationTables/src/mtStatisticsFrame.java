@@ -67,8 +67,18 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         falseSolvedLabel = new javax.swing.JLabel();
         nameDescriptorLabel = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
-        resultsScrollPane = new javax.swing.JScrollPane();
-        resultsTable = new javax.swing.JTable(11,10);
+        multScrollPane = new javax.swing.JScrollPane();
+        multResultsTable = new javax.swing.JTable(11,10);
+        plusScrollPane = new javax.swing.JScrollPane();
+        plusResultsTable = new javax.swing.JTable(11,10);
+        minusScrollPane = new javax.swing.JScrollPane();
+        minusResultsTable = new javax.swing.JTable(11,10);
+        multTableLable = new javax.swing.JLabel();
+        plusTableLable = new javax.swing.JLabel();
+        minusTableLable = new javax.swing.JLabel();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        saveMenuItem = new javax.swing.JMenuItem();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
@@ -97,9 +107,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
 
         nameLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
 
-        resultsTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        resultsTable.setFont(new java.awt.Font("Tahoma", 1, 12));
-        resultsTable.setModel(new javax.swing.table.DefaultTableModel(
+        multResultsTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        multResultsTable.setFont(new java.awt.Font("Tahoma", 1, 12));
+        multResultsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {1, null, null, null, null, null, null, null, null, null},
                 {2, null, null, null, null, null, null, null, null, null},
@@ -116,7 +126,72 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                 "","1","2","3","4","5","6","7","8","9","10"
             }
         ));
-        resultsScrollPane.setViewportView(resultsTable);
+        multScrollPane.setViewportView(multResultsTable);
+
+        plusResultsTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        plusResultsTable.setFont(new java.awt.Font("Tahoma", 1, 12));
+        plusResultsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {1, null, null, null, null, null, null, null, null, null},
+                {2, null, null, null, null, null, null, null, null, null},
+                {3, null, null, null, null, null, null, null, null, null},
+                {4, null, null, null, null, null, null, null, null, null},
+                {5, null, null, null, null, null, null, null, null, null},
+                {6, null, null, null, null, null, null, null, null, null},
+                {7, null, null, null, null, null, null, null, null, null},
+                {8, null, null, null, null, null, null, null, null, null},
+                {9, null, null, null, null, null, null, null, null, null},
+                {10, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "","1","2","3","4","5","6","7","8","9","10"
+            }
+        ));
+        plusScrollPane.setViewportView(plusResultsTable);
+
+        minusResultsTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        minusResultsTable.setFont(new java.awt.Font("Tahoma", 1, 12));
+        minusResultsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {1, null, null, null, null, null, null, null, null, null},
+                {2, null, null, null, null, null, null, null, null, null},
+                {3, null, null, null, null, null, null, null, null, null},
+                {4, null, null, null, null, null, null, null, null, null},
+                {5, null, null, null, null, null, null, null, null, null},
+                {6, null, null, null, null, null, null, null, null, null},
+                {7, null, null, null, null, null, null, null, null, null},
+                {8, null, null, null, null, null, null, null, null, null},
+                {9, null, null, null, null, null, null, null, null, null},
+                {10, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "","1","2","3","4","5","6","7","8","9","10"
+            }
+        ));
+        minusScrollPane.setViewportView(minusResultsTable);
+
+        multTableLable.setFont(new java.awt.Font("Tahoma", 1, 24));
+        multTableLable.setText("X");
+
+        plusTableLable.setFont(new java.awt.Font("Tahoma", 1, 24));
+        plusTableLable.setText("+");
+
+        minusTableLable.setFont(new java.awt.Font("Tahoma", 1, 24));
+        minusTableLable.setText("-");
+
+        fileMenu.setText("Datei");
+
+        saveMenuItem.setText("Speichern");
+        saveMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveMenuItemMouseClicked(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
+        menuBar.add(fileMenu);
+
+        setJMenuBar(menuBar);
 
         fileMenu.setText("Datei");
 
@@ -139,7 +214,14 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(42, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -155,37 +237,61 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                                     .addComponent(overallSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(rightSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nameDescriptorLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(multTableLable)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
+                                .addComponent(plusTableLable)
+                                .addGap(170, 170, 170))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(nameDescriptorLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(323, Short.MAX_VALUE))))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(114, 114, 114)
+                .addComponent(minusTableLable)
+                .addContainerGap(448, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(overallSolvedDescriptorLabel)
-                            .addComponent(overallSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(correctSolvedDescriptorLabel)
-                            .addComponent(rightSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameDescriptorLabel))
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(falseSolvedDescriptorLabel)
-                            .addComponent(falseSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(32, Short.MAX_VALUE)
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)))
-                .addGap(18, 18, 18)
-                .addComponent(resultsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                        .addGap(95, 95, 95)
+                        .addComponent(plusTableLable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(overallSolvedDescriptorLabel)
+                                    .addComponent(overallSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(correctSolvedDescriptorLabel)
+                                    .addComponent(rightSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nameDescriptorLabel))
+                                .addGap(7, 7, 7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(falseSolvedDescriptorLabel)
+                                    .addComponent(falseSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(32, Short.MAX_VALUE)
+                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(24, 24, 24)))
+                        .addGap(26, 26, 26)
+                        .addComponent(multTableLable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(minusTableLable)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80))
         );
 
         pack();
@@ -237,12 +343,19 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;
+    public javax.swing.JTable minusResultsTable;
+    private javax.swing.JScrollPane minusScrollPane;
+    private javax.swing.JLabel minusTableLable;
+    public javax.swing.JTable multResultsTable;
+    private javax.swing.JScrollPane multScrollPane;
+    private javax.swing.JLabel multTableLable;
     private javax.swing.JLabel nameDescriptorLabel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel overallSolvedDescriptorLabel;
     private javax.swing.JLabel overallSolvedLabel;
-    private javax.swing.JScrollPane resultsScrollPane;
-    public javax.swing.JTable resultsTable;
+    public javax.swing.JTable plusResultsTable;
+    private javax.swing.JScrollPane plusScrollPane;
+    private javax.swing.JLabel plusTableLable;
     private javax.swing.JLabel rightSolvedLabel;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables

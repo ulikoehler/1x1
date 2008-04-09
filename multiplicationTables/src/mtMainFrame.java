@@ -275,9 +275,9 @@ public class mtMainFrame extends javax.swing.JFrame {
             for(int j = 0; j < 9; j++)
             {
                 //First set background color of the appropriate cell
-                if(!solved[i][j]) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);}
-                else if(getSolvingValues()[i][j] == (i+1)*(j+1)) {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
-                else {statisticsFrame.resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
+                if(!solved[i][j]) {statisticsFrame.multResultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);}
+                else if(getSolvingValues()[i][j] == (i+1)*(j+1)) {statisticsFrame.multResultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
+                else {statisticsFrame.multResultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
             }
         }
         
