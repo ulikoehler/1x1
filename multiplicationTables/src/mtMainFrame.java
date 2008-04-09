@@ -7,6 +7,7 @@ import java.util.Random;
  *
  * Created on 4. April 2008, 19:45
  */
+import javax.swing.*;
 
 /**
  *
@@ -30,10 +31,13 @@ public class mtMainFrame extends javax.swing.JFrame {
     private mtStatisticsFrame statisticsFrame = new mtStatisticsFrame(this);
     private mtSettingsInterface settings;
     private int correctResult;   
-    private boolean[][] solved = new boolean[maxRow][maxRow];
+    private boolean[][] multSolved = new boolean[maxRow][maxRow];
+    private boolean[][] plusSolved = new boolean[maxRow][maxRow];
+    private boolean[][] minusSolved = new boolean[maxRow][maxRow];
     private int[][] solvingValues = new int[maxRow][maxRow];
     private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
     private int solvesThisRun = 0; //Number of exercises already solved this run
+    private mtOperator op = null;  //Buffers randomly generated operator
     int firstFactor;
     int secondFactor;
     //Statistics counters
@@ -55,10 +59,33 @@ public class mtMainFrame extends javax.swing.JFrame {
         int operators = settings.operators.size();
         
         //Calculate max solves this run
-        maxSolvesThisRun = vectorElements * vectorElements;
+        maxSolvesThisRun = 3 * vectorElements * vectorElements; //3: Number of operators
         
-        //Generate index number of a random operator
+        //Get random operator
         int operatorIndex = rand.nextInt(operators);
+        settings.operators.elementAt(operatorIndex+1);
+        
+        //Set reference to the appropriate 2-dimensional solved array (depending on operator
+        boolean[][] solved = null;
+        switch(op)
+        {
+            case MULT:
+                {
+                    solved = multSolved;
+                    break;
+                }
+            case PLUS:
+                {
+                    solved = plusSolved;
+                    break;
+                }
+            case MINUS:
+                {
+                    solved = minusSolved;
+                    break;
+                }
+            default: break;
+        }
         
         //Generate random numbers and check if this exercise has already been solved
         while(true)
@@ -73,12 +100,15 @@ public class mtMainFrame extends javax.swing.JFrame {
         secondFactorLabel.setText(Integer.toString(secondFactor));
         
         //Update GUI and calculate correct result depending on the selected operator
-        switch(settings.operators.elementAt(operatorIndex+1)) //Add 1 to avoid ArrayIndeyOutOfBounds exception
+        //and set the reference to the appropriate 
+        JTable resultsTable = null; //Forward declaration
+        switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
             {
             case MULT:
                 {
                     correctResult = firstFactor * secondFactor;
                     operatorLabel.setText("<html>&#9679");
+                    resultsTable = statisticsFrame.multResultsTable;
                     break;
                 }
             case PLUS:
@@ -132,7 +162,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         showStatisticsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("1x1");
+        setTitle("Math Trainer");
 
         okButton.setText("OK");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -278,7 +308,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        // TODO add your handling code here:
+        //Check if the user has solved the exercise correctly
         int result = Integer.parseInt(resultField.getText());
         if (result == correctResult)
         {
@@ -300,15 +330,45 @@ public class mtMainFrame extends javax.swing.JFrame {
         statisticsFrame.setOverallSolved(overallSolved);
         statisticsFrame.setRightSolved(rightSolved);
         statisticsFrame.setFalseSolved(falseSolved);
-        //Update statistics table
+        
+        //Set reference to the appropriate resultsTable in statisticsFrame (depending on the operator)
+        //and set the appropriate solved array reference
+        JTable resultsTable = null; //Forward declaration
+        switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
+            {
+            case MULT:
+                {
+                    correctResult = firstFactor * secondFactor;
+                    operatorLabel.setText("<html>&#9679");
+                    resultsTable = statisticsFrame.multResultsTable;
+                    break;
+                }
+            case PLUS:
+                {
+                    correctResult = firstFactor + secondFactor;
+                    operatorLabel.setText("+");
+                    resultsTable = statisticsFrame.plusResultsTable;
+                    break;
+                }
+            case MINUS:
+                {
+                    correctResult = firstFactor - secondFactor;
+                    operatorLabel.setText("-");
+                    resultsTable = statisticsFrame.minusResultsTable;
+                    break;
+                }
+            default: break;
+            }
+        
+        //Update appropriate statistics table
         for(int i = 0; i < 9; i++)
         {
             for(int j = 0; j < 9; j++)
             {
                 //First set background color of the appropriate cell
-                if(!solved[i][j]) {statisticsFrame.multResultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);}
+                if(!multSolved[i][j]) {resultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);}
                 else if(getSolvingValues()[i][j] == (i+1)*(j+1)) {statisticsFrame.multResultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
-                else {statisticsFrame.multResultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
+                else {resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
             }
         }
         
@@ -362,7 +422,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public boolean[][] getSolved() {
-        return solved;
+        return multSolved;
     }
 
     public int[][] getSolvingValues() {
