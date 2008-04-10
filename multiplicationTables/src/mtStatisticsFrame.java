@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,13 +91,13 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         setTitle("Statistiken");
 
         overallSolvedDescriptorLabel.setText("Gesamt:");
-        overallSolvedDescriptorLabel.setToolTipText("Gesamt gelöste Aufgaben");
+        overallSolvedDescriptorLabel.setToolTipText("Gesamt gelÃ¶ste Aufgaben");
 
         correctSolvedDescriptorLabel.setText("Richtig:");
-        correctSolvedDescriptorLabel.setToolTipText("Richtig gelöste Aufgaben");
+        correctSolvedDescriptorLabel.setToolTipText("Richtig gelÃ¶ste Aufgaben");
 
         falseSolvedDescriptorLabel.setText("Falsch:");
-        falseSolvedDescriptorLabel.setToolTipText("Falsch gelöste Aufgaben");
+        falseSolvedDescriptorLabel.setToolTipText("Falsch gelÃ¶ste Aufgaben");
 
         overallSolvedLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         overallSolvedLabel.setText("0");
@@ -397,9 +396,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
             try
                 {
                     fout.write("Name:" + nameLabel.getText()); //Write name
-                    fout.write("Gesamt gelöst:" + overallSolvedLabel.getText());
-                    fout.write("Richtig gelöst:" + rightSolvedLabel.getText());
-                    fout.write("Falsch gelöst:" + falseSolvedLabel.getText());
+                    fout.write("Gesamt gelÃ¶st:" + overallSolvedLabel.getText());
+                    fout.write("Richtig gelÃ¶st:" + rightSolvedLabel.getText());
+                    fout.write("Falsch gelÃ¶st:" + falseSolvedLabel.getText());
                     //Write table
                     for(int i = 0; i < 9; i++)
                     {
