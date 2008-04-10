@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,26 +79,32 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
+        menuBar1 = new javax.swing.JMenuBar();
+        fileMenu1 = new javax.swing.JMenu();
+        saveMenuItem1 = new javax.swing.JMenuItem();
+        menuBar2 = new javax.swing.JMenuBar();
+        fileMenu2 = new javax.swing.JMenu();
+        saveMenuItem2 = new javax.swing.JMenuItem();
         multTimeScrollPane = new javax.swing.JScrollPane();
         multTimeTable = new javax.swing.JTable(11,10);
         minusTimeScrollPane = new javax.swing.JScrollPane();
         minusTimeTable = new javax.swing.JTable(11,10);
         plusTimeScrollPane = new javax.swing.JScrollPane();
         plusTimeTable = new javax.swing.JTable(11,10);
-        menuBar1 = new javax.swing.JMenuBar();
-        fileMenu1 = new javax.swing.JMenu();
-        saveMenuItem1 = new javax.swing.JMenuItem();
+        menuBar3 = new javax.swing.JMenuBar();
+        fileMenu3 = new javax.swing.JMenu();
+        saveMenuItem3 = new javax.swing.JMenuItem();
 
         setTitle("Statistiken");
 
         overallSolvedDescriptorLabel.setText("Gesamt:");
-        overallSolvedDescriptorLabel.setToolTipText("Gesamt gelÃ¶ste Aufgaben");
+        overallSolvedDescriptorLabel.setToolTipText("Gesamt gelöste Aufgaben");
 
         correctSolvedDescriptorLabel.setText("Richtig:");
-        correctSolvedDescriptorLabel.setToolTipText("Richtig gelÃ¶ste Aufgaben");
+        correctSolvedDescriptorLabel.setToolTipText("Richtig gelöste Aufgaben");
 
         falseSolvedDescriptorLabel.setText("Falsch:");
-        falseSolvedDescriptorLabel.setToolTipText("Falsch gelÃ¶ste Aufgaben");
+        falseSolvedDescriptorLabel.setToolTipText("Falsch gelöste Aufgaben");
 
         overallSolvedLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
         overallSolvedLabel.setText("0");
@@ -196,6 +203,30 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
+        fileMenu1.setText("Datei");
+
+        saveMenuItem1.setText("Speichern");
+        saveMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveMenuItemMouseClicked(evt);
+            }
+        });
+        fileMenu1.add(saveMenuItem1);
+
+        menuBar1.add(fileMenu1);
+
+        fileMenu2.setText("Datei");
+
+        saveMenuItem2.setText("Speichern");
+        saveMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveMenuItemMouseClicked(evt);
+            }
+        });
+        fileMenu2.add(saveMenuItem2);
+
+        menuBar2.add(fileMenu2);
+
         multTimeTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         multTimeTable.setFont(new java.awt.Font("Tahoma", 1, 12));
         multTimeTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -259,121 +290,115 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         ));
         plusTimeScrollPane.setViewportView(plusTimeTable);
 
-        fileMenu1.setText("Datei");
+        fileMenu3.setText("Datei");
 
-        saveMenuItem1.setText("Speichern");
-        saveMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        saveMenuItem3.setText("Speichern");
+        saveMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 saveMenuItemMouseClicked(evt);
             }
         });
-        fileMenu1.add(saveMenuItem1);
+        fileMenu3.add(saveMenuItem3);
 
-        menuBar1.add(fileMenu1);
+        menuBar3.add(fileMenu3);
 
-        setJMenuBar(menuBar1);
+        setJMenuBar(menuBar3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(minusTableLable)
-                .addContainerGap(465, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(falseSolvedDescriptorLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(falseSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(overallSolvedDescriptorLabel)
-                                    .addComponent(correctSolvedDescriptorLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(overallSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(rightSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(multTableLable)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(nameDescriptorLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(340, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(multTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(328, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(plusTableLable)
-                .addContainerGap(450, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(multTimeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(falseSolvedDescriptorLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(falseSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(overallSolvedDescriptorLabel)
+                                            .addComponent(correctSolvedDescriptorLabel))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(overallSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(rightSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(multTableLable)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(nameDescriptorLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(minusTableLable))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(plusTableLable)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(multTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(overallSolvedDescriptorLabel)
+                            .addComponent(overallSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(correctSolvedDescriptorLabel)
+                            .addComponent(rightSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameDescriptorLabel))
+                        .addGap(7, 7, 7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(falseSolvedDescriptorLabel)
+                            .addComponent(falseSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(37, Short.MAX_VALUE)
+                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)))
+                .addGap(26, 26, 26)
+                .addComponent(multTableLable)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(overallSolvedDescriptorLabel)
-                                    .addComponent(overallSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(correctSolvedDescriptorLabel)
-                                    .addComponent(rightSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nameDescriptorLabel))
-                                .addGap(7, 7, 7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(falseSolvedDescriptorLabel)
-                                    .addComponent(falseSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(32, Short.MAX_VALUE)
-                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)))
-                        .addGap(26, 26, 26)
-                        .addComponent(multTableLable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(multTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(minusTableLable)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(plusTableLable)
-                        .addGap(12, 12, 12)
-                        .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36))
+                        .addGap(15, 15, 15)
+                        .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -396,9 +421,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
             try
                 {
                     fout.write("Name:" + nameLabel.getText()); //Write name
-                    fout.write("Gesamt gelÃ¶st:" + overallSolvedLabel.getText());
-                    fout.write("Richtig gelÃ¶st:" + rightSolvedLabel.getText());
-                    fout.write("Falsch gelÃ¶st:" + falseSolvedLabel.getText());
+                    fout.write("Gesamt gelöst:" + overallSolvedLabel.getText());
+                    fout.write("Richtig gelöst:" + rightSolvedLabel.getText());
+                    fout.write("Falsch gelöst:" + falseSolvedLabel.getText());
                     //Write table
                     for(int i = 0; i < 9; i++)
                     {
@@ -424,9 +449,13 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel falseSolvedLabel;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu fileMenu1;
+    private javax.swing.JMenu fileMenu2;
+    private javax.swing.JMenu fileMenu3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuBar menuBar1;
+    private javax.swing.JMenuBar menuBar2;
+    private javax.swing.JMenuBar menuBar3;
     public javax.swing.JTable minusResultsTable;
     private javax.swing.JScrollPane minusScrollPane;
     private javax.swing.JLabel minusTableLable;
@@ -449,6 +478,8 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel rightSolvedLabel;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JMenuItem saveMenuItem1;
+    private javax.swing.JMenuItem saveMenuItem2;
+    private javax.swing.JMenuItem saveMenuItem3;
     // End of variables declaration//GEN-END:variables
 
     public void setParentFrame(mtMainFrame parentFrame) {

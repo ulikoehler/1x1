@@ -26,7 +26,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     ///Custom code
     //Constants
     static final int maxRow = 10;
-    private final DecimalFormat twoPlaces = new DecimalFormat("00,00");
+    //private final DecimalFormat twoPlaces = new DecimalFormat("#0.##");
     //Global variables
     private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
@@ -36,9 +36,9 @@ public class mtMainFrame extends javax.swing.JFrame {
     private boolean[][] multSolved = new boolean[maxRow][maxRow];
     private boolean[][] plusSolved = new boolean[maxRow][maxRow];
     private boolean[][] minusSolved = new boolean[maxRow][maxRow];
-    private float[][] multTime = new float[maxRow][maxRow];
-    private float[][] plusTime = new float[maxRow][maxRow];
-    private float[][] minusTime = new float[maxRow][maxRow];
+    private double[][] multTime = new double[maxRow][maxRow];
+    private double[][] plusTime = new double[maxRow][maxRow];
+    private double[][] minusTime = new double[maxRow][maxRow];
     private int[][] multSolvingValues = new int[maxRow][maxRow];
     private int[][] plusSolvingValues = new int[maxRow][maxRow];
     private int[][] minusSolvingValues = new int[maxRow][maxRow];
@@ -144,7 +144,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             {
                 solvesThisRun = 0; //Reset Counter
                 solved = new boolean[maxRow][maxRow]; //Reset array
-                getSolvingValues() = new int[maxRow][maxRow]; //Reset solving values
+                setSolvingValues(new int[maxRow][maxRow]); //Reset solving values
             }
         
         //Update timer
@@ -272,21 +272,21 @@ public class mtMainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nameLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
                                         .addComponent(showSettingsFrameButton)
                                         .addGap(18, 18, 18)
+                                        .addComponent(showStatisticsButton))
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(showStatisticsButton)
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(timeDescriptorLabel)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                                .addComponent(nameLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGap(46, 46, 46)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                                                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,12 +301,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addComponent(firstFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(operatorLabel)
-                        .addGap(21, 21, 21))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(timeDescriptorLabel))
-                        .addGap(33, 33, 33)))
+                        .addGap(21, 21, 21)))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -322,7 +317,11 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nameLabel)
                             .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(59, 59, 59))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(timeDescriptorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -331,12 +330,12 @@ public class mtMainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -370,7 +369,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         //Set reference to the appropriate resultsTable in statisticsFrame (depending on the operator)
         //and set the appropriate solved array reference; set appropriate solving and time array reference
         boolean[][] solved = null;
-        float[][] timesFloatTable = null;
+        double[][] timesFloatTable = null;
         JTable timeTable = null;
         JTable resultsTable = null; //Forward declaration
         switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
@@ -382,7 +381,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                     resultsTable = statisticsFrame.multResultsTable;
                     solved = multSolved;
                     timesFloatTable = multTime;
-                    timesTable = statisticsFrame.multTimeTable;
+                    timeTable = statisticsFrame.multTimeTable;
                     break;
                 }
             case PLUS:
@@ -407,9 +406,10 @@ public class mtMainFrame extends javax.swing.JFrame {
             }
         
         //Calculate time it took to solve the exercise and write into appropriate table
-        float solvingTime = (System.currentTimeMillis() - exerciseStartTime)/1000;
-        timesFloatTable[firstFactor][secondFactor] = solvingTime;
-        String solvingTimeString = twoPlaces.format(solvingTime);
+        double solvingTime = (System.currentTimeMillis() - exerciseStartTime)/1000;
+        timesFloatTable[firstFactor-1][secondFactor-1] = solvingTime;
+        String solvingTimeString = Double.toString(solvingTime);//twoPlaces.format(solvingTime);
+        timeLabel.setText(solvingTimeString + "s"); //Update time label
         
         //Update appropriate statistics table
         for(int i = 0; i < 9; i++)
@@ -419,13 +419,19 @@ public class mtMainFrame extends javax.swing.JFrame {
                 //Update cell color and value
                 if(!solved[i][j])
                     {
-                        //Update resultsTable
                         resultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);
-                        //Update timeTable
-                        timesFloatTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>",i+1,j+1);
+                        timeTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>",i+1,j+1);
                     }
-                else if(getSolvingValues()[i][j] == (i+1)*(j+1)) {resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
-                else {resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
+                else if(getSolvingValues()[i][j] == (i+1)*(j+1))
+                    {
+                        resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + solvingTimeString + "&#160;</div>", i+1, j+1);
+                    }
+                else
+                    {
+                        resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + solvingTimeString + "&#160;</div>", i+1, j+1);
+                    }
                 //Update time table
                 
             }
@@ -494,17 +500,33 @@ public class mtMainFrame extends javax.swing.JFrame {
         return multSolved;
     }
 
-    public int[][] getSolvingValues() {
+    public int[][] getSolvingValues()
+    {
+        int[][] returnValue = null;
         switch(op)
         {
             case MULT:
-                {return multSolvingValues;break;}
+                {returnValue =  multSolvingValues;break;}
             case PLUS:
-                {return plusSolvingValues;break;}
+                {returnValue =  plusSolvingValues;break;}
             case MINUS:
-                {return minusSolvingValues;break;}
+                {returnValue =  minusSolvingValues;break;}
+            default: break;
+        }
+        return returnValue;
+    }
+    
+    public void setSolvingValues(int[][] input)
+    {
+        switch(op)
+        {
+            case MULT:
+                {multSolvingValues = input;break;}
+            case PLUS:
+                {plusSolvingValues = input;break;}
+            case MINUS:
+                {minusSolvingValues = input;break;}
             default: break;
         }
     }
-    
 }
