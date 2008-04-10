@@ -79,9 +79,15 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
-        menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        saveMenuItem = new javax.swing.JMenuItem();
+        multTimeScrollPane = new javax.swing.JScrollPane();
+        multTimeTable = new javax.swing.JTable(11,10);
+        minusTimeScrollPane = new javax.swing.JScrollPane();
+        minusTimeTable = new javax.swing.JTable(11,10);
+        plusTimeScrollPane = new javax.swing.JScrollPane();
+        plusTimeTable = new javax.swing.JTable(11,10);
+        menuBar1 = new javax.swing.JMenuBar();
+        fileMenu1 = new javax.swing.JMenu();
+        saveMenuItem1 = new javax.swing.JMenuItem();
 
         setTitle("Statistiken");
 
@@ -191,37 +197,94 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        setJMenuBar(menuBar);
+        multTimeTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        multTimeTable.setFont(new java.awt.Font("Tahoma", 1, 12));
+        multTimeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {1, null, null, null, null, null, null, null, null, null},
+                {2, null, null, null, null, null, null, null, null, null},
+                {3, null, null, null, null, null, null, null, null, null},
+                {4, null, null, null, null, null, null, null, null, null},
+                {5, null, null, null, null, null, null, null, null, null},
+                {6, null, null, null, null, null, null, null, null, null},
+                {7, null, null, null, null, null, null, null, null, null},
+                {8, null, null, null, null, null, null, null, null, null},
+                {9, null, null, null, null, null, null, null, null, null},
+                {10, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "","1","2","3","4","5","6","7","8","9","10"
+            }
+        ));
+        multTimeScrollPane.setViewportView(multTimeTable);
 
-        fileMenu.setText("Datei");
+        minusTimeTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        minusTimeTable.setFont(new java.awt.Font("Tahoma", 1, 12));
+        minusTimeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {1, null, null, null, null, null, null, null, null, null},
+                {2, null, null, null, null, null, null, null, null, null},
+                {3, null, null, null, null, null, null, null, null, null},
+                {4, null, null, null, null, null, null, null, null, null},
+                {5, null, null, null, null, null, null, null, null, null},
+                {6, null, null, null, null, null, null, null, null, null},
+                {7, null, null, null, null, null, null, null, null, null},
+                {8, null, null, null, null, null, null, null, null, null},
+                {9, null, null, null, null, null, null, null, null, null},
+                {10, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "","1","2","3","4","5","6","7","8","9","10"
+            }
+        ));
+        minusTimeScrollPane.setViewportView(minusTimeTable);
 
-        saveMenuItem.setText("Speichern");
-        saveMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        plusTimeTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        plusTimeTable.setFont(new java.awt.Font("Tahoma", 1, 12));
+        plusTimeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {1, null, null, null, null, null, null, null, null, null},
+                {2, null, null, null, null, null, null, null, null, null},
+                {3, null, null, null, null, null, null, null, null, null},
+                {4, null, null, null, null, null, null, null, null, null},
+                {5, null, null, null, null, null, null, null, null, null},
+                {6, null, null, null, null, null, null, null, null, null},
+                {7, null, null, null, null, null, null, null, null, null},
+                {8, null, null, null, null, null, null, null, null, null},
+                {9, null, null, null, null, null, null, null, null, null},
+                {10, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "","1","2","3","4","5","6","7","8","9","10"
+            }
+        ));
+        plusTimeScrollPane.setViewportView(plusTimeTable);
+
+        fileMenu1.setText("Datei");
+
+        saveMenuItem1.setText("Speichern");
+        saveMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 saveMenuItemMouseClicked(evt);
             }
         });
-        fileMenu.add(saveMenuItem);
+        fileMenu1.add(saveMenuItem1);
 
-        menuBar.add(fileMenu);
+        menuBar1.add(fileMenu1);
 
-        setJMenuBar(menuBar);
+        setJMenuBar(menuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(114, 114, 114)
+                .addComponent(minusTableLable)
+                .addContainerGap(465, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(42, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -238,30 +301,40 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                                     .addComponent(rightSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(multTableLable)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
-                                .addComponent(plusTableLable)
-                                .addGap(170, 170, 170))
+                            .addComponent(multTableLable)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(nameDescriptorLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(323, Short.MAX_VALUE))))))
+                                .addContainerGap(340, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(multTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(minusTableLable)
-                .addContainerGap(448, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(328, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(119, 119, 119)
+                .addComponent(plusTableLable)
+                .addContainerGap(450, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(plusTableLable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(multTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -286,12 +359,22 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(multTableLable)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(minusTableLable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(minusTableLable)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(plusTableLable)
+                        .addGap(12, 12, 12)
+                        .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -341,14 +424,20 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel falseSolvedDescriptorLabel;
     private javax.swing.JLabel falseSolvedLabel;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu fileMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuBar menuBar1;
     public javax.swing.JTable minusResultsTable;
     private javax.swing.JScrollPane minusScrollPane;
     private javax.swing.JLabel minusTableLable;
+    private javax.swing.JScrollPane minusTimeScrollPane;
+    public javax.swing.JTable minusTimeTable;
     public javax.swing.JTable multResultsTable;
     private javax.swing.JScrollPane multScrollPane;
     private javax.swing.JLabel multTableLable;
+    private javax.swing.JScrollPane multTimeScrollPane;
+    public javax.swing.JTable multTimeTable;
     private javax.swing.JLabel nameDescriptorLabel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel overallSolvedDescriptorLabel;
@@ -356,8 +445,11 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     public javax.swing.JTable plusResultsTable;
     private javax.swing.JScrollPane plusScrollPane;
     private javax.swing.JLabel plusTableLable;
+    private javax.swing.JScrollPane plusTimeScrollPane;
+    public javax.swing.JTable plusTimeTable;
     private javax.swing.JLabel rightSolvedLabel;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JMenuItem saveMenuItem1;
     // End of variables declaration//GEN-END:variables
 
     public void setParentFrame(mtMainFrame parentFrame) {
