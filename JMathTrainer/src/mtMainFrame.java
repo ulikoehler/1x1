@@ -2,6 +2,7 @@
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.awt.event.*;
 
 /*
  * mtMainFrame.java
@@ -180,6 +181,9 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JMathTrainer");
+        setAlwaysOnTop(true);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("mainFrame"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -223,6 +227,11 @@ public class mtMainFrame extends javax.swing.JFrame {
         resultField.setFont(new java.awt.Font("Tahoma", 0, 48));
         resultField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         resultField.setText("5");
+        resultField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                resultFieldKeyTyped(evt);
+            }
+        });
 
         showSettingsFrameButton.setText("Einstellungen");
         showSettingsFrameButton.setToolTipText("Einstellungen anzeigen");
@@ -472,6 +481,15 @@ public class mtMainFrame extends javax.swing.JFrame {
         System.exit(0);
         
     }//GEN-LAST:event_formWindowClosed
+
+    private void resultFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resultFieldKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            okButtonMouseClicked(null);
+        }
+        
+    }//GEN-LAST:event_resultFieldKeyTyped
     
     /**
      * @param args the command line arguments

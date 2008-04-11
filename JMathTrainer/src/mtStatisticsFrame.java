@@ -96,6 +96,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         saveMenuItem3 = new javax.swing.JMenuItem();
 
         setTitle("Statistiken");
+        setForeground(java.awt.Color.white);
+        setIconImages(null);
+        setName("statisticsFrame"); // NOI18N
 
         overallSolvedDescriptorLabel.setText("Gesamt:");
         overallSolvedDescriptorLabel.setToolTipText("Gesamt gelöste Aufgaben");
