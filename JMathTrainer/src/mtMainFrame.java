@@ -43,7 +43,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     private int[][] plusSolvingValues = new int[maxRow][maxRow];
     private int[][] minusSolvingValues = new int[maxRow][maxRow];
     private int maxSolvesThisRun; //Number of exercises until we have to reset the solved array
-    private int solvesThisRun = 0; //Number of exercises already solved this run
+    private int solvesThisRun = 1; //Number of exercises already solved this run
     private mtOperator op = null;  //Buffers randomly generated operator
     private int firstFactor;
     private int secondFactor;
@@ -71,7 +71,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         int operators = settingsFrame.getOperators().size();
         
         //Calculate max solves this run
-        maxSolvesThisRun = 3 * vectorElements * vectorElements; //3: Number of operators
+        maxSolvesThisRun = vectorElements * vectorElements; //3: Number of operators
         
         //Get random operator
         int operatorIndex = rand.nextInt(operators);
@@ -92,41 +92,28 @@ public class mtMainFrame extends javax.swing.JFrame {
         
         //Update GUI and calculate correct result depending on the selected operator
         //and set the reference to the appropriate 
-        switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
-            {
-            case MULT:
-                {
-                    correctResult = firstFactor * secondFactor;
-                    operatorLabel.setText("<html>&#9679");
-                    resultsTable = statisticsFrame.multResultsTable;
-                    break;
-                }
-            case PLUS:
-                {
-                    correctResult = firstFactor + secondFactor;
-                    operatorLabel.setText("+");
-                    break;
-                }
-            case MINUS:
-                {
-                    correctResult = firstFactor - secondFactor;
-                    operatorLabel.setText("-");
-                    break;
-                }
-            default: break;
-            }
-        
-        
-        //Mark exercise as solved
-        solved[firstFactor-1][secondFactor-1] = true;
+        updateOperatorDependencies();
         
         //Increment solvesThisRun and reset array if greater than maxSolvesThisRun
         solvesThisRun++;
-        if(solvesThisRun == maxSolvesThisRun)
+        if(solvesThisRun >= maxSolvesThisRun)
             {
-                solvesThisRun = 0; //Reset Counter
-                solved = new boolean[maxRow][maxRow]; //Reset array
-                setSolvingValues(new int[maxRow][maxRow]); //Reset solving values
+                solvesThisRun = 1; //Reset Counter
+                //Reset arrays
+                multSolved = new boolean[maxRow][maxRow];
+                plusSolved = new boolean[maxRow][maxRow];
+                minusSolved = new boolean[maxRow][maxRow];
+                
+                multSolvingValues = new int[maxRow][maxRow];
+                plusSolvingValues = new int[maxRow][maxRow];
+                minusSolvingValues = new int[maxRow][maxRow];
+                
+                multTime = new double[maxRow][maxRow];
+                plusTime = new double[maxRow][maxRow];
+                minusTime = new double[maxRow][maxRow];
+                
+                generateNewExercise();
+                return;
             }
         
         //Update timer
@@ -336,6 +323,9 @@ public class mtMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+        //Mark exercise as solved
+        solved[firstFactor-1][secondFactor-1] = true;
+        
         //Check if the user has solved the exercise correctly (catching when typed letters instead of numbers)
         int result = 0;
         try{result = Integer.parseInt(resultField.getText());}
@@ -392,18 +382,18 @@ public class mtMainFrame extends javax.swing.JFrame {
                 //Update cell color and value
                 if(!solved[i][j])
                     {
-                        resultsTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div>",i+1,j+1);
+                        resultsTable.setValueAt("<html><div bgcolor=darkgray align=center>&#160;&#160;&#160;</div>", i, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=darkgray align=center>&#160;&#160;&#160;</div>",i,j+1);
                     }
                 else if(getSolvingValues()[i][j] == (i+1)*(j+1))
                     {
-                        resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + twoPlacesFormat.format(timesFloatTable[i][j]) + "&#160;</div>", i+1, j+1);
+                        resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "</div>", i, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + twoPlacesFormat.format(timesFloatTable[i][j]) + "</div>", i, j+1);
                     }
                 else
                     {
-                        resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + twoPlacesFormat.format(timesFloatTable[i][j]) + "&#160;</div>", i+1, j+1);
+                        resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "</div>", i, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + twoPlacesFormat.format(timesFloatTable[i][j]) + "</div>", i, j+1);
                     }
             }
         }       

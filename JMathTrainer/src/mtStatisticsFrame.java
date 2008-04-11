@@ -1,7 +1,5 @@
 
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /*
@@ -76,15 +74,6 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         multTableLable = new javax.swing.JLabel();
         plusTableLable = new javax.swing.JLabel();
         minusTableLable = new javax.swing.JLabel();
-        menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        saveMenuItem = new javax.swing.JMenuItem();
-        menuBar1 = new javax.swing.JMenuBar();
-        fileMenu1 = new javax.swing.JMenu();
-        saveMenuItem1 = new javax.swing.JMenuItem();
-        menuBar2 = new javax.swing.JMenuBar();
-        fileMenu2 = new javax.swing.JMenu();
-        saveMenuItem2 = new javax.swing.JMenuItem();
         multTimeScrollPane = new javax.swing.JScrollPane();
         multTimeTable = new javax.swing.JTable(11,10);
         minusTimeScrollPane = new javax.swing.JScrollPane();
@@ -92,9 +81,6 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         plusTimeScrollPane = new javax.swing.JScrollPane();
         plusTimeTable = new javax.swing.JTable(11,10);
         clockSymbolLabel = new javax.swing.JLabel();
-        menuBar3 = new javax.swing.JMenuBar();
-        fileMenu3 = new javax.swing.JMenu();
-        saveMenuItem3 = new javax.swing.JMenuItem();
 
         setTitle("Statistiken");
         setForeground(java.awt.Color.white);
@@ -195,42 +181,6 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         minusTableLable.setFont(new java.awt.Font("Tahoma", 1, 24));
         minusTableLable.setText("-");
 
-        fileMenu.setText("Datei");
-
-        saveMenuItem.setText("Speichern");
-        saveMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                saveMenuItemMouseClicked(evt);
-            }
-        });
-        fileMenu.add(saveMenuItem);
-
-        menuBar.add(fileMenu);
-
-        fileMenu1.setText("Datei");
-
-        saveMenuItem1.setText("Speichern");
-        saveMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                saveMenuItemMouseClicked(evt);
-            }
-        });
-        fileMenu1.add(saveMenuItem1);
-
-        menuBar1.add(fileMenu1);
-
-        fileMenu2.setText("Datei");
-
-        saveMenuItem2.setText("Speichern");
-        saveMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                saveMenuItemMouseClicked(evt);
-            }
-        });
-        fileMenu2.add(saveMenuItem2);
-
-        menuBar2.add(fileMenu2);
-
         multTimeTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         multTimeTable.setFont(new java.awt.Font("Tahoma", 1, 12));
         multTimeTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -297,20 +247,6 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         clockSymbolLabel.setFont(new java.awt.Font("Tahoma", 0, 48));
         clockSymbolLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/clock-pictogram.png"))); // NOI18N
 
-        fileMenu3.setText("Datei");
-
-        saveMenuItem3.setText("Speichern");
-        saveMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                saveMenuItemMouseClicked(evt);
-            }
-        });
-        fileMenu3.add(saveMenuItem3);
-
-        menuBar3.add(fileMenu3);
-
-        setJMenuBar(menuBar3);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -330,41 +266,44 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                                 .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(overallSolvedDescriptorLabel)
-                                    .addComponent(correctSolvedDescriptorLabel)
-                                    .addComponent(falseSolvedDescriptorLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(overallSolvedLabel)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(multTableLable)
-                                                    .addComponent(rightSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(nameDescriptorLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                        .addGap(81, 81, 81))
+                                            .addComponent(overallSolvedDescriptorLabel)
+                                            .addComponent(correctSolvedDescriptorLabel)
+                                            .addComponent(falseSolvedDescriptorLabel))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(overallSolvedLabel)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addComponent(rightSolvedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(nameDescriptorLabel)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(81, 81, 81))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(falseSolvedLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)))
+                                        .addGap(134, 134, 134))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(falseSolvedLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)))
-                                .addGap(34, 34, 34)
+                                        .addGap(118, 118, 118)
+                                        .addComponent(multTableLable)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addComponent(clockSymbolLabel)
-                                .addGap(341, 341, 341))))
+                                .addGap(241, 241, 241))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(plusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(plusTimeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(minusTableLable))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(120, 120, 120)
-                        .addComponent(plusTableLable)))
+                        .addComponent(plusTableLable))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(minusTableLable)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -392,8 +331,8 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                                     .addComponent(falseSolvedDescriptorLabel)
                                     .addComponent(falseSolvedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(6, 6, 6)))
-                        .addGap(48, 48, 48))
-                    .addComponent(multTableLable)
+                        .addGap(19, 19, 19)
+                        .addComponent(multTableLable))
                     .addComponent(clockSymbolLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -403,9 +342,9 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
                         .addComponent(minusTimeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(multScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(1, 1, 1)
                         .addComponent(minusTableLable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(minusScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10)
                 .addComponent(plusTableLable)
@@ -418,59 +357,13 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void saveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveMenuItemMouseClicked
-        // TODO add your handling code here:
-        //Show save dialog
-        int returnVal = saveFileDialog.showSaveDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            //Initalize save file output stream
-            BufferedWriter fout = null;
-            try
-                {fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFileDialog.getSelectedFile())));}
-            catch (FileNotFoundException ex)
-                {Logger.getLogger(mtStatisticsFrame.class.getName()).log(Level.SEVERE, null, ex);}
-            
-            //Write data to file 
-            try
-                {
-                    fout.write("Name:" + nameLabel.getText()); //Write name
-                    fout.write("Gesamt gelöst:" + overallSolvedLabel.getText());
-                    fout.write("Richtig gelöst:" + rightSolvedLabel.getText());
-                    fout.write("Falsch gelöst:" + falseSolvedLabel.getText());
-                    //Write table
-                    for(int i = 0; i < 9; i++)
-                    {
-                        for(int j = 0; j < 9; j++)
-                        {
-                            //First set background color of the appropriate cell
-                            if(!parentFrame.getSolved()[i][j]) {fout.write("<html><div bgcolor=dimgray align=center>&#160;&#160;&#160;</div><br/>", i+1, j+1);}
-                            else if(parentFrame.getSolvingValues()[i][j] == (i+1)*(j+1)) {fout.write("<html><div bgcolor=green align=center>&#160;" + Integer.toString(parentFrame.getSolvingValues()[i][j]) + "&#160;</div><br/>", i+1, j+1);}
-                            else {fout.write("<html><div bgcolor=red align=center>&#160;" + Integer.toString(parentFrame.getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);}
-                        }
-                    }
-                }
-            catch (IOException ex)
-                {Logger.getLogger(mtStatisticsFrame.class.getName()).log(Level.SEVERE, null, ex);}
-        }
-        
-    }//GEN-LAST:event_saveMenuItemMouseClicked
-
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel clockSymbolLabel;
     private javax.swing.JLabel correctSolvedDescriptorLabel;
     private javax.swing.JLabel falseSolvedDescriptorLabel;
     private javax.swing.JLabel falseSolvedLabel;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu fileMenu1;
-    private javax.swing.JMenu fileMenu2;
-    private javax.swing.JMenu fileMenu3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuBar menuBar1;
-    private javax.swing.JMenuBar menuBar2;
-    private javax.swing.JMenuBar menuBar3;
     public javax.swing.JTable minusResultsTable;
     private javax.swing.JScrollPane minusScrollPane;
     private javax.swing.JLabel minusTableLable;
@@ -491,10 +384,6 @@ public class mtStatisticsFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane plusTimeScrollPane;
     public javax.swing.JTable plusTimeTable;
     private javax.swing.JLabel rightSolvedLabel;
-    private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JMenuItem saveMenuItem1;
-    private javax.swing.JMenuItem saveMenuItem2;
-    private javax.swing.JMenuItem saveMenuItem3;
     // End of variables declaration//GEN-END:variables
 
     public void setParentFrame(mtMainFrame parentFrame) {
