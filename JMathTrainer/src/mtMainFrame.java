@@ -198,7 +198,8 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         operatorLabel.setFont(new java.awt.Font("Tahoma", 0, 24));
         operatorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        operatorLabel.setText("<html>&#9679");
+        operatorLabel.setText("<html>&#9679;");
+        operatorLabel.setMaximumSize(new java.awt.Dimension(15, 29));
 
         isLabel.setFont(new java.awt.Font("Tahoma", 0, 48));
         isLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -252,7 +253,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                                 .addGap(4, 4, 4)
                                 .addComponent(firstFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(operatorLabel)
+                                .addComponent(operatorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(secondFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -292,7 +293,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                         .addComponent(secondFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(firstFactorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addComponent(operatorLabel)
+                        .addComponent(operatorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
@@ -397,12 +398,12 @@ public class mtMainFrame extends javax.swing.JFrame {
                 else if(getSolvingValues()[i][j] == (i+1)*(j+1))
                     {
                         resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + timesFloatTable[i][j] + "&#160;</div>", i+1, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + twoPlacesFormat.format(timesFloatTable[i][j]) + "&#160;</div>", i+1, j+1);
                     }
                 else
                     {
                         resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + timesFloatTable[i][j] + "&#160;</div>", i+1, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + twoPlacesFormat.format(timesFloatTable[i][j]) + "&#160;</div>", i+1, j+1);
                     }
             }
         }       
@@ -414,7 +415,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_showSettingsFrameButtonMouseClicked
 
     private void nameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameFieldFocusLost
-        // TODO add your handling code here:
+        // TODO add your handling code here:    
         //Reset statistics counters 
         overallSolved = 0;
         rightSolved = 0;
@@ -516,7 +517,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             case MULT:
                 {
                     correctResult = firstFactor * secondFactor;
-                    operatorLabel.setText("<html>&#9679");
+                    operatorLabel.setText("<html>&#9679;");
                     resultsTable = statisticsFrame.multResultsTable;
                     solved = multSolved;
                     timesFloatTable = multTime;
@@ -526,19 +527,21 @@ public class mtMainFrame extends javax.swing.JFrame {
             case PLUS:
                 {
                     correctResult = firstFactor + secondFactor;
-                    operatorLabel.setText("+");
+                    operatorLabel.setText("<html>&#43;");
                     resultsTable = statisticsFrame.plusResultsTable;
                     solved = plusSolved;
                     timesFloatTable = plusTime;
+                    timeTable = statisticsFrame.plusTimeTable;
                     break;
                 }
             case MINUS:
                 {
                     correctResult = firstFactor - secondFactor;
-                    operatorLabel.setText("-");
+                    operatorLabel.setText("<html>&#45;");
                     resultsTable = statisticsFrame.minusResultsTable;
                     solved = minusSolved;
                     timesFloatTable = minusTime;
+                    timeTable = statisticsFrame.minusTimeTable;
                     break;
                 }
             default: break;

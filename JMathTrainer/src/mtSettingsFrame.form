@@ -203,7 +203,7 @@
           <Font name="Tahoma" size="18" style="1"/>
         </Property>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="X"/>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&amp;#9679;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="plusCheckBox">
