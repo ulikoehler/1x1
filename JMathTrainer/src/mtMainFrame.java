@@ -53,6 +53,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     private boolean[][] solved = null;
     private JTable resultsTable = null; //Forward declaration
     private double[][] timesFloatTable = null;
+    JTable timeTable = null;
     //Statistics counters
     private int overallSolved; //Overall solved exercises for this name
     private int rightSolved; //Exercises the name has anwered correctly
@@ -75,27 +76,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         //Get random operator
         int operatorIndex = rand.nextInt(operators);
         op = settingsFrame.getOperators().elementAt(operatorIndex);
-        
-        //Set reference to the appropriate 2-dimensional solved array (depending on operator
-        switch(op)
-        {
-            case MULT:
-                {
-                    solved = multSolved;
-                    break;
-                }
-            case PLUS:
-                {
-                    solved = plusSolved;
-                    break;
-                }
-            case MINUS:
-                {
-                    solved = minusSolved;
-                    break;
-                }
-            default: break;
-        }
+        updateOperatorDependencies();
         
         //Generate random numbers and check if this exercise has already been solved
         while(true)
@@ -181,7 +162,6 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JMathTrainer");
-        setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("mainFrame"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -367,6 +347,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             resultField.selectAll();
             return;
         }
+        //Set the right correctnessLabel text in the right colour
         if (result == correctResult)
         {
             correctnessLabel.setForeground(Color.GREEN);
@@ -388,57 +369,19 @@ public class mtMainFrame extends javax.swing.JFrame {
         statisticsFrame.setRightSolved(rightSolved);
         statisticsFrame.setFalseSolved(falseSolved);
         
-        //Set reference to the appropriate resultsTable in statisticsFrame (depending on the operator)
-        //and set the appropriate solved array reference; set appropriate solving and time array reference
-        JTable timeTable = null;
-        JTable resultsTable = null; //Forward declaration
-        switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
-            {
-            case MULT:
-                {
-                    correctResult = firstFactor * secondFactor;
-                    operatorLabel.setText("<html>&#9679");
-                    resultsTable = statisticsFrame.multResultsTable;
-                    solved = multSolved;
-                    timesFloatTable = multTime;
-                    timeTable = statisticsFrame.multTimeTable;
-                    break;
-                }
-            case PLUS:
-                {
-                    correctResult = firstFactor + secondFactor;
-                    operatorLabel.setText("+");
-                    resultsTable = statisticsFrame.plusResultsTable;
-                    solved = plusSolved;
-                    timesFloatTable = plusTime;
-                    break;
-                }
-            case MINUS:
-                {
-                    correctResult = firstFactor - secondFactor;
-                    operatorLabel.setText("-");
-                    resultsTable = statisticsFrame.minusResultsTable;
-                    solved = minusSolved;
-                    timesFloatTable = minusTime;
-                    break;
-                }
-            default: break;
-            }
         
         //Calculate time it took to solve the exercise and write into appropriate table
         long timeNow = System.currentTimeMillis();
         double solvingTime = (timeNow - exerciseStartTime)*0.001;
         timesFloatTable[firstFactor-1][secondFactor-1] = solvingTime;
-        String solvingTimeString = twoPlacesFormat.format(solvingTime);
-        timeLabel.setText(solvingTimeString + "s"); //Update time label
+        timeLabel.setText(twoPlacesFormat.format(solvingTime) + " s"); //Update time label
         
-        
-        
+        if(settingsFrame.getOptions()[1]) {updateStatisticsTable();}
         
         generateNewExercise();
     }//GEN-LAST:event_okButtonMouseClicked
 
-   private void updateStatisticsTable(String solvingTimeString)
+   private void updateStatisticsTable()
    {
         //Update appropriate statistics table if liveUpdate is on.
         for(int i = 0; i < 9; i++)
@@ -454,15 +397,13 @@ public class mtMainFrame extends javax.swing.JFrame {
                 else if(getSolvingValues()[i][j] == (i+1)*(j+1))
                     {
                         resultsTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + solvingTimeString + "&#160;</div>", i+1, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=green align=center>&#160;" + timesFloatTable[i][j] + "&#160;</div>", i+1, j+1);
                     }
                 else
                     {
                         resultsTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + Integer.toString(getSolvingValues()[i][j]) + "&#160;</div>", i+1, j+1);
-                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + solvingTimeString + "&#160;</div>", i+1, j+1);
+                        timeTable.setValueAt("<html><div bgcolor=red align=center>&#160;" + timesFloatTable[i][j] + "&#160;</div>", i+1, j+1);
                     }
-                //Update time table
-                
             }
         }       
    }
@@ -484,6 +425,7 @@ public class mtMainFrame extends javax.swing.JFrame {
 
     private void showStatisticsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showStatisticsButtonMouseClicked
         // TODO add your handling code here:
+        updateStatisticsTable();
         statisticsFrame.setVisible(true);
     }//GEN-LAST:event_showStatisticsButtonMouseClicked
 
@@ -562,5 +504,44 @@ public class mtMainFrame extends javax.swing.JFrame {
                 {minusSolvingValues = input;break;}
             default: break;
         }
+    }
+    
+    private void updateOperatorDependencies()
+    {
+        
+        //Set reference to the appropriate resultsTable in statisticsFrame (depending on the operator)
+        //and set the appropriate solved array reference; set appropriate solving and time array reference
+        switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
+            {
+            case MULT:
+                {
+                    correctResult = firstFactor * secondFactor;
+                    operatorLabel.setText("<html>&#9679");
+                    resultsTable = statisticsFrame.multResultsTable;
+                    solved = multSolved;
+                    timesFloatTable = multTime;
+                    timeTable = statisticsFrame.multTimeTable;
+                    break;
+                }
+            case PLUS:
+                {
+                    correctResult = firstFactor + secondFactor;
+                    operatorLabel.setText("+");
+                    resultsTable = statisticsFrame.plusResultsTable;
+                    solved = plusSolved;
+                    timesFloatTable = plusTime;
+                    break;
+                }
+            case MINUS:
+                {
+                    correctResult = firstFactor - secondFactor;
+                    operatorLabel.setText("-");
+                    resultsTable = statisticsFrame.minusResultsTable;
+                    solved = minusSolved;
+                    timesFloatTable = minusTime;
+                    break;
+                }
+            default: break;
+            }
     }
 }
