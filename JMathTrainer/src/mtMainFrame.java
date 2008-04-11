@@ -32,7 +32,6 @@ public class mtMainFrame extends javax.swing.JFrame {
     private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
     private mtStatisticsFrame statisticsFrame = new mtStatisticsFrame(this);
-    private mtSettingsInterface settings;
     private int correctResult;
     private boolean[][] multSolved = new boolean[maxRow][maxRow];
     private boolean[][] plusSolved = new boolean[maxRow][maxRow];
@@ -49,6 +48,11 @@ public class mtMainFrame extends javax.swing.JFrame {
     private int firstFactor;
     private int secondFactor;
     private long exerciseStartTime; //The first time in ms the user sees the exercise
+    ////
+    //References
+    private boolean[][] solved = null;
+    private JTable resultsTable = null; //Forward declaration
+    private double[][] timesFloatTable = null;
     //Statistics counters
     private int overallSolved; //Overall solved exercises for this name
     private int rightSolved; //Exercises the name has anwered correctly
@@ -73,7 +77,6 @@ public class mtMainFrame extends javax.swing.JFrame {
         op = settingsFrame.getOperators().elementAt(operatorIndex);
         
         //Set reference to the appropriate 2-dimensional solved array (depending on operator
-        boolean[][] solved = null;
         switch(op)
         {
             case MULT:
@@ -108,7 +111,6 @@ public class mtMainFrame extends javax.swing.JFrame {
         
         //Update GUI and calculate correct result depending on the selected operator
         //and set the reference to the appropriate 
-        JTable resultsTable = null; //Forward declaration
         switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
             {
             case MULT:
@@ -296,7 +298,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                                                 .addComponent(nameLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
-                .addContainerGap(374, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,7 +342,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,8 +390,6 @@ public class mtMainFrame extends javax.swing.JFrame {
         
         //Set reference to the appropriate resultsTable in statisticsFrame (depending on the operator)
         //and set the appropriate solved array reference; set appropriate solving and time array reference
-        boolean[][] solved = null;
-        double[][] timesFloatTable = null;
         JTable timeTable = null;
         JTable resultsTable = null; //Forward declaration
         switch(op) //Add 1 to avoid ArrayIndeyOutOfBounds exception
@@ -432,6 +432,14 @@ public class mtMainFrame extends javax.swing.JFrame {
         String solvingTimeString = twoPlacesFormat.format(solvingTime);
         timeLabel.setText(solvingTimeString + "s"); //Update time label
         
+        
+        
+        
+        generateNewExercise();
+    }//GEN-LAST:event_okButtonMouseClicked
+
+   private void updateStatisticsTable(String solvingTimeString)
+   {
         //Update appropriate statistics table if liveUpdate is on.
         for(int i = 0; i < 9; i++)
         {
@@ -456,14 +464,8 @@ public class mtMainFrame extends javax.swing.JFrame {
                 //Update time table
                 
             }
-        }
-        
-        
-        
-        generateNewExercise();
-    }//GEN-LAST:event_okButtonMouseClicked
-
-   
+        }       
+   }
     
     private void showSettingsFrameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showSettingsFrameButtonMouseClicked
         // TODO add your handling code here:
