@@ -55,12 +55,12 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="multScrollPane" min="-2" pref="251" max="-2" attributes="1"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="multTimeScrollPane" pref="342" max="32767" attributes="1"/>
+                              <Component id="multTimeScrollPane" pref="503" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="minusScrollPane" min="-2" pref="251" max="-2" attributes="1"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="minusTimeScrollPane" pref="342" max="32767" attributes="1"/>
+                              <Component id="minusTimeScrollPane" pref="503" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -101,7 +101,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="plusScrollPane" min="-2" pref="251" max="-2" attributes="1"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="plusTimeScrollPane" pref="342" max="32767" attributes="1"/>
+                      <Component id="plusTimeScrollPane" pref="503" max="32767" attributes="1"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>

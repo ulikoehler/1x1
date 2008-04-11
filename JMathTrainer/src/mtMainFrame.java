@@ -26,7 +26,7 @@ public class mtMainFrame extends javax.swing.JFrame {
     ///Custom code
     //Constants
     static final int maxRow = 10;
-    //private final DecimalFormat twoPlaces = new DecimalFormat("#0.##");
+    private final DecimalFormat twoPlacesFormat = new DecimalFormat("#0.##");
     //Global variables
     private Random rand = new Random();
     private mtSettingsFrame settingsFrame = new mtSettingsFrame();
@@ -149,6 +149,10 @@ public class mtMainFrame extends javax.swing.JFrame {
         
         //Update timer
         exerciseStartTime = System.currentTimeMillis();
+        
+        //Mark text on the result field and focus it
+        resultField.requestFocus();
+        resultField.selectAll();
     }
     
     /** This method is called from within the constructor to
@@ -406,9 +410,10 @@ public class mtMainFrame extends javax.swing.JFrame {
             }
         
         //Calculate time it took to solve the exercise and write into appropriate table
-        double solvingTime = (System.currentTimeMillis() - exerciseStartTime)/1000;
+        long timeNow = System.currentTimeMillis();
+        double solvingTime = (timeNow - exerciseStartTime)*0.001;
         timesFloatTable[firstFactor-1][secondFactor-1] = solvingTime;
-        String solvingTimeString = Double.toString(solvingTime);//twoPlaces.format(solvingTime);
+        String solvingTimeString = twoPlacesFormat.format(solvingTime);
         timeLabel.setText(solvingTimeString + "s"); //Update time label
         
         //Update appropriate statistics table
