@@ -57,22 +57,20 @@ public class mtMainFrame extends javax.swing.JFrame {
     
     private void generateNewExercise()
     {
-        //Get up-to-date version of settings intercae
-        settings = settingsFrame.getSettingsInterface();
         
         //Check if exercises should be questioned more than once per run
-        boolean askOnce = settings.options[0];
+        boolean askOnce = settingsFrame.getOptions()[0];
         
         //Predeclare variables and initialize vector size variables
-        int vectorElements = settings.rows.size();
-        int operators = settings.operators.size();
+        int vectorElements = settingsFrame.getRows().size();
+        int operators = settingsFrame.getOperators().size();
         
         //Calculate max solves this run
         maxSolvesThisRun = 3 * vectorElements * vectorElements; //3: Number of operators
         
         //Get random operator
         int operatorIndex = rand.nextInt(operators);
-        op = settings.operators.elementAt(operatorIndex);
+        op = settingsFrame.getOperators().elementAt(operatorIndex);
         
         //Set reference to the appropriate 2-dimensional solved array (depending on operator
         boolean[][] solved = null;
@@ -99,8 +97,8 @@ public class mtMainFrame extends javax.swing.JFrame {
         //Generate random numbers and check if this exercise has already been solved
         while(true)
             {
-            firstFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
-            secondFactor = settings.rows.elementAt(rand.nextInt(vectorElements));
+            firstFactor = settingsFrame.getRows().elementAt(rand.nextInt(vectorElements));
+            secondFactor = settingsFrame.getRows().elementAt(rand.nextInt(vectorElements));
             if(!(solved[firstFactor-1][secondFactor-1]) || !(askOnce)) {break;}
             }
         
@@ -434,7 +432,7 @@ public class mtMainFrame extends javax.swing.JFrame {
         String solvingTimeString = twoPlacesFormat.format(solvingTime);
         timeLabel.setText(solvingTimeString + "s"); //Update time label
         
-        //Update appropriate statistics table
+        //Update appropriate statistics table if liveUpdate is on.
         for(int i = 0; i < 9; i++)
         {
             for(int j = 0; j < 9; j++)
@@ -465,6 +463,8 @@ public class mtMainFrame extends javax.swing.JFrame {
         generateNewExercise();
     }//GEN-LAST:event_okButtonMouseClicked
 
+   
+    
     private void showSettingsFrameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showSettingsFrameButtonMouseClicked
         // TODO add your handling code here:
         settingsFrame.setVisible(true);

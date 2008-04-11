@@ -5,6 +5,7 @@
  *
  * Created on 4. April 2008, 17:14
  */
+import java.util.Vector;
 
 
 
@@ -15,11 +16,34 @@
 public class mtSettingsFrame extends javax.swing.JFrame {
     
     //Variables
-    private mtSettingsInterface settingsInterface = new mtSettingsInterface();
+    private Vector<Integer> rows = new Vector<Integer>();
+    private Vector<mtOperator> operators = new Vector<mtOperator>();
+    private boolean[] options = new boolean[2];
+
     
     /** Creates new form mtSettingsFrame */
     public mtSettingsFrame() {
         initComponents();
+        
+        ///Set default options to avoid Nullpointer exceptions
+        //Init options array
+        options[0] = true; //Unique exercises
+        options[1] = false; //Live update
+        
+        //Init rows vector
+        rows.add(1);
+        rows.add(2);
+        rows.add(3);
+        rows.add(4);
+        rows.add(5);
+        rows.add(6);
+        rows.add(7);
+        rows.add(8);
+        rows.add(9);
+        rows.add(10);
+        
+        //Init operators vector
+        operators.add(mtOperator.MULT);
     }
     
     
@@ -48,6 +72,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         multCheckBox = new javax.swing.JCheckBox();
         plusCheckBox = new javax.swing.JCheckBox();
         minusCheckBox = new javax.swing.JCheckBox();
+        liveUpdateToggleButton = new javax.swing.JToggleButton();
 
         setTitle("Einstellungen");
 
@@ -108,6 +133,8 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         minusCheckBox.setFont(new java.awt.Font("Tahoma", 1, 18));
         minusCheckBox.setText("-");
 
+        liveUpdateToggleButton.setText("Live Update");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,15 +154,15 @@ public class mtSettingsFrame extends javax.swing.JFrame {
                     .addComponent(twoToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(oneToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(optionsLabel)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(askOnceToggleButton, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(multCheckBox)
-                            .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(plusCheckBox)
-                            .addComponent(minusCheckBox))))
+                    .addComponent(askOnceToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(minusCheckBox)
+                        .addComponent(plusCheckBox)
+                        .addComponent(multCheckBox))
+                    .addComponent(liveUpdateToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(127, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -168,11 +195,13 @@ public class mtSettingsFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nineToggleButton))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(liveUpdateToggleButton)
                         .addGap(18, 18, 18)
                         .addComponent(multCheckBox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(plusCheckBox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(minusCheckBox)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -189,30 +218,33 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         //Get list of options
         
         //Reset variables
-        settingsInterface.options[0] = false;
-        settingsInterface.rows.removeAllElements();
-        settingsInterface.operators.removeAllElements();
+        options[0] = false;
+        rows.removeAllElements();
+        operators.removeAllElements();
         
         //Get list of options
         if(askOnceToggleButton.isSelected())
-            {settingsInterface.options[0] = true;}
+            {options[0] = true;}
         
         //Get vector of selected rows
-        if(oneToggleButton.isSelected()) {settingsInterface.rows.add(1);}
-        if(twoToggleButton.isSelected()) {settingsInterface.rows.add(2);}
-        if(threeToggleButton.isSelected()) {settingsInterface.rows.add(3);}
-        if(fourToggleButton.isSelected()) {settingsInterface.rows.add(4);}
-        if(fiveToggleButton.isSelected()) {settingsInterface.rows.add(5);}
-        if(sixToggleButton.isSelected()) {settingsInterface.rows.add(6);}
-        if(sevenToggleButton.isSelected()) {settingsInterface.rows.add(7);}
-        if(eightToggleButton.isSelected()) {settingsInterface.rows.add(8);}
-        if(nineToggleButton.isSelected()) {settingsInterface.rows.add(9);}
-        if(tenToggleButton.isSelected()) {settingsInterface.rows.add(10);}
+        if(oneToggleButton.isSelected()) {rows.add(1);}
+        if(twoToggleButton.isSelected()) {rows.add(2);}
+        if(threeToggleButton.isSelected()) {rows.add(3);}
+        if(fourToggleButton.isSelected()) {rows.add(4);}
+        if(fiveToggleButton.isSelected()) {rows.add(5);}
+        if(sixToggleButton.isSelected()) {rows.add(6);}
+        if(sevenToggleButton.isSelected()) {rows.add(7);}
+        if(eightToggleButton.isSelected()) {rows.add(8);}
+        if(nineToggleButton.isSelected()) {rows.add(9);}
+        if(tenToggleButton.isSelected()) {rows.add(10);}
         
         //Get vector of selected operators
-        if(multCheckBox.isSelected()) {settingsInterface.operators.add(mtOperator.MULT);}
-        if(plusCheckBox.isSelected()) {settingsInterface.operators.add(mtOperator.PLUS);}
-        if(minusCheckBox.isSelected()) {settingsInterface.operators.add(mtOperator.MINUS);}
+        if(multCheckBox.isSelected()) {operators.add(mtOperator.MULT);}
+        if(plusCheckBox.isSelected()) {operators.add(mtOperator.PLUS);}
+        if(minusCheckBox.isSelected()) {operators.add(mtOperator.MINUS);}
+        
+        //Check if live update is enabled
+        options[1] = liveUpdateToggleButton.isSelected();
         
         //Hide settings window
         this.setVisible(false);
@@ -235,6 +267,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton eightToggleButton;
     private javax.swing.JToggleButton fiveToggleButton;
     private javax.swing.JToggleButton fourToggleButton;
+    private javax.swing.JToggleButton liveUpdateToggleButton;
     private javax.swing.JCheckBox minusCheckBox;
     private javax.swing.JCheckBox multCheckBox;
     private javax.swing.JToggleButton nineToggleButton;
@@ -250,8 +283,22 @@ public class mtSettingsFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton twoToggleButton;
     // End of variables declaration//GEN-END:variables
 
-    public mtSettingsInterface getSettingsInterface() {
-        return settingsInterface;
+    
+    private boolean getLiveUpdateEnabled()
+    {
+        return getOptions()[1];
+    }
+
+    public Vector<Integer> getRows() {
+        return rows;
+    }
+
+    public Vector<mtOperator> getOperators() {
+        return operators;
+    }
+
+    public boolean[] getOptions() {
+        return options;
     }
     
 }
