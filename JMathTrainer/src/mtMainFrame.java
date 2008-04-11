@@ -226,7 +226,6 @@ public class mtMainFrame extends javax.swing.JFrame {
 
         resultField.setFont(new java.awt.Font("Tahoma", 0, 48));
         resultField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        resultField.setText("5");
         resultField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 resultFieldKeyTyped(evt);
@@ -299,7 +298,7 @@ public class mtMainFrame extends javax.swing.JFrame {
                                                 .addComponent(nameLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,7 +342,7 @@ public class mtMainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,8 +355,18 @@ public class mtMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        //Check if the user has solved the exercise correctly
-        int result = Integer.parseInt(resultField.getText());
+        //Check if the user has solved the exercise correctly (catching when typed letters instead of numbers)
+        int result = 0;
+        try{result = Integer.parseInt(resultField.getText());}
+        catch(NumberFormatException e)
+        {
+            //Set correctnessLabel to error message and select text in it to allow the user to correct it rapidly
+            correctnessLabel.setForeground(Color.RED);
+            correctnessLabel.setText("Eingabe!");
+            resultField.requestFocus();
+            resultField.selectAll();
+            return;
+        }
         if (result == correctResult)
         {
             correctnessLabel.setForeground(Color.GREEN);

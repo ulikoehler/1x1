@@ -99,6 +99,7 @@ public class mtSettingsFrame extends javax.swing.JFrame {
         });
 
         multCheckBox.setFont(new java.awt.Font("Tahoma", 1, 18));
+        multCheckBox.setSelected(true);
         multCheckBox.setText("X");
 
         plusCheckBox.setFont(new java.awt.Font("Tahoma", 1, 18));
