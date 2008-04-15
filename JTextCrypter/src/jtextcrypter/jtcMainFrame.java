@@ -4,15 +4,17 @@
  * Created on 14. April 2008, 17:11
  */
 
+//This is using the public domain base64 encoder/decoder from http://iharder.sourceforge.net/current/java/base64/
+
 package jtextcrypter;
 
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
+import Base64;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.*;
+import javax.crypto.spec.*;
 
 /**
  *
@@ -24,6 +26,9 @@ public class jtcMainFrame extends javax.swing.JFrame {
     public jtcMainFrame() {
         initComponents();
     }
+    
+    //Variablen
+    Random random = new Random();
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -42,8 +47,6 @@ public class jtcMainFrame extends javax.swing.JFrame {
         outputField = new javax.swing.JTextArea();
         passwordLabel = new javax.swing.JLabel();
         decryptCheckbox = new javax.swing.JCheckBox();
-        cipherBox = new javax.swing.JComboBox();
-        modeBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JTextCrypter");
@@ -77,38 +80,29 @@ public class jtcMainFrame extends javax.swing.JFrame {
 
         decryptCheckbox.setText("Entschlüsseln");
 
-        cipherBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AES", "Blowfish", "RC5", "3DES", "DES" }));
-
-        modeBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CFB", "OFB", "CBC", "ECB" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(passwordLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(textLabel)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(decryptCheckbox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cipherBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(modeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(118, 118, 118))
+                    .addComponent(decryptCheckbox)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addComponent(passwordLabel)
+                .addGap(4, 4, 4)
+                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,40 +111,67 @@ public class jtcMainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(decryptCheckbox)
-                            .addComponent(cipherBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(modeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(decryptCheckbox))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(textLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(okButton)
-                    .addComponent(passwordLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordLabel)
+                    .addComponent(okButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+    
+    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {                                      
         Cipher aesCipher = null;
         try
             {
+                byte[] salt = new byte[8];
+                String algorithm = "PBEWithSHAAndTwofish-CBC";
                 //Init cipher object 
-                aesCipher = Cipher.getInstance((String) cipherBox.getSelectedItem() + "/" + (String) modeBox.getSelectedItem() + "/PKCS5"); //Init cipher object//GEN-LAST:event_okButtonMouseClicked
+                aesCipher = Cipher.getInstance(algorithm); //Init cipher object
+                //Get variables
+                String input = inputField.getText();
+                int count = Integer.valueOf(iterationsField.getText());
+                
+                PBEParameterSpec paramSpec;
+                PBEKeySpec pbeKeySpec = new PBEKeySpec(passwordField.getPassword());
+                SecretKeyFactory keyFac = SecretKeyFactory.getInstance(algorithm);
+                SecretKey key = keyFac.generateSecret(pbeKeySpec);
+                
+                //Forward declaration
+                String output;
 
-                //Get Input and password
-                byte[] input = inputField.getText().getBytes();
-                Key key = new SecretKeySpec(new String(passwordField.getPassword()).getBytes(), (String)cipherBox.getSelectedItem());
                 //Init Cipher
-                if(decryptCheckbox.isSelected()) {aesCipher.init(Cipher.DECRYPT_MODE, key);}
-                else {aesCipher.init(Cipher.DECRYPT_MODE, key);}
+                if(decryptCheckbox.isSelected())
+                    {
+                        Base64 decoder = new Base64();
+                        String saltString = input.substring(0,12);
+                        decoder.decodeBuffer(saltString);
+                        String ciphertext = input.substring(12,input.length());
+                        byte[] ciphertextArray = decoder.decodeBuffer(ciphertext);
+                        aesCipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
+                        output = new String(aesCipher.doFinal(ciphertextArray));
+                    }
+                else
+                    {
+                        Base64 encoder = new Base64();
+                        random.nextBytes(salt);
+                        paramSpec = new PBEParameterSpec(salt, count);
+                        aesCipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
+                        byte[] ciphertextArray = aesCipher.doFinal(input.getBytes());
+                        String saltString = encoder.encode(salt);
+                        String ciphertextString = encoder.encode(ciphertextArray);
+                        output = saltString + ciphertextString;
+                    }
                 //Encrypt data and write to field
-                byte[] output = aesCipher.doFinal(input);
                 outputField.setText(new String(output));
             }
         catch (Exception ex) {Logger.getLogger(jtcMainFrame.class.getName()).log(Level.SEVERE, null, ex);}
@@ -169,12 +190,10 @@ public class jtcMainFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cipherBox;
     private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JEditorPane inputField;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JComboBox modeBox;
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea outputField;
     private javax.swing.JPasswordField passwordField;
