@@ -1,3 +1,5 @@
+package de.uliköhler.JMathTrainer;
+
 
 import java.awt.Color;
 import java.text.DecimalFormat;

@@ -8,13 +8,13 @@
 
 package jtextcrypter;
 
-import Base64;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.Cipher;
+import java.security.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
+import java.util.*;
 
 /**
  *
@@ -134,12 +134,12 @@ public class jtcMainFrame extends javax.swing.JFrame {
         try
             {
                 byte[] salt = new byte[8];
-                String algorithm = "PBEWithSHAAndTwofish-CBC";
+                String algorithm = "PBEWithMD5AndTwofish-CBC";
                 //Init cipher object 
                 aesCipher = Cipher.getInstance(algorithm); //Init cipher object
                 //Get variables
                 String input = inputField.getText();
-                int count = Integer.valueOf(iterationsField.getText());
+                int count = 20;
                 
                 PBEParameterSpec paramSpec;
                 PBEKeySpec pbeKeySpec = new PBEKeySpec(passwordField.getPassword());
@@ -152,23 +152,22 @@ public class jtcMainFrame extends javax.swing.JFrame {
                 //Init Cipher
                 if(decryptCheckbox.isSelected())
                     {
-                        Base64 decoder = new Base64();
                         String saltString = input.substring(0,12);
-                        decoder.decodeBuffer(saltString);
+                        salt = Base64.decode(saltString);
                         String ciphertext = input.substring(12,input.length());
-                        byte[] ciphertextArray = decoder.decodeBuffer(ciphertext);
+                        byte[] ciphertextArray = Base64.decode(ciphertext);
+                        paramSpec = new PBEParameterSpec(salt, count);
                         aesCipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
                         output = new String(aesCipher.doFinal(ciphertextArray));
                     }
                 else
                     {
-                        Base64 encoder = new Base64();
                         random.nextBytes(salt);
                         paramSpec = new PBEParameterSpec(salt, count);
                         aesCipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
                         byte[] ciphertextArray = aesCipher.doFinal(input.getBytes());
-                        String saltString = encoder.encode(salt);
-                        String ciphertextString = encoder.encode(ciphertextArray);
+                        String saltString = Base64.encodeBytes(salt);
+                        String ciphertextString = Base64.encodeBytes(ciphertextArray);
                         output = saltString + ciphertextString;
                     }
                 //Encrypt data and write to field

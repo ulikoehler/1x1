@@ -1,3 +1,5 @@
+package de.uliköhler.JMathTrainer;
+
 
 import java.io.*;
 import javax.swing.*;
