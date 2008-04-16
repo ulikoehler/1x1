@@ -130,8 +130,7 @@ public class jtcMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {                                      
-        Cipher aesCipher = null;
+    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {
         try
             {                
                 //Variables
@@ -142,15 +141,15 @@ public class jtcMainFrame extends javax.swing.JFrame {
                 if(decryptCheckbox.isSelected())
                     {
                         jfish.generateKey(new String(passwordField.getPassword()), 32);
-                        byte[] cipherText = jfish.encryptString(inputField.getText());
-                        output = Base64.encodeBytes(cipherText);
+                        byte[] decodedText = Base64.decode(inputField.getText());
+                        byte[] plainText = jfish.decryptByteArray(decodedText);
+                        output = String.valueOf(plainText);
                     }
                 else
                     {
                         jfish.generateKey(new String(passwordField.getPassword()), 32);
-                        byte[] decodedText = Base64.decode(inputField.getText());
-                        byte[] plainText = jfish.decryptString(inputField.getText());
-                        output = String.valueOf(plainText);
+                        byte[] cipherText = jfish.encryptString(inputField.getText());
+                        output = Base64.encodeBytes(cipherText);
                     }
                 //Encrypt data and write to field
                 outputField.setText(new String(output));

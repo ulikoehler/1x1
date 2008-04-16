@@ -1,7 +1,7 @@
 package com.jrijndael;
 
 import com.jrijndael.crypt.*;
-import java.security.InvalidKeyException;
+
 
 
 /**
