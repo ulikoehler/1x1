@@ -12,12 +12,10 @@
 
 //(*Headers(TextCrypterFrame)
 #include <wx/stattext.h>
-#include <wx/menu.h>
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
 #include <wx/button.h>
 #include <wx/frame.h>
-#include <wx/statusbr.h>
 //*)
 
 class TextCrypterFrame: public wxFrame
@@ -44,18 +42,14 @@ class TextCrypterFrame: public wxFrame
         static const long ID_STATICTEXT2;
         static const long ID_CHECKBOX1;
         static const long ID_BUTTON1;
-        static const long idMenuQuit;
-        static const long idMenuAbout;
-        static const long ID_STATUSBAR1;
         //*)
 
         //(*Declarations(TextCrypterFrame)
+        wxTextCtrl* outputField;
         wxStaticText* outputLabel;
         wxTextCtrl* passwordField;
         wxStaticText* passwordLabel;
-        wxStatusBar* StatusBar1;
         wxStaticText* inputLabel;
-        wxTextCtrl* TextCtrl1;
         wxCheckBox* decryptCheckbox;
         wxButton* okButton;
         wxTextCtrl* inputField;
