@@ -10,11 +10,19 @@
 #include "wx_pch.h"
 #include "TextCrypterMain.h"
 #include <wx/msgdlg.h>
+#include <tomcrypt.h>
+#include <string>
+#include <boost/lexical_cast.hpp>
+
+using namespace std;
+using namespace boost;
 
 //(*InternalHeaders(TextCrypterFrame)
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
+void encrypt();
+void decrypt();
 
 //helper functions
 enum wxbuildinfoformat {
@@ -69,7 +77,7 @@ TextCrypterFrame::TextCrypterFrame(wxWindow* parent,wxWindowID id)
     wxMenu* Menu1;
     wxMenuBar* MenuBar1;
     wxMenu* Menu2;
-    
+
     Create(parent, wxID_ANY, _("TextCrypter"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(433,450));
     inputLabel = new wxStaticText(this, ID_STATICTEXT1, _("Eingabe:"), wxPoint(16,16), wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -97,7 +105,8 @@ TextCrypterFrame::TextCrypterFrame(wxWindow* parent,wxWindowID id)
     StatusBar1->SetFieldsCount(1,__wxStatusBarWidths_1);
     StatusBar1->SetStatusStyles(1,__wxStatusBarStyles_1);
     SetStatusBar(StatusBar1);
-    
+
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TextCrypterFrame::OnOkButtonClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&TextCrypterFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&TextCrypterFrame::OnAbout);
     //*)
@@ -119,3 +128,41 @@ void TextCrypterFrame::OnAbout(wxCommandEvent& event)
     wxString msg = wxbuildinfo(long_f);
     wxMessageBox(msg, _("Welcome to..."));
 }
+
+void TextCrypterFrame::OnOkButtonClick(wxCommandEvent& event)
+{
+    if(decryptCheckbox->IsChecked()) {decrypt();}
+    else {encrypt();}
+}
+
+void TextCrypterFrame::encrypt()
+{
+    ///Get password uchar array
+    unsigned char* password;
+    string passwordString = lexical_cast<string>(passwordField->GetValue().c_str());
+    hash_state md;
+    sha256_init(&md);
+    sha256_process(&md, (const unsigned char*)passwordString.c_str(), passwordString.length());
+    sha256_done(&md, password);
+    ///Setup serpent algorithm
+    symmetric_key *skey;
+    twofish_setup(password, 256, 32, skey);
+    ///Get text and encrypt
+    unsigned char* ciphertext;
+    string plaintext = lexical_cast<string>(inputField->GetValue().c_str());
+    twofish_ecb_encrypt((const unsigned char*)plaintext.c_str(), ciphertext, skey);
+    ///Base64-encode the ciphertext
+    unsigned char* encodedCiphertext;
+    unsigned long* encodedLength;
+    base64_encode(ciphertext, plaintext.length, encodedCiphertext, encodedLength);
+    string encCTString(encodedCiphertext, *encodedLength);
+    ///"Print" encoded ciphertext to GUI
+    outputField->setText(new wxString(encCTString.c_str()));
+}
+
+
+void TextCrypterFrame::decrypt()
+{
+
+}
+

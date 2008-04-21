@@ -14,7 +14,7 @@
 			<size>352,176</size>
 			<style>wxTE_MULTILINE</style>
 		</object>
-		<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl1" member="yes">
+		<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="outputField" member="yes">
 			<value>Text</value>
 			<pos>72,256</pos>
 			<size>352,176</size>
@@ -42,6 +42,7 @@
 			<label>OK</label>
 			<pos>72,224</pos>
 			<size>352,23</size>
+			<handler function="OnOkButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

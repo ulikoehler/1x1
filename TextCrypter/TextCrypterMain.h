@@ -61,6 +61,10 @@ class TextCrypterFrame: public wxFrame
         wxTextCtrl* inputField;
         //*)
 
+        ///Own stuff
+        void encrypt();
+        void decrypt();
+
         DECLARE_EVENT_TABLE()
 };
 
