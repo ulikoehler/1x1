@@ -10,9 +10,9 @@
 #include "wx_pch.h"
 #include "TextCrypterMain.h"
 #include <wx/msgdlg.h>
-#include <tomcrypt.h>
 #include <string>
 #include <boost/lexical_cast.hpp>
+#include "CryptoWrappers.h"
 
 using namespace std;
 using namespace boost;
@@ -21,8 +21,6 @@ using namespace boost;
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
-void encrypt();
-void decrypt();
 
 //helper functions
 enum wxbuildinfoformat {
@@ -104,34 +102,15 @@ void TextCrypterFrame::OnAbout(wxCommandEvent& event)
 
 void TextCrypterFrame::OnOkButtonClick(wxCommandEvent& event)
 {
-    if(decryptCheckbox->IsChecked()) {decrypt();}
-    else {encrypt();}
-}
-
-void TextCrypterFrame::encrypt()
-{
-    ///Get password uchar array
-    unsigned char* password;
-    string passwordString = lexical_cast<string>(passwordField->GetValue().c_str());
-    hash_state md;
-    sha256_init(&md);
-    sha256_process(&md, (const unsigned char*)passwordString.c_str(), passwordString.length());
-    sha256_done(&md, password);
-    ///Setup serpent algorithm
-    symmetric_key *skey;
-    twofish_setup(password, 256, 32, skey);
-    ///Get text and encrypt
-    unsigned char* ciphertext;
-    string plaintext = lexical_cast<string>(inputField->GetValue().c_str());
-    twofish_ecb_encrypt((const unsigned char*)plaintext.c_str(), ciphertext, skey);
-    string ciphertextString((const char*)ciphertext, plaintext.length());
-    ///"Print" encoded ciphertext to GUI
-    outputField->SetValue(wxString(ciphertextString.c_str(), wxConvUTF8));
+    if(decryptCheckbox->IsChecked()) {}//decrypt();}
+    else
+        {
+            string plaintext = lexical_cast<string>(inputField->GetValue().c_str());
+            string password = lexical_cast<string>(passwordField->GetValue().c_str());
+            string ciphertext = botanEncrypt(plaintext, password, "Serpent/CBC/PKCS7");
+            outputField->SetValue(wxString(ciphertext.c_str(), wxConvUTF8));
+        }
 }
 
 
-void TextCrypterFrame::decrypt()
-{
-
-}
 
