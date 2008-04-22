@@ -141,15 +141,16 @@ public class jtcMainFrame extends javax.swing.JFrame {
                 if(decryptCheckbox.isSelected())
                     {
                         jfish.generateKey(new String(passwordField.getPassword()), 32);
-                        byte[] decodedText = Base64.decode(inputField.getText());
-                        byte[] plainText = jfish.decryptByteArray(decodedText);
+                        //byte[] decodedText = Base64.decode(inputField.getText());
+                        byte[] plainText = jfish.decryptByteArray(inputField.getText().getBytes());
                         output = String.valueOf(plainText);
                     }
                 else
                     {
                         jfish.generateKey(new String(passwordField.getPassword()), 32);
                         byte[] cipherText = jfish.encryptString(inputField.getText());
-                        output = Base64.encodeBytes(cipherText);
+                        //output = Base64.encodeBytes(cipherText);
+                        output = String.valueOf(cipherText);
                     }
                 //Encrypt data and write to field
                 outputField.setText(new String(output));

@@ -14,6 +14,8 @@
 #include "TextCrypterMain.h"
 #include <wx/image.h>
 //*)
+#include <botan/botan.h>
+using namespace Botan;
 
 IMPLEMENT_APP(TextCrypterApp);
 
