@@ -44,6 +44,14 @@
 					<Add directory="C:\wxPack-2.8\lib\gcc_dll" />
 				</Linker>
 			</Target>
+			<Target title="Command Line Debug">
+				<Option output="TextCrypter" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -67,18 +75,40 @@
 			<Add library="botan" />
 		</Linker>
 		<Unit filename="CryptoWrappers.h" />
-		<Unit filename="TextCrypterApp.cpp" />
-		<Unit filename="TextCrypterApp.h" />
-		<Unit filename="TextCrypterMain.cpp" />
-		<Unit filename="TextCrypterMain.h" />
+		<Unit filename="TextCrypterApp.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="TextCrypterApp.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="TextCrypterCL.cpp">
+			<Option target="Command Line Debug" />
+		</Unit>
+		<Unit filename="TextCrypterMain.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="TextCrypterMain.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
+			<Option target="Debug" />
+			<Option target="Release" />
 		</Unit>
 		<Unit filename="wx_pch.h">
 			<Option compile="1" />
 			<Option weight="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
 		</Unit>
-		<Unit filename="wxsmith\TextCrypterframe.wxs" />
+		<Unit filename="wxsmith\TextCrypterframe.wxs">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

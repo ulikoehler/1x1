@@ -107,7 +107,7 @@ void TextCrypterFrame::OnOkButtonClick(wxCommandEvent& event)
         {
             string plaintext = lexical_cast<string>(inputField->GetValue().c_str());
             string password = lexical_cast<string>(passwordField->GetValue().c_str());
-            string ciphertext = botanEncrypt(plaintext, password, "Serpent/CBC/PKCS7");
+            string ciphertext = botanEncrypt(plaintext, password, "Blowfish/CBC/PKCS7");
             outputField->SetValue(wxString(ciphertext.c_str(), wxConvUTF8));
         }
 }
