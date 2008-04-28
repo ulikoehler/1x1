@@ -55,11 +55,11 @@ string botanEncrypt(string plaintext, string passphrase, string cipher)
     InitializationVector iv = kdf->derive_key(8, master_key.bits_of(), "cipher iv");
     Pipe pipe
     (
-        new Fork
-        (
-                get_cipher(cipher, key, iv, ENCRYPTION), new Base64_Encoder(),
-                new MAC_Filter("HMAC(SHA-1)", mac_key)
-        )
+        get_cipher(cipher, key, iv, ENCRYPTION),
+        new Fork(
+                   new Base64_Encoder,
+                   new Chain(new MAC_Filter("HMAC(SHA-1)", mac_key), new Base64_Encoder)
+                )
     );
     ctss << (const char*)the_salt.begin();
 
@@ -67,21 +67,21 @@ string botanEncrypt(string plaintext, string passphrase, string cipher)
     ptss >> pipe;
     pipe.end_msg();
 
-    SecureVector<byte> hmac = pipe.read_all(1);
-    ctss << (const char*)hmac.begin();
+    SecureVector<byte> output = pipe.read_all(1);
+    ctss << (const char*)output.begin();
 
-    return Base64_Encode(ctss.str());
+    return ctss.str();
 }
 
-string botanDecrypt(string ciphertext, string passphrase, string cipher)
+string botanDecrypt(string input, string passphrase, string cipher)
 {
     ///Adapter code
     stringstream ptss(Base64_Decode(ciphertext));
     stringstream ctss;
+    string salt = input.substr(0,8);
     ///Botan code
     S2K* s2k = get_s2k("PBKDF2(SHA-1)");
     s2k->set_iterations(4096);
-    s2k->new_random_salt(8);
     SecureVector<byte> the_salt = s2k->current_salt();
     SymmetricKey master_key = s2k->derive_key(48, passphrase);
 
@@ -89,15 +89,12 @@ string botanDecrypt(string ciphertext, string passphrase, string cipher)
     SymmetricKey key = kdf->derive_key(20, master_key.bits_of(), "cipher key");
     SymmetricKey mac_key = kdf->derive_key(20, master_key.bits_of(), "hmac key");
     InitializationVector iv = kdf->derive_key(8, master_key.bits_of(), "cipher iv");
-    Pipe pipe
-    (
-        new Fork
-        (
-                get_cipher(cipher, key, iv, DECRYPTION), new Base64_Encoder(),
-                new MAC_Filter("HMAC(SHA-1)", mac_key)
-        )
-    );
-    ctss << (const char*)the_salt.begin();
+    Pipe(new Base64_Decoder,
+     new Fork(
+         get_cipher(/*args*/),
+         new MAC_Filter(/*args*/)
+         ));
+
 
     pipe.start_msg();
     ptss >> pipe;
