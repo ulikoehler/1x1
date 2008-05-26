@@ -240,7 +240,7 @@
 	<glib-object.h>
 	<gdkconfig.h>
 
-1210146763 /usr/include/glib-2.0/glib.h
+1211039899 /usr/include/glib-2.0/glib.h
 	<glib/galloca.h>
 	<glib/garray.h>
 	<glib/gasyncqueue.h>
@@ -296,199 +296,199 @@
 	<glib/gutils.h>
 	<glib/gwin32.h>
 
-1210146763 /usr/include/glib-2.0/glib/galloca.h
+1211039899 /usr/include/glib-2.0/glib/galloca.h
 	<glib/gtypes.h>
 	<alloca.h>
 	<malloc.h>
 
-1210146763 /usr/include/glib-2.0/glib/gtypes.h
+1211039900 /usr/include/glib-2.0/glib/gtypes.h
 	<glibconfig.h>
 
-1210146762 /usr/lib/glib-2.0/include/glibconfig.h
+1211039898 /usr/lib/glib-2.0/include/glibconfig.h
 	<glib/gmacros.h>
 	<limits.h>
 	<float.h>
 
-1210146763 /usr/include/glib-2.0/glib/gmacros.h
+1211039899 /usr/include/glib-2.0/glib/gmacros.h
 	<stddef.h>
 
-1210146763 /usr/include/glib-2.0/glib/garray.h
+1211039899 /usr/include/glib-2.0/glib/garray.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gasyncqueue.h
+1211039899 /usr/include/glib-2.0/glib/gasyncqueue.h
 	<glib/gthread.h>
 
-1210146763 /usr/include/glib-2.0/glib/gthread.h
+1211039900 /usr/include/glib-2.0/glib/gthread.h
 	<glib/gerror.h>
 	<glib/gtypes.h>
 	<glib/gutils.h>
 	<glib/gatomic.h>
 
-1210146763 /usr/include/glib-2.0/glib/gerror.h
+1211039899 /usr/include/glib-2.0/glib/gerror.h
 	<glib/gquark.h>
 
-1210146763 /usr/include/glib-2.0/glib/gquark.h
+1211039899 /usr/include/glib-2.0/glib/gquark.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gutils.h
+1211039900 /usr/include/glib-2.0/glib/gutils.h
 	<glib/gtypes.h>
 	<stdarg.h>
 
-1210146763 /usr/include/glib-2.0/glib/gatomic.h
+1211039899 /usr/include/glib-2.0/glib/gatomic.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gbacktrace.h
+1211039899 /usr/include/glib-2.0/glib/gbacktrace.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gbase64.h
+1211039899 /usr/include/glib-2.0/glib/gbase64.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gbookmarkfile.h
+1211039899 /usr/include/glib-2.0/glib/gbookmarkfile.h
 	<glib/gerror.h>
 	<time.h>
 
-1210146763 /usr/include/glib-2.0/glib/gcache.h
+1211039899 /usr/include/glib-2.0/glib/gcache.h
 	<glib/glist.h>
 
-1210146763 /usr/include/glib-2.0/glib/glist.h
+1211039899 /usr/include/glib-2.0/glib/glist.h
 	<glib/gmem.h>
 
-1210146763 /usr/include/glib-2.0/glib/gmem.h
+1211039899 /usr/include/glib-2.0/glib/gmem.h
 	<glib/gslice.h>
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gslice.h
+1211039900 /usr/include/glib-2.0/glib/gslice.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gchecksum.h
+1211039899 /usr/include/glib-2.0/glib/gchecksum.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gcompletion.h
+1211039899 /usr/include/glib-2.0/glib/gcompletion.h
 	<glib/glist.h>
 
-1210146763 /usr/include/glib-2.0/glib/gconvert.h
+1211039899 /usr/include/glib-2.0/glib/gconvert.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/gdataset.h
+1211039899 /usr/include/glib-2.0/glib/gdataset.h
 	<glib/gquark.h>
 
-1210146763 /usr/include/glib-2.0/glib/gdate.h
+1211039899 /usr/include/glib-2.0/glib/gdate.h
 	<time.h>
 	<glib/gtypes.h>
 	<glib/gquark.h>
 
-1210146763 /usr/include/glib-2.0/glib/gdir.h
+1211039899 /usr/include/glib-2.0/glib/gdir.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/gfileutils.h
+1211039899 /usr/include/glib-2.0/glib/gfileutils.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/ghash.h
+1211039899 /usr/include/glib-2.0/glib/ghash.h
 	<glib/gtypes.h>
 	<glib/glist.h>
 
-1210146763 /usr/include/glib-2.0/glib/ghook.h
+1211039899 /usr/include/glib-2.0/glib/ghook.h
 	<glib/gmem.h>
 
-1210146763 /usr/include/glib-2.0/glib/giochannel.h
+1211039899 /usr/include/glib-2.0/glib/giochannel.h
 	<glib/gconvert.h>
 	<glib/gmain.h>
 	<glib/gstring.h>
 
-1210146763 /usr/include/glib-2.0/glib/gmain.h
+1211039899 /usr/include/glib-2.0/glib/gmain.h
 	<glib/gslist.h>
 	<glib/gthread.h>
 
-1210146763 /usr/include/glib-2.0/glib/gslist.h
+1211039900 /usr/include/glib-2.0/glib/gslist.h
 	<glib/gmem.h>
 
-1210146763 /usr/include/glib-2.0/glib/gstring.h
+1211039900 /usr/include/glib-2.0/glib/gstring.h
 	<glib/gtypes.h>
 	<glib/gunicode.h>
 	<glib/gutils.h>
 
-1210146763 /usr/include/glib-2.0/glib/gunicode.h
+1211039900 /usr/include/glib-2.0/glib/gunicode.h
 	<glib/gerror.h>
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gkeyfile.h
+1211039899 /usr/include/glib-2.0/glib/gkeyfile.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/gmappedfile.h
+1211039899 /usr/include/glib-2.0/glib/gmappedfile.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/gmarkup.h
+1211039899 /usr/include/glib-2.0/glib/gmarkup.h
 	<stdarg.h>
 	<glib/gerror.h>
 	<glib/gslist.h>
 
-1210146763 /usr/include/glib-2.0/glib/gmessages.h
+1211039899 /usr/include/glib-2.0/glib/gmessages.h
 	<stdarg.h>
 	<glib/gtypes.h>
 	<glib/gmacros.h>
 
-1210146763 /usr/include/glib-2.0/glib/gnode.h
+1211039899 /usr/include/glib-2.0/glib/gnode.h
 	<glib/gmem.h>
 
-1210146763 /usr/include/glib-2.0/glib/goption.h
+1211039899 /usr/include/glib-2.0/glib/goption.h
 	<glib/gerror.h>
 	<glib/gquark.h>
 
-1210146763 /usr/include/glib-2.0/glib/gpattern.h
+1211039899 /usr/include/glib-2.0/glib/gpattern.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gprimes.h
+1211039899 /usr/include/glib-2.0/glib/gprimes.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gqsort.h
+1211039899 /usr/include/glib-2.0/glib/gqsort.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gqueue.h
+1211039899 /usr/include/glib-2.0/glib/gqueue.h
 	<glib/glist.h>
 
-1210146763 /usr/include/glib-2.0/glib/grand.h
+1211039900 /usr/include/glib-2.0/glib/grand.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/grel.h
+1211039900 /usr/include/glib-2.0/glib/grel.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gregex.h
+1211039900 /usr/include/glib-2.0/glib/gregex.h
 	<glib/gerror.h>
 	<glib/gstring.h>
 
-1210146763 /usr/include/glib-2.0/glib/gscanner.h
+1211039900 /usr/include/glib-2.0/glib/gscanner.h
 	<glib/gdataset.h>
 	<glib/ghash.h>
 
-1210146763 /usr/include/glib-2.0/glib/gsequence.h
+1211039900 /usr/include/glib-2.0/glib/gsequence.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gshell.h
+1211039900 /usr/include/glib-2.0/glib/gshell.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/gspawn.h
+1211039900 /usr/include/glib-2.0/glib/gspawn.h
 	<glib/gerror.h>
 
-1210146763 /usr/include/glib-2.0/glib/gstrfuncs.h
+1211039900 /usr/include/glib-2.0/glib/gstrfuncs.h
 	<stdarg.h>
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gtestutils.h
+1211039900 /usr/include/glib-2.0/glib/gtestutils.h
 	<glib.h>
 
-1210146763 /usr/include/glib-2.0/glib/gthreadpool.h
+1211039900 /usr/include/glib-2.0/glib/gthreadpool.h
 	<glib/gthread.h>
 
-1210146763 /usr/include/glib-2.0/glib/gtimer.h
+1211039900 /usr/include/glib-2.0/glib/gtimer.h
 	<glib/gtypes.h>
 
-1210146763 /usr/include/glib-2.0/glib/gtree.h
+1211039900 /usr/include/glib-2.0/glib/gtree.h
 	<glib/gnode.h>
 
-1210146763 /usr/include/glib-2.0/glib/gurifuncs.h
+1211039900 /usr/include/glib-2.0/glib/gurifuncs.h
 	<glib.h>
 
-1210146764 /usr/include/glib-2.0/glib/gwin32.h
+1211039900 /usr/include/glib-2.0/glib/gwin32.h
 	<glib/gtypes.h>
 
 1207753049 /usr/include/pango-1.0/pango/pango.h
@@ -534,7 +534,7 @@
 	<pango/pango-matrix.h>
 	<pango/pango-script.h>
 
-1210146763 /usr/include/glib-2.0/glib-object.h
+1211039899 /usr/include/glib-2.0/glib-object.h
 	<gobject/gboxed.h>
 	<gobject/genums.h>
 	<gobject/gobject.h>
@@ -549,59 +549,59 @@
 	<gobject/gvaluearray.h>
 	<gobject/gvaluetypes.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gboxed.h
+1211039903 /usr/include/glib-2.0/gobject/gboxed.h
 	<gobject/gtype.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gtype.h
+1211039903 /usr/include/glib-2.0/gobject/gtype.h
 	<glib.h>
 
-1210146767 /usr/include/glib-2.0/gobject/genums.h
+1211039903 /usr/include/glib-2.0/gobject/genums.h
 	<gobject/gtype.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gobject.h
+1211039903 /usr/include/glib-2.0/gobject/gobject.h
 	<gobject/gtype.h>
 	<gobject/gvalue.h>
 	<gobject/gparam.h>
 	<gobject/gclosure.h>
 	<gobject/gsignal.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gvalue.h
+1211039903 /usr/include/glib-2.0/gobject/gvalue.h
 	<gobject/gtype.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gparam.h
+1211039903 /usr/include/glib-2.0/gobject/gparam.h
 	<gobject/gvalue.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gclosure.h
+1211039903 /usr/include/glib-2.0/gobject/gclosure.h
 	<gobject/gtype.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gsignal.h
+1211039903 /usr/include/glib-2.0/gobject/gsignal.h
 	<gobject/gclosure.h>
 	<gobject/gvalue.h>
 	<gobject/gparam.h>
 	<gobject/gmarshal.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gmarshal.h
+1211039903 /usr/include/glib-2.0/gobject/gmarshal.h
 
-1210146767 /usr/include/glib-2.0/gobject/gparamspecs.h
+1211039903 /usr/include/glib-2.0/gobject/gparamspecs.h
 	<gobject/gvalue.h>
 	<gobject/genums.h>
 	<gobject/gboxed.h>
 	<gobject/gobject.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gsourceclosure.h
+1211039903 /usr/include/glib-2.0/gobject/gsourceclosure.h
 	<gobject/gclosure.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gtypemodule.h
+1211039903 /usr/include/glib-2.0/gobject/gtypemodule.h
 	<gobject/gobject.h>
 	<gobject/genums.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gtypeplugin.h
+1211039903 /usr/include/glib-2.0/gobject/gtypeplugin.h
 	<gobject/gtype.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gvaluearray.h
+1211039903 /usr/include/glib-2.0/gobject/gvaluearray.h
 	<gobject/gvalue.h>
 
-1210146767 /usr/include/glib-2.0/gobject/gvaluetypes.h
+1211039903 /usr/include/glib-2.0/gobject/gvaluetypes.h
 	<gobject/gvalue.h>
 
 1207753049 /usr/include/pango-1.0/pango/pango-gravity.h
@@ -730,7 +730,7 @@
 	<gdk-pixbuf/gdk-pixbuf-core.h>
 	<gdk-pixbuf/gdk-pixbuf-animation.h>
 
-1210146765 /usr/include/glib-2.0/gmodule.h
+1211039901 /usr/include/glib-2.0/gmodule.h
 	<glib.h>
 
 1210172901 /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf-loader.h
@@ -1788,4 +1788,13 @@
 	<libintl.h>
 	<string.h>
 	<stdlib.h>
+
+1211826346 source:/home/uli/dev/1x1/GtkInstaller/main.cpp
+	<stdlib.h>
+	<fstream>
+	<gtk/gtk.h>
+	<sys/stat.h>
+	<vector>
+	<string>
+	</usr/share/gettext/gettext.h>
 
