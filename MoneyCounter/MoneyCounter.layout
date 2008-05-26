@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="Currency.h" open="0" top="0" tabpos="3">
+		<Cursor position="581" topLine="9" />
+	</File>
+	<File name="Macros.h" open="0" top="0" tabpos="4">
+		<Cursor position="397" topLine="0" />
+	</File>
+	<File name="MoneyCounterMain.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="15168" topLine="301" />
+	</File>
+	<File name="MoneyCounterMain.h" open="0" top="0" tabpos="2">
+		<Cursor position="4146" topLine="121" />
+	</File>
+</CodeBlocks_layout_file>
