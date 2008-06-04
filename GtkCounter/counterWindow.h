@@ -3,37 +3,52 @@
 #include <sqlite3.h>
 #include <libintl.h>
 #include <boost/lexical_cast.hpp>
+#include <sys/stat.h>
 #include <map>
+#include <strings.h>
 using namespace std;
 using namespace boost;
 
 ///Macros and defines
 #define TAB_COLS 5
-#define NAME "/.gtkcounter.db"
+#define COL_SPACING 3
+#define ROW_SPACING 4
 #define _(x) gettext(x)
 
-///Global variables
-sqlite3 *db;
-
-static void add(GtkWidget *wid, gpointer data)
+struct updateCounterParameters
 {
+    GtkWidget *setField;
+    GtkWidget *addSpinButton;
+    long oldValue;
+    string name;
+    string table;
+};
 
+
+static void addCounter(GtkWidget *wid, gpointer data)
+{
+    updateCounterParameters params = *reinterpret_cast<updateCounterParameters*>(data);
+    //Update data: Add old value to new value and cast to string, the build SQL string and execute it
+    string newValue = lexical_cast<string>(params.oldValue + lexical_cast<long>(gtk_entry_get_text(GTK_ENTRY(params.setField))));
+    sqlite3_exec(db, string("UPDATE TABLE " + params.table + " SET value = " + newValue + " WHERE index = \"" + params.name + "\";").c_str());
 }
 
-static void set(GtkWidget *wid, gpointer data)
+static void setCounter(GtkWidget *wid, gpointer data)
 {
-
+    updateCounterParameters params = *reinterpret_cast<updateCounterParameters*>(data);
+    //Update data
+    sqlite3_exec(db, string("UPDATE TABLE " + params.table + " SET value = " + gtk_entry_get_text(GTK_ENTRY(params.setField)) + " WHERE index = \"" + params.name + "\";").c_str());
 }
 
 inline void createCounterTable(string table)
 {
-    sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS" + table.c_str() + " (index varchar(50), value mediumint);", NULL, NULL, NULL, NULL);
+    sqlite3_exec(db, string("CREATE TABLE IF NOT EXISTS " + table + " (index varchar(50), value mediumint);").c_str(), NULL, NULL, NULL, NULL);
 }
 
 int updateCounterData(string table, map<string, long> *results)
 {
-  static int numLines
-  char** queryResult;
+  static int numLines;
+  char **queryResult;
   sqlite3_get_table(db, "SELECT * FROM " + table.c_str() + ";", &queryResult, &numLines, NULL, 0);
   for(int i = 1; i <= numLines;i++)
     {
@@ -41,26 +56,16 @@ int updateCounterData(string table, map<string, long> *results)
     }
   return numLines;
 }
-void createCounterWindow(string table)
+
+void createCounterWindow(string sqlTable)
 {
   map<string, long> values;
   int numLines;
-  static struct stat statbuf;
-  vector<GtkWidget*> addButtons;
-  vector<GtkWidget*> setButtons;
-  vector<GtkWidget*> addFields;
-  vector<GtkWidget*> setFields;
-
-  //Create sqlite database if not exists
-  if(stat(name.c_str(),&statbuf)!=0)
-      {
-          system("sqlite3 " + name);
-      }
-  sqlite3_open(name.c_str());
 
   //Count lines in table
-  numLines = updateCounterData(table, &values);
+  numLines = updateCounterData(sqlTable, &values);
 
+  //Declare widget pointers
   GtkWidget *win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   GtkWidget *table = gtk_table_new(TAB_COLS, numLines, true);
   GtkWidget *addButton;
@@ -70,7 +75,7 @@ void createCounterWindow(string table)
   GtkWidget *label;
 
   //Set some parameters
-  gtk_window_set_title (GTK_WINDOW (win), _("GtkCounter"));
+  gtk_window_set_title (GTK_WINDOW (win), table.c_str());
   gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_CENTER);
   gtk_widget_realize (win);
   gtk_table_set_row_spacings(GTK_TABLE(table), ROW_SPACING);
@@ -78,17 +83,34 @@ void createCounterWindow(string table)
   g_signal_connect (win, "destroy", gtk_main_quit, NULL);
 
   ///Add widgets
-  map<string, int>::iterator it != values.end();it++);
-  for(int i = 0;i < numLines;i++)
+  int i = 0;
+  for(map<string, int>::iterator it = values.begin();it != values.end();it++) //Increments it and i! (it = map iterator, i = counter)
     {
-        label = gtk_label_new(it->first.c_str());
+        //Create a parameter set and update
+        updateCounterParameters params;
+        params.table = table;
+        params.name = it->first;
+        params.oldValue = it->seconds;
+        params.setField = setField;
+        params.addSpinButton = addSpinButton;
+        //Update GUI
+        label = gtk_label_new(strcat(it->first.c_str(), ":"));
+         gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, i, i+1);
         setField = gtk_entry_new();
          gtk_entry_set_text(GTK_ENTRY(setField), lexical_cast<string>(it->second).c_str());
+         gtk_table_attach_defaults(GTK_TABLE(table), setField, 1, 2, i, i+1);
         setButton = gtk_button_new_with_label(_("Set"));
+         gtk_signal_connect(GTK_OBJECT(setButton), "clicked", GTK_SIGNAL_FUNC(setCounter), &params);
+         gtk_table_attach_defaults(GTK_TABLE(table), setButton, 2, 3, i, i+1);
+        addSpinButton = gtk_spin_button_new_with_range(-999.0, 999.0, 1.0);
+         gtk_table_attach_defaults(GTK_TABLE(table), addSpinButton, 3, 4, i, i+1);
+        addButton = gtk_button_new_with_label(_("Add"));
+         gtk_signal_connect(GTK_OBJECT(addButton), "clicked", GTK_SIGNAL_FUNC(addCounter), &params);
+         gtk_table_attach_defaults(GTK_TABLE(table), add, 4, 5, i, i+1);
+        i++;
     }
 
   // Enter the main loop
   gtk_container_add(GTK_CONTAINER (win), table);
   gtk_widget_show_all(win);
-  return 0;
 }
