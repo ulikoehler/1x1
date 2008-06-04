@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <libintl.h>
+#include <locale.h>
 using namespace std;
 #define _(x) gettext(x)
 
@@ -28,7 +29,6 @@ inline void parseConfig()
     string s;
     fstream f;
     f.open(configfile.c_str(), fstream::in);
-    g_print("R:%d\n",0);
     section a;
     bool first = false;
     while(!f.eof())
@@ -76,7 +76,8 @@ int main (int argc, char *argv[])
 {
   gtk_init (&argc, &argv);
   //Some gettext calls
-  setlocale(LC_ALL, "");
+  setlocale(LC_MESSAGES,"");
+  bindtextdomain("GtkInstaller", "./");
   textdomain("GtkInstaller");
 
   parseConfig();
