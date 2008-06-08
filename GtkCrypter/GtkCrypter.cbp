@@ -21,6 +21,8 @@
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-march=i686" />
+					<Add option="-Os" />
 					<Add option="-O2" />
 				</Compiler>
 				<Linker>
@@ -29,11 +31,12 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="`pkg-config gtk+-2.0 --cflags`" />
 			<Add option="-Wall" />
+			<Add option="`pkg-config gtk+-2.0 --cflags`" />
 		</Compiler>
 		<Linker>
 			<Add option="`pkg-config gtk+-2.0 --libs`" />
+			<Add library="tomcrypt" />
 		</Linker>
 		<Unit filename="main.cpp">
 			<Option compilerVar="CC" />

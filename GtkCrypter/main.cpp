@@ -10,29 +10,50 @@
 #define TAB_COLS 0
 #define TAB_ROWS 0
 
+///Global variables
+GtkWidget *win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+GtkWidget *table = gtk_table_new(TAB_ROWS, TAB_COLS, true);
+GtkWidget *plaintextLabel;
+GtkWidget *ciphertextLabel;
+GtkWidget *passwordLabel;
+GtkWidget *plaintextField;
+GtkWidget *ciphertextField;
+GtkWidget *passwordEntry;
+GtkWidget *okButton;
+GtkWidget *deencryptHbox; // deencryptHbox= de-encryptHbox
+GtkWidget *decryptRadioButton;
+GtkWidget *encryptRadioButton;
+
 
 static void crypt(GtkWidget *wid, gpointer data)
 {
-
-}
+    ///Hash password to get appropriate key length
+    unsigned char hashedPw[32];
+    char* pw;
+    hash_state *md;
+    sha256_init(md);
+    pw = const_cast<char*>(gtk_entry_get_text(GTK_ENTRY(passwordEntry)));
+    sha256_process(md, pw, strlen(pw));
+    sha256_done(md, hashedPw);
+    ///Setup cipher
+    symmetric_key *twofishKey;
+    unsigned char* input = gtk_entry_get_text(GTK_ENTRY(plaintextEntry));
+    unsigned char* output = (unsigned char*) malloc(strlen(input)+1);
+    twofish_setup(hashedPw, 32, 16, twofishKey);
+    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(encryptRadioButton)))
+    {
+        twofish_ecb_encrypt(input, output, twofishKey);
+    }
+    else //Decrypt
+    {
+        twofish_ecb_decrypt(input, output, twofishKey);
+    }
+    gtk_entry_set_text(GTK_ENTRY(ciphertextEntry), output);
+    free(output);
 
 int main (int argc, char *argv[])
 {
   gtk_init (&argc, &argv);
-
-  GtkWidget *win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  GtkWidget *table = gtk_table_new(TAB_ROWS, TAB_COLS, true);
-  GtkWidget *plaintextLabel;
-  GtkWidget *ciphertextLabel;
-  GtkWidget *passwordLabel;
-  GtkWidget *plaintextField;
-  GtkWidget *ciphertextField;
-  GtkWidget *passwordEntry;
-  GtkWidget *okButton;
-  GtkWidget *deencryptHbox; // deencryptHbox= de-encryptHbox
-  GtkWidget *decryptRadioButton;
-  GtkWidget *encryptRadioButton;
-
 
   //Set some parameters
   gtk_window_set_title (GTK_WINDOW (win), _("GtkCrypter"));
