@@ -37,7 +37,7 @@ static void crypt(GtkWidget *wid, gpointer data)
     sha256_done(md, hashedPw);
     ///Setup cipher
     symmetric_key *twofishKey;
-    unsigned char* input = gtk_entry_get_text(GTK_ENTRY(plaintextEntry));
+    unsigned char* input = gtk_entry_get_text(GTK_ENTRY(plaintextField));
     unsigned char* output = (unsigned char*) malloc(strlen(input)+1);
     twofish_setup(hashedPw, 32, 16, twofishKey);
     if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(encryptRadioButton)))
