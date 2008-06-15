@@ -9,7 +9,7 @@ using namespace boost;
 
 ///Global variables
 sqlite3 *db;
-#define DBFILENAME "/.gtkcounter.db"
+#define DBFILENAME "~/.gtkcounter.db"
 
 
 static void openCounter(GtkWidget *wid, gpointer data)
@@ -30,9 +30,9 @@ int main (int argc, char *argv[])
   //Create sqlite database if not exists and open connection
   if(stat(DBFILENAME,&statbuf)!=0)
       {
-          system("sqlite3 " + DBFILENAME);
+          system(strcat("sqlite3 ", DBFILENAME));
       }
-  sqlite3_open(DBFILENAME);
+  sqlite3_open(DBFILENAME, &db);
 
   /* Create the main window */
   win = gtk_window_new (GTK_WINDOW_TOPLEVEL);

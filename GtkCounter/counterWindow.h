@@ -15,6 +15,9 @@ using namespace boost;
 #define ROW_SPACING 4
 #define _(x) gettext(x)
 
+///Global variables and variable refs
+extern sqlite3 *db;
+
 struct updateCounterParameters
 {
     GtkWidget *setField;
@@ -30,29 +33,29 @@ static void addCounter(GtkWidget *wid, gpointer data)
     updateCounterParameters params = *reinterpret_cast<updateCounterParameters*>(data);
     //Update data: Add old value to new value and cast to string, the build SQL string and execute it
     string newValue = lexical_cast<string>(params.oldValue + lexical_cast<long>(gtk_entry_get_text(GTK_ENTRY(params.setField))));
-    sqlite3_exec(db, string("UPDATE TABLE " + params.table + " SET value = " + newValue + " WHERE index = \"" + params.name + "\";").c_str());
+    sqlite3_exec(db, string("UPDATE TABLE " + params.table + " SET value = " + newValue + " WHERE index = \"" + params.name + "\";").c_str(), NULL, NULL, NULL);
 }
 
 static void setCounter(GtkWidget *wid, gpointer data)
 {
     updateCounterParameters params = *reinterpret_cast<updateCounterParameters*>(data);
     //Update data
-    sqlite3_exec(db, string("UPDATE TABLE " + params.table + " SET value = " + gtk_entry_get_text(GTK_ENTRY(params.setField)) + " WHERE index = \"" + params.name + "\";").c_str());
+    sqlite3_exec(db, string("UPDATE TABLE " + params.table + " SET value = " + gtk_entry_get_text(GTK_ENTRY(params.setField)) + " WHERE index = \"" + params.name + "\";").c_str(), NULL, NULL, NULL);
 }
 
 inline void createCounterTable(string table)
 {
-    sqlite3_exec(db, string("CREATE TABLE IF NOT EXISTS " + table + " (index varchar(50), value mediumint);").c_str(), NULL, NULL, NULL, NULL);
+    sqlite3_exec(db, string("CREATE TABLE IF NOT EXISTS " + table + " (index varchar(50), value mediumint);").c_str(), NULL, NULL, NULL);
 }
 
 int updateCounterData(string table, map<string, long> *results)
 {
   static int numLines;
   char **queryResult;
-  sqlite3_get_table(db, "SELECT * FROM " + table.c_str() + ";", &queryResult, &numLines, NULL, 0);
+  sqlite3_get_table(db, strcat("SELECT * FROM ", strcat(const_cast<char*>(table.c_str()), ";")), &queryResult, &numLines, NULL, 0);
   for(int i = 1; i <= numLines;i++)
     {
-        *results[queryResult[i*2]] = lexical_cast<long>(queryResult[(i*2)+1]); //Set the appropriate value in the map. See sqlite3 documentation (sqlite3_get_table) to understand syntax.
+        results[0][queryResult[i*2]] = lexical_cast<long>(queryResult[(i*2)+1]); //Set the appropriate value in the map. See sqlite3 documentation (sqlite3_get_table) to understand syntax.
     }
   return numLines;
 }
@@ -75,7 +78,7 @@ void createCounterWindow(string sqlTable)
   GtkWidget *label;
 
   //Set some parameters
-  gtk_window_set_title (GTK_WINDOW (win), table.c_str());
+  gtk_window_set_title (GTK_WINDOW (win), _("GtkCounter Counter"));
   gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_CENTER);
   gtk_widget_realize (win);
   gtk_table_set_row_spacings(GTK_TABLE(table), ROW_SPACING);
@@ -88,13 +91,13 @@ void createCounterWindow(string sqlTable)
     {
         //Create a parameter set and update
         updateCounterParameters params;
-        params.table = table;
+        params.table = sqlTable;
         params.name = it->first;
-        params.oldValue = it->seconds;
+        params.oldValue = it->second;
         params.setField = setField;
         params.addSpinButton = addSpinButton;
         //Update GUI
-        label = gtk_label_new(strcat(it->first.c_str(), ":"));
+        label = gtk_label_new(strcat(const_cast<char*>(it->first.c_str()), ":"));
          gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, i, i+1);
         setField = gtk_entry_new();
          gtk_entry_set_text(GTK_ENTRY(setField), lexical_cast<string>(it->second).c_str());
@@ -106,7 +109,7 @@ void createCounterWindow(string sqlTable)
          gtk_table_attach_defaults(GTK_TABLE(table), addSpinButton, 3, 4, i, i+1);
         addButton = gtk_button_new_with_label(_("Add"));
          gtk_signal_connect(GTK_OBJECT(addButton), "clicked", GTK_SIGNAL_FUNC(addCounter), &params);
-         gtk_table_attach_defaults(GTK_TABLE(table), add, 4, 5, i, i+1);
+         gtk_table_attach_defaults(GTK_TABLE(table), addButton, 4, 5, i, i+1);
         i++;
     }
 
