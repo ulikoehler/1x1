@@ -4,11 +4,20 @@
 #include <openssl/rand.h>
 #include <string>
 #include <vector>
+#include <fstream>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 using namespace std;
+using namespace boost;
 ///Macros and defines
 #define _(x) gettext(x)
+///Define appropriate field value of outputEntry
+#ifdef linux
+    #define OUTPUT_PRESET "/dev/shm/passwords.txt"
+#else
+    #define OUTPUT_PRESET "./passwords.txt"
+#endif
+
 
 ///Global variables
 GtkWidget *win;
@@ -17,57 +26,86 @@ GtkWidget *label; //Generic usage :-)
 GtkWidget *masterField;
 GtkWidget *lengthSpinButton;
 GtkWidget *outputHbox;
-GtkWidget *fileEntry;
-GtkWidget *fileTypeComboBox;
+GtkWidget *outputEntry;
+GtkWidget *outputTypeComboBox;
 GtkWidget *okButton;
 
 vector<string> pws;
 
 static void okButtonClicked(GtkWidget *wid, gpointer data);
 void showList();
+void saveList();
 
 static void okButtonClicked(GtkWidget *wid, gpointer data)
 {
     int length = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(lengthSpinButton));
-    void* bufferSpace = malloc((length+1) * sizeof(char));
-    static unsigned char *pwBuffer = (unsigned char*)bufferSpace;
+    static int decisionInt; ///Decides whether to use numbers oder (capital) letters
+    static unsigned char pwChar;
+    static string sbuf = "";
     static string master(gtk_entry_get_text(GTK_ENTRY(masterField)));
     RAND_seed(master.c_str(), master.length());
     for (int i = 0; i < length;i++)
         {
-            RAND_bytes(pwBuffer, length*sizeof(char));
-            string sBuf((const char*)pwBuffer, length);
-            pws.push_back(sBuf);
+            for(int j = 0;j < length; j++)
+                {
+                    RAND_bytes(&pwChar, 1);
+                    RAND_bytes(reinterpret_cast<unsigned char*>(&decisionInt), 1); //Fill decisionInt with random data
+                    switch(decisionInt % 3)
+                    {
+                        case 0: {pwChar = (pwChar % 11) + 48;break;} ///Number
+                        case 1: {pwChar = (pwChar % 26) + 65;break;} ///Uppercase letter
+                        case 2: {pwChar = (pwChar % 26) + 97;break;} ///Lowercase letter
+                        default: break;
+                    }
+                    sbuf.append(1, pwChar);
+                }
+            pws.push_back(sbuf);
+            sbuf.clear();
         }
-    free(bufferSpace);
-    showList();
+    ///Now do what the user has chosen, e.g. showing or saving the list
+    switch(gtk_combo_box_get_active(GTK_COMBO_BOX(outputTypeComboBox)))
+        {
+            case 0: {showList();break;} ///Show
+            case 1: {saveList();break;} ///Save to text file
+            case 2: {break;} ///TODO: Save to PDF
+            default: break;
+        }
     RAND_cleanup();
 }
 
 void showList()
 {
     GtkWidget *listWindow;
-    GtkWidget *hbox;
-    GtkWidget *treeView;
+    GtkWidget *scrollbar;
+    GtkWidget *vbox;
     GtkListStore *passwords;
-    GtkTreeIter iter;
+    //Label is inlined
     listWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
      gtk_window_set_title(GTK_WINDOW(win), _("Passwords"));
      gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_CENTER);
      gtk_window_set_resizable(GTK_WINDOW(win), false);
      g_signal_connect (win, "destroy", gtk_main_quit, NULL);
      gtk_widget_realize (win);
-    hbox = gtk_hbox_new(false, 3);
-    treeView = gtk_tree_view_new();
+    scrollbar = gtk_vscrollbar_new(NULL);
+    vbox = gtk_vbox_new(true, 1);
+        gtk_box_pack_start_defaults(GTK_BOX(vbox), scrollbar);
     passwords = gtk_list_store_new(1, G_TYPE_STRING);
     ///Fill passwords list
     BOOST_FOREACH(string s, pws)
         {
-            gtk_list_store_set(passwords, &iter, 0, s.c_str());
+            gtk_box_pack_start_defaults(GTK_BOX(vbox), gtk_label_new(s.c_str()));
         }
-    gtk_tree_view_set_model(GTK_TREE_VIEW(treeView), GTK_TREE_MODEL(passwords));
-    gtk_container_add(GTK_CONTAINER(listWindow), hbox);
+    gtk_container_add(GTK_CONTAINER(listWindow), vbox);
     gtk_widget_show_all(listWindow);
+}
+
+void saveList()
+{
+    fstream f(gtk_entry_get_text(GTK_ENTRY(outputEntry)), fstream::out);
+    BOOST_FOREACH(string s, pws)
+        {
+            f << s << "\n";
+        }
 }
 
 //static char** calculatePasswords(char* input, long length){return  NULL;}
@@ -100,14 +138,15 @@ int main (int argc, char *argv[])
   label = gtk_label_new(_("Output:"));
     gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 2, 3);
   outputHbox = gtk_hbox_new(false, 3);
-    fileEntry = gtk_entry_new();
-        gtk_box_pack_start_defaults(GTK_BOX(outputHbox), fileEntry);
-    fileTypeComboBox = gtk_combo_box_new_text();
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileTypeComboBox), _("Show"));
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileTypeComboBox), _("Save"));
-        gtk_combo_box_append_text(GTK_COMBO_BOX(fileTypeComboBox), _("PDF"));
-        gtk_combo_box_set_active(GTK_COMBO_BOX(fileTypeComboBox), 0);
-        gtk_box_pack_start_defaults(GTK_BOX(outputHbox), fileTypeComboBox);
+    outputEntry = gtk_entry_new();
+        gtk_entry_set_text(GTK_ENTRY(outputEntry), OUTPUT_PRESET);
+        gtk_box_pack_start_defaults(GTK_BOX(outputHbox), outputEntry);
+    outputTypeComboBox = gtk_combo_box_new_text();
+        gtk_combo_box_append_text(GTK_COMBO_BOX(outputTypeComboBox), _("Show"));
+        gtk_combo_box_append_text(GTK_COMBO_BOX(outputTypeComboBox), _("Save"));
+        gtk_combo_box_append_text(GTK_COMBO_BOX(outputTypeComboBox), _("PDF"));
+        gtk_combo_box_set_active(GTK_COMBO_BOX(outputTypeComboBox), 0);
+        gtk_box_pack_start_defaults(GTK_BOX(outputHbox), outputTypeComboBox);
     gtk_table_attach_defaults(GTK_TABLE(table), outputHbox, 1, 2, 2, 3);
   okButton = gtk_button_new_with_label(_("OK"));
     gtk_table_attach_defaults(GTK_TABLE(table), okButton, 0, 2, 3, 4);
