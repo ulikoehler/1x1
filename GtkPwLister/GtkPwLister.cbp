@@ -29,11 +29,12 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="`pkg-config gtk+-2.0 --cflags`" />
 			<Add option="-Wall" />
+			<Add option="`pkg-config gtk+-2.0 --cflags`" />
 		</Compiler>
 		<Linker>
 			<Add option="`pkg-config gtk+-2.0 --libs`" />
+			<Add library="crypto" />
 		</Linker>
 		<Unit filename="main.cpp">
 			<Option compilerVar="CC" />
