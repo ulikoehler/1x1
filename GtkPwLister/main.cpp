@@ -48,8 +48,8 @@ static void okButtonClicked(GtkWidget *wid, gpointer data)
         {
             for(int j = 0;j < length; j++)
                 {
-                    RAND_bytes(&pwChar, 1);
-                    RAND_bytes(reinterpret_cast<unsigned char*>(&decisionInt), 1); //Fill decisionInt with random data
+                    RAND_pseudo_bytes(&pwChar, 1);
+                    RAND_pseudo_bytes(reinterpret_cast<unsigned char*>(&decisionInt), 1); //Fill decisionInt with random data
                     switch(decisionInt % 3)
                     {
                         case 0: {pwChar = (pwChar % 11) + 48;break;} ///Number
@@ -70,13 +70,15 @@ static void okButtonClicked(GtkWidget *wid, gpointer data)
             case 2: {break;} ///TODO: Save to PDF
             default: break;
         }
+    ///Cleanup
+    pws.clear();
     RAND_cleanup();
 }
 
 void showList()
 {
     GtkWidget *listWindow;
-    GtkWidget *scrollbar;
+    GtkWidget *layout;
     GtkWidget *vbox;
     GtkListStore *passwords;
     //Label is inlined
@@ -86,16 +88,17 @@ void showList()
      gtk_window_set_resizable(GTK_WINDOW(win), false);
      g_signal_connect (win, "destroy", gtk_main_quit, NULL);
      gtk_widget_realize (win);
-    scrollbar = gtk_vscrollbar_new(NULL);
+    layout = gtk_layout_new(NULL, NULL);
+        gtk_layout_set_size(GTK_LAYOUT(layout), 10*gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(lengthSpinButton)), 200);
     vbox = gtk_vbox_new(true, 1);
-        gtk_box_pack_start_defaults(GTK_BOX(vbox), scrollbar);
+        gtk_container_add(GTK_CONTAINER(layout), vbox);
     passwords = gtk_list_store_new(1, G_TYPE_STRING);
     ///Fill passwords list
     BOOST_FOREACH(string s, pws)
         {
             gtk_box_pack_start_defaults(GTK_BOX(vbox), gtk_label_new(s.c_str()));
         }
-    gtk_container_add(GTK_CONTAINER(listWindow), vbox);
+    gtk_container_add(GTK_CONTAINER(listWindow), layout);
     gtk_widget_show_all(listWindow);
 }
 
@@ -132,7 +135,7 @@ int main (int argc, char *argv[])
     gtk_table_attach_defaults(GTK_TABLE(table), masterField, 1, 2, 0, 1);
   label = gtk_label_new(_("Length"));
     gtk_table_attach_defaults(GTK_TABLE(table), label, 1, 2, 1, 2);
-  lengthSpinButton = gtk_spin_button_new_with_range(1.0, 20.0, 1.0);
+  lengthSpinButton = gtk_spin_button_new_with_range(1.0, 60.0, 1.0);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(lengthSpinButton), 6.0);
     gtk_table_attach_defaults(GTK_TABLE(table), lengthSpinButton, 1, 2, 1, 2);
   label = gtk_label_new(_("Output:"));

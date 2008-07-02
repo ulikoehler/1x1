@@ -1,98 +1,238 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
-#include <libintl.h>
-#include <tomcrypt.h>
+#include <string.h>
+
+#ifndef NO_GETTEXT
+ #include <libintl.h>
+#endif
+using namespace std;
 
 ///Macros and Defines
-#define _(x) gettext(x)
+#ifndef NO_GETTEXT
+  #define _(x) gettext(x)
+ #else
+  #define _(x) x
+#endif
+#define WINDOW_SPACING 8
 #define ROW_SPACING 3
 #define COL_SPACING 3
 #define TAB_COLS 0
 #define TAB_ROWS 0
+//Constants for selecting the files via dialog
+#define FS_MODE_INPUT 0
+#define FS_MODE_OUTPUT 1
 
 ///Global variables
-GtkWidget *win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-GtkWidget *table = gtk_table_new(TAB_ROWS, TAB_COLS, true);
-GtkWidget *plaintextLabel;
-GtkWidget *ciphertextLabel;
-GtkWidget *passwordLabel;
-GtkWidget *plaintextField;
-GtkWidget *ciphertextField;
+//Generic widgets (multiple use pointers
+GtkWidget *win;
+GtkWidget *table;
+GtkWidget *label;
+GtkWidget *hbox;
+GtkWidget *button;
+GtkWidget *dialog;
+
+GtkWidget *inputFilenameEntry;
+
+GtkWidget *outputFilenameEntry;
+
 GtkWidget *passwordEntry;
-GtkWidget *okButton;
-GtkWidget *deencryptHbox; // deencryptHbox= de-encryptHbox
+GtkWidget *passwordVerifyEntry;
+
 GtkWidget *decryptRadioButton;
 GtkWidget *encryptRadioButton;
 
+GtkWidget *aesRadioButton;
+GtkWidget *twofishRadioButton;
+GtkWidget *serpentRadioButton;
 
-static void crypt(GtkWidget *wid, gpointer data)
+GtkWidget *okButton;
+//Other variables
+
+static void openFileButtonClicked(GtkWidget *wid, gpointer data)
 {
-    ///Hash password to get appropriate key length
-    unsigned char hashedPw[32];
-    char* pw;
-    hash_state *md;
-    sha256_init(md);
-    pw = const_cast<char*>(gtk_entry_get_text(GTK_ENTRY(passwordEntry)));
-    sha256_process(md, pw, strlen(pw));
-    sha256_done(md, hashedPw);
-    ///Setup cipher
-    symmetric_key *twofishKey;
-    unsigned char* input = gtk_entry_get_text(GTK_ENTRY(plaintextField));
-    unsigned char* output = (unsigned char*) malloc(strlen(input)+1);
-    twofish_setup(hashedPw, 32, 16, twofishKey);
-    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(encryptRadioButton)))
-    {
-        twofish_ecb_encrypt(input, output, twofishKey);
-    }
-    else //Decrypt
-    {
-        twofish_ecb_decrypt(input, output, twofishKey);
-    }
-    gtk_entry_set_text(GTK_ENTRY(ciphertextEntry), output);
-    free(output);
+	switch(GPOINTER_TO_INT(data))
+		{
+			case FS_MODE_INPUT: {
+								dialog = gtk_file_chooser_dialog_new (_("Select output file"),
+											       GTK_WINDOW(win),
+											      GTK_FILE_CHOOSER_ACTION_OPEN,
+											      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+											      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+											      NULL);
+								if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+									{
+									    gtk_entry_set_text(GTK_ENTRY(inputFilenameEntry), gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog)));
+									}
+								break;
+							     }
+			case FS_MODE_OUTPUT:
+							     {
+								dialog = gtk_file_chooser_dialog_new ( _("Select output file"),
+											      GTK_WINDOW(win),
+											      GTK_FILE_CHOOSER_ACTION_SAVE,
+											      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+											      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+											      NULL);
+								if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+									{
+									    gtk_entry_set_text(GTK_ENTRY(outputFilenameEntry), gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog)));
+									}
+								break;
+							     }
+			default: break;
+		}
+	gtk_widget_destroy (dialog);
+}
+
+static void encrypt(const char *inputFilename, const char *outputFilename, const char*password)
+{
+
+}
+
+static void okButtonClicked(GtkWidget *wid, gpointer data)
+{
+	//Init variables
+	static FILE* files[2]; //files[0] = input file; files[1] = output file;
+	struct stat statbuf;
+	char *inputFilename = gtk_entry_get_text(GTK_ENTRY(inputFilenameEntry));
+	char *outputFilename = gtk_entry_get_text(GTK_ENTRY(outputFilenameEntry));
+	char *password = gtk_entry_get_text(GTK_ENTRY(passwordEntry));
+	char *passwordVerification = gtk_entry_get_text(GTK_ENTRY(outputFilenameEntry));
+	///Check if passphrases match
+	if(strcmp(password, passwordVerification) != 0)
+		{
+			dialog = gtk_message_dialog_new (GTK_WINDOW(win),
+													  GTK_DIALOG_DESTROY_WITH_PARENT,
+													  GTK_MESSAGE_ERROR,
+													  GTK_BUTTONS_CLOSE,
+													  _("Passwords do not match!"));
+			gtk_entry_set_text(GTK_ENTRY(passwordVerifyEntry), "");
+			gtk_widget_destroy(dialog);
+			return;
+		}
+	///Check if input file exists, if not show a message and return
+	if(!stat(inputFilename, &statbuf))
+		{
+			 dialog = gtk_message_dialog_new (GTK_WINDOW(win),
+												  GTK_DIALOG_DESTROY_WITH_PARENT,
+												  GTK_MESSAGE_ERROR,
+												  GTK_BUTTONS_CLOSE,
+												  _("File does not exist '%s'"),
+												  inputFilename);
+			gtk_widget_destroy(dialog);
+			return;
+		}
+	if(!stat(inputFilename, &statbuf))
+		{
+			 dialog = gtk_message_dialog_new (GTK_WINDOW(win),
+												  GTK_DIALOG_DESTROY_WITH_PARENT,
+												  GTK_MESSAGE_ERROR,
+												  GTK_BUTTONS_CLOSE,
+												  _("File does not exist '%s'"),
+												  inputFilename);
+			gtk_widget_destroy(dialog);
+			return;
+		}
+	//Get operation modes and process requested operation
+	bool decrypt = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(decryptRadioButton));
+	files[0] = fopen(inputFilename, "r");
+	files[1] = fopen(outputFilename, "w");
+	//Initialize ncrypt
+	initialize_options();
+	if(decrypt)
+		{
+
+		}
+	else{
+
+	       }
+	fclose(files[0]);
+	fclose(files[1]);
+}
 
 int main (int argc, char *argv[])
 {
   gtk_init (&argc, &argv);
 
+  win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  table = gtk_table_new(TAB_ROWS, TAB_COLS, false);
+
   //Set some parameters
   gtk_window_set_title (GTK_WINDOW (win), _("GtkCrypter"));
+  gtk_container_set_border_width (GTK_CONTAINER (win), WINDOW_SPACING);
   gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_CENTER);
+  gtk_window_set_resizable(GTK_WINDOW (win), false);
   gtk_widget_realize (win);
   gtk_table_set_row_spacings(GTK_TABLE(table), ROW_SPACING);
   gtk_table_set_col_spacings(GTK_TABLE(table), COL_SPACING);
   g_signal_connect (win, "destroy", gtk_main_quit, NULL);
 
   ///Init main widgets
-  plaintextLabel = gtk_label_new(_("Plaintext:"));
-    gtk_table_attach_defaults(GTK_TABLE(table), plaintextLabel, 0, 1, 0, 1);
-  plaintextField =gtk_text_view_new();
-    gtk_table_attach_defaults(GTK_TABLE(table), plaintextField, 1, 2, 0, 1);
-  ciphertextLabel = gtk_entry_new(_("Ciphertext:"));
-    gtk_table_attach_defaults(GTK_TABLE(table), ciphertextLabel, 0, 1, 1, 2);
-  ciphertextField = gtk_entry_new();
-    gtk_table_attach_defaults(GTK_TABLE(table), ciphertextField, 1, 2, 1, 2);
-  passwordLabel = gtk_label_new(_("Password"));
-    gtk_table_attach_defaults(GTK_TABLE(table), passwordLabel, 0, 1, 2, 3);
+  //Init input file label and field
+  label = gtk_label_new(_("Input file:"));
+    gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 0, 1);
+  hbox = gtk_hbox_new(false, 2);
+   button = gtk_button_new_with_label(_("Open"));
+    gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(openFileButtonClicked), GINT_TO_POINTER(FS_MODE_INPUT));
+   inputFilenameEntry = gtk_entry_new();
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), inputFilenameEntry);
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), button);
+    gtk_table_attach_defaults(GTK_TABLE(table), hbox, 1, 2, 0, 1);
+  //Init output file label and field
+  label = gtk_label_new(_("Output file:"));
+    gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 1, 2);
+  hbox = gtk_hbox_new(false, 2);
+   button = gtk_button_new_with_label(_("Open"));
+     gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(openFileButtonClicked), GINT_TO_POINTER(FS_MODE_OUTPUT));
+   outputFilenameEntry = gtk_entry_new();
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), outputFilenameEntry);
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), button);
+    gtk_table_attach_defaults(GTK_TABLE(table), hbox, 1, 2, 1, 2);
+  //Init password label and field
+  label = gtk_label_new(_("Password:"));
+    gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 2, 3);
   passwordEntry = gtk_entry_new();
     gtk_entry_set_visibility(GTK_ENTRY(passwordEntry), false);
     gtk_table_attach_defaults(GTK_TABLE(table), passwordEntry, 1, 2, 2, 3);
-  okButton = gtk_button_new_with_label(_("OK"));
-    gtk_table_attach_defaults(GTK_TABLE(table), okButton, 0, 1, 3, 4);
-    gtk_signal_connect(GTK_OBJECT(okButton), "clicked", GTK_SIGNAL_FUNC(crypt), NULL);
-  deencryptHbox = gtk_hbox_new(false, 3);
+  //Init password verification label and field
+  label = gtk_label_new(_("Password again:"));
+    gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 3, 4);
+  passwordVerifyEntry = gtk_entry_new();
+    gtk_entry_set_visibility(GTK_ENTRY(passwordVerifyEntry), false);
+    gtk_table_attach_defaults(GTK_TABLE(table), passwordVerifyEntry, 1, 2, 3, 4);
+  //Init widgets to choose mode (encrypt or decrypt)
+  label = gtk_label_new(_("Operation:"));
+   gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 3, 4);
+  hbox = gtk_hbox_new(false, 2);
   encryptRadioButton = gtk_radio_button_new_with_label(NULL, _("Encrypt"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(encryptRadioButton), true);
-    gtk_box_pack_start_defaults(GTK_BOX(deencryptHbox), encryptRadioButton);
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), encryptRadioButton);
   decryptRadioButton = gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(encryptRadioButton)), _("Decrypt"));
-    gtk_box_pack_start_defaults(GTK_BOX(deencryptHbox), decryptRadioButton);
-   gtk_widget_show_all(deencryptHbox);
-   gtk_table_attach_defaults(GTK_TABLE(table), deencryptHbox, 1, 2, 3, 4);
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), decryptRadioButton);
+   gtk_widget_show_all(hbox);
+   gtk_table_attach_defaults(GTK_TABLE(table), hbox, 1, 2, 4, 5);
+  //Init widgets to choose algorithm (AES/Twofish/Serpent)
+  label = gtk_label_new(_("Algorithm:"));
+   gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 5, 6);
+  hbox = gtk_hbox_new(false, 3);
+  aesRadioButton = gtk_radio_button_new_with_label(NULL, _("AES"));
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), aesRadioButton);
+  twofishRadioButton = gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(aesRadioButton)), _("Twofish"));
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), twofishRadioButton);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(twofishRadioButton), true);
+  serpentRadioButton = gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(twofishRadioButton)), _("Serpent"));
+    gtk_box_pack_start_defaults(GTK_BOX(hbox), serpentRadioButton);
+   gtk_widget_show_all(hbox);
+   gtk_table_attach_defaults(GTK_TABLE(table), hbox, 1, 2, 5, 6);
+   //Init OK button
+  okButton = gtk_button_new_with_label(_("OK"));
+    gtk_table_attach_defaults(GTK_TABLE(table), okButton, 0, 2, 6, 7);
+    gtk_signal_connect(GTK_OBJECT(okButton), "clicked", GTK_SIGNAL_FUNC(okButtonClicked), NULL);
 
   /* Enter the main loop */
   gtk_container_add (GTK_CONTAINER (win), table);
   gtk_widget_show_all(win);
-  gtk_widget_show_all(deencryptHbox);
+  gtk_widget_show_all(hbox);
   gtk_main ();
   return 0;
 }
