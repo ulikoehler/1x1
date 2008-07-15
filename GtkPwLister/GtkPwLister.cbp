@@ -39,6 +39,23 @@
 		<Unit filename="main.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="pw_phonemes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pw_rand.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pwgen.h" />
+		<Unit filename="randnum.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sha1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sha1.h" />
+		<Unit filename="sha1num.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
