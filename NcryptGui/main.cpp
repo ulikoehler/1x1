@@ -148,7 +148,7 @@ static void okButtonClicked(GtkWidget *wid, gpointer data)
 			return;
 		}
     ///Check if output file exists, if yes ask the user if we should overwrite it
-	if(!stat(inputFilename, &statbuf))
+	if(!stat(outputFilename, &statbuf))
 		{
 			 dialog = gtk_message_dialog_new (GTK_WINDOW(win),
 												  GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -221,7 +221,7 @@ int main (int argc, char *argv[])
     gtk_table_attach_defaults(GTK_TABLE(table), passwordVerifyEntry, 1, 2, 3, 4);
   //Init widgets to choose mode (encrypt or decrypt)
   label = gtk_label_new(_("Operation:"));
-   gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 3, 4);
+   gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 4, 5);
   hbox = gtk_hbox_new(false, 2);
   encryptRadioButton = gtk_radio_button_new_with_label(NULL, _("Encrypt"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(encryptRadioButton), true);
