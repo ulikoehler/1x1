@@ -1,8 +1,9 @@
-#include <stdlib.h>
+#include <stdio.h>
 #include <gtk/gtk.h>
 #include <libintl.h>
 #include <vector>
 #include <boost/lexical_cast.hpp>
+#include <boost/foreach.hpp>
 using namespace boost;
 using namespace std;
 #define _(x) gettext(x)
@@ -13,6 +14,8 @@ GtkWidget *hbox;
 GtkWidget *label;
 GtkWidget *addEntry;
 GtkWidget *addButton;
+GtkWidget *datasetLabel; //Shows how many datasets have been entered already
+GtkWidget *clearButton;
 GtkWidget *algorithmComboBox;
 GtkWidget *nEntry;
 GtkWidget *averageLabel;
@@ -22,11 +25,17 @@ vector<long double> nums;
 
 static void update(void)
 {
-    long double mean;
+    unsigned int size = nums.size();
+    long double mean = 0.0;
     switch(gtk_combo_box_get_active(GTK_COMBO_BOX(algorithmComboBox)))
     {
         case 0: //Arithmetic
             {
+                BOOST_FOREACH(long double e, nums)
+                {
+                    mean += e; //Directly using mean variable
+                }
+                mean /= size;
                 break;
             }
         case 1: //Geometric
@@ -43,7 +52,15 @@ static void update(void)
             }
         default: break;
     }
+    gtk_label_set_text(GTK_LABEL(datasetLabel), lexical_cast<string>(size).c_str());
     gtk_label_set_text(GTK_LABEL(averageLabel), lexical_cast<string>(mean).c_str());
+}
+
+static void clearData(void)
+{
+    nums.clear();
+    gtk_label_set_text(GTK_LABEL(datasetLabel), "0");
+    gtk_label_set_text(GTK_LABEL(averageLabel), "");
 }
 
 static void processAlgorithmChange(void)
@@ -66,12 +83,12 @@ static void processAlgorithmChange(void)
 
 static void addNumber(void)
 {
-
+    nums.push_back(lexical_cast<long double>(gtk_entry_get_text(GTK_ENTRY(addEntry))));
+    update();
 }
 
 int main (int argc, char *argv[])
 {
-  nums.resize(20);//Improves performance
   /* Initialize GTK+ */
   g_log_set_handler ("Gtk", G_LOG_LEVEL_WARNING, (GLogFunc) gtk_false, NULL);
   gtk_init (&argc, &argv);
@@ -93,8 +110,15 @@ int main (int argc, char *argv[])
   addEntry = gtk_entry_new();
    gtk_box_pack_start_defaults(GTK_BOX(hbox), addEntry);
   addButton = gtk_button_new_with_label(_("Add"));
-   gtk_box_pack_start_defaults(GTK_BOX(hbox), addButton);
    g_signal_connect (addButton, "clicked", addNumber, NULL);
+   gtk_box_pack_start_defaults(GTK_BOX(hbox), addButton);
+  label = gtk_label_new(_("Datasets:"));
+   gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
+  datasetLabel = gtk_label_new("0");
+   gtk_box_pack_start_defaults(GTK_BOX(hbox), datasetLabel);
+  clearButton = gtk_button_new_with_label(_("Clear"));
+   g_signal_connect (clearButton, "clicked", clearData, NULL);
+   gtk_box_pack_start_defaults(GTK_BOX(hbox), clearButton);
   gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
   //Row to choose algorithm (and parameters)
   hbox = gtk_hbox_new(false, 5);
@@ -113,6 +137,7 @@ int main (int argc, char *argv[])
   nEntry = gtk_entry_new();
    gtk_entry_set_text(GTK_ENTRY(nEntry), "2");
    gtk_entry_set_width_chars(GTK_ENTRY(nEntry), 3);
+   gtk_entry_set_editable(GTK_ENTRY(nEntry), false);
    gtk_box_pack_start_defaults(GTK_BOX(hbox), nEntry);
   gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
   //Result row
