@@ -5,6 +5,7 @@
 #include <vector>
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
+#include <setjmp.h>
 using namespace boost;
 using namespace std;
 #define _(x) gettext(x)
@@ -18,6 +19,7 @@ GtkWidget *addEntry;
 GtkWidget *addButton;
 GtkWidget *datasetLabel; //Shows how many datasets have been entered already
 GtkWidget *clearButton;
+GtkWidget *showButton;
 GtkWidget *algorithmComboBox;
 GtkWidget *nSpinButton;
 GtkWidget *averageLabel;
@@ -79,6 +81,46 @@ static void update(void)
         }
 }
 
+static void deleteDataset(GtkWidget *wid, gpointer data)
+{
+    nums.erase(nums.begin()+(GPOINTER_TO_INT(data)-1));
+}
+
+static void showData(void)
+{
+    jm
+    GtkWidget *listWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+     gtk_container_set_border_width (GTK_CONTAINER (listWindow), 8);
+     gtk_window_set_title (GTK_WINDOW (listWindow), _("Averator Data"));
+     gtk_window_set_position (GTK_WINDOW (listWindow), GTK_WIN_POS_CENTER);
+     gtk_widget_show_all(listWindow);
+    GtkWidget *listTable;
+    GtkWidget *listLabel;
+    GtkWidget *listDeleteButton;
+    GtkWidget *listHbox;
+    unsigned int size = nums.size();
+    short linesPerRow = floor(sqrt(size));
+    listTable = gtk_table_new(10, 10, false);
+      gtk_table_set_row_spacings(GTK_TABLE(listTable), 3);
+      gtk_table_set_col_spacings(GTK_TABLE(listTable), 3);
+    short colIndex;
+    short rowIndex;
+    for(unsigned int i = 0; i < size; i++)
+    {
+        listHbox = gtk_hbox_new(false, 4);
+         listLabel = gtk_label_new(lexical_cast<string>(nums[i]).c_str());
+          gtk_box_pack_start_defaults(GTK_BOX(listHbox), listLabel);
+         listDeleteButton = gtk_button_new_with_label(_("Delete"));
+          g_signal_connect(listDeleteButton, "clicked", G_CALLBACK(deleteDataset), GINT_TO_POINTER(i));
+          gtk_box_pack_start_defaults(GTK_BOX(listHbox), listDeleteButton);
+        colIndex = i%linesPerRow;
+        rowIndex = floor(i/linesPerRow);
+        gtk_table_attach_defaults(GTK_TABLE(listTable), listHbox, colIndex, colIndex+1, rowIndex, rowIndex+1);
+    }
+    gtk_container_add (GTK_CONTAINER(listWindow), listTable);
+    gtk_widget_show_all(listWindow);
+}
+
 static void clearData(void)
 {
     nums.clear();
@@ -134,6 +176,9 @@ int main (int argc, char *argv[])
   clearButton = gtk_button_new_with_label(_("Clear"));
    g_signal_connect (clearButton, "clicked", clearData, NULL);
    gtk_box_pack_start_defaults(GTK_BOX(hbox), clearButton);
+  showButton = gtk_button_new_with_label(_("Show"));
+   g_signal_connect (showButton, "clicked", showData, NULL);
+   gtk_box_pack_start_defaults(GTK_BOX(hbox), showButton);
   gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
   //Row to choose algorithm (and parameters)
   hbox = gtk_hbox_new(false, 5);
@@ -149,7 +194,7 @@ int main (int argc, char *argv[])
    gtk_box_pack_start_defaults(GTK_BOX(hbox), algorithmComboBox);
   label = gtk_label_new(_("n:"));
    gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
-  nSpinButton = gtk_spin_button_new_with_range(2, 9999, 1.0);
+  nSpinButton = gtk_spin_button_new_with_range(2, 999999, 1.0);
    gtk_spin_button_set_value(GTK_SPIN_BUTTON(nSpinButton), 2);
    g_signal_connect (nSpinButton, "change-value", update, NULL);
    gtk_box_pack_start_defaults(GTK_BOX(hbox), nSpinButton);
