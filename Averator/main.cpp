@@ -3,14 +3,15 @@
 #include <gtk/gtk.h>
 #include <libintl.h>
 #include <vector>
+#include <setjmp.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
-#include <setjmp.h>
 using namespace boost;
 using namespace std;
 #define _(x) gettext(x)
 #define root(x,n) pow(x, 1.0/n)
 
+//Main window widgets
 GtkWidget *win;
 GtkWidget *vbox;
 GtkWidget *hbox;
@@ -24,9 +25,21 @@ GtkWidget *algorithmComboBox;
 GtkWidget *nSpinButton;
 GtkWidget *averageLabel;
 
+//List window widgets
+GtkWidget *listWindow;
+GtkWidget *
+
 vector<long double> nums;
 
+///Function prototypes
+static void update(void);
+static void deleteDataset(GtkWidget *wid, gpointer data);
+static void deleteDataset(GtkWidget *wid, gpointer data);
+static void showData(void);
+static void clearData(void);
+static void addNumber(void);
 
+///Update data in GUI, called especially to show the mean value
 static void update(void)
 {
     unsigned int size = nums.size();
@@ -81,46 +94,69 @@ static void update(void)
         }
 }
 
+///Delete dataset, callback function used by showData()
 static void deleteDataset(GtkWidget *wid, gpointer data)
 {
-    nums.erase(nums.begin()+(GPOINTER_TO_INT(data)-1));
+    nums.erase(nums.begin()+(GPOINTER_TO_INT(data)-1));;
+    ///Remove 'deleted' hbox from the main hbox
+    //Get pointers to widgets
+    GtkWidget *listMainHbox = (GtkWidget*) g_object_get_data(G_OBJECT(wid), "mainHbox");
+    GtkWidget *listHbox = (GtkWidget*) g_object_get_data(G_OBJECT(wid), "hbox");
+    gtk_container_remove(GTK_CONTAINER(listMainHbox), listHbox);
+    ///...and show
+    showData();
 }
 
+///Show window with datasets and buttons to delete single values
 static void showData(void)
 {
-    jm
     GtkWidget *listWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
      gtk_container_set_border_width (GTK_CONTAINER (listWindow), 8);
      gtk_window_set_title (GTK_WINDOW (listWindow), _("Averator Data"));
      gtk_window_set_position (GTK_WINDOW (listWindow), GTK_WIN_POS_CENTER);
+     //gtk_window_set_geometry_hints(GTK_WINDOW(listWindow), listWindow, &quadraticGeometry, GDK_HINT_ASPECT); //Make window (nearly) quadratic
      gtk_widget_show_all(listWindow);
-    GtkWidget *listTable;
+    GtkWidget *listMainHbox;;
     GtkWidget *listLabel;
     GtkWidget *listDeleteButton;
     GtkWidget *listHbox;
     unsigned int size = nums.size();
+    ///If we don't have data inform the user about it (via message dialog) and return.
+    if(size == 0)
+    {
+        GtkWidget *msgDialog = gtk_message_dialog_new(GTK_WINDOW(listWindow), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("No data available!"));
+        gtk_dialog_run(GTK_DIALOG(msgDialog));
+        gtk_widget_destroy(msgDialog);
+        return;
+    }
+    ///If we have data show it
     short linesPerRow = floor(sqrt(size));
-    listTable = gtk_table_new(10, 10, false);
-      gtk_table_set_row_spacings(GTK_TABLE(listTable), 3);
-      gtk_table_set_col_spacings(GTK_TABLE(listTable), 3);
+    listMainHbox = gtk_hbox_new(false, 3);
     short colIndex;
     short rowIndex;
     for(unsigned int i = 0; i < size; i++)
     {
+        ///Init hbox to snap widgets in
         listHbox = gtk_hbox_new(false, 4);
          listLabel = gtk_label_new(lexical_cast<string>(nums[i]).c_str());
           gtk_box_pack_start_defaults(GTK_BOX(listHbox), listLabel);
-         listDeleteButton = gtk_button_new_with_label(_("Delete"));
-          g_signal_connect(listDeleteButton, "clicked", G_CALLBACK(deleteDataset), GINT_TO_POINTER(i));
+        ///Init button to delete single datasets
+        listDeleteButton = gtk_button_new_with_label(_("Delete"));
           gtk_box_pack_start_defaults(GTK_BOX(listHbox), listDeleteButton);
+          //Attach widgets to the button (used by deleteDataset(...)
+          g_object_set_data(G_OBJECT(listDeleteButton), "hbox", listHbox);
+          g_object_set_data(G_OBJECT(listDeleteButton), "mainHbox", listMainHbox);
+          g_signal_connect(listDeleteButton, "clicked", G_CALLBACK(deleteDataset), GINT_TO_POINTER(i));
+        ///Calculate row and column index and attach listHbox to table
         colIndex = i%linesPerRow;
         rowIndex = floor(i/linesPerRow);
-        gtk_table_attach_defaults(GTK_TABLE(listTable), listHbox, colIndex, colIndex+1, rowIndex, rowIndex+1);
+        gtk_box_pack_start_defaults(GTK_BOX(listMainHbox), listHbox);
     }
-    gtk_container_add (GTK_CONTAINER(listWindow), listTable);
+    gtk_container_add (GTK_CONTAINER(listWindow), listMainHbox);
     gtk_widget_show_all(listWindow);
 }
 
+///Remove all data from the container
 static void clearData(void)
 {
     nums.clear();
@@ -128,6 +164,7 @@ static void clearData(void)
     gtk_label_set_text(GTK_LABEL(averageLabel), "");
 }
 
+///Inserts a single value in the vector
 static void addNumber(void)
 {
 
