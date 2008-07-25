@@ -29,6 +29,8 @@ GtkWidget *algorithmComboBox;
 GtkWidget *nSpinButton;
 GtkWidget *averageLabel;
 
+GtkWidget *messageDialog;
+
 //List window widgets
 GtkWidget *listWindow;
 GtkWidget *listMainHbox;
@@ -43,7 +45,7 @@ static void updateMainWindow(void);
 static void deleteDataset(GtkWidget *wid, gpointer data);
 static void hideListWindow(void);
 static void showListWindow(void);
-static void updateListWindow(GtkWidget *wid, gpointer data);
+static void updateListWindow(void);
 static void clearData(void);
 static void addNumber(void);
 
@@ -136,12 +138,13 @@ static void initListWindow()
     GtkCellRenderer *valueRenderer = gtk_cell_renderer_text_new();
     GtkCellRenderer *weightRenderer = gtk_cell_renderer_text_new();
 
-    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW(listView), -1, _("Value"), valueRenderer, NULL);
-    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW(listView), -1, _("Weight"), weightRenderer, NULL);
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW(listView), -1, _("Value"), valueRenderer, "text", NULL);
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW(listView), -1, _("Weight"), weightRenderer, "text", NULL);
+
+    updateListWindow();
 
     gtk_box_pack_start_defaults(GTK_BOX(listMainHbox), listView);
-    gtk_container_add (GTK_CONTAINER (win), listMainHbox);
-    gtk_widget_show_all(win);
+    gtk_container_add (GTK_CONTAINER(listWindow), listMainHbox);
 }
 
 ///Show window with datasets and buttons to delete single values
@@ -151,12 +154,14 @@ static void showListWindow(void)
 }
 
 ///Updates the list in the main window.
-static void updateListWindow(GtkWidget *wid, gpointer data)
+static void updateListWindow()
 {
     GtkListStore *store;
     GtkTreeIter iter;
 
-    store = gtk_list_store_new (2, G_TYPE_DOUBLE, G_TYPE_DOUBLE);
+    gtk_tree_view_set_model (GTK_TREE_VIEW (listView), NULL);
+
+    store = gtk_list_store_new(2, G_TYPE_DOUBLE, G_TYPE_FLOAT);
 
     //Fill treeview with data
     std::list<std::pair<double, float> >::iterator it = nums.begin();
@@ -166,7 +171,6 @@ static void updateListWindow(GtkWidget *wid, gpointer data)
             gtk_list_store_set (store, &iter, 0, it->first, 1, it->second, -1);
             it++; //Select next element in container referred by iterator
         }
-
     gtk_tree_view_set_model (GTK_TREE_VIEW (listView), GTK_TREE_MODEL(store));
 }
 ///Remove all data from the container
@@ -187,17 +191,27 @@ static void addNumber(void)
             value[v] = '.';
             gtk_entry_set_text(GTK_ENTRY(addEntry), value.c_str());
         }
-    nums.push_back(std::make_pair(lexical_cast<double>(value), gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(weightSpinButton))));
+    try
+        {
+            nums.push_back(std::make_pair(lexical_cast<double>(value), gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(weightSpinButton))));
+        }
+    catch(bad_lexical_cast &)
+        {
+            messageDialog = gtk_message_dialog_new (GTK_WINDOW(win), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _("Incorrect value!"));
+            gtk_dialog_run(GTK_DIALOG (messageDialog));
+            gtk_widget_destroy(messageDialog);
+        }
     gtk_widget_grab_focus(addEntry);
     updateMainWindow();
+    updateListWindow();
 }
 
 int main (int argc, char *argv[])
 {
+  gtk_init (&argc, &argv);
   initListWindow();
   /* Initialize GTK+ */
   g_log_set_handler ("Gtk", G_LOG_LEVEL_WARNING, (GLogFunc) gtk_false, NULL);
-  gtk_init (&argc, &argv);
   g_log_set_handler ("Gtk", G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
   /* Create the main window */
