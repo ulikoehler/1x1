@@ -6,6 +6,8 @@
 
 package jcrypter;
 
+import gnu.crypto.cipher.CipherFactory;
+import gnu.crypto.cipher.IBlockCipher;
 import gnu.crypto.hash.HashFactory;
 import gnu.crypto.hash.IMessageDigest;
 import gnu.crypto.mode.*;
@@ -45,9 +47,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         ciphertextScrollPane = new javax.swing.JScrollPane();
         ciphertextField = new javax.swing.JTextArea();
         okButton = new javax.swing.JButton();
-        algorithmComboBox = new javax.swing.JComboBox();
         decryptCheckbox = new javax.swing.JCheckBox();
-        modeComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +68,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         ciphertextLabel.setText("Output:");
 
         ciphertextField.setColumns(20);
+        ciphertextField.setEditable(false);
         ciphertextField.setLineWrap(true);
         ciphertextField.setRows(5);
         ciphertextScrollPane.setViewportView(ciphertextField);
@@ -79,16 +80,12 @@ public class JCrypterFrame extends javax.swing.JFrame {
             }
         });
 
-        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Serpent", "Twofish", "AES" }));
-
         decryptCheckbox.setText("Decrypt");
         decryptCheckbox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decryptCheckboxActionPerformed(evt);
             }
         });
-
-        modeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ECB", "CBC", "ICM", "OFB", "CTR" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,24 +97,20 @@ public class JCrypterFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
+                        .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(passwordLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ciphertextLabel)
                         .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(modeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(decryptCheckbox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
-                            .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
+                            .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -133,8 +126,6 @@ public class JCrypterFrame extends javax.swing.JFrame {
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(modeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(decryptCheckbox)
                     .addComponent(okButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,10 +137,6 @@ public class JCrypterFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void decryptCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptCheckboxActionPerformed
         // TODO add your handling code here:
@@ -170,40 +157,24 @@ public class JCrypterFrame extends javax.swing.JFrame {
          String algorithm = null;
          String mode = null;
          char[] password = passwordField.getPassword();
-         short cbsize = 0; //Cipher block size
          StringBuilder ctcb; //Ciphertext StringBuilder
          SecureRandom random = new SecureRandom();
-         String input = plaintextTextArea.getText();
+         String input = null;
          boolean decrypt = decryptCheckbox.isSelected();
+        //Base64-decode if neccessary
+         if(decrypt){input = new String(Base64.decode(plaintextTextArea.getText()));}
+         else {input = plaintextTextArea.getText();}
         //Get data
-         //Set algorithm and mode variables
-         switch(algorithmComboBox.getSelectedIndex()) //Switch algorithm
-         {
-             case 0: algorithm = "Serpent";cbsize = 32;break;
-             case 1: algorithm = "Twofish";cbsize = 16;break;
-             case 2: algorithm = "AES";cbsize = 16;break;
-         }
-         switch(modeComboBox.getSelectedIndex()) //Switch mode
-         {
-             case 0: mode = "Serpent";break;
-             case 1: mode = "Twofish";break;
-             case 2: mode = "AES";break;
-         }
-        //Init IV
-         byte[] iv = new byte[cbsize];
         //Init GnuCrypto variables
-         IMode imode = ModeFactory.getInstance(mode, algorithm, cbsize);
+         IBlockCipher cipher = CipherFactory.getInstance("Twofish");
          Map attributes = new HashMap();
-         attributes.put(IMode.KEY_MATERIAL, sha256sum(password));
-         attributes.put(IMode.IV, iv);
-         attributes.put(IMode.CIPHER_BLOCK_SIZE, new Integer(cbsize));
-         try{imode.init(attributes);}
+         attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(16));
+         attributes.put(IBlockCipher.KEY_MATERIAL, sha256sum(password));
+         //Init cipher with data from the map
+         try{cipher.init(attributes);}
            catch (InvalidKeyException ex) {Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);}
            catch (IllegalStateException ex) {Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);}
-         int bs = imode.currentBlockSize(); //Retrieve our current block size
-        //Decide whether we have to encrypt or to decrypt
-         if(decrypt){attributes.put(IMode.STATE, new Integer(IMode.DECRYPTION));}
-         else{attributes.put(IMode.STATE, new Integer(IMode.ENCRYPTION));}
+         int bs = cipher.currentBlockSize(); //Retrieve our current block size
         //Fill up plaintext
          IPad padding = PadFactory.getInstance("PKCS7");
          padding.init(bs);
@@ -216,17 +187,33 @@ public class JCrypterFrame extends javax.swing.JFrame {
               try{endOffset = padding.unpad(inputBytes, 0, input.length());}
                  catch(WrongPaddingException ex){Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);}
               //Get the right substring from the padding
-              paddedInput = new String(inputBytes).substring(0, inputBytes.length - endOffset).getBytes();
+              paddedInput = new String(inputBytes).substring(0, inputBytes.length - endOffset + 1).getBytes();
              }
           else{paddedInput = padding.pad(inputBytes, 0, input.length());}
-        //Now crypt
+        //Now (en/de)crypt
         byte[] output = new byte[paddedInput.length];
-          for(int i = 0;i < paddedInput.length; i += bs)
-              {
-                imode.update(paddedInput, i, output, i);
-              }
-        ciphertextField.setText(new String(output));
+        if(decrypt)
+            {
+              for(int i = 0;i + bs < paddedInput.length; i += bs)
+                  {
+                    cipher.decryptBlock(paddedInput, i, output, i);
+                  }
+            }
+        else
+            {
+              for(int i = 0;i + bs < paddedInput.length; i += bs)
+                  {
+                    cipher.encryptBlock(paddedInput, i, output, i);
+                  }
+            }
+        //Base64-Encode if neccessary
+        if(!decrypt){ciphertextField.setText(Base64.encodeBytes(output));}
+        else{ciphertextField.setText(new String(output));}
     }//GEN-LAST:event_okButtonMouseClicked
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
     
     /**
      * @param args the command line arguments
@@ -240,13 +227,11 @@ public class JCrypterFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox algorithmComboBox;
     private javax.swing.JTextArea ciphertextField;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JComboBox modeComboBox;
     private javax.swing.JButton okButton;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
