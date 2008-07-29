@@ -178,6 +178,12 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 model = (SpinnerNumberModel) secondSpinner.getModel();
                     secondsLeft = model.getNumber().intValue();
                 totalSecondsLeft = secondsLeft + minutesLeft * 60 + hoursLeft * 3600;
+                //If totalSecondsLeft is 0 (no time entered), set statusLabel value to "No time left" and return
+                if(totalSecondsLeft == 0)
+                    {
+                        statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("No_time_left"));
+                        return;
+                    }
                 //Initialize status bar
                  statusBar.setMaximum(totalSecondsLeft);
                  statusBar.setValue(totalSecondsLeft);
@@ -189,7 +195,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 statusLabel.setForeground(new Color(255,0,0));
                 //Activate timer
                 timer = new Timer();
-                timer.schedule(new TimerTask() {
+                timer.schedule(new TimerTask() { //Schedule timer to call timerTick every second
                                                     public void run()
                                                         {
                                                             timerTick();
