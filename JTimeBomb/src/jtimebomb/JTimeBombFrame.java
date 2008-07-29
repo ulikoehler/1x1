@@ -51,7 +51,8 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         activateToggleButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Time Bomb");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jtimebomb/Internationalization"); // NOI18N
+        setTitle(bundle.getString("Time_Bomb")); // NOI18N
         setAlwaysOnTop(true);
         setBackground(new java.awt.Color(0, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -69,7 +70,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         statusLabel.setFont(new java.awt.Font("Gunplay", 0, 18));
         statusLabel.setForeground(new java.awt.Color(0, 255, 0));
         statusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        statusLabel.setText("Deactivated");
+        statusLabel.setText(bundle.getString("Deactivated")); // NOI18N
 
         hourSpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
         hourSpinner.setNextFocusableComponent(minuteSpinner);
@@ -90,15 +91,15 @@ public class JTimeBombFrame extends javax.swing.JFrame {
             }
         });
 
-        hourLabel.setText("Hours:");
+        hourLabel.setText(bundle.getString("Hours:")); // NOI18N
 
-        minutesLabel.setText("Minutes:");
+        minutesLabel.setText(bundle.getString("Minutes:")); // NOI18N
 
-        secondsLabel.setText("Seconds:");
+        secondsLabel.setText(bundle.getString("Seconds:")); // NOI18N
 
         statusBar.setForeground(new java.awt.Color(255, 0, 51));
 
-        activateToggleButton.setText("Activate");
+        activateToggleButton.setText(bundle.getString("Activate")); // NOI18N
         activateToggleButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 activateToggleButtonMouseClicked(evt);
@@ -130,7 +131,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                     .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(secondSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE))))
                     .addComponent(activateToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -184,7 +185,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                  String timerString = Integer.toString(hoursLeft) + ":" + Integer.toString(minutesLeft) + ":" + Integer.toString(secondsLeft);
                  timeLeftLabel.setText(timerString);
                 //Set state label value and color
-                statusLabel.setText("Activated");
+                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Activated"));
                 statusLabel.setForeground(new Color(255,0,0));
                 //Activate timer
                 timer = new Timer();
@@ -198,7 +199,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         else //Try to activate the bomb
             {
                 timer.cancel();
-                statusLabel.setText("Defused");
+                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Defused"));
                 statusLabel.setForeground(new Color(0,255,0));
             }
     }//GEN-LAST:event_activateToggleButtonMouseClicked
@@ -284,7 +285,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         if(totalSecondsLeft==0) //If bomb has detonated
             {
                 timer.cancel();
-                statusLabel.setText("Detonated");
+                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Detonated"));
                 activateToggleButton.setSelected(false);
             }
     }
