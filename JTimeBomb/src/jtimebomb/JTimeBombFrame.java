@@ -218,7 +218,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         //If seconds are less than 0 set seconds to 0 and increase minutes
         if(secondModel.getNumber().intValue() <= -1)
             {
-                //Iv the overall time is 0 (no minute to split into seconds), set seconds to 0 and return
+                //If the overall time is 0 (no minute to split into seconds), set seconds to 0 and return
                 if(minuteModel.getNumber().intValue() == 0 && hourModel.getNumber().intValue() == 0)
                     {
                         secondModel.setValue(0);
@@ -242,6 +242,12 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         //If minutes are -1, set minutes to 0 and increase hours
         if(minuteModel.getNumber().intValue() <= -1)
             {
+                //If the number of hours is null, set minutesValue to 0 and return.
+                if(hourModel.getNumber().intValue() == 0)
+                    {
+                        minuteModel.setValue(0);
+                        return;
+                    }
                 minuteModel.setValue(59);
                 hourModel.setValue(hourModel.getPreviousValue());
             }
