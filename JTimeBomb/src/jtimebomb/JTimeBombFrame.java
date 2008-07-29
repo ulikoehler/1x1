@@ -176,7 +176,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                                         {
                                                             timerTick();
                                                         }
-                                                }, 1000, totalSecondsLeft);
+                                                }, 0, 1000);
             }
         else //Try to activate the bomb
             {
@@ -213,20 +213,20 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     public void timerTick()
     {
         totalSecondsLeft--;
-        if(totalSecondsLeft==0) //If bomb has detonated
-            {
-                timer.cancel();
-                statusLabel.setText("Detonated");
-                return;
-            }
         //Calculate time left
         secondsLeft = totalSecondsLeft%60;
-        minutesLeft = (totalSecondsLeft%3600)-secondsLeft;
-        hoursLeft = ((totalSecondsLeft-secondsLeft)-minutesLeft)/3600;
+        hoursLeft = (int) Math.floor(totalSecondsLeft/3600);
+        minutesLeft = ((totalSecondsLeft%3600)-secondsLeft)/60;
         statusBar.setValue(totalSecondsLeft);
         //Initialize main (big) timer Label
         String timerString = Integer.toString(hoursLeft) + ":" + Integer.toString(minutesLeft) + ":" + Integer.toString(secondsLeft);
         timeLeftLabel.setText(timerString);
+        if(totalSecondsLeft==0) //If bomb has detonated
+            {
+                timer.cancel();
+                statusLabel.setText("Detonated");
+                activateToggleButton.setSelected(false);
+            }
     }
     
 }
