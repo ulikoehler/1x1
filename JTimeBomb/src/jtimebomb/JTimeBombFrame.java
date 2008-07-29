@@ -24,11 +24,11 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     int minutesLeft; //Not overall
     int secondsLeft; //Not overall
     Timer timer;
-    final int delay = 1000;
-    
+   
     /** Creates new form JTImeBombFrame */
     public JTimeBombFrame() {
         initComponents();
+        minuteSpinner.grabFocus();
     }
     
     /** This method is called from within the constructor to
@@ -57,29 +57,46 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusableWindowState(false);
         setForeground(java.awt.Color.black);
+        setResizable(false);
 
         timeLeftLabel.setBackground(new java.awt.Color(0, 0, 0));
         timeLeftLabel.setFont(new java.awt.Font("Gunplay", 0, 36));
         timeLeftLabel.setForeground(new java.awt.Color(255, 0, 51));
         timeLeftLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         timeLeftLabel.setText("00:00:00");
+        timeLeftLabel.setFocusable(false);
 
         statusLabel.setFont(new java.awt.Font("Gunplay", 0, 18));
         statusLabel.setForeground(new java.awt.Color(0, 255, 0));
         statusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statusLabel.setText("Deactivated");
 
-        hourSpinner.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        hourSpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
+        hourSpinner.setNextFocusableComponent(minuteSpinner);
 
-        minuteSpinner.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        minuteSpinner.setModel(new SpinnerNumberModel(0, -1, 60, 1));
+        minuteSpinner.setNextFocusableComponent(secondSpinner);
+        minuteSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                minuteSpinnerStateChanged(evt);
+            }
+        });
 
-        secondSpinner.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        secondSpinner.setModel(new SpinnerNumberModel(0, -1, 60, 1));
+        secondSpinner.setNextFocusableComponent(hourSpinner);
+        secondSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                secondSpinnerStateChanged(evt);
+            }
+        });
 
         hourLabel.setText("Hours:");
 
         minutesLabel.setText("Minutes:");
 
         secondsLabel.setText("Seconds:");
+
+        statusBar.setForeground(new java.awt.Color(255, 0, 51));
 
         activateToggleButton.setText("Activate");
         activateToggleButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -101,7 +118,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                             .addComponent(statusBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                            .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -113,7 +130,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                     .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(secondSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))))
                     .addComponent(activateToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -141,7 +158,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                         .addComponent(statusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(activateToggleButton)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -185,6 +202,49 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 statusLabel.setForeground(new Color(0,255,0));
             }
     }//GEN-LAST:event_activateToggleButtonMouseClicked
+
+    private void secondSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_secondSpinnerStateChanged
+        //If seconds are 60, set seconds to 0 and increase minutes
+        SpinnerNumberModel secondModel = (SpinnerNumberModel) secondSpinner.getModel();
+        SpinnerNumberModel minuteModel = (SpinnerNumberModel) minuteSpinner.getModel();
+        SpinnerNumberModel hourModel = (SpinnerNumberModel) hourSpinner.getModel();
+        if(secondModel.getNumber().intValue() >= 60)
+            {
+                secondModel.setValue(0);
+                minuteModel.setValue(minuteModel.getNextValue());
+                return; //Value cannot be greater than 60 and less than 0 at one time
+            }
+        //If seconds are less than 0 set seconds to 0 and increase minutes
+        if(secondModel.getNumber().intValue() <= -1)
+            {
+                //Iv the overall time is 0 (no minute to split into seconds), set seconds to 0 and return
+                if(minuteModel.getNumber().intValue() == 0 && hourModel.getNumber().intValue() == 0)
+                    {
+                        secondModel.setValue(0);
+                        return;
+                    }
+                secondModel.setValue(59);
+                minuteModel.setValue(minuteModel.getPreviousValue());
+            }
+    }//GEN-LAST:event_secondSpinnerStateChanged
+
+    private void minuteSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minuteSpinnerStateChanged
+        //If seconds are 60, set seconds to 0 and increase minutes
+        SpinnerNumberModel minuteModel = (SpinnerNumberModel) minuteSpinner.getModel();
+        SpinnerNumberModel hourModel = (SpinnerNumberModel) hourSpinner.getModel();
+        if(minuteModel.getNumber().intValue() >= 60)
+            {
+                minuteModel.setValue(0);
+                hourModel.setValue(hourModel.getNextValue());
+                return; //Value cannot be greater than 60 and less than 0 at one time
+            }
+        //If minutes are -1, set minutes to 0 and increase hours
+        if(minuteModel.getNumber().intValue() <= -1)
+            {
+                minuteModel.setValue(59);
+                hourModel.setValue(hourModel.getPreviousValue());
+            }
+    }//GEN-LAST:event_minuteSpinnerStateChanged
     
     /**
      * @param args the command line arguments
