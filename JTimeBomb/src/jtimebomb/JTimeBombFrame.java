@@ -7,8 +7,8 @@ package jtimebomb;
  */
 import java.awt.Color;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PushbackInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DecimalFormat;
@@ -51,13 +51,6 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         model = (SpinnerNumberModel) secondSpinner.getModel();
             secondsLeft = model.getNumber().intValue(); //+1: Start countdown at exactly the selected time and not at one second below
         totalSecondsLeft = secondsLeft + minutesLeft * 60 + hoursLeft * 3600 + 1; //+1: Start countdown at exactly the selected time and not at one second below
-        //If totalSecondsLeft is 0 (no time entered), set statusLabel value to "No time left" and return
-        if(totalSecondsLeft == 0)
-            {
-                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("No_time_left"));
-                activateToggleButton.setSelected(false);
-                return;
-            }
         //Initialize status bar
          statusBar.setMaximum(totalSecondsLeft);
          statusBar.setValue(totalSecondsLeft);
@@ -118,7 +111,6 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jtimebomb/i18n"); // NOI18N
         setTitle(bundle.getString("Time_Bomb")); // NOI18N
-        setAlwaysOnTop(true);
         setBackground(new java.awt.Color(0, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
@@ -289,11 +281,11 @@ public class JTimeBombFrame extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_secondSpinnerStateChanged
 
-    class timeBombServerThread implements Runnable
+    class timeBombServerThread implements Runnable //Subclass
     {
     ServerSocket server;
     Socket socket;
-    InputStreamReader in;
+    PushbackInputStream in;
     OutputStreamWriter out;
     public void run() {
         try
@@ -303,14 +295,15 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 while(true)
                 {
                 socket = server.accept(); //Get client connection socket
-                in = new InputStreamReader(socket.getInputStream());
+                in = new PushbackInputStream(socket.getInputStream());
                 out = new OutputStreamWriter(socket.getOutputStream());
                 //Read data char-per-char until eof is read
                   while((c = (char) in.read()) != -1)
                     {
+                      System.out.println(c);
                         switch(c)
                         {
-                            case 'd'/*detonate*/: detonate();out.write(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("Bomb_detonated."));break;
+                            case 'd'/*detonate*/: detonate();break;
                             case 'm'/*decrease timer*/:{
                                         StringBuilder sb = new StringBuilder();
                                         c = (char) in.read();
@@ -330,12 +323,12 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                                 sb.append(c);
                                                 c = (char)in.read();
                                             }
+                                        in.unread(c);
                                         totalSecondsLeft += new Integer(sb.toString());
-                                        System.out.println("inc:" + sb.toString());;
                                         break;
                                      }
-                            case 'h'/*Defuse*/: defuse();out.write(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("Bomb_defused."));break;
-                            case 'a'/*Activate*/: activate();out.write(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("Bomb_activated"));
+                            case 'h'/*Defuse*/: defuse();break;
+                            case 'a'/*Activate*/: activate();break;
                             case 's'/*Set timer*/:{
                                         StringBuilder sb = new StringBuilder();
                                         c = (char) in.read();
@@ -344,8 +337,9 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                                 sb.append(c);
                                                 c = (char)in.read();
                                             }
+                                        in.unread(c);
                                         totalSecondsLeft = new Integer(sb.toString());
-                                        System.out.println("inc:" + sb.toString());;
+                                        System.out.println("inc:" + sb.toString());
                                         break;
                                      } 
                             default: break;

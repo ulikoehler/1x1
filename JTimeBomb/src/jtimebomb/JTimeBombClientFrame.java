@@ -45,21 +45,23 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
         minutesLabel = new javax.swing.JLabel();
         secondsLabel = new javax.swing.JLabel();
         secondSpinner = new javax.swing.JSpinner();
-        setButton = new javax.swing.JToggleButton();
-        decreaseButton = new javax.swing.JToggleButton();
-        increaseButton = new javax.swing.JToggleButton();
         activateButton = new javax.swing.JButton();
         defuseButton = new javax.swing.JButton();
         disconnectButton = new javax.swing.JButton();
+        setButton = new javax.swing.JButton();
+        increaseButton = new javax.swing.JButton();
+        decreaseButton = new javax.swing.JButton();
+        detonateButton = new javax.swing.JButton();
 
         setTitle("JTimeBomb Client");
 
-        ipLabel.setText("IP-Adress:");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jtimebomb/i18n"); // NOI18N
+        ipLabel.setText(bundle.getString("IP-Adress:")); // NOI18N
 
         ipField.setText("127.0.0.1");
 
         connectButton.setMnemonic('c');
-        connectButton.setText("Connect");
+        connectButton.setText(bundle.getString("Connect")); // NOI18N
         connectButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 connectButtonMouseClicked(evt);
@@ -67,7 +69,6 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
         });
 
         hourLabel.setDisplayedMnemonic('u');
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jtimebomb/i18n"); // NOI18N
         hourLabel.setText(bundle.getString("Hours:")); // NOI18N
 
         hourSpinner.setModel(new SpinnerNumberModel(0, 0, 99, 1));
@@ -85,60 +86,68 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
         secondSpinner.setModel(new SpinnerNumberModel(0, -1, 60, 1));
         secondSpinner.setToolTipText(bundle.getString("Seconds_in_the_delay_timer")); // NOI18N
 
-        setButton.setMnemonic('s');
-        setButton.setText("Set");
-        setButton.setMaximumSize(new java.awt.Dimension(80, 22));
-        setButton.setMinimumSize(new java.awt.Dimension(80, 22));
-        setButton.setPreferredSize(new java.awt.Dimension(80, 22));
-        setButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setButtonActionPerformed(evt);
+        activateButton.setMnemonic('a');
+        activateButton.setText(bundle.getString("Activate")); // NOI18N
+        activateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                activateButtonMouseClicked(evt);
             }
         });
 
-        decreaseButton.setMnemonic('e');
-        decreaseButton.setText("Decrease");
-        decreaseButton.setMaximumSize(new java.awt.Dimension(80, 22));
-        decreaseButton.setMinimumSize(new java.awt.Dimension(80, 22));
-        decreaseButton.setPreferredSize(new java.awt.Dimension(80, 22));
-        decreaseButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        defuseButton.setMnemonic('f');
+        defuseButton.setText(bundle.getString("Defuse")); // NOI18N
+        defuseButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                decreaseButtonMouseClicked(evt);
+                defuseButtonMouseClicked(evt);
+            }
+        });
+
+        disconnectButton.setMnemonic('d');
+        disconnectButton.setText(bundle.getString("Disconnect")); // NOI18N
+        disconnectButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                disconnectButtonMouseClicked(evt);
+            }
+        });
+
+        setButton.setMnemonic('s');
+        setButton.setText(bundle.getString("Set")); // NOI18N
+        setButton.setMaximumSize(new java.awt.Dimension(50, 22));
+        setButton.setMinimumSize(new java.awt.Dimension(50, 22));
+        setButton.setPreferredSize(new java.awt.Dimension(50, 22));
+        setButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                setButtonMouseClicked(evt);
             }
         });
 
         increaseButton.setMnemonic('i');
-        increaseButton.setText("Increase");
-        increaseButton.setMaximumSize(new java.awt.Dimension(80, 22));
-        increaseButton.setMinimumSize(new java.awt.Dimension(80, 22));
-        increaseButton.setPreferredSize(new java.awt.Dimension(80, 22));
+        increaseButton.setText(bundle.getString("Increase")); // NOI18N
+        increaseButton.setMaximumSize(new java.awt.Dimension(50, 22));
+        increaseButton.setMinimumSize(new java.awt.Dimension(50, 22));
+        increaseButton.setPreferredSize(new java.awt.Dimension(50, 22));
         increaseButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 increaseButtonMouseClicked(evt);
             }
         });
 
-        activateButton.setMnemonic('a');
-        activateButton.setText("Activate");
-        activateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                activateButtonActionPerformed(evt);
-            }
-        });
-
-        defuseButton.setMnemonic('f');
-        defuseButton.setText("Defuse");
-        defuseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                defuseButtonActionPerformed(evt);
-            }
-        });
-
-        disconnectButton.setMnemonic('d');
-        disconnectButton.setText("Disconnect");
-        disconnectButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        decreaseButton.setMnemonic('c');
+        decreaseButton.setText(bundle.getString("Decrease")); // NOI18N
+        decreaseButton.setMaximumSize(new java.awt.Dimension(50, 22));
+        decreaseButton.setMinimumSize(new java.awt.Dimension(50, 22));
+        decreaseButton.setPreferredSize(new java.awt.Dimension(50, 22));
+        decreaseButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                disconnectButtonMouseClicked(evt);
+                decreaseButtonMouseClicked(evt);
+            }
+        });
+
+        detonateButton.setMnemonic('t');
+        detonateButton.setText(bundle.getString("Detonate")); // NOI18N
+        detonateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                detonateButtonMouseClicked(evt);
             }
         });
 
@@ -146,34 +155,36 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(detonateButton, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(activateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(defuseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(defuseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(ipLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addComponent(ipField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(connectButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(disconnectButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(decreaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addComponent(decreaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                                 .addGap(6, 6, 6)
                                 .addComponent(secondsLabel))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(increaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addComponent(increaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                                 .addGap(9, 9, 9)
                                 .addComponent(minutesLabel))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(setButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addComponent(setButton, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(hourLabel)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -213,6 +224,8 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(activateButton)
                     .addComponent(defuseButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(detonateButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -225,7 +238,7 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
             socket = new Socket(ipAdress, 12121);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            socket.setSoTimeout(2000);//GEN-LAST:event_connectButtonMouseClicked
+            socket.setSoTimeout(500);//GEN-LAST:event_connectButtonMouseClicked
         } catch (UnknownHostException ex) {
             Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -244,50 +257,93 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
                              }
     }
 
-    private void increaseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_increaseButtonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_increaseButtonMouseClicked
-
-    private void decreaseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decreaseButtonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_decreaseButtonMouseClicked
-
-    private void setButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setButtonActionPerformed
+    private void setButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setButtonMouseClicked
         try {
-            
                 SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
                 int hoursLeft = model.getNumber().intValue();
                 model = (SpinnerNumberModel) minuteSpinner.getModel();
                 int minutesLeft = model.getNumber().intValue();
                 model = (SpinnerNumberModel) secondSpinner.getModel();
                 int secondsLeft = model.getNumber().intValue(); //+1: Start countdown at exactly the selected time and not at one second after
-                int totalSecondsLeft = secondsLeft + minutesLeft * 60 + hoursLeft * 3600 + 1;
+                int totalSeconds = secondsLeft + minutesLeft * 60 + hoursLeft * 3600 + 1;
                 //Set total seconds
-                String command = "s" + Integer.toString(totalSecondsLeft);
+                String command = "s" + Integer.toString(totalSeconds);
                 out.write(command.getBytes());
             }
             catch (IOException ex) {
                                     Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-    }//GEN-LAST:event_setButtonActionPerformed
+    }//GEN-LAST:event_setButtonMouseClicked
 
-    private void activateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activateButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_activateButtonActionPerformed
-
-    private void defuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defuseButtonActionPerformed
+    private void increaseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_increaseButtonMouseClicked
         try {
-                //Check Connection
-                if (!socket.isConnected()) {
-                    return;
-                }//GEN-LAST:event_defuseButtonActionPerformed
-                //Remote-activate bomb
-                out.write('a');
+                SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
+                    int hoursLeft = model.getNumber().intValue();
+                model = (SpinnerNumberModel) minuteSpinner.getModel();
+                    int minutesLeft = model.getNumber().intValue();
+                model = (SpinnerNumberModel) secondSpinner.getModel();
+                    int secondsLeft = model.getNumber().intValue(); //+1: Start countdown at exactly the selected time and not at one second after
+                int totalSeconds = secondsLeft + minutesLeft * 60 + hoursLeft * 3600 + 1;
+                //Set total seconds
+                String command = "i" + Integer.toString(totalSeconds);
+                out.write(command.getBytes());
             }
             catch (IOException ex) {
-                        Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-    }
+                                    Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+    }//GEN-LAST:event_increaseButtonMouseClicked
+
+    private void decreaseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decreaseButtonMouseClicked
+        try {
+                SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
+                int hoursLeft = model.getNumber().intValue();
+                model = (SpinnerNumberModel) minuteSpinner.getModel();
+                int minutesLeft = model.getNumber().intValue();
+                model = (SpinnerNumberModel) secondSpinner.getModel();
+                int secondsLeft = model.getNumber().intValue(); //+1: Start countdown at exactly the selected time and not at one second after
+                int totalSeconds = secondsLeft + minutesLeft * 60 + hoursLeft * 3600 + 1;
+                //Set total seconds
+                String command = "m" + Integer.toString(totalSeconds);
+                out.write(command.getBytes());
+            }
+            catch (IOException ex) {
+                                    Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+    }//GEN-LAST:event_decreaseButtonMouseClicked
+
+    private void activateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activateButtonMouseClicked
+        try {
+                out.write('a');
+                out.write('\n');
+                out.flush();
+            }
+        catch (IOException ex) {
+                    Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }//GEN-LAST:event_activateButtonMouseClicked
+
+    private void detonateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detonateButtonMouseClicked
+        try {
+            out.write('d');
+            out.write('\n');
+            out.flush();
+            }
+        catch (IOException ex) {
+            Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+}//GEN-LAST:event_detonateButtonMouseClicked
+
+    private void defuseButtonMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        try {
+            out.write('h');
+            out.write('\n');
+            out.flush();
+            }
+        catch (IOException ex) {
+            Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }                                          
     
     /**
      * @param args the command line arguments
@@ -306,19 +362,20 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton activateButton;
     private javax.swing.JButton connectButton;
-    private javax.swing.JToggleButton decreaseButton;
+    private javax.swing.JButton decreaseButton;
     private javax.swing.JButton defuseButton;
+    private javax.swing.JButton detonateButton;
     private javax.swing.JButton disconnectButton;
     private javax.swing.JLabel hourLabel;
     private javax.swing.JSpinner hourSpinner;
-    private javax.swing.JToggleButton increaseButton;
+    private javax.swing.JButton increaseButton;
     private javax.swing.JTextField ipField;
     private javax.swing.JLabel ipLabel;
     private javax.swing.JSpinner minuteSpinner;
     private javax.swing.JLabel minutesLabel;
     private javax.swing.JSpinner secondSpinner;
     private javax.swing.JLabel secondsLabel;
-    private javax.swing.JToggleButton setButton;
+    private javax.swing.JButton setButton;
     // End of variables declaration//GEN-END:variables
     
 }
