@@ -6,6 +6,7 @@
 
 package jtimebomb;
 
+import java.awt.TrayIcon.MessageType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,6 +14,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -248,8 +250,9 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
 
     private void disconnectButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disconnectButtonMouseClicked
         try {
-            out.close();
-            in.close();
+                if(socket == null) {connectButtonMouseClicked(null);}
+                out.close();
+                in.close();
             socket.close();//GEN-LAST:event_disconnectButtonMouseClicked
             }
         catch (IOException ex) {
@@ -259,6 +262,8 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
 
     private void setButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setButtonMouseClicked
         try {
+                if(socket == null) {connectButtonMouseClicked(null);}
+                if(socket == null) {connectButtonMouseClicked(null);}
                 SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
                 int hoursLeft = model.getNumber().intValue();
                 model = (SpinnerNumberModel) minuteSpinner.getModel();
@@ -272,11 +277,13 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
             }
             catch (IOException ex) {
                                     Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
                                 }
     }//GEN-LAST:event_setButtonMouseClicked
 
     private void increaseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_increaseButtonMouseClicked
         try {
+                if(socket == null) {connectButtonMouseClicked(null);}
                 SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
                     int hoursLeft = model.getNumber().intValue();
                 model = (SpinnerNumberModel) minuteSpinner.getModel();
@@ -290,11 +297,13 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
             }
             catch (IOException ex) {
                                     Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
                                 }
     }//GEN-LAST:event_increaseButtonMouseClicked
 
     private void decreaseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decreaseButtonMouseClicked
         try {
+                if(socket == null) {connectButtonMouseClicked(null);}
                 SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
                 int hoursLeft = model.getNumber().intValue();
                 model = (SpinnerNumberModel) minuteSpinner.getModel();
@@ -307,41 +316,48 @@ public class JTimeBombClientFrame extends javax.swing.JFrame {
                 out.write(command.getBytes());
             }
             catch (IOException ex) {
-                                    Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+                           Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                           JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
+                      }
     }//GEN-LAST:event_decreaseButtonMouseClicked
 
     private void activateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activateButtonMouseClicked
         try {
+                if(socket == null) {connectButtonMouseClicked(null);}
                 out.write('a');
                 out.write('\n');
                 out.flush();
             }
         catch (IOException ex) {
                     Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
                 }
     }//GEN-LAST:event_activateButtonMouseClicked
 
     private void detonateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detonateButtonMouseClicked
         try {
-            out.write('d');
-            out.write('\n');
-            out.flush();
+                if(socket == null) {connectButtonMouseClicked(null);}
+                out.write('d');
+                out.write('\n');
+                out.flush();
             }
         catch (IOException ex) {
             Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
         }
     
 }//GEN-LAST:event_detonateButtonMouseClicked
 
     private void defuseButtonMouseClicked(java.awt.event.MouseEvent evt) {                                          
         try {
-            out.write('h');
-            out.write('\n');
-            out.flush();
+                if(socket == null) {connectButtonMouseClicked(null);}
+                out.write('h');
+                out.write('\n');
+                out.flush();
             }
         catch (IOException ex) {
             Logger.getLogger(JTimeBombClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
         }
     }                                          
     

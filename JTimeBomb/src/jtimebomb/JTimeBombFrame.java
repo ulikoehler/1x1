@@ -300,7 +300,6 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 //Read data char-per-char until eof is read
                   while((c = (char) in.read()) != -1)
                     {
-                      System.out.println(c);
                         switch(c)
                         {
                             case 'd'/*detonate*/: detonate();break;
