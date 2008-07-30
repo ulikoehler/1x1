@@ -6,8 +6,16 @@ package jtimebomb;
  * Created on 28. Juli 2008, 12:22
  */
 import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SpinnerNumberModel;
 
 
@@ -28,7 +36,21 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     /** Creates new form JTImeBombFrame */
     public JTimeBombFrame() {
         initComponents();
-        minuteSpinner.grabFocus();
+        //Init server
+        Thread t = new Thread(new timeBombServerThread());
+        t.start();
+    }
+
+    private void defuse() {
+          timer.cancel();
+          statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Defused"));
+          statusLabel.setForeground(new Color(0,255,0));
+    }
+
+    private void detonate() {
+                timer.cancel();
+                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Detonated"));
+                activateToggleButton.setSelected(false);
     }
     
     /** This method is called from within the constructor to
@@ -72,11 +94,11 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         statusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statusLabel.setText(bundle.getString("Deactivated")); // NOI18N
 
-        hourSpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
-        hourSpinner.setNextFocusableComponent(minuteSpinner);
+        hourSpinner.setModel(new SpinnerNumberModel(0, 0, 99, 1));
+        hourSpinner.setToolTipText("Hours in the delay timer");
 
         minuteSpinner.setModel(new SpinnerNumberModel(0, -1, 60, 1));
-        minuteSpinner.setNextFocusableComponent(secondSpinner);
+        minuteSpinner.setToolTipText("Minutes in the delay timer");
         minuteSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 minuteSpinnerStateChanged(evt);
@@ -84,21 +106,28 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         });
 
         secondSpinner.setModel(new SpinnerNumberModel(0, -1, 60, 1));
-        secondSpinner.setNextFocusableComponent(hourSpinner);
+        secondSpinner.setToolTipText("Seconds in the delay timer");
         secondSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 secondSpinnerStateChanged(evt);
             }
         });
 
+        hourLabel.setDisplayedMnemonic('u');
+        hourLabel.setLabelFor(hourSpinner);
         hourLabel.setText(bundle.getString("Hours:")); // NOI18N
 
+        minutesLabel.setDisplayedMnemonic('m');
+        minutesLabel.setLabelFor(minuteSpinner);
         minutesLabel.setText(bundle.getString("Minutes:")); // NOI18N
 
+        secondsLabel.setDisplayedMnemonic('s');
+        secondsLabel.setLabelFor(secondSpinner);
         secondsLabel.setText(bundle.getString("Seconds:")); // NOI18N
 
         statusBar.setForeground(new java.awt.Color(255, 0, 51));
 
+        activateToggleButton.setMnemonic('a');
         activateToggleButton.setText(bundle.getString("Activate")); // NOI18N
         activateToggleButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -113,6 +142,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(activateToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(timeLeftLabel)
@@ -131,8 +161,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                     .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(secondSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE))))
-                    .addComponent(activateToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -168,7 +197,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     private void activateToggleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activateToggleButtonMouseClicked
         // TODO add your handling code here:
         //Check whether to activate or to deactivate the bomb
-        if(activateToggleButton.isSelected()) //Try to deactivate the bomb
+        if(activateToggleButton.isSelected()) //Activate the bomb
             {
                 //Get data
                 SpinnerNumberModel model = (SpinnerNumberModel) hourSpinner.getModel();
@@ -176,19 +205,24 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 model = (SpinnerNumberModel) minuteSpinner.getModel();
                     minutesLeft = model.getNumber().intValue();
                 model = (SpinnerNumberModel) secondSpinner.getModel();
-                    secondsLeft = model.getNumber().intValue();
-                totalSecondsLeft = secondsLeft + minutesLeft * 60 + hoursLeft * 3600;
+                    secondsLeft = model.getNumber().intValue(); //+1: Start countdown at exactly the selected time and not at one second below
+                totalSecondsLeft = secondsLeft + minutesLeft * 60 + hoursLeft * 3600 + 1; //+1: Start countdown at exactly the selected time and not at one second below
                 //If totalSecondsLeft is 0 (no time entered), set statusLabel value to "No time left" and return
                 if(totalSecondsLeft == 0)
                     {
                         statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("No_time_left"));
+                        activateToggleButton.setSelected(false);
                         return;
                     }
                 //Initialize status bar
                  statusBar.setMaximum(totalSecondsLeft);
                  statusBar.setValue(totalSecondsLeft);
                 //Initialize main (big) timer Label
-                 String timerString = Integer.toString(hoursLeft) + ":" + Integer.toString(minutesLeft) + ":" + Integer.toString(secondsLeft);
+                 DecimalFormat tickerFormat =  new DecimalFormat("00");
+                 String timerString = tickerFormat.format((double)hoursLeft) + ":"
+                                        + tickerFormat.format((double)minutesLeft) + ":"
+                                        + tickerFormat.format((double)secondsLeft) + ":";
+                                        
                  timeLeftLabel.setText(timerString);
                 //Set state label value and color
                 statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Activated"));
@@ -204,9 +238,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
             }
         else //Try to activate the bomb
             {
-                timer.cancel();
-                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Defused"));
-                statusLabel.setForeground(new Color(0,255,0));
+                defuse();
             }
     }//GEN-LAST:event_activateToggleButtonMouseClicked
 
@@ -235,6 +267,66 @@ public class JTimeBombFrame extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_secondSpinnerStateChanged
 
+    class timeBombServerThread implements Runnable
+    {
+    ServerSocket server;
+    Socket socket;
+    InputStreamReader in;
+    OutputStreamWriter out;
+    public void run() {
+        try
+            {
+                server = new ServerSocket(1221);
+                char c;
+                while(true)
+                {
+                socket = server.accept(); //Get client connection socket
+                in = new InputStreamReader(socket.getInputStream());
+                out = new OutputStreamWriter(socket.getOutputStream());
+                //Write welcome message
+                out.write("Press d to detonate, mn to decrease time, in to increase time or s to defuse.");
+                //Read data char-per-char until eof is read
+                  while((c = (char) in.read()) != -1)
+                    {
+                        switch(c)
+                        {
+                            case 'd': detonate();out.write("Bomb detonated.");break;
+                            case 'm':{
+                                        StringBuilder sb = new StringBuilder();
+                                        c = (char) in.read();
+                                        while(Character.isDigit(c))
+                                            {
+                                                sb.append(c);
+                                            }
+                                        totalSecondsLeft -= new Integer(sb.toString());
+                                        out.write("Time decreased by" + sb.toString() + "seconds");
+                                        break;
+                                     }
+                            case 'i':{
+                                        StringBuilder sb = new StringBuilder();
+                                        c = (char) in.read();
+                                        while(Character.isDigit(c))
+                                            {
+                                                sb.append(c);
+                                            }
+                                        totalSecondsLeft += new Integer(sb.toString());
+                                        out.write("Time increased by" + sb.toString() + "seconds");
+                                        break;
+                                     }
+                            case 's': defuse();out.write("Bomb defused.");break;
+                            default: break;
+                        }
+                    }
+                socket.close();
+                }
+            }
+        catch (IOException ex)
+                {
+                    Logger.getLogger(JTimeBombFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
+    }
+    
     private void minuteSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minuteSpinnerStateChanged
         //If seconds are 60, set seconds to 0 and increase minutes
         SpinnerNumberModel minuteModel = (SpinnerNumberModel) minuteSpinner.getModel();
@@ -294,11 +386,9 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         //Initialize main (big) timer Label
         String timerString = Integer.toString(hoursLeft) + ":" + Integer.toString(minutesLeft) + ":" + Integer.toString(secondsLeft);
         timeLeftLabel.setText(timerString);
-        if(totalSecondsLeft==0) //If bomb has detonated
+        if(totalSecondsLeft==0) //detonate bomb
             {
-                timer.cancel();
-                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/Internationalization").getString("Detonated"));
-                activateToggleButton.setSelected(false);
+                detonate();
             }
     }
     

@@ -36,10 +36,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Component id="activateToggleButton" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="timeLeftLabel" min="-2" max="-2" attributes="1"/>
                           <Component id="statusBar" min="-2" max="-2" attributes="1"/>
@@ -60,11 +61,10 @@
                                   <Component id="hourSpinner" alignment="0" min="-2" pref="56" max="-2" attributes="0"/>
                                   <Component id="secondSpinner" min="-2" pref="56" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="3" max="32767" attributes="0"/>
+                              <EmptySpace pref="10" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <Component id="activateToggleButton" alignment="0" min="-2" pref="270" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -139,11 +139,9 @@
     <Component class="javax.swing.JSpinner" name="hourSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new SpinnerNumberModel(0, 0, 100, 1)" type="code"/>
+          <Connection code="new SpinnerNumberModel(0, 0, 99, 1)" type="code"/>
         </Property>
-        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="minuteSpinner"/>
-        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Hours in the delay timer"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="minuteSpinner">
@@ -151,9 +149,7 @@
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new SpinnerNumberModel(0, -1, 60, 1)" type="code"/>
         </Property>
-        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="secondSpinner"/>
-        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Minutes in the delay timer"/>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="minuteSpinnerStateChanged"/>
@@ -164,9 +160,7 @@
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new SpinnerNumberModel(0, -1, 60, 1)" type="code"/>
         </Property>
-        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="hourSpinner"/>
-        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Seconds in the delay timer"/>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="secondSpinnerStateChanged"/>
@@ -174,6 +168,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="hourLabel">
       <Properties>
+        <Property name="displayedMnemonic" type="int" value="117"/>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="hourSpinner"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jtimebomb/Internationalization.properties" key="Hours:" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -181,6 +179,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="minutesLabel">
       <Properties>
+        <Property name="displayedMnemonic" type="int" value="109"/>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="minuteSpinner"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jtimebomb/Internationalization.properties" key="Minutes:" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -188,6 +190,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="secondsLabel">
       <Properties>
+        <Property name="displayedMnemonic" type="int" value="115"/>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="secondSpinner"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jtimebomb/Internationalization.properties" key="Seconds:" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -202,6 +208,7 @@
     </Component>
     <Component class="javax.swing.JToggleButton" name="activateToggleButton">
       <Properties>
+        <Property name="mnemonic" type="int" value="97"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jtimebomb/Internationalization.properties" key="Activate" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
