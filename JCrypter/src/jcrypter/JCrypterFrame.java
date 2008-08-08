@@ -54,6 +54,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         jLabel1.setText("Input:");
 
         plaintextTextArea.setColumns(20);
+        plaintextTextArea.setLineWrap(true);
         plaintextTextArea.setRows(5);
         plaintextScrollPane.setViewportView(plaintextTextArea);
 
@@ -142,13 +143,12 @@ public class JCrypterFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_decryptCheckboxActionPerformed
 
-    private byte[] sha256sum(char[] input)
+    private byte[] fillPassword(char[] password)
     {
         IMessageDigest md = HashFactory.getInstance("SHA-256");
-        String i = new String(input);
+        String i = new String(password);
         md.update(i.getBytes(), 0, i.length());
         return md.digest();
-        
     }
     
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
@@ -169,27 +169,31 @@ public class JCrypterFrame extends javax.swing.JFrame {
          IBlockCipher cipher = CipherFactory.getInstance("Twofish");
          Map attributes = new HashMap();
          attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(16));
-         attributes.put(IBlockCipher.KEY_MATERIAL, sha256sum(password));
+         attributes.put(IBlockCipher.KEY_MATERIAL, fillPassword(password));
          //Init cipher with data from the map
          try{cipher.init(attributes);}
            catch (InvalidKeyException ex) {Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);}
            catch (IllegalStateException ex) {Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);}
+        //Get current block size
          int bs = cipher.currentBlockSize(); //Retrieve our current block size
         //Fill up plaintext
-         IPad padding = PadFactory.getInstance("PKCS7");
-         padding.init(bs);
-         //Pad or unpad depending on the state = whether we have to decrypt or to encrypt
+         //Pad or unpad depending on the state = whether we have to decrypt or to encrypt (Manual padding
+         System.out.println(input);
           byte[] paddedInput = null;
-          byte[] inputBytes = input.getBytes();
+          int modulus = input.length() % bs;
           if(decrypt)
              {
-              int endOffset = 0;
-              try{endOffset = padding.unpad(inputBytes, 0, input.length());}
-                 catch(WrongPaddingException ex){Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);}
-              //Get the right substring from the padding
-              paddedInput = new String(inputBytes).substring(0, inputBytes.length - endOffset + 1).getBytes();
+              
              }
-          else{paddedInput = padding.pad(inputBytes, 0, input.length());}
+          else
+            {
+                if(modulus != 0)
+                    {
+                    
+                    }
+                }
+            }
+          System.out.println(new String(paddedInput));
         //Now (en/de)crypt
         byte[] output = new byte[paddedInput.length];
         if(decrypt)

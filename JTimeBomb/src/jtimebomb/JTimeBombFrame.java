@@ -7,15 +7,17 @@ package jtimebomb;
  */
 import java.awt.Color;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.PushbackInputStream;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DecimalFormat;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -31,6 +33,9 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     int secondsLeft; //Not overall
     Timer timer;
     private JTimeBombClientFrame clientFrame;
+    
+    //Internationalization
+    private final static ResourceBundle i18n = ResourceBundle.getBundle("jtimebomb/i18n");
    
     /** Creates new form JTImeBombFrame */
     public JTimeBombFrame() {
@@ -55,14 +60,13 @@ public class JTimeBombFrame extends javax.swing.JFrame {
          statusBar.setMaximum(totalSecondsLeft);
          statusBar.setValue(totalSecondsLeft);
         //Initialize main (big) timer Label
-         DecimalFormat tickerFormat =  new DecimalFormat("00");
-         String timerString = tickerFormat.format((double)hoursLeft) + ":"
-                                + tickerFormat.format((double)minutesLeft) + ":"
-                                + tickerFormat.format((double)secondsLeft) + ":";
+         String timerString = Integer.toString(hoursLeft) + i18n.getString("Connect")
+                                + Integer.toString(minutesLeft) + ":"
+                                + Integer.toString(secondsLeft);
 
          timeLeftLabel.setText(timerString);
         //Set state label value and color
-        statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("Activated"));
+        statusLabel.setText(i18n.getString("Activated"));
         statusLabel.setForeground(new Color(255,0,0));
         //Activate timer
         timer = new Timer();
@@ -76,13 +80,13 @@ public class JTimeBombFrame extends javax.swing.JFrame {
 
     private void defuse() {
           timer.cancel();
-          statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("Defused"));
+          statusLabel.setText(i18n.getString("Defused"));
           statusLabel.setForeground(new Color(0,255,0));
     }
 
     private void detonate() {
-                timer.cancel();
-                statusLabel.setText(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("Detonated"));
+                if (timer != null) {timer.cancel();}
+                statusLabel.setText(i18n.getString("Detonated"));
                 activateToggleButton.setSelected(false);
     }
     
@@ -104,7 +108,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         secondsLabel = new javax.swing.JLabel();
         statusBar = new javax.swing.JProgressBar();
         activateToggleButton = new javax.swing.JToggleButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        menuBar = new javax.swing.JMenuBar();
         extrasMenu = new javax.swing.JMenu();
         showClientMenuItem = new javax.swing.JMenuItem();
 
@@ -120,8 +124,8 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         timeLeftLabel.setBackground(new java.awt.Color(0, 0, 0));
         timeLeftLabel.setFont(new java.awt.Font("Gunplay", 0, 36));
         timeLeftLabel.setForeground(new java.awt.Color(255, 0, 51));
-        timeLeftLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        timeLeftLabel.setText("00:00:00");
+        timeLeftLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timeLeftLabel.setText("00:00:00"); // NOI18N
         timeLeftLabel.setFocusable(false);
 
         statusLabel.setFont(new java.awt.Font("Gunplay", 0, 18));
@@ -170,9 +174,9 @@ public class JTimeBombFrame extends javax.swing.JFrame {
             }
         });
 
-        extrasMenu.setText("Extras");
+        extrasMenu.setText(i18n.getString("Extras")); // NOI18N
 
-        showClientMenuItem.setText("Show client");
+        showClientMenuItem.setText(i18n.getString("Show_client")); // NOI18N
         showClientMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showClientMenuItemActionPerformed(evt);
@@ -180,9 +184,9 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         });
         extrasMenu.add(showClientMenuItem);
 
-        jMenuBar1.add(extrasMenu);
+        menuBar.add(extrasMenu);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -286,24 +290,35 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     ServerSocket server;
     Socket socket;
     PushbackInputStream in;
-    OutputStreamWriter out;
+    PrintWriter outWriter;
+    int port = 12121;
     public void run() {
         try
             {
-                server = new ServerSocket(12121);
+                server = new ServerSocket(port);
                 char c;
                 while(true)
                 {
                 socket = server.accept(); //Get client connection socket
                 in = new PushbackInputStream(socket.getInputStream());
-                out = new OutputStreamWriter(socket.getOutputStream());
+                outWriter = new PrintWriter(socket.getOutputStream(), true);
+                //Print welcome message
+                outWriter.write(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("WelcomeMessage"));
+                outWriter.flush();
                 //Read data char-per-char until eof is read
                   while((c = (char) in.read()) != -1)
                     {
                         switch(c)
                         {
-                            case 'd'/*detonate*/: detonate();break;
-                            case 'm'/*decrease timer*/:{
+                            case 'd'/*detonate*/:
+                                    {
+                                        detonate();
+                                        outWriter.write(java.util.ResourceBundle.getBundle("jtimebomb/i18n").getString("BombDetonatedMessage"));
+                                        outWriter.flush();
+                                        break;
+                                    }
+                            case 'm'/*decrease timer*/:
+                                    {
                                         StringBuilder sb = new StringBuilder();
                                         c = (char) in.read();
                                         while(Character.isDigit(c))
@@ -311,10 +326,19 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                                 sb.append(c);
                                                 c = (char)in.read();
                                             }
+                                        if(sb.toString().equals("")) //If the user has not entered a value
+                                            {
+                                                outWriter.write(i18n.getString("Usage:_m[number_of_seconds]"));
+                                                outWriter.flush();
+                                                continue;
+                                            }
                                         totalSecondsLeft -= new Integer(sb.toString());
+                                        outWriter.write(i18n.getString("Time_decreased_by_") + sb.toString() + i18n.getString("_seconds\n"));
+                                        outWriter.flush();
                                         break;
                                      }
-                            case 'i'/*increase timer*/:{
+                            case 'i'/*increase timer*/:
+                                    {
                                         StringBuilder sb = new StringBuilder();
                                         c = (char) in.read();
                                         while(Character.isDigit(c)) //c is digit in unicode
@@ -323,12 +347,31 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                                 c = (char)in.read();
                                             }
                                         in.unread(c);
+                                        if(sb.toString().equals("")) //If the user has not entered a value
+                                            {
+                                                outWriter.write(i18n.getString("Usage:_i[number_of_seconds]\n"));
+                                                outWriter.flush();
+                                                continue;
+                                            }
                                         totalSecondsLeft += new Integer(sb.toString());
+                                        outWriter.write(i18n.getString("Time_increased_by_") + sb.toString() + i18n.getString("_seconds\n"));
+                                        outWriter.flush();
                                         break;
                                      }
-                            case 'h'/*Defuse*/: defuse();break;
-                            case 'a'/*Activate*/: activate();break;
-                            case 's'/*Set timer*/:{
+                            case 'h'/*Defuse*/:{
+                                        defuse();
+                                        outWriter.write(i18n.getString("Bomb_defused\n"));
+                                        outWriter.flush();                                      
+                                        break;
+                                    }
+                            case 'a'/*Activate*/:{
+                                        activate();
+                                        outWriter.write(i18n.getString("Bomb_activated\n"));
+                                        outWriter.flush();
+                                        break;
+                                    }
+                            case 's'/*Set timer*/:
+                                    {
                                         StringBuilder sb = new StringBuilder();
                                         c = (char) in.read();
                                         while(Character.isDigit(c)) //c is digit in unicode
@@ -337,18 +380,41 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                                                 c = (char)in.read();
                                             }
                                         in.unread(c);
+                                        if(sb.toString().equals("")) //If the user has not entered a value
+                                            {
+                                                outWriter.write(i18n.getString("Usage:_s[number_of_seconds]\n"));
+                                                outWriter.flush();
+                                                continue;
+                                            }
                                         totalSecondsLeft = new Integer(sb.toString());
-                                        System.out.println("inc:" + sb.toString());
+                                        outWriter.write(i18n.getString("Time_set_to_") + sb.toString() + i18n.getString("_seconds\n"));
+                                        outWriter.flush();
                                         break;
                                      } 
+                            case 'p'/*Print status*/:
+                                     {
+                                        outWriter.write(timeLeftLabel.getText() + "\n");
+                                        outWriter.flush();
+                                     }
+                            case 'q'/*Quit console*/:
+                                    {
+                                        socket.close();
+                                        return;
+                                    }
                             default: break;
                         }
                     }
                 in.close();
-                out.close();
+                outWriter.close();
                 socket.close();
                 }
             }
+        catch (BindException ex)
+                {
+                     String portString = JOptionPane.showInputDialog(null, i18n.getString("The_default_port_is_already_in_use._Select_a_new_port:"), i18n.getString("Port_already_in_use"), JOptionPane.QUESTION_MESSAGE);
+                     if(!portString.equals("")) {port = new Integer(portString);}
+                     run();
+                }
         catch (IOException ex)
                 {
                     Logger.getLogger(JTimeBombFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -378,6 +444,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
                 minuteModel.setValue(59);
                 hourModel.setValue(hourModel.getPreviousValue());
             }
+        updateTimeLeftLabel();
     }//GEN-LAST:event_minuteSpinnerStateChanged
 
     private void showClientMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showClientMenuItemActionPerformed
@@ -400,7 +467,7 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JLabel hourLabel;
     private javax.swing.JSpinner hourSpinner;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JSpinner minuteSpinner;
     private javax.swing.JLabel minutesLabel;
     private javax.swing.JSpinner secondSpinner;
@@ -411,9 +478,8 @@ public class JTimeBombFrame extends javax.swing.JFrame {
     private javax.swing.JLabel timeLeftLabel;
     // End of variables declaration//GEN-END:variables
 
-    public void timerTick()
+    private void updateTimeLeftLabel()
     {
-        totalSecondsLeft--;
         //Calculate time left
         secondsLeft = totalSecondsLeft%60;
         hoursLeft = (int) Math.floor(totalSecondsLeft/3600);
@@ -422,10 +488,13 @@ public class JTimeBombFrame extends javax.swing.JFrame {
         //Initialize main (big) timer Label
         String timerString = Integer.toString(hoursLeft) + ":" + Integer.toString(minutesLeft) + ":" + Integer.toString(secondsLeft);
         timeLeftLabel.setText(timerString);
+    }
+    public void timerTick()
+    {
+        totalSecondsLeft--;
         if(totalSecondsLeft==0) //detonate bomb
             {
                 detonate();
             }
-    }
-    
+    }    
 }
