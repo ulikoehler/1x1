@@ -62,9 +62,9 @@ public class JScientificNumberLabel extends JLabel
         switch(notation)
         {
             case SCIENTIFIC: //Just return the formatted String
-                {
-                    return formattedInput;
-                }
+                //{
+               //     return formattedInput;
+                //}
             case SCIENTIFIC_SUFFIX: //Use algorithms to fit the input number
                 {
                     //Init result string builder
@@ -74,30 +74,40 @@ public class JScientificNumberLabel extends JLabel
                     int exponentBeginIndex = formattedInput.lastIndexOf("E") + 1;
                     //Calculate the exponent from a substring
                     int exponent = new Integer(formattedInput.substring(exponentBeginIndex, formattedInput.length()));
-                    double mantissa = new Double(formattedInput.substring(0, exponentBeginIndex-2));
+                    double mantissa = new Double(formattedInput.substring(0, exponentBeginIndex-1));
                     int modulus = exponent % 3;
-                    int arrayIndex = (int) Math.floor(input);
+                    int arrayIndex = (int) Math.floor(Math.log10(input))/3 + 8;
                     if(arrayIndex > siSuffices.length) {return formattedInput;}
-                    switch(modulus)
+                    
+                    try
                     {
-                        case 0:
-                            {
-                                resultSB.append(mantissa);
-                                resultSB.append(siSuffices[arrayIndex]);
-                            }
-                        case 1:
-                            {
-                                mantissa *= 10;
-                                resultSB.append(mantissa);
-                                resultSB.append(siSuffices[arrayIndex]);
-                            }
-                        case 2:
-                            {
-                                mantissa /= 10;
-                                resultSB.append(mantissa);
-                                resultSB.append(siSuffices[arrayIndex]);
-                            }
+                        switch(modulus)
+                        {
+                            case 0:
+                                {
+                                    resultSB.append(mantissa);
+                                    resultSB.append(siSuffices[arrayIndex]);
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    mantissa *= 10;
+                                    resultSB.append(mantissa);
+                                    resultSB.append(siSuffices[arrayIndex]);
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    mantissa /= 10;
+                                    //Remove last character from the mantissa
+                                    String mantissaString = Double.toString(mantissa);
+                                    resultSB.append(mantissaString.substring(0, mantissaString.length()-1));
+                                    resultSB.append(siSuffices[arrayIndex + 1]);
+                                    break;
+                                }
+                        }
                     }
+                    catch(ArrayIndexOutOfBoundsException ex) {return formattedInput;}
                     return resultSB.toString();
                 }
         }

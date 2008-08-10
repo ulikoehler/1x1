@@ -71,17 +71,12 @@ public class JScientificNumberLabelTest {
         assertEquals(expResult, result);
         //Test case with modulus 1
         input = 12345.0;
-        expResult = "10.2k";
+        expResult = "12.3k";
         result = instance.formatNumber(input);
         assertEquals(expResult, result);
         //Test case with modulus 2
-        input = 12345.0;
-        expResult = "10.2k";
-        result = instance.formatNumber(input);
-        assertEquals(expResult, result);
-        //Test case with Output too large to have a prefix
-        input = 1.0 * ((int)10^26);
-        expResult = "1E26";
+        input = 123456.0;
+        expResult = "0.12M";
         result = instance.formatNumber(input);
         assertEquals(expResult, result);
     }
@@ -96,8 +91,6 @@ public class JScientificNumberLabelTest {
         double number = 0.0;
         JScientificNumberLabel instance = new JScientificNumberLabel();
         instance.setNumber(number);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 }
