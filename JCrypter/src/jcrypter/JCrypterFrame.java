@@ -2,6 +2,8 @@
  * JCrypterFrame.java
  *
  * Created on 26. Juli 2008, 17:47
+ * http://1x1.googlecode.com
+ * GNUCrypto version: Revision 122
  */
 
 package jcrypter;
@@ -12,8 +14,6 @@ import gnu.crypto.hash.HashFactory;
 import gnu.crypto.hash.IMessageDigest;
 import gnu.crypto.mode.*;
 import gnu.crypto.pad.IPad;
-import gnu.crypto.pad.PadFactory;
-import gnu.crypto.pad.WrongPaddingException;
 import java.security.InvalidKeyException;
 import java.security.SecureRandom;
 import java.util.*;
@@ -38,7 +38,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        inputLabel = new javax.swing.JLabel();
         plaintextScrollPane = new javax.swing.JScrollPane();
         plaintextTextArea = new javax.swing.JTextArea();
         passwordLabel = new javax.swing.JLabel();
@@ -51,7 +51,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Input:");
+        inputLabel.setText("Input:");
 
         plaintextTextArea.setColumns(20);
         plaintextTextArea.setLineWrap(true);
@@ -96,7 +96,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(inputLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -119,7 +119,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(inputLabel)
                     .addComponent(plaintextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -152,7 +152,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     }
     
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        // TODO add your handling code here:
+        //
         //Variable prototypes
          String algorithm = null;
          String mode = null;
@@ -178,12 +178,12 @@ public class JCrypterFrame extends javax.swing.JFrame {
          int bs = cipher.currentBlockSize(); //Retrieve our current block size
         //Fill up plaintext
          //Pad or unpad depending on the state = whether we have to decrypt or to encrypt (Manual padding
-         System.out.println(input);
+         IPad padding = IPad.getInstance();
           byte[] paddedInput = null;
           int modulus = input.length() % bs;
           if(decrypt)
              {
-              
+              f
              }
           else
             {
@@ -191,9 +191,8 @@ public class JCrypterFrame extends javax.swing.JFrame {
                     {
                     
                     }
-                }
             }
-          System.out.println(new String(paddedInput));
+          System.out.println(new String("Padded input:" + paddedInput));
         //Now (en/de)crypt
         byte[] output = new byte[paddedInput.length];
         if(decrypt)
@@ -235,7 +234,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JCheckBox decryptCheckbox;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel inputLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
