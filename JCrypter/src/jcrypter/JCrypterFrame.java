@@ -9,12 +9,14 @@
 
 package jcrypter;
 
-import gnu.crypto.hash.HashFactory;
-import gnu.crypto.hash.IMessageDigest;
-import gnu.crypto.mode.*;
-import java.util.*;
-import java.util.logging.*;
 import javax.swing.JOptionPane;
+import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.engines.TwofishEngine;
+import org.bouncycastle.crypto.modes.CBCBlockCipher;
+import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
+import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.util.encoders.Base64;
 
 /**
  *
@@ -37,34 +39,34 @@ public class JCrypterFrame extends javax.swing.JFrame {
 
         inputLabel = new javax.swing.JLabel();
         plaintextScrollPane = new javax.swing.JScrollPane();
-        plaintextField = new javax.swing.JTextArea();
+        inputField = new javax.swing.JTextArea();
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         ciphertextLabel = new javax.swing.JLabel();
         ciphertextScrollPane = new javax.swing.JScrollPane();
-        ciphertextField = new javax.swing.JTextArea();
+        outputField = new javax.swing.JTextArea();
         okButton = new javax.swing.JButton();
         decryptCheckbox = new javax.swing.JCheckBox();
-        Asymmetric = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("JCrypter");
 
         inputLabel.setText("Input:");
 
-        plaintextField.setColumns(20);
-        plaintextField.setLineWrap(true);
-        plaintextField.setRows(5);
-        plaintextScrollPane.setViewportView(plaintextField);
+        inputField.setColumns(20);
+        inputField.setLineWrap(true);
+        inputField.setRows(5);
+        plaintextScrollPane.setViewportView(inputField);
 
         passwordLabel.setText("Password:");
 
         ciphertextLabel.setText("Output:");
 
-        ciphertextField.setColumns(20);
-        ciphertextField.setEditable(false);
-        ciphertextField.setLineWrap(true);
-        ciphertextField.setRows(5);
-        ciphertextScrollPane.setViewportView(ciphertextField);
+        outputField.setColumns(20);
+        outputField.setEditable(false);
+        outputField.setLineWrap(true);
+        outputField.setRows(5);
+        ciphertextScrollPane.setViewportView(outputField);
 
         okButton.setText("OK");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -74,8 +76,6 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
 
         decryptCheckbox.setText("Decrypt");
-
-        Asymmetric.setText("Asymmetric");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,22 +89,20 @@ public class JCrypterFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(inputLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+                                .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(passwordLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Asymmetric, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(ciphertextLabel)
                                 .addGap(7, 7, 7)
-                                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))))
+                                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(60, 60, 60)
                         .addComponent(decryptCheckbox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)))
+                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -117,8 +115,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordLabel)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Asymmetric))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
@@ -133,28 +130,41 @@ public class JCrypterFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private byte[] fillPassword(char[] password)
-    {
-        IMessageDigest md = HashFactory.getInstance("SHA-256");
-        String i = new String(password);
-        md.update(i.getBytes(), 0, i.length());
-        return md.digest();
-    }
     
+    @SuppressWarnings("empty-statement")
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         try
         {
-            GnuCryptoSymmetricEncryptor cryptor =
-                        new GnuCryptoSymmetricEncryptor("Twofish",
-                                               "CBC");
-                 ciphertextField.setText(
-                         cryptor.cryptString(plaintextField.getText(),
-                                               new String(passwordField.getPassword()),
-                                               decryptCheckbox.isSelected()));
+            //Bouncy castle inline using lightweight API
+            //Init cipher
+            BlockCipher engine = new TwofishEngine();
+            BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CBCBlockCipher(engine));
+            //Get data and encrypt
+            byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
+            byte[] input;
+            //Base64-decode the ciphertext
+            if(decryptCheckbox.isSelected()) {input = Base64.decode(inputField.getText().getBytes());}
+            else {input = inputField.getText().getBytes();}
+            
+            //Hash the password to fit it into the right size
+            Digest digest = new SHA256Digest();
+            digest.update(passwordBytes, 0, passwordBytes.length);
+            byte[] keyBytes = new byte[32];
+            digest.doFinal(keyBytes, 0);
+            
+            cipher.init(!decryptCheckbox.isSelected(), new KeyParameter(keyBytes));
+            
+            byte[] output = new byte[cipher.getOutputSize(input.length)];
+            int outputLen = cipher.processBytes(input, 0, input.length, output, 0);
+            cipher.doFinal(output, outputLen);
+            //Print the output into outputField and Base64-encode if we have to encrypt
+            if(decryptCheckbox.isSelected()) {outputField.setText(new String(output));}
+            else {outputField.setText(new String(Base64.encode(output)));}
         }
-        catch(IllegalArgumentException ex) //Data not decryptible
+        catch(CryptoException ex) //Data not decryptible
         {
             JOptionPane.showMessageDialog(this, "Data not encrypted!", "Decryption impossible", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_okButtonMouseClicked
     
@@ -170,16 +180,15 @@ public class JCrypterFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton Asymmetric;
-    private javax.swing.JTextArea ciphertextField;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JCheckBox decryptCheckbox;
+    private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
     private javax.swing.JButton okButton;
+    private javax.swing.JTextArea outputField;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
-    private javax.swing.JTextArea plaintextField;
     private javax.swing.JScrollPane plaintextScrollPane;
     // End of variables declaration//GEN-END:variables
     
