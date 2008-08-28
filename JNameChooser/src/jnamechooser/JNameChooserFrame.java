@@ -36,17 +36,18 @@ public class JNameChooserFrame extends javax.swing.JFrame {
             //setup();
             //Setup prepared statements
             searchMaleStatement = connection.prepareStatement("SELECT Name FROM firstnames WHERE Female = 0");
-            searchMaleStatement = connection.prepareStatement("SELECT Name FROM firstnames WHERE Female = 1");
+            searchFemaleStatement = connection.prepareStatement("SELECT Name FROM firstnames WHERE Female = 1");
             countFemaleStatement = connection.prepareStatement("SELECT COUNT(Name) FROM firstnames WHERE Female = 1");
             countMaleStatement = connection.prepareStatement("SELECT COUNT(Name) FROM firstnames WHERE Female = 0");
             searchSurnameStatement = connection.prepareStatement("SELECT Name FROM surnames");
+            countSurnameStatement = connection.prepareStatement("SELECT COUNT(Name) FROM surnames");
             insertFirstnameStatement = connection.prepareStatement("INSERT INTO firstnames VALUES(?,?)");
             insertSurnameStatement = connection.prepareStatement("INSERT INTO surnames VALUES(?)");
         }
         catch (SQLException ex)
         {
             JOptionPane.showMessageDialog(this, ex, "SQL Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+            
         }
     }
     
@@ -156,8 +157,6 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             StringBuilder nameBuilder = new StringBuilder();
             ResultSet firstNames;
             ResultSet firstNameCount;
-            ResultSet surnames = searchSurnameStatement.executeQuery();
-            ResultSet surnameCount = searchSurnameStatement.executeQuery();
             if (femaleCheckbox.isSelected())
                 {
                     firstNames = searchFemaleStatement.executeQuery();
@@ -176,13 +175,21 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             for(int i = 0;i < rand;i++) {firstNames.next();}
             nameBuilder.append(firstNames.getString(1));
             nameBuilder.append(' ');
+            firstNames.close();
+            firstNameCount.close();
             //Determinate surname
-            surnames.next();
+            //Determinate the row count of surnames
+            ResultSet surnameCount = countSurnameStatement.executeQuery();
             surnameCount.next();
             names = surnameCount.getInt(1);
             rand = random.nextInt(names);
+            surnameCount.close();
+            //Determinate the surname
+            ResultSet surnames = searchSurnameStatement.executeQuery();
+            surnames.next();
             for(int i = 0;i < rand;i++) {surnames.next();}
             nameBuilder.append(surnames.getString(1));
+            surnames.close();
             
             nameValueLabel.setText(nameBuilder.toString());            
         }
@@ -199,6 +206,14 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             }
         });
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        connection.close();
+    }
+
+
     
     //Database variables
     private Connection connection;
