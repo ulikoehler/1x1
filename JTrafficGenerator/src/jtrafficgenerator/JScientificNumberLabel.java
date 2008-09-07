@@ -28,6 +28,19 @@ public class JScientificNumberLabel extends JLabel
     private DecimalFormat format = new DecimalFormat("0.##E00", new DecimalFormatSymbols(Locale.ENGLISH));
     private Notation notation = Notation.SCIENTIFIC_SUFFIX;
     private int decimals = 2;
+    private String unit = "";
+    
+    /**
+     * Sets the unit to use in the formattedString
+     * @param unitString The String containing the unit name or null or a empty string if none should be used.
+     */
+    public void setUnit(String unitString)
+    {
+        if(unit != null)
+            {unit = unitString;}
+        else {unit = "";}
+    }
+    
     /**
      * Sets the format parameters.
      * @param notationParam The notation type to use.
@@ -108,6 +121,8 @@ public class JScientificNumberLabel extends JLabel
                         }
                     }
                     catch(ArrayIndexOutOfBoundsException ex) {return formattedInput;}
+                    //Add the unit string if it is not null
+                    if(unit != null) {resultSB.append(unit);}
                     return resultSB.toString();
                 }
         }

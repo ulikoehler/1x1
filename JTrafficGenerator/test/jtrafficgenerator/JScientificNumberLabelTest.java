@@ -79,6 +79,18 @@ public class JScientificNumberLabelTest {
         expResult = "0.12M";
         result = instance.formatNumber(input);
         assertEquals(expResult, result);
+        //Test modulus 1 again with "B" = byte unit string
+        instance.setUnit("B");
+        input = 12345.0;
+        expResult = "12.3kB";
+        result = instance.formatNumber(input);
+        assertEquals(expResult, result);
+        //Set Unit string to null again
+        instance.setUnit(null);
+        input = 12345.0;
+        expResult = "12.3k";
+        result = instance.formatNumber(input);
+        assertEquals(expResult, result);
     }
 
     /**
