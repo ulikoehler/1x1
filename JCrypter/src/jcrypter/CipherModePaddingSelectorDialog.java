@@ -18,9 +18,32 @@ package jcrypter;
 public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
 
     /** Creates new form CipherModePaddingSelectorDialog */
-    public CipherModePaddingSelectorDialog(java.awt.Frame parent, boolean modal) {
+    public CipherModePaddingSelectorDialog(JCrypterFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        //Save the parent frame in a member variable
+        this.jcframe = parent;
+        //Save the parameter arrays to member variables
+        this.ciphers = jcframe.getCiphers();
+        this.modes = jcframe.getModes();
+        this.paddings = jcframe.getPaddings();
+        //Init combo boxes
+        for(String c : ciphers)
+        {
+            cipherComboBox.addItem(c);
+        }
+        for(String c : modes)
+        {
+            modeComboBox.addItem(c);
+        }
+        for(String c : paddings)
+        {
+            paddingComboBox.addItem(c);
+        }
+        //Set combo box selected indices
+        cipherComboBox.setSelectedItem(jcframe.getCipher());
+        modeComboBox.setSelectedItem(jcframe.getMode());
+        paddingComboBox.setSelectedItem(jcframe.getPadding());
     }
 
     /** This method is called from within the constructor to
@@ -36,7 +59,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         cipherComboBox = new javax.swing.JComboBox();
         modeLabel = new javax.swing.JLabel();
         modeComboBox = new javax.swing.JComboBox();
-        okButoon = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
         paddingLabel = new javax.swing.JLabel();
         paddingComboBox = new javax.swing.JComboBox();
 
@@ -47,10 +70,10 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
 
         modeLabel.setText("Mode:");
 
-        okButoon.setText("OK");
-        okButoon.addMouseListener(new java.awt.event.MouseAdapter() {
+        okButton.setText("OK");
+        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                okButoonMouseClicked(evt);
+                okButtonMouseClicked(evt);
             }
         });
 
@@ -64,7 +87,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(okButoon, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,40 +117,33 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
                     .addComponent(paddingLabel)
                     .addComponent(paddingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(okButoon)
+                .addComponent(okButton)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButoonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButoonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_okButoonMouseClicked
+    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+        jcframe.setCipher((String) cipherComboBox.getSelectedItem());
+        jcframe.setMode((String) modeComboBox.getSelectedItem());
+        jcframe.setPadding((String) paddingComboBox.getSelectedItem());
+        this.setVisible(false);
+}//GEN-LAST:event_okButtonMouseClicked
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CipherModePaddingSelectorDialog dialog = new CipherModePaddingSelectorDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    
+    //Members
+    private JCrypterFrame jcframe;
+    private String[] ciphers;
+    private String[] modes;
+    private String[] paddings;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cipherComboBox;
     private javax.swing.JLabel cipherLabel;
     private javax.swing.JComboBox modeComboBox;
     private javax.swing.JLabel modeLabel;
-    private javax.swing.JButton okButoon;
+    private javax.swing.JButton okButton;
     private javax.swing.JComboBox paddingComboBox;
     private javax.swing.JLabel paddingLabel;
     // End of variables declaration//GEN-END:variables

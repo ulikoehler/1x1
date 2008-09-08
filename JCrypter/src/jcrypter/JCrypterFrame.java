@@ -122,9 +122,9 @@ public class JCrypterFrame extends javax.swing.JFrame {
         extrasMenu.setText("Extras");
 
         pgpMenuItem.setText("PGP");
-        pgpMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pgpMenuItemMouseClicked(evt);
+        pgpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pgpMenuItemActionPerformed(evt);
             }
         });
         extrasMenu.add(pgpMenuItem);
@@ -133,6 +133,11 @@ public class JCrypterFrame extends javax.swing.JFrame {
         cipherModeMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cipherModeMenuItemMouseClicked(evt);
+            }
+        });
+        cipherModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cipherModeMenuItemActionPerformed(evt);
             }
         });
         extrasMenu.add(cipherModeMenuItem);
@@ -201,13 +206,18 @@ public class JCrypterFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_okButtonMouseClicked
 
-    private void pgpMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pgpMenuItemMouseClicked
-        new PGPCrypterFrame().setVisible(true);
-    }//GEN-LAST:event_pgpMenuItemMouseClicked
-
     private void cipherModeMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cipherModeMenuItemMouseClicked
-        
+        cipherDialog.setVisible(true);
+        //new CipherModePaddingSelectorDialog(this, false).setVisible(true);//GEN-HEADEREND:event_cipherModeMenuItemMouseClicked
     }//GEN-LAST:event_cipherModeMenuItemMouseClicked
+
+    private void cipherModeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cipherModeMenuItemActionPerformed
+        cipherDialog.setVisible(true);
+    }//GEN-LAST:event_cipherModeMenuItemActionPerformed
+
+    private void pgpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pgpMenuItemActionPerformed
+        new PGPCrypterFrame().setVisible(true);
+    }//GEN-LAST:event_pgpMenuItemActionPerformed
 
     private static void processLiteralData(PGPLiteralData ld, OutputStream out, PGPOnePassSignature ops) throws IOException, SignatureException{
         InputStream unc = ld.getInputStream();
@@ -273,6 +283,15 @@ public class JCrypterFrame extends javax.swing.JFrame {
     
     //Encryption variables
     PGPKeyRingReader pkr = null;
+    private String cipher = "Twofish";
+    private String mode = "CBC";
+    private String padding = "PKCS7";
+    private final String[] ciphers = {"Twofish", "AES", "CAST5", "Camellia", "IDEA"};
+    private final String[] modes = {"CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
+    private final String[] paddings = {"PKCS7", "TBC", "X923", "No", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
+
+    //Dialog members
+    CipherModePaddingSelectorDialog cipherDialog = new CipherModePaddingSelectorDialog(this, true);
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem cipherModeMenuItem;
@@ -293,5 +312,77 @@ public class JCrypterFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenuItem saveToFileMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the cipher
+     */
+    public String getCipher()
+        {
+        return cipher;
+        }
+
+    /**
+     * @param cipher the cipher to set
+     */
+    public void setCipher(String cipher)
+        {
+        this.cipher = cipher;
+        }
+
+    /**
+     * @return the mode
+     */
+    public String getMode()
+        {
+        return mode;
+        }
+
+    /**
+     * @param mode the mode to set
+     */
+    public void setMode(String mode)
+        {
+        this.mode = mode;
+        }
+
+    /**
+     * @return the padding
+     */
+    public String getPadding()
+        {
+        return padding;
+        }
+
+    /**
+     * @param padding the padding to set
+     */
+    public void setPadding(String padding)
+        {
+        this.padding = padding;
+        }
+
+    /**
+     * @return the ciphers
+     */
+    public String[] getCiphers()
+        {
+        return ciphers;
+        }
+
+    /**
+     * @return the modes
+     */
+    public String[] getModes()
+        {
+        return modes;
+        }
+
+    /**
+     * @return the paddings
+     */
+    public String[] getPaddings()
+        {
+        return paddings;
+        }
     
 }
