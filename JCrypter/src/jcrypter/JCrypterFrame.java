@@ -36,170 +36,9 @@ public class JCrypterFrame extends javax.swing.JFrame {
         Security.addProvider(new BouncyCastleProvider());  
         //Init the GUI components
         initComponents();
-        //Load PGP keyrings and update the key selection combo box
-        pkr = new PGPKeyRingReader();
-        for(String s : pkr.getPubKeyNames())
-        {
-            keyComboBox.addItem(s);
-        }
     }
 
-    private void encryptAsymmetric()
-    {
-        try
-        {
-            if(decryptCheckbox.isSelected())
-            {
-                //Get text
-                InputStream in = new ByteArrayInputStream(inputField.getText().getBytes());
-                char[] password = passwordField.getPassword();
-
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-                PGPPublicKeyEncryptedData pbe = null;
-                in = PGPUtil.getDecoderStream(in);
-
-                PGPObjectFactory pgpF = new PGPObjectFactory(in);
-                PGPEncryptedDataList enc;
-                Object o = pgpF.nextObject();
-
-                if(o == null) throw new PGPException("Cannot recognize input data format");
-                //
-                // the first object might be a PGP marker packet.
-                //
-                if (o instanceof PGPEncryptedDataList)
-                {
-                    enc = (PGPEncryptedDataList) o;
-                }
-                else
-                {
-                    enc = (PGPEncryptedDataList) pgpF.nextObject();
-                }
-
-                //
-                // find the secret key
-                //
-                Iterator encObjects = enc.getEncryptedDataObjects();
-                if(!encObjects.hasNext()) throw new PGPException("No encrypted data");
-                pbe=(PGPPublicKeyEncryptedData) encObjects.next();
-
-                PGPPrivateKey sKey = null;
-                System.out.println(Long.toHexString(pbe.getKeyID()));
-                PGPSecretKey secretKey = pkr.getSecKeysID().get(pbe.getKeyID());
-                if (secretKey == null) throw new IllegalArgumentException("Secret key for message not found.");
-
-                sKey = secretKey.extractPrivateKey(password, "BC");
-                //sKey = findSecretKey(it, passwd);
-
-                InputStream clear = pbe.getDataStream(sKey, "BC");
-
-                PGPObjectFactory plainFact = new PGPObjectFactory(clear);
-
-                Object message = plainFact.nextObject();
-                Object sigLiteralData = null;
-                PGPObjectFactory pgpFact = null;
-
-                if (message instanceof PGPCompressedData)
-                {
-                    PGPCompressedData cData = (PGPCompressedData) message;
-                    pgpFact = new PGPObjectFactory(cData.getDataStream());
-                    message = pgpFact.nextObject();
-                    if(message instanceof PGPOnePassSignatureList)
-                    {
-                        sigLiteralData =  pgpFact.nextObject();
-                    }
-                }
-                
-                if (message instanceof PGPLiteralData)
-                    {
-                        //Message is just encrypted
-                        processLiteralData((PGPLiteralData) message,out,null);
-                    }
-                
-                else if (message instanceof PGPOnePassSignatureList)
-                {
-                    PGPOnePassSignature ops = ((PGPOnePassSignatureList)message).get(0);
-                    PGPPublicKey pubKey = pkr.getPubKeysID().get(ops.getKeyID());
-                    if(pubKey == null)
-                        {
-                            System.out.println("Cannot find the public key 0x"+Integer.toHexString((int)ops.getKeyID()).toUpperCase());
-                            //... decrypt without checking signature
-                            processLiteralData((PGPLiteralData) sigLiteralData,out,null);
-                        }
-                    else
-                        {
-                            System.out.println((String)pubKey.getUserIDs().next());
-                            ops.initVerify(pubKey, "BC");
-                            processLiteralData((PGPLiteralData) sigLiteralData,out,ops);
-                            PGPSignatureList sigList =  (PGPSignatureList) pgpFact.nextObject();
-                        }
-                }
-                else {throw new PGPException("message is not a simple encrypted file - type unknown.");}
-
-                if (pbe.isIntegrityProtected())
-                    {
-                        if (!pbe.verify())
-                            {throw new PGPException("Message failed integrity check!");}
-                    }
-
-                outputField.setText(new String(out.toByteArray()));
-
-            }
-            else //Encrypt
-            {
-                //Get the selected public key
-                PGPPublicKey pubkey = pkr.getPubKeys().get(keyComboBox.getSelectedItem());
-                ByteArrayOutputStream finalOut = new ByteArrayOutputStream();
-                OutputStream aOut = new ArmoredOutputStream(finalOut);
-                        
-                ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-                PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.BZIP2);
-                OutputStreamWriter comWriter = new OutputStreamWriter(comData.open(bOut));
-                comWriter.write(inputField.getText());
-                comWriter.close();
-                comData.close();
-                //Do the encryption
-                PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5, true, new SecureRandom(), "BC");
-                cPk.addMethod(pubkey);
-                byte[] bytes = bOut.toByteArray();
-                OutputStream cOut = cPk.open(aOut, bytes.length);
-                cOut.write(bytes);
-                cOut.close();
-                aOut.close();
-                //Print the encrypted text into the GUI
-                outputField.setText(new String(finalOut.toByteArray()));
-            }
-        }
-        catch (NoSuchProviderException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch(PGPException ex) //Data not decryptible
-        {
-            JOptionPane.showMessageDialog(this, ex, "PGP Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-            ex.getUnderlyingException().printStackTrace();
-        }
-        catch(IllegalArgumentException ex)
-        {
-            JOptionPane.showMessageDialog(this, ex, "Argument Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }
-        catch(SecurityException ex)
-        {
-            JOptionPane.showMessageDialog(this, ex, "Argument Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }
-        catch(SignatureException ex)
-        {
-            JOptionPane.showMessageDialog(this, ex, "Argument Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }
-    }
+    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -219,13 +58,13 @@ public class JCrypterFrame extends javax.swing.JFrame {
         outputField = new javax.swing.JTextArea();
         okButton = new javax.swing.JButton();
         decryptCheckbox = new javax.swing.JCheckBox();
-        keyLabel = new javax.swing.JLabel();
-        keyComboBox = new javax.swing.JComboBox();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
         extrasMenu = new javax.swing.JMenu();
+        pgpMenuItem = new javax.swing.JMenuItem();
+        cipherModeMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -264,10 +103,6 @@ public class JCrypterFrame extends javax.swing.JFrame {
         decryptCheckbox.setMnemonic('d');
         decryptCheckbox.setText("Decrypt");
 
-        keyLabel.setText("Key:");
-
-        keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
-
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
@@ -285,6 +120,23 @@ public class JCrypterFrame extends javax.swing.JFrame {
 
         extrasMenu.setMnemonic('e');
         extrasMenu.setText("Extras");
+
+        pgpMenuItem.setText("PGP");
+        pgpMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pgpMenuItemMouseClicked(evt);
+            }
+        });
+        extrasMenu.add(pgpMenuItem);
+
+        cipherModeMenuItem.setText("Cipher and Mode");
+        cipherModeMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cipherModeMenuItemMouseClicked(evt);
+            }
+        });
+        extrasMenu.add(cipherModeMenuItem);
+
         menuBar.add(extrasMenu);
 
         setJMenuBar(menuBar);
@@ -313,13 +165,9 @@ public class JCrypterFrame extends javax.swing.JFrame {
                         .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ciphertextLabel)
-                            .addComponent(keyLabel))
+                        .addComponent(ciphertextLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-                            .addComponent(keyComboBox, 0, 399, Short.MAX_VALUE))))
+                        .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -338,14 +186,10 @@ public class JCrypterFrame extends javax.swing.JFrame {
                     .addComponent(decryptCheckbox)
                     .addComponent(okButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(keyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(keyLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ciphertextLabel)
-                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
+                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ciphertextLabel))
+                .addGap(63, 63, 63))
         );
 
         pack();
@@ -354,9 +198,16 @@ public class JCrypterFrame extends javax.swing.JFrame {
     
     @SuppressWarnings("empty-statement")
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        if(keyComboBox.getSelectedIndex() == 0){encryptSymmetric();}
-        else{encryptAsymmetric();}
+        
     }//GEN-LAST:event_okButtonMouseClicked
+
+    private void pgpMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pgpMenuItemMouseClicked
+        new PGPCrypterFrame().setVisible(true);
+    }//GEN-LAST:event_pgpMenuItemMouseClicked
+
+    private void cipherModeMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cipherModeMenuItemMouseClicked
+        
+    }//GEN-LAST:event_cipherModeMenuItemMouseClicked
 
     private static void processLiteralData(PGPLiteralData ld, OutputStream out, PGPOnePassSignature ops) throws IOException, SignatureException{
         InputStream unc = ld.getInputStream();
@@ -424,6 +275,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     PGPKeyRingReader pkr = null;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem cipherModeMenuItem;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JCheckBox decryptCheckbox;
@@ -431,14 +283,13 @@ public class JCrypterFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
-    private javax.swing.JComboBox keyComboBox;
-    private javax.swing.JLabel keyLabel;
     private javax.swing.JMenuItem loadFromFileMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea outputField;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
+    private javax.swing.JMenuItem pgpMenuItem;
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenuItem saveToFileMenuItem;
     // End of variables declaration//GEN-END:variables
