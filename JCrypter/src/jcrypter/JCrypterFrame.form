@@ -16,6 +16,9 @@
                 <Property name="text" type="java.lang.String" value="Load from file"/>
                 <Property name="toolTipText" type="java.lang.String" value="Load data from a file into the input field"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadFromFileMenuItemActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveToFileMenuItem">
               <Properties>
@@ -23,6 +26,9 @@
                 <Property name="text" type="java.lang.String" value="Save to file"/>
                 <Property name="toolTipText" type="java.lang.String" value="Save the data from the output field to a file"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveToFileMenuItemActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -47,6 +53,14 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cipherModeMenuItemMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cipherModeMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="eccMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ECC"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="eccMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -134,7 +148,7 @@
                   <Component id="ciphertextScrollPane" min="-2" pref="151" max="-2" attributes="0"/>
                   <Component id="ciphertextLabel" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

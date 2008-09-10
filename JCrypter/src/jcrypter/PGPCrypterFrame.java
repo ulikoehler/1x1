@@ -14,6 +14,7 @@ package jcrypter;
 import java.io.*;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.security.SignatureException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -164,6 +165,20 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         encryptAsymmetric();
 }//GEN-LAST:event_okButtonMouseClicked
 
+    
+    private static void processLiteralData(PGPLiteralData ld, OutputStream out, PGPOnePassSignature ops) throws IOException, SignatureException, SignatureException{
+        InputStream unc = ld.getInputStream();
+        int ch;
+        if(ops==null){
+            while ((ch = unc.read()) >= 0) 
+                out.write(ch);
+        }else{
+            while ((ch = unc.read()) >= 0) {
+                out.write(ch);
+                ops.update((byte)ch);
+            }
+        }
+    }
     /**
     * @param args the command line arguments
     */

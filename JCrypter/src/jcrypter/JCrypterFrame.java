@@ -9,11 +9,26 @@
 
 package jcrypter;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.security.*;
-import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.ShortBufferException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.engines.TwofishEngine;
@@ -21,7 +36,6 @@ import org.bouncycastle.crypto.modes.OpenPGPCFBBlockCipher;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openpgp.*;
 import org.bouncycastle.util.encoders.Base64;
 
 /**
@@ -65,6 +79,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         extrasMenu = new javax.swing.JMenu();
         pgpMenuItem = new javax.swing.JMenuItem();
         cipherModeMenuItem = new javax.swing.JMenuItem();
+        eccMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -109,11 +124,21 @@ public class JCrypterFrame extends javax.swing.JFrame {
         loadFromFileMenuItem.setMnemonic('l');
         loadFromFileMenuItem.setText("Load from file");
         loadFromFileMenuItem.setToolTipText("Load data from a file into the input field");
+        loadFromFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadFromFileMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(loadFromFileMenuItem);
 
         saveToFileMenuItem.setMnemonic('s');
         saveToFileMenuItem.setText("Save to file");
         saveToFileMenuItem.setToolTipText("Save the data from the output field to a file");
+        saveToFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveToFileMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveToFileMenuItem);
 
         menuBar.add(fileMenu);
@@ -141,6 +166,14 @@ public class JCrypterFrame extends javax.swing.JFrame {
             }
         });
         extrasMenu.add(cipherModeMenuItem);
+
+        eccMenuItem.setText("ECC");
+        eccMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eccMenuItemActionPerformed(evt);
+            }
+        });
+        extrasMenu.add(eccMenuItem);
 
         menuBar.add(extrasMenu);
 
@@ -194,7 +227,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ciphertextLabel))
-                .addGap(63, 63, 63))
+                .addContainerGap())
         );
 
         pack();
@@ -203,7 +236,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     
     @SuppressWarnings("empty-statement")
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        
+        encryptSymmetric();
     }//GEN-LAST:event_okButtonMouseClicked
 
     private void cipherModeMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cipherModeMenuItemMouseClicked
@@ -219,32 +252,84 @@ public class JCrypterFrame extends javax.swing.JFrame {
         new PGPCrypterFrame().setVisible(true);
     }//GEN-LAST:event_pgpMenuItemActionPerformed
 
-    private static void processLiteralData(PGPLiteralData ld, OutputStream out, PGPOnePassSignature ops) throws IOException, SignatureException{
-        InputStream unc = ld.getInputStream();
-        int ch;
-        if(ops==null){
-            while ((ch = unc.read()) >= 0) 
-                out.write(ch);
-        }else{
-            while ((ch = unc.read()) >= 0) {
-                out.write(ch);
-                ops.update((byte)ch);
+    private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
+        FileInputStream fin = null;
+        try
+            {
+                fileChooser.showOpenDialog(this);
+                File file = fileChooser.getSelectedFile();
+                byte[] buffer = new byte[(int)file.length()];
+                fin = new FileInputStream(file);
+                fin.read(buffer);
+                fin.close();
+                inputField.setText(new String(buffer));
             }
-        }
-    }
+        catch (IOException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+        finally
+            {
+                try
+                    {
+                    fin.close();
+                    }
+                catch (IOException ex)
+                    {
+                    Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
+                    }
+            }
+    }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
+
+    private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
+        FileOutputStream fout = null;
+        try
+            {
+                fileChooser.showSaveDialog(this);
+                File file = fileChooser.getSelectedFile();
+                byte[] buffer = outputField.getText().getBytes();
+                fout = new FileOutputStream(file);
+                fout.write(buffer);
+                fout.close();
+            }
+        catch (IOException ex)
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        finally
+            {
+                try
+                    {
+                     fout.close();
+                    }
+                catch (IOException ex)
+                    {
+                    Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
+                    }
+            }
+    }//GEN-LAST:event_saveToFileMenuItemActionPerformed
+
+    private void eccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eccMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eccMenuItemActionPerformed
+
     
     private void encryptSymmetric()
     {
         try
         {
-            //Bouncy castle inline using lightweight API
-            BlockCipher engine = new TwofishEngine();
-            BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new OpenPGPCFBBlockCipher(engine));
+            boolean decrypt = decryptCheckbox.isSelected();
+            //Using BouncyCastle JCE
+            Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
+            int bs = cipher.getBlockSize(); //Blocksize
             //Get data
             byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
             byte[] input;
             //Base64-decode the ciphertext
-            if(decryptCheckbox.isSelected()) {input = Base64.decode(inputField.getText().getBytes());}
+            if(decrypt) {input = Base64.decode(inputField.getText().getBytes());}
             else {input = inputField.getText().getBytes();}
             
             //Hash the password to fit it into the right size
@@ -252,21 +337,74 @@ public class JCrypterFrame extends javax.swing.JFrame {
             digest.update(passwordBytes, 0, passwordBytes.length);
             byte[] keyBytes = new byte[32];
             digest.doFinal(keyBytes, 0);
+
+            //State whether to encrypt or to decrypt
+            int cryptMode;
+            if(decrypt) {cryptMode = Cipher.DECRYPT_MODE;}
+            else {cryptMode = Cipher.ENCRYPT_MODE;}
+
+            //IV generation/retrievement
+            byte[] iv = null;
+            if(decrypt)
+            {
+                iv = input; //Using iv array only with offset
+            }
+            else
+            {
+                //Generate the iv and the IvParameter spec
+                iv = new byte[cipher.getBlockSize()];
+                rand.nextBytes(iv);                
+            }
+            IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
+
+            //Generate the secret key spec
+            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
             
-            cipher.init(!decryptCheckbox.isSelected(), new KeyParameter(keyBytes));
+            cipher.init(cryptMode, keySpec, ivSpec);
             
-            byte[] output = new byte[cipher.getOutputSize(input.length)];
-            int outputLen = cipher.processBytes(input, 0, input.length, output, 0);
-            cipher.doFinal(output, outputLen);
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            CipherOutputStream cout = new CipherOutputStream(bout, cipher);
+            
+            //If print the IV into bout
+            if(!decrypt){bout.write(iv);}
+            //Print the input (minus the IV, if decrypting) into cout
+            if(decrypt){cout.write(input, bs, input.length - bs);}
+            else{cout.write(input);}
+            //All data has been written
+            cout.close();
+            bout.close();
             //Print the output into outputField and Base64-encode if we have to encrypt
-            if(decryptCheckbox.isSelected()) {outputField.setText(new String(output).trim());}
-            else {outputField.setText(new String(Base64.encode(output)));}
+            if(decrypt) {outputField.setText(new String(bout.toByteArray()));}
+            else {outputField.setText(new String(Base64.encode(bout.toByteArray())));}
         }
-        catch(CryptoException ex) //Data not decryptible
-        {
-            JOptionPane.showMessageDialog(this, "Data not encrypted!", "Decryption impossible", JOptionPane.ERROR_MESSAGE);
+        catch (InvalidAlgorithmParameterException ex)
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        catch (IOException ex) //Must not occure
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-        }
+            }
+        catch (InvalidKeyException ex)
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        catch (NoSuchAlgorithmException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+        catch (NoSuchProviderException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+        catch (NoSuchPaddingException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
     }
     
     /**
@@ -283,21 +421,24 @@ public class JCrypterFrame extends javax.swing.JFrame {
     
     //Encryption variables
     PGPKeyRingReader pkr = null;
-    private String cipher = "Twofish";
-    private String mode = "CBC";
-    private String padding = "PKCS7";
+    public static SecureRandom rand = new SecureRandom();
+    private String cipherName = "Twofish";
+    private String modeName = "CBC";
+    private String paddingName = "PKCS7";
     private final String[] ciphers = {"Twofish", "AES", "CAST5", "Camellia", "IDEA"};
-    private final String[] modes = {"CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
+    private final String[] modes = {"ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
     private final String[] paddings = {"PKCS7", "TBC", "X923", "No", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
 
     //Dialog members
     CipherModePaddingSelectorDialog cipherDialog = new CipherModePaddingSelectorDialog(this, true);
+    JFileChooser fileChooser = new JFileChooser();
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem cipherModeMenuItem;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JCheckBox decryptCheckbox;
+    private javax.swing.JMenuItem eccMenuItem;
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTextArea inputField;
@@ -314,51 +455,51 @@ public class JCrypterFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * @return the cipher
+     * @return the cipherName
      */
     public String getCipher()
         {
-        return cipher;
+        return cipherName;
         }
 
     /**
-     * @param cipher the cipher to set
+     * @param cipherName the cipherName to set
      */
     public void setCipher(String cipher)
         {
-        this.cipher = cipher;
+        this.cipherName = cipher;
         }
 
     /**
-     * @return the mode
+     * @return the modeName
      */
     public String getMode()
         {
-        return mode;
+        return modeName;
         }
 
     /**
-     * @param mode the mode to set
+     * @param modeName the modeName to set
      */
     public void setMode(String mode)
         {
-        this.mode = mode;
+        this.modeName = mode;
         }
 
     /**
-     * @return the padding
+     * @return the paddingName
      */
     public String getPadding()
         {
-        return padding;
+        return paddingName;
         }
 
     /**
-     * @param padding the padding to set
+     * @param paddingName the paddingName to set
      */
     public void setPadding(String padding)
         {
-        this.padding = padding;
+        this.paddingName = padding;
         }
 
     /**
