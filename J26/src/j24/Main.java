@@ -17,10 +17,16 @@ import net.sourceforge.jeval.Evaluator;
 public class Main {
     
     //Constants determinating the calculated range
-    static final int limits = 9;
+    static final int upperLimit = 9;
+    static final int lowerLimit = 1;
     static final int numCount = 4; //Do NOT change before implemented extended bracket algorithm
     static final int desiredResult = 24;
-    static final boolean enableModulus = true;
+    
+    //Switches
+    static final boolean enableOneModulus = false;
+    static final boolean enableTwoModuli = false;
+    static final boolean strictModulus = true; //Filter modulus results where the modulus is greater than the main number
+    static final boolean enableStd = true;
 
     static final char[] ops = {'+','-','*','/'}; //All operators available
 
@@ -31,9 +37,9 @@ public class Main {
     //Numbers iterated through
     static int[] nums = new int[numCount];
     //Operators iterated through
-    static int[] opIdcs = new int[numCount - 1]; //Saves the ops indices of the operators currently used in the loop
+    static int[] opIds = new int[numCount - 1]; //Saves the ops indices of the operators currently used in the loop
     
-    //private void 
+    static double res;
 
     /**
      * @param args the command line arguments
@@ -48,8 +54,8 @@ public class Main {
             {
                 for (int i = 0; i < nums.length - 1; i++)
                 {
-                    nums[i] = 0;
-                    opIdcs[i] = 0;
+                    nums[i] = lowerLimit;
+                    opIds[i] = 0;
                 }
                 
                 nums[nums.length - 1] = 0;
@@ -66,210 +72,272 @@ public class Main {
                 int mod2AllResults = 0;
 
                 //Operator loop
-                for (int opI = 0; opI <= 5*opIdcs.length - 1; opI++)
+                for (int opI = 0; opI <= 4*opIds.length - 1; opI++)
                 {
                     //Number loop
                     // <editor-fold>
-                    for (int numPerms = 0; numPerms < (int) Math.pow(limits,numCount); numPerms++)
+                    for (int numPerms = 0; numPerms < (int) Math.pow(upperLimit - lowerLimit,numCount); numPerms++)
                     {
                         ///////////////
                         //Test the standard arithmetics
                         //////////////
                         //<editor-fold>
+                        if(enableStd)
+                        {
                         //(x x) (x x)
-                        expBuilder = new StringBuilder();
-                        expBuilder.append('(');
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append('(');
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        expBuilder.append(')');
-                        double res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                            !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                            && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                            )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append('(');
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append('(');
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            expBuilder.append(')');
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //x ([x x] x)
-                        expBuilder = new StringBuilder();
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append("((");
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        expBuilder.append(')');
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append("((");
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            expBuilder.append(')');
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //x (x [x x])
-                        expBuilder = new StringBuilder();
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append('(');
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append("(");
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        expBuilder.append("))");
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append('(');
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append("(");
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            expBuilder.append("))");
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //([x x] x) x
-                        expBuilder = new StringBuilder();
-                        expBuilder.append("((");
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();   
+                            expBuilder.append("((");
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //(x [x x]) x
-                        expBuilder = new StringBuilder();
-                        expBuilder.append('(');
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append('(');
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append("))");
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append('(');
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append('(');
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append("))");
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //x (x x x)
-                        expBuilder = new StringBuilder();
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append('(');
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        expBuilder.append(')');
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append('(');
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            expBuilder.append(')');
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //(x x x) x
-                        expBuilder = new StringBuilder();
-                        expBuilder.append('(');
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append('(');
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //x x (x x)
-                        expBuilder = new StringBuilder();
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append('(');
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        expBuilder.append(')');
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append('(');
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            expBuilder.append(')');
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //x (x x) x
-                        expBuilder = new StringBuilder();
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append('(');
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append('(');
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //(x x) x x
-                        expBuilder = new StringBuilder();
-                        expBuilder.append('(');
-                        expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
-                        expBuilder.append(nums[1]);
-                        expBuilder.append(')');
-                        expBuilder.append(ops[opIdcs[1]]);
-                        expBuilder.append(nums[2]);
-                        expBuilder.append(ops[opIdcs[2]]);
-                        expBuilder.append(nums[3]);
-                        res = ev.getNumberResult(expBuilder.toString());
-                        if (res == desiredResult)
+                        if(
+                                !(opIds[0] == 0 && opIds[1] == 0 && opIds[2] == 0) // + + +
+                                && !(opIds[0] == 2 && opIds[1] == 2 && opIds[2] == 2) // * * *
+                                )
                         {
-                            fw.write(expBuilder.toString() + "=" + (int)res + "\n");
-                            stdCorrectResults++;
+                            expBuilder = new StringBuilder();
+                            expBuilder.append('(');
+                            expBuilder.append(nums[0]);
+                            expBuilder.append(ops[opIds[0]]);
+                            expBuilder.append(nums[1]);
+                            expBuilder.append(')');
+                            expBuilder.append(ops[opIds[1]]);
+                            expBuilder.append(nums[2]);
+                            expBuilder.append(ops[opIds[2]]);
+                            expBuilder.append(nums[3]);
+                            res = ev.getNumberResult(expBuilder.toString());
+                            if (res == desiredResult)
+                            {
+                                fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                stdCorrectResults++;
+                            }
+                            stdAllResults++;
                         }
-                        stdAllResults++;
                         //x x x x
                         expBuilder = new StringBuilder();
                         expBuilder.append(nums[0]);
-                        expBuilder.append(ops[opIdcs[0]]);
+                        expBuilder.append(ops[opIds[0]]);
                         expBuilder.append(nums[1]);
-                        expBuilder.append(ops[opIdcs[1]]);
+                        expBuilder.append(ops[opIds[1]]);
                         expBuilder.append(nums[2]);
-                        expBuilder.append(ops[opIdcs[2]]);
+                        expBuilder.append(ops[opIds[2]]);
                         expBuilder.append(nums[3]);
                         res = ev.getNumberResult(expBuilder.toString());
                         if (res == desiredResult)
@@ -279,64 +347,66 @@ public class Main {
                         }
                         stdAllResults++;
                         //</editor-fold>
+                        }
 
                     
                         //////////////
                         //Test modular algebras with one modulus variable
                         //////////////
                         //<editor-fold>
-                        if(enableModulus )//&& opI % 4 == 0)
+                        if(enableOneModulus)//&& opI % 4 == 0)
                         {
+                            int res;
                             for(int i = 0; i < numCount;i++) //All numbers are tested as modulus
                             {
                                 //x x x
                                 expBuilder = new StringBuilder();
                                 expBuilder.append(nums[(i+1)%numCount]);
-                                expBuilder.append(ops[opIdcs[0]]);
+                                expBuilder.append(ops[opIds[0]]);
                                 expBuilder.append(nums[(i+2)%numCount]);
-                                expBuilder.append(ops[opIdcs[1]]);
+                                expBuilder.append(ops[opIds[1]]);
                                 expBuilder.append(nums[(i+3)%numCount]);
-                                res = ev.getNumberResult(expBuilder.toString()) % nums[i];
+                                res = (int) ev.getNumberResult(expBuilder.toString()) % nums[i];
                                 if(res == desiredResult)
                                 {
-                                    fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                    fw.write(expBuilder.toString() + "=" + res + "\n");
                                     mod1CorrectResults++;
                                 }
                                 mod1AllResults++;
                                 //(x x) x
-                                if(opIdcs[1] != 0 && opIdcs[1] != 2) //Dont calculate if the brace term is added or multiplied
+                                if(opIds[1] != 0 && opIds[1] != 2) //Dont calculate if the brace term is added or multiplied
                                 {
                                     expBuilder = new StringBuilder();
                                     expBuilder.append('(');
                                     expBuilder.append(nums[(i+1)%numCount]);
-                                    expBuilder.append(ops[opIdcs[0]]);
+                                    expBuilder.append(ops[opIds[0]]);
                                     expBuilder.append(nums[(i+2)%numCount]);
                                     expBuilder.append(')');                                    
-                                    expBuilder.append(ops[opIdcs[1]]);
+                                    expBuilder.append(ops[opIds[1]]);
                                     expBuilder.append(nums[(i+3)%numCount]);
-                                    res = ev.getNumberResult(expBuilder.toString()) % nums[i];
+                                    res = (int) ev.getNumberResult(expBuilder.toString()) % nums[i];
                                     if(res == desiredResult)
                                     {
-                                        fw.write(expBuilder.toString() + "=" + (int)res + "\n");
+                                        fw.write(expBuilder.toString() + "=" + res + "\n");
                                         mod1CorrectResults++;
                                     }
                                     mod1AllResults++;                                    
                                 }
                                 //x (x x)
-                                if(opIdcs[0] != 0 && opIdcs[0] != 2) //Dont calculate if the brace term is added or multiplied
+                                if(opIds[0] != 0 && opIds[0] != 2) //Dont calculate if the brace term is added or multiplied
                                 {
                                     expBuilder = new StringBuilder();
                                     expBuilder.append(nums[(i+1)%numCount]);
-                                    expBuilder.append(ops[opIdcs[0]]);
+                                    expBuilder.append(ops[opIds[0]]);
                                     expBuilder.append('(');
                                     expBuilder.append(nums[(i+2)%numCount]);                                    
-                                    expBuilder.append(ops[opIdcs[1]]);
+                                    expBuilder.append(ops[opIds[1]]);
                                     expBuilder.append(nums[(i+3)%numCount]);
                                     expBuilder.append(')');
-                                    res = ev.getNumberResult(expBuilder.toString()) % nums[i];
+                                    res = (int) ev.getNumberResult(expBuilder.toString()) % nums[i];
                                     if(res == desiredResult)
                                     {
-                                        fw.write(expBuilder.toString() + "\u2263" + (int)res +  " (mod " + nums[3] + ")\n");
+                                        fw.write(expBuilder.toString() + "\u2263" + res +  " (mod " + nums[3] + ")\n");
                                         mod1CorrectResults++;
                                     }
                                     mod1AllResults++;                                    
@@ -349,15 +419,17 @@ public class Main {
                         //Test modular algebras with two modulus variables
                         //////////////
                         //<editor-fold>
-                        if(enableModulus)//&& opI % 4 == 0)
+                        if(enableTwoModuli)
                         {
+                            int res;
+                            double modDouble;
                             int modulus;
                             StringBuilder modExpBuilder;
                             for(int i = 0; i < numCount;i++) //All numbers are tested as modulus
                             {                                
                                 expBuilder = new StringBuilder();
                                 expBuilder.append(nums[i]);
-                                expBuilder.append(ops[opIdcs[0]]);
+                                expBuilder.append(ops[opIds[0]]);
                                 expBuilder.append(nums[(i+1)%numCount]);
                                 res = (int) ev.getNumberResult(expBuilder.toString());
                                 //Continue if the left side result is 0
@@ -365,11 +437,17 @@ public class Main {
                                 
                                 modExpBuilder = new StringBuilder();
                                 modExpBuilder.append(nums[(i+2)%numCount]);
-                                modExpBuilder.append(ops[opIdcs[1]]);
+                                modExpBuilder.append(ops[opIds[1]]);
                                 modExpBuilder.append(nums[(i+3)%numCount]);
-                                modulus = (int) ev.getNumberResult(modExpBuilder.toString());
+                                modDouble = ev.getNumberResult(modExpBuilder.toString());
+                                if(Double.isInfinite(modDouble)) {continue;} //x/0 --> Inf.
+                                    
+                                modulus = (int) modDouble;
+                                
+                                //Filter invalid results
+                                if(strictModulus && modulus > res) {continue;}
                                 //Continue if the modulus is 0
-                                if(modulus == 0) {continue;}
+                                if(modDouble == 0) {continue;}
                                 //Calculate final result : res % modulus
                                 res %= modulus;
                                 
@@ -386,10 +464,10 @@ public class Main {
                         ////End tests
                     
                         //Increment first number with overflow handling
-                        for (int i = 0; i < numCount - 1; i++)
+                        for (int i = 0; i < numCount; i++)
                         {
-                            nums[i] = (nums[i] + 1) % limits;
-                            if (nums[i] != 0)
+                            nums[i] = ((nums[i] + 1) % upperLimit) + lowerLimit;
+                            if (nums[i] != lowerLimit)
                             {
                                 break;
                             }
@@ -400,8 +478,8 @@ public class Main {
                     //Increment last operator index with overflow handling
                     for (int i = 0; i < numCount - 2; i++)
                     {
-                        opIdcs[i] = (opIdcs[i] + 1) % 4;
-                        if (opIdcs[i] != 0)
+                        opIds[i] = (opIds[i] + 1) % 4;
+                        if (opIds[i] != 0)
                         {
                             break;
                         }
