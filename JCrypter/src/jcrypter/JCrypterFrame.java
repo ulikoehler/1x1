@@ -9,32 +9,24 @@
 
 package jcrypter;
 
+import jcrypter.pgp.PGPKeyRingReader;
+import jcrypter.pgp.PGPCrypterFrame;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.security.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.ShortBufferException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.bouncycastle.crypto.engines.TwofishEngine;
-import org.bouncycastle.crypto.modes.OpenPGPCFBBlockCipher;
-import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
-import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -121,6 +113,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
+        loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadFromFileMenuItem.setMnemonic('l');
         loadFromFileMenuItem.setText("Load from file");
         loadFromFileMenuItem.setToolTipText("Load data from a file into the input field");
@@ -131,6 +124,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
         fileMenu.add(loadFromFileMenuItem);
 
+        saveToFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveToFileMenuItem.setMnemonic('s');
         saveToFileMenuItem.setText("Save to file");
         saveToFileMenuItem.setToolTipText("Save the data from the output field to a file");
@@ -146,6 +140,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         extrasMenu.setMnemonic('e');
         extrasMenu.setText("Extras");
 
+        pgpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         pgpMenuItem.setText("PGP");
         pgpMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +149,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
         extrasMenu.add(pgpMenuItem);
 
+        cipherModeMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         cipherModeMenuItem.setText("Cipher and Mode");
         cipherModeMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -167,6 +163,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
         extrasMenu.add(cipherModeMenuItem);
 
+        eccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         eccMenuItem.setText("ECC");
         eccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,7 +356,6 @@ public class JCrypterFrame extends javax.swing.JFrame {
 
             //Generate the secret key spec
             SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
-            
             cipher.init(cryptMode, keySpec, ivSpec);
             
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -425,7 +421,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     private String cipherName = "Twofish";
     private String modeName = "CBC";
     private String paddingName = "PKCS7";
-    private final String[] ciphers = {"Twofish", "AES", "CAST5", "Camellia", "IDEA"};
+    private final String[] ciphers = {"Serpent","Twofish", "AES", "CAST5", "Camellia", "IDEA"};
     private final String[] modes = {"ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
     private final String[] paddings = {"PKCS7", "TBC", "X923", "No", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
 
