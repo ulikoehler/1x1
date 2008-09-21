@@ -11,6 +11,8 @@
 
 package jcrypter;
 
+import java.util.ResourceBundle;
+
 /**
  *
  * @author uli
@@ -64,20 +66,20 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         paddingComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Select Cipher");
+        setTitle(i18n.getString("Select_Cipher")); // NOI18N
 
-        cipherLabel.setText("Cipher:");
+        cipherLabel.setText(i18n.getString("Cipher:")); // NOI18N
 
-        modeLabel.setText("Mode:");
+        modeLabel.setText(i18n.getString("Mode:")); // NOI18N
 
-        okButton.setText("OK");
+        okButton.setText(i18n.getString("OK")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
             }
         });
 
-        paddingLabel.setText("Padding:");
+        paddingLabel.setText(i18n.getString("Padding:")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,6 +139,9 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
     private String[] ciphers;
     private String[] modes;
     private String[] paddings;
+    
+    //Resource bundles
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/Bundle");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cipherComboBox;

@@ -4,18 +4,19 @@
  */
 
 /*
- * ECCrypterFrame.java
+ * ECSignerFrame.java
  *
  * Created on 10.09.2008, 19:57:18
  */
 
 package jcrypter.ecc;
 
+import JCrypter.utils.KeyFinder;
 import java.io.*;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.util.HashMap;
@@ -28,67 +29,30 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JFileChooser;
 import jcrypter.*;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 
 /**
  *
  * @author uli
  */
-public class ECCrypterFrame extends javax.swing.JFrame {
+public class ECSignerFrame extends javax.swing.JFrame {
     
     Map<String, ECPublicKey> pubkeys = new HashMap<String, ECPublicKey>();
     Map<String, ECPrivateKey> privkeys = new HashMap<String, ECPrivateKey>();
 
-    /** Creates new form ECCrypterFrame */
-    public ECCrypterFrame() {
+    /** Creates new form ECSignerFrame */
+    public ECSignerFrame() {
         initComponents();
-        //////////////
-        //Load .ecp and .ecs files from this directory and append each filename to the combobox
-        /////////////
-        //Load public keys
-        try
+        //Register Bouncy castle provider
+        Security.addProvider(new BouncyCastleProvider());
+        //Load the keys
+        KeyFinder kf = new KeyFinder(".ecp", ".ecp", "ECDSA");
+        for(String s : kf.getNames())
         {
-            File thisDir = new File(".");
-            File[] ecp = thisDir.listFiles(new FilenameFilter() {
-                        @Override
-                        public boolean accept(File arg0, String arg1) {
-                            if(arg1.endsWith(".ecp")) {return true;}
-                            return false;
-                        }
-                    });
-            for(File f : ecp)
-            {
-                ObjectInputStream oin = new ObjectInputStream(
-                                            new BufferedInputStream(
-                                                new FileInputStream(f)));
-                ECPublicKey pubKey = (ECPublicKey) oin.readObject();
-                pubkeys.put(f.getName(), pubKey);
-
-                keyComboBox.addItem(f.getName());
-            }
-            //Load private keys
-            File[] ecs = thisDir.listFiles(new FilenameFilter() {
-                        @Override
-                        public boolean accept(File arg0, String arg1) {
-                            if(arg1.endsWith(".ecs")) {return true;}
-                            return false;
-                        }
-                    });
-            for(File f : ecs)
-            {
-                ObjectInputStream oin = new ObjectInputStream(
-                                            new BufferedInputStream(
-                                                new FileInputStream(f)));
-                ECPrivateKey privKey = (ECPrivateKey) oin.readObject();
-                privkeys.put(f.getName(), privKey);
-
-                keyComboBox.addItem(f.getName());
-            }
+            keyComboBox.addItem(s);
         }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        
     }
 
     /** This method is called from within the constructor to
@@ -100,59 +64,59 @@ public class ECCrypterFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        inputLabel = new javax.swing.JLabel();
+        messageLabel = new javax.swing.JLabel();
         plaintextScrollPane = new javax.swing.JScrollPane();
-        inputField = new javax.swing.JTextArea();
-        okButton = new javax.swing.JButton();
-        ciphertextLabel = new javax.swing.JLabel();
+        messageField = new javax.swing.JTextArea();
+        signVerifyVutton = new javax.swing.JButton();
+        signatureLabel = new javax.swing.JLabel();
         keyLabel = new javax.swing.JLabel();
         ciphertextScrollPane = new javax.swing.JScrollPane();
-        outputField = new javax.swing.JTextArea();
+        signatureField = new javax.swing.JTextArea();
         keyComboBox = new javax.swing.JComboBox();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
         eccMenu = new javax.swing.JMenu();
-        selectCurveMenuItem = new javax.swing.JMenuItem();
+        generateKeyMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(i18n.getString("ECSignerFrame.title")); // NOI18N
 
-        inputLabel.setDisplayedMnemonic('i');
-        inputLabel.setText(i18n.getString("ECCrypterFrame.inputLabel.text")); // NOI18N
+        messageLabel.setDisplayedMnemonic('i');
+        messageLabel.setText(i18n.getString("ECSignerFrame.messageLabel.text")); // NOI18N
 
-        inputField.setColumns(20);
-        inputField.setLineWrap(true);
-        inputField.setRows(5);
-        plaintextScrollPane.setViewportView(inputField);
+        messageField.setColumns(20);
+        messageField.setLineWrap(true);
+        messageField.setRows(5);
+        plaintextScrollPane.setViewportView(messageField);
 
-        okButton.setMnemonic('o');
-        okButton.setText(i18n.getString("ECCrypterFrame.okButton.text")); // NOI18N
-        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        signVerifyVutton.setMnemonic('o');
+        signVerifyVutton.setText(i18n.getString("ECSignerFrame.signVerifyVutton.text")); // NOI18N
+        signVerifyVutton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                okButtonMouseClicked(evt);
+                signVerifyVuttonMouseClicked(evt);
             }
         });
 
-        ciphertextLabel.setDisplayedMnemonic('o');
-        ciphertextLabel.setText(i18n.getString("ECCrypterFrame.ciphertextLabel.text")); // NOI18N
+        signatureLabel.setDisplayedMnemonic('o');
+        signatureLabel.setText(i18n.getString("ECSignerFrame.signatureLabel.text")); // NOI18N
 
-        keyLabel.setText(i18n.getString("ECCrypterFrame.keyLabel.text")); // NOI18N
+        keyLabel.setText(i18n.getString("ECSignerFrame.keyLabel.text")); // NOI18N
 
-        outputField.setColumns(20);
-        outputField.setEditable(false);
-        outputField.setLineWrap(true);
-        outputField.setRows(5);
-        ciphertextScrollPane.setViewportView(outputField);
+        signatureField.setColumns(20);
+        signatureField.setEditable(false);
+        signatureField.setLineWrap(true);
+        signatureField.setRows(5);
+        ciphertextScrollPane.setViewportView(signatureField);
 
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
 
-        fileMenu.setText(i18n.getString("ECCrypterFrame.fileMenu.text")); // NOI18N
+        fileMenu.setText(i18n.getString("ECSignerFrame.fileMenu.text")); // NOI18N
 
         loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadFromFileMenuItem.setMnemonic('l');
-        loadFromFileMenuItem.setText(i18n.getString("ECCrypterFrame.loadFromFileMenuItem.text")); // NOI18N
-        loadFromFileMenuItem.setToolTipText(i18n.getString("ECCrypterFrame.loadFromFileMenuItem.toolTipText")); // NOI18N
+        loadFromFileMenuItem.setText(i18n.getString("ECSignerFrame.loadFromFileMenuItem.text")); // NOI18N
+        loadFromFileMenuItem.setToolTipText(i18n.getString("ECSignerFrame.loadFromFileMenuItem.toolTipText")); // NOI18N
         loadFromFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadFromFileMenuItemActionPerformed(evt);
@@ -162,8 +126,8 @@ public class ECCrypterFrame extends javax.swing.JFrame {
 
         saveToFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveToFileMenuItem.setMnemonic('s');
-        saveToFileMenuItem.setText(i18n.getString("ECCrypterFrame.saveToFileMenuItem.text")); // NOI18N
-        saveToFileMenuItem.setToolTipText(i18n.getString("ECCrypterFrame.saveToFileMenuItem.toolTipText")); // NOI18N
+        saveToFileMenuItem.setText(i18n.getString("ECSignerFrame.saveToFileMenuItem.text")); // NOI18N
+        saveToFileMenuItem.setToolTipText(i18n.getString("ECSignerFrame.saveToFileMenuItem.toolTipText")); // NOI18N
         saveToFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToFileMenuItemActionPerformed(evt);
@@ -173,16 +137,16 @@ public class ECCrypterFrame extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        eccMenu.setText(i18n.getString("ECCrypterFrame.eccMenu.text")); // NOI18N
+        eccMenu.setText(i18n.getString("ECSignerFrame.eccMenu.text")); // NOI18N
 
-        selectCurveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        selectCurveMenuItem.setText(i18n.getString("ECCrypterFrame.selectCurveMenuItem.text")); // NOI18N
-        selectCurveMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                selectCurveMenuItemMouseClicked(evt);
+        generateKeyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        generateKeyMenuItem.setText(i18n.getString("ECSignerFrame.generateKeyMenuItem.text")); // NOI18N
+        generateKeyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateKeyMenuItemActionPerformed(evt);
             }
         });
-        eccMenu.add(selectCurveMenuItem);
+        eccMenu.add(generateKeyMenuItem);
 
         menuBar.add(eccMenu);
 
@@ -195,34 +159,41 @@ public class ECCrypterFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(inputLabel)
-                        .addComponent(keyLabel))
-                    .addComponent(ciphertextLabel))
+                    .addComponent(messageLabel)
+                    .addComponent(signatureLabel)
+                    .addComponent(keyLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(keyComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 317, Short.MAX_VALUE))
+                .addComponent(signVerifyVutton, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(86, Short.MAX_VALUE)
+                .addComponent(keyComboBox, 0, 302, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inputLabel)
+                    .addComponent(messageLabel)
                     .addComponent(plaintextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(okButton)
+                .addComponent(signVerifyVutton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(keyLabel)
-                    .addComponent(keyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(keyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(keyLabel))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ciphertextLabel)
+                    .addComponent(signatureLabel)
                     .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -230,27 +201,35 @@ public class ECCrypterFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        encryptECC();
-}//GEN-LAST:event_okButtonMouseClicked
+    private void signVerifyVuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signVerifyVuttonMouseClicked
+        signECC();
+}//GEN-LAST:event_signVerifyVuttonMouseClicked
 
     private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
         FileInputStream fin = null;
-        try {
+        try
+        {
             fileChooser.showOpenDialog(this);
             File file = fileChooser.getSelectedFile();
-            byte[] buffer = new byte[(int)file.length()];
+            byte[] buffer = new byte[(int) file.length()];
             fin = new FileInputStream(file);
             fin.read(buffer);
             fin.close();
-            inputField.setText(new String(buffer));
-        } catch (IOException ex) {
+            messageField.setText(new String(buffer));
+        }
+        catch (IOException ex)
+        {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-        } finally {
-            try {
+        }
+        finally
+        {
+            try
+            {
                 fin.close();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
                 ex.printStackTrace();
             }
@@ -259,63 +238,71 @@ public class ECCrypterFrame extends javax.swing.JFrame {
 
     private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
         FileOutputStream fout = null;
-        try {
+        try
+        {
             fileChooser.showSaveDialog(this);
             File file = fileChooser.getSelectedFile();
-            byte[] buffer = outputField.getText().getBytes();
+            byte[] buffer = signatureField.getText().getBytes();
             fout = new FileOutputStream(file);
             fout.write(buffer);
             fout.close();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
+        }
+        finally
+        {
+            try
+            {
                 fout.close();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
                 ex.printStackTrace();
             }
         }
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
-private void selectCurveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectCurveMenuItemMouseClicked
-    keygenFrame.setVisible(true);
-}//GEN-LAST:event_selectCurveMenuItemMouseClicked
+private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateKeyMenuItemActionPerformed
+    new ECKeyGeneratorFrame().setVisible(true);
+}//GEN-LAST:event_generateKeyMenuItemActionPerformed
 
-    private void encryptECC() //Encrypt using elliptic curve cryptography
+    private void signECC() //Encrypt using elliptic curve cryptography
     {
         try
         {
-            String plaintext = inputField.getText();
+            String plaintext = messageField.getText();
             String keySelection = (String) keyComboBox.getSelectedItem();
-            if(keySelection.endsWith(".ecp")) //Encrypt
+            if(keySelection.endsWith(".ecp")) //Sign
             {
                     ECPublicKey key = pubkeys.get(keySelection);
                     //TODO Make using ECGOST possible
-                    Cipher cipher = Cipher.getInstance("ECDSA", "BC");
+                    Cipher cipher = Cipher.getInstance("ECGOST-3410", "BC");
                     cipher.init(Cipher.ENCRYPT_MODE, key);
                     byte[] ciphertext = cipher.doFinal(plaintext.getBytes());
-                    outputField.setText(new String(Base64.encode(ciphertext)));
+                    signatureField.setText(new String(Base64.encode(ciphertext)));
             }
         }
+
+
+
         catch (IllegalBlockSizeException ex)
         {
-            Logger.getLogger(ECCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (BadPaddingException ex)
+            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (BadPaddingException ex)
         {
-            Logger.getLogger(ECCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
         }        catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(ECCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchProviderException ex)
+            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (NoSuchProviderException ex)
         {
-            Logger.getLogger(ECCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchPaddingException ex)
+            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (NoSuchPaddingException ex)
         {
-            Logger.getLogger(ECCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
         }        catch (InvalidKeyException ex)
         {
             ex.printStackTrace();
@@ -327,7 +314,7 @@ private void selectCurveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//G
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ECCrypterFrame().setVisible(true);
+                new ECSignerFrame().setVisible(true);
             }
         });
     }
@@ -337,25 +324,23 @@ private void selectCurveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//G
     //Dialog members
     JFileChooser fileChooser = new JFileChooser();
     
-    ECKeyGeneratorFrame keygenFrame = new ECKeyGeneratorFrame();
-    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/ecc/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JMenu eccMenu;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JTextArea inputField;
-    private javax.swing.JLabel inputLabel;
+    private javax.swing.JMenuItem generateKeyMenuItem;
     private javax.swing.JComboBox keyComboBox;
     private javax.swing.JLabel keyLabel;
     private javax.swing.JMenuItem loadFromFileMenuItem;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JButton okButton;
-    private javax.swing.JTextArea outputField;
+    private javax.swing.JTextArea messageField;
+    private javax.swing.JLabel messageLabel;
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenuItem saveToFileMenuItem;
-    private javax.swing.JMenuItem selectCurveMenuItem;
+    private javax.swing.JButton signVerifyVutton;
+    private javax.swing.JTextArea signatureField;
+    private javax.swing.JLabel signatureLabel;
     // End of variables declaration//GEN-END:variables
 
 }

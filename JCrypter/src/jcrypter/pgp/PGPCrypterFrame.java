@@ -11,6 +11,7 @@
 
 package jcrypter.pgp;
 
+import jcrypter.pgp.PGPKeyRingReader;
 import jcrypter.*;
 import java.io.*;
 import java.security.NoSuchProviderException;

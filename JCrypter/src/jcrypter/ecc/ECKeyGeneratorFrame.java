@@ -15,20 +15,20 @@ import java.awt.EventQueue;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bouncycastle.jce.ECGOST3410NamedCurveTable;
 import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  *
@@ -39,6 +39,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
     /** Creates new form ECKeyGeneratorFrame */
     public ECKeyGeneratorFrame() {
         initComponents();
+        //Register Bouncy castle provider
+        Security.addProvider(new BouncyCastleProvider()); 
         //Populate the named curve selection combo box
         loadEcdsaCurves();
     }
@@ -55,8 +57,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
         standardButtonGroup = new javax.swing.ButtonGroup();
         curveComboBox = new javax.swing.JComboBox();
         curveLabel = new javax.swing.JLabel();
-        ecdsaRadioButton = new javax.swing.JRadioButton();
         ecgostRadioButton = new javax.swing.JRadioButton();
+        ecdsaRadioButton = new javax.swing.JRadioButton();
         okButton = new javax.swing.JButton();
         pubkeyFileLabel = new javax.swing.JLabel();
         privkeyFileLabel = new javax.swing.JLabel();
@@ -67,20 +69,20 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
 
         curveLabel.setText(i18n.getString("ECKeyGeneratorFrame.curveLabel.text")); // NOI18N
 
+        standardButtonGroup.add(ecgostRadioButton);
+        ecgostRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecgostRadioButton.text")); // NOI18N
+        ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ecgostRadioButtonActionPerformed(evt);
+            }
+        });
+
         standardButtonGroup.add(ecdsaRadioButton);
         ecdsaRadioButton.setSelected(true);
         ecdsaRadioButton.setText("ECDSA");
         ecdsaRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ecdsaRadioButtonActionPerformed(evt);
-            }
-        });
-
-        standardButtonGroup.add(ecgostRadioButton);
-        ecgostRadioButton.setText("ECGOST3410");
-        ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ecgostRadioButtonActionPerformed(evt);
             }
         });
 
@@ -111,37 +113,30 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(privkeyFileLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
+                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pubkeyFileLabel)
                             .addComponent(curveLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pubFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                            .addComponent(curveComboBox, 0, 229, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(ecdsaRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                                .addComponent(ecgostRadioButton)
-                                .addGap(30, 30, 30))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(pubFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-                                .addContainerGap())
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(curveComboBox, 0, 236, Short.MAX_VALUE)
-                                .addContainerGap())))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addComponent(ecgostRadioButton)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ecgostRadioButton)
                     .addComponent(ecdsaRadioButton))
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(curveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(curveLabel))
@@ -186,22 +181,27 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         {
 
-            ObjectOutputStream pubOut = null;
-            ObjectOutputStream privOut = null;
+            BufferedOutputStream pubOut = null;
+            BufferedOutputStream privOut = null;
             try
             {
-                ECGenParameterSpec ecGenSpec = new ECGenParameterSpec("prime192v1");
+                ECGenParameterSpec ecGenSpec = new ECGenParameterSpec((String)curveComboBox.getSelectedItem());
                 //TODO Make using ECGOST possible
-                KeyPairGenerator g = KeyPairGenerator.getInstance("ECDSA", "BC");
+                KeyPairGenerator g = null;
+                if(ecgostRadioButton.isSelected()) {g = KeyPairGenerator.getInstance("ECGOST3410", "BC");}
+                else {g = KeyPairGenerator.getInstance("ECDSA", "BC");}
                 g.initialize(ecGenSpec, new SecureRandom());
                 KeyPair pair = g.generateKeyPair();
                 
                 //TODO Encode in X509 or so, not in serializing
-                pubOut = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(pubFileField.getText())));
-                privOut = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(privFileField.getText())));
+                pubOut = new BufferedOutputStream(new FileOutputStream(pubFileField.getText()));
+                privOut = new BufferedOutputStream(new FileOutputStream(privFileField.getText()));
                 
-                pubOut.writeObject(pair.getPublic());
-                privOut.writeObject(pair.getPrivate());
+                pubOut.write(pair.getPublic().getEncoded());
+                privOut.write(pair.getPrivate().getEncoded());
+                
+                pubOut.close();
+                privOut.close();
             }
             catch (IOException ex)
             {
@@ -250,7 +250,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     private void loadEcgostCurves()
     {
         curveComboBox.removeAllItems();
-        Enumeration<String> curves = ECGOST3410NamedCurveTable.getNames();
+        Enumeration<String> curves = ECNamedCurveTable.getNames();
         while(curves.hasMoreElements())
         {
             curveComboBox.addItem(curves.nextElement());

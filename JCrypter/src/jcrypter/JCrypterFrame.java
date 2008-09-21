@@ -25,6 +25,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
+import jcrypter.ecc.ECSignerFrame;
+import jcrypter.rsa.RSACrypterFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -72,6 +74,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         pgpMenuItem = new javax.swing.JMenuItem();
         cipherModeMenuItem = new javax.swing.JMenuItem();
         eccMenuItem = new javax.swing.JMenuItem();
+        rsaMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -172,6 +175,15 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
         extrasMenu.add(eccMenuItem);
 
+        rsaMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        rsaMenuItem.setText("RSA");
+        rsaMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rsaMenuItemActionPerformed(evt);
+            }
+        });
+        extrasMenu.add(rsaMenuItem);
+
         menuBar.add(extrasMenu);
 
         setJMenuBar(menuBar);
@@ -181,28 +193,27 @@ public class JCrypterFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(passwordLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(inputLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(decryptCheckbox)
+                        .addComponent(passwordLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
+                        .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(inputLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(ciphertextLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(decryptCheckbox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,8 +233,8 @@ public class JCrypterFrame extends javax.swing.JFrame {
                     .addComponent(okButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ciphertextLabel))
+                    .addComponent(ciphertextLabel)
+                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -310,8 +321,12 @@ public class JCrypterFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
     private void eccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eccMenuItemActionPerformed
-        // TODO add your handling code here:
+        new ECSignerFrame().setVisible(true);
     }//GEN-LAST:event_eccMenuItemActionPerformed
+
+private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsaMenuItemActionPerformed
+    new RSACrypterFrame().setVisible(true);
+}//GEN-LAST:event_rsaMenuItemActionPerformed
 
     
     private void encryptSymmetric()
@@ -447,6 +462,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JMenuItem pgpMenuItem;
     private javax.swing.JScrollPane plaintextScrollPane;
+    private javax.swing.JMenuItem rsaMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
     // End of variables declaration//GEN-END:variables
 

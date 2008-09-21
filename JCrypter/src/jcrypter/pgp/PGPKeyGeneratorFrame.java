@@ -4,7 +4,7 @@
  */
 
 /*
- * KeyGeneratorFrame.java
+ * PGPKeyGeneratorFrame.java
  * Contains code from ppgp. See http://ppgp.sf.net
  * Created on 08.09.2008, 00:05:58
  */
@@ -15,10 +15,10 @@ package jcrypter.pgp;
  *
  * @author uli
  */
-public class KeyGeneratorFrame extends javax.swing.JFrame {
+public class PGPKeyGeneratorFrame extends javax.swing.JFrame {
 
-    /** Creates new form KeyGeneratorFrame */
-    public KeyGeneratorFrame() {
+    /** Creates new form PGPKeyGeneratorFrame */
+    public PGPKeyGeneratorFrame() {
         initComponents();
     }
 
@@ -203,7 +203,7 @@ public class KeyGeneratorFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new KeyGeneratorFrame().setVisible(true);
+                new PGPKeyGeneratorFrame().setVisible(true);
             }
         });
     }
