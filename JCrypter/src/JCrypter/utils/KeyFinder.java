@@ -11,6 +11,7 @@ import java.io.FilenameFilter;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class KeyFinder {
                 FileInputStream in = new FileInputStream(f);
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
+                in.close();
 
                 RSAPublicKey pubKey = (RSAPublicKey) fact.generatePublic(new X509EncodedKeySpec(keyBytes));
                 pubkeys.put(f.getName(), pubKey);
@@ -69,8 +71,9 @@ public class KeyFinder {
                 FileInputStream in = new FileInputStream(f);
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
+                in.close();
                 
-                RSAPrivateKey privKey = (RSAPrivateKey) fact.generatePrivate(new X509EncodedKeySpec(keyBytes));
+                RSAPrivateKey privKey = (RSAPrivateKey) fact.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
                 privkeys.put(f.getName(), privKey);
                 
                 keys.add(f.getName());
@@ -92,9 +95,9 @@ public class KeyFinder {
         findKeys(directory, pubSuffix, privSuffix, algorithm);
     }
     
-    public String[] getNames()
+    public Vector<String> getNames()
     {
-        return (String[]) keys.toArray();
+        return keys;
     }
     
     public RSAPublicKey getPublicKey(String name)

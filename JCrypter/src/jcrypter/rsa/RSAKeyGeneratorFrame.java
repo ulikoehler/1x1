@@ -29,7 +29,14 @@ public class RSAKeyGeneratorFrame extends javax.swing.JFrame {
     /** Creates new form RSAKeyGeneratorFrame */
     public RSAKeyGeneratorFrame() {
         initComponents();
+        //Add the items in the keysizes array to the keysize combo box
+        for(int i : keysizes)
+        {
+            keysizeComboBox.addItem(i);
+        }
     }
+    
+    public static final int[] keysizes = {512, 1024, 2048, 4096, 8192, 16384, 32768};
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -48,13 +55,10 @@ public class RSAKeyGeneratorFrame extends javax.swing.JFrame {
         privFileField = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("Generate_RSA_Key")); // NOI18N
 
         keysizeLabel.setText(i18n.getString("Key_size:")); // NOI18N
-
-        keysizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536" }));
-        keysizeComboBox.setSelectedIndex(2);
 
         pubFileLabel.setText(i18n.getString("Pub_file:")); // NOI18N
 
@@ -120,7 +124,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         try
         {
             KeyPairGenerator kpgen = KeyPairGenerator.getInstance(i18n.getString("RSA"), i18n.getString("BC"));//GEN-LAST:event_okButtonMouseClicked
-            kpgen.initialize(new Integer((String) keysizeComboBox.getSelectedItem()), JCrypterFrame.rand); 
+            kpgen.initialize((Integer)keysizeComboBox.getSelectedItem(), JCrypterFrame.rand);
             
             //Generate the key pair
             KeyPair kp = kpgen.generateKeyPair();
