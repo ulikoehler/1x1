@@ -7,7 +7,6 @@
 package jcrypter.rsa;
 
 import java.security.InvalidAlgorithmParameterException;
-import java.security.spec.InvalidKeySpecException;
 import jcrypter.utils.KeyFinder;
 import java.io.*;
 import java.security.InvalidKeyException;
@@ -24,7 +23,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
@@ -77,7 +75,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             
             //Initialize the RSA cipher object
             RSAPrivateKey privkey = kf.getPrivateKey(selection);
-            Cipher rsaCipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
+            Cipher rsaCipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
             rsaCipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
             
             //Get the symmetric cipher object
@@ -88,6 +86,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             {
                 iv = new byte[symCipher.getBlockSize()];
                 bin.read(iv); //Read the IV from the input stream
+                iv = rsaCipher.doFinal(iv);
             }
             
             //Read the key data from the stream and decrypt it
@@ -172,7 +171,12 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             
             ByteArrayOutputStream outStream = new ByteArrayOutputStream(); //Everything is written into this stream
             
-            //Generate a random IV if we are not using ECC
+            //Init the asymmetric cipher
+            RSAPublicKey pubkey = kf.getPublicKey(selection); //Retrieve the public key
+            Cipher rsaCipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
+            rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
+            
+            //Generate a random (encrypted) IV if we are not using ECC
             if(mode.equals("ECB"))
             {
                 symCipher.init(Cipher.ENCRYPT_MODE, symKey);
@@ -181,14 +185,11 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             {
                 byte[] iv = new byte[symCipher.getBlockSize()];
                 JCrypterFrame.rand.nextBytes(iv);
+                iv = rsaCipher.doFinal(iv); //Encrypt the IV
                 symCipher.init(Cipher.ENCRYPT_MODE, symKey, new IvParameterSpec(iv));
                 outStream.write(iv); //Print the IV into the output stream
             }
             
-            //Init the asymmetric cipher
-            RSAPublicKey pubkey = kf.getPublicKey(selection); //Retrieve the public key
-            Cipher rsaCipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
-            rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
             
             //Encrypt the encoded key with RSA
             byte[] encodedKey = rsaCipher.doFinal(symKey.getEncoded());
