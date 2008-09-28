@@ -7,6 +7,7 @@
 package jcrypter.rsa;
 
 import java.security.InvalidAlgorithmParameterException;
+import java.security.spec.InvalidKeySpecException;
 import jcrypter.utils.KeyFinder;
 import java.io.*;
 import java.security.InvalidKeyException;
@@ -23,7 +24,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
@@ -56,35 +59,65 @@ public class RSACrypterFrame extends javax.swing.JFrame {
     {
         try
         {
-            byte[] ciphertext = Base64.decode(inputField.getText());
+            //Get the selected cipher mode and padding
+            String cipher = cmpDialog.getCipher();
+            String mode = cmpDialog.getMode();
+            String padding = cmpDialog.getPadding();
+            
+            //Construct a ByteArrayInputStream from which to read 
+            ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(inputField.getText()));
+            
+            //Check if a public key is selected, otherwise display a warning message
             String selection = (String) keyComboBox.getSelectedItem();
             if(!selection.endsWith(".rss"))
                 {
                     JOptionPane.showMessageDialog(this, "Select a private key before decrypting!", "No valid key selected", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-            RSAPrivateKey privkey = kf.getPrivateKey(selection);
-            //Determinate keysize
-            int modSize = privkey.getModulus().bitCount();
-            int minDelta = Integer.MAX_VALUE; //Minimal difference between modSize and a supported key size
-            int detSize = 0; //Dterminated size
-            for(int size : RSAKeyGeneratorFrame.keysizes)
-            {
-                int diff = modSize - size;
-                //Make sure diff is positive
-                if(diff < 0) diff = -diff;
-                //Determinate the lowest difference between modDiff one of the supported keysizes
-                if(diff < minDelta)
-                    {
-                       minDelta = modSize - size;
-                       detSize = size;
-                    }
-            }
-            detSize *= 2; //Only half the size is determinated until now, so multi it by 2
             
-            Cipher cipher = Cipher.getInstance("RSA/None/" + cmpDialog.getPadding(), "BC");
-            cipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
-            outputField.setText(new String(cipher.doFinal(ciphertext)));
+            //Initialize the RSA cipher object
+            RSAPrivateKey privkey = kf.getPrivateKey(selection);
+            Cipher rsaCipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
+            rsaCipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
+            
+            //Get the symmetric cipher object
+            Cipher symCipher = Cipher.getInstance(cipher + "/" + mode + "/" + padding, "BC");
+            //Get the IV if we are not using ECB#
+            byte[] iv = null;
+            if(!mode.equals("ECB"))
+            {
+                iv = new byte[symCipher.getBlockSize()];
+                bin.read(iv); //Read the IV from the input stream
+            }
+            
+            //Read the key data from the stream and decrypt it
+            byte[] encryptedKey = new byte[256];
+            bin.read(encryptedKey);
+            byte[] encodedKey = rsaCipher.doFinal(encryptedKey);
+            SecretKeySpec keySpec = new SecretKeySpec(encodedKey, cipher);
+            
+            //Init the cipher
+            if(mode.equals("ECB"))
+            {
+                symCipher.init(Cipher.DECRYPT_MODE, keySpec);
+            }
+            else //No ECB -> Use an IV
+            {
+                symCipher.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv));
+            }
+            
+            //Decrypt the ciphertext and write the result into the output field
+            byte[] ciphertext = new byte[bin.available()];
+            bin.read(ciphertext);
+            outputField.setText(new String(symCipher.doFinal(ciphertext)));
+        }
+        catch (InvalidAlgorithmParameterException ex)
+        {
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IllegalBlockSizeException ex)
         {
@@ -140,16 +173,16 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream(); //Everything is written into this stream
             
             //Generate a random IV if we are not using ECC
-            if(!mode.equals("ECB"))
+            if(mode.equals("ECB"))
+            {
+                symCipher.init(Cipher.ENCRYPT_MODE, symKey);
+            }
+            else //Mode != ECC
             {
                 byte[] iv = new byte[symCipher.getBlockSize()];
                 JCrypterFrame.rand.nextBytes(iv);
                 symCipher.init(Cipher.ENCRYPT_MODE, symKey, new IvParameterSpec(iv));
                 outStream.write(iv); //Print the IV into the output stream
-            }
-            else //Mode = ECC
-            {
-                symCipher.init(Cipher.ENCRYPT_MODE, symKey);
             }
             
             //Init the asymmetric cipher
