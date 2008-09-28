@@ -7,7 +7,7 @@
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.fileMenu.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.fileMenu.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <SubComponents>
@@ -18,10 +18,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="108"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.loadFromFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.loadFromFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.loadFromFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="" key="SignatureFrame.loadFromFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -35,10 +35,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="115"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.saveToFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.saveToFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.saveToFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="" key="SignatureFrame.saveToFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -47,10 +47,10 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="eccMenu">
+        <Menu class="javax.swing.JMenu" name="signatureMenu">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.eccMenu.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.signatureMenu.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <SubComponents>
@@ -60,7 +60,7 @@
                   <KeyStroke key="Ctrl+G"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.generateKeyMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.generateKeyMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -74,7 +74,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-      <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.title" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+      <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.title" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -96,31 +96,31 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="messageLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="signatureLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="keyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="signVerifyVutton" pref="302" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="86" max="32767" attributes="0"/>
-              <Component id="keyComboBox" pref="302" max="32767" attributes="0"/>
-              <EmptySpace min="12" pref="12" max="12" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="86" pref="86" max="86" attributes="0"/>
-              <Component id="plaintextScrollPane" pref="302" max="32767" attributes="0"/>
-              <EmptySpace pref="12" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="86" pref="86" max="86" attributes="0"/>
-              <Component id="ciphertextScrollPane" pref="302" max="32767" attributes="0"/>
-              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                      <Component id="ciphertextScrollPane" pref="260" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="messageLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="signatureLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="keyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="signVerifyButton" pref="260" max="32767" attributes="0"/>
+                          <Component id="keyComboBox" pref="260" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="86" pref="86" max="86" attributes="0"/>
+                      <Component id="plaintextScrollPane" pref="260" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -133,11 +133,11 @@
                   <Component id="plaintextScrollPane" alignment="0" min="-2" pref="151" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="signVerifyVutton" min="-2" max="-2" attributes="0"/>
+              <Component id="signVerifyButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="keyComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="keyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="keyComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -154,7 +154,7 @@
       <Properties>
         <Property name="displayedMnemonic" type="int" value="105"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.messageLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.messageLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -174,29 +174,29 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="signVerifyVutton">
+    <Component class="javax.swing.JButton" name="signVerifyButton">
       <Properties>
         <Property name="mnemonic" type="int" value="111"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.signVerifyVutton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.signVerifyButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="signVerifyVuttonMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="signVerifyButtonMouseClicked"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="signatureLabel">
       <Properties>
         <Property name="displayedMnemonic" type="int" value="111"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.signatureLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.signatureLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="keyLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECSignerFrame.keyLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jcrypter/signature/Bundle.properties" key="SignatureFrame.keyLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -210,7 +210,6 @@
         <Component class="javax.swing.JTextArea" name="signatureField">
           <Properties>
             <Property name="columns" type="int" value="20"/>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>

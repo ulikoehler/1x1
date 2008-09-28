@@ -1,5 +1,5 @@
 /*
- * DHKeyAgreementServerFrame.java
+ * DHServerFrame.java
  *
  * Created on 27. September 2008, 15:04
  */
@@ -10,10 +10,10 @@ package jcrypter.dh;
  *
  * @author  uli
  */
-public class DHKeyAgreementServerFrame extends javax.swing.JFrame {
+public class DHServerFrame extends javax.swing.JFrame {
 
-    /** Creates new form DHKeyAgreementServerFrame */
-    public DHKeyAgreementServerFrame() {
+    /** Creates new form DHServerFrame */
+    public DHServerFrame() {
         initComponents();
     }
 
@@ -26,17 +26,27 @@ public class DHKeyAgreementServerFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        portLabel = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        portLabel.setText("Port:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(portLabel)
+                .addContainerGap(360, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(portLabel)
+                .addContainerGap(273, Short.MAX_VALUE))
         );
 
         pack();
@@ -48,12 +58,13 @@ public class DHKeyAgreementServerFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DHKeyAgreementServerFrame().setVisible(true);
+                new DHServerFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel portLabel;
     // End of variables declaration//GEN-END:variables
 
 }

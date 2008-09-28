@@ -9,7 +9,7 @@
  * Created on 10.09.2008, 23:25:49
  */
 
-package jcrypter.ecc;
+package jcrypter.signature;
 
 import java.awt.EventQueue;
 import java.io.BufferedOutputStream;

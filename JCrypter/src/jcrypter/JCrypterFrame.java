@@ -26,7 +26,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
-import jcrypter.ecc.ECSignerFrame;
+import jcrypter.signature.SignatureFrame;
 import jcrypter.rsa.RSACrypterFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -78,7 +78,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         extrasMenu = new javax.swing.JMenu();
         pgpMenuItem = new javax.swing.JMenuItem();
         cmpMenuItem = new javax.swing.JMenuItem();
-        eccMenuItem = new javax.swing.JMenuItem();
+        signatureMenuItem = new javax.swing.JMenuItem();
         rsaMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -171,14 +171,14 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
         extrasMenu.add(cmpMenuItem);
 
-        eccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        eccMenuItem.setText("ECC");
-        eccMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        signatureMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        signatureMenuItem.setText("Signatures");
+        signatureMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eccMenuItemActionPerformed(evt);
+                signatureMenuItemActionPerformed(evt);
             }
         });
-        extrasMenu.add(eccMenuItem);
+        extrasMenu.add(signatureMenuItem);
 
         rsaMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         rsaMenuItem.setText("RSA");
@@ -324,9 +324,9 @@ public class JCrypterFrame extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
-    private void eccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eccMenuItemActionPerformed
-        new ECSignerFrame().setVisible(true);
-    }//GEN-LAST:event_eccMenuItemActionPerformed
+    private void signatureMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signatureMenuItemActionPerformed
+        new SignatureFrame().setVisible(true);
+}//GEN-LAST:event_signatureMenuItemActionPerformed
 
 private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsaMenuItemActionPerformed
     new RSACrypterFrame().setVisible(true);
@@ -454,7 +454,6 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JMenuItem cmpMenuItem;
     private javax.swing.JCheckBox decryptCheckbox;
-    private javax.swing.JMenuItem eccMenuItem;
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTextArea inputField;
@@ -469,6 +468,7 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenuItem rsaMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
+    private javax.swing.JMenuItem signatureMenuItem;
     // End of variables declaration//GEN-END:variables
 
     /**

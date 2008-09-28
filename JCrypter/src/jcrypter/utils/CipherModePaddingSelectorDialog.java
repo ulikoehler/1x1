@@ -68,9 +68,9 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("Select_Cipher")); // NOI18N
 
-        cipherLabel.setText("Cipher:");
+        cipherLabel.setText(i18n.getString("CipherLabel.text")); // NOI18N
 
-        modeLabel.setText("Mode:");
+        modeLabel.setText(i18n.getString("ModeLabel.text")); // NOI18N
 
         okButton.setText(i18n.getString("OK")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -79,7 +79,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
             }
         });
 
-        paddingLabel.setText("Padding:");
+        paddingLabel.setText(i18n.getString("PaddingLabel.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,7 +169,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
     private String[] paddings;
     
     //Resource bundles
-    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/Bundle");
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cipherComboBox;

@@ -4,31 +4,28 @@
  */
 
 /*
- * ECSignerFrame.java
+ * SignatureFrame.java
  *
  * Created on 10.09.2008, 19:57:18
  */
 
-package jcrypter.ecc;
+package jcrypter.signature;
 
-import jcrypter.utils.KeyFinder;
-import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import jcrypter.utils.KeyFinder;
+import java.io.*;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Security;
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.ECPublicKey;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.Signature;
 import java.util.ResourceBundle;
 import java.util.logging.*;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.swing.JFileChooser;
 import jcrypter.*;
+import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -36,23 +33,18 @@ import org.bouncycastle.util.encoders.Base64;
  *
  * @author uli
  */
-public class ECSignerFrame extends javax.swing.JFrame {
+public class SignatureFrame extends javax.swing.JFrame {
     
-    Map<String, ECPublicKey> pubkeys = new HashMap<String, ECPublicKey>();
-    Map<String, ECPrivateKey> privkeys = new HashMap<String, ECPrivateKey>();
 
-    /** Creates new form ECSignerFrame */
-    public ECSignerFrame() {
+    /** Creates new form SignatureFrame */
+    public SignatureFrame() {
         initComponents();
         //Register Bouncy castle provider
         Security.addProvider(new BouncyCastleProvider());
         //Load the keys
-        KeyFinder kf = new KeyFinder(".ecp", ".ecp", "ECDSA");
-        for(String s : kf.getNames())
-        {
-            keyComboBox.addItem(s);
-        }
-        
+        ecdsaKf.fillComboBox(keyComboBox);
+        dsaKf.fillComboBox(keyComboBox);
+        rsaKf.fillComboBox(keyComboBox);
     }
 
     /** This method is called from within the constructor to
@@ -67,7 +59,7 @@ public class ECSignerFrame extends javax.swing.JFrame {
         messageLabel = new javax.swing.JLabel();
         plaintextScrollPane = new javax.swing.JScrollPane();
         messageField = new javax.swing.JTextArea();
-        signVerifyVutton = new javax.swing.JButton();
+        signVerifyButton = new javax.swing.JButton();
         signatureLabel = new javax.swing.JLabel();
         keyLabel = new javax.swing.JLabel();
         ciphertextScrollPane = new javax.swing.JScrollPane();
@@ -77,46 +69,45 @@ public class ECSignerFrame extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
-        eccMenu = new javax.swing.JMenu();
+        signatureMenu = new javax.swing.JMenu();
         generateKeyMenuItem = new javax.swing.JMenuItem();
 
-        setTitle(i18n.getString("ECSignerFrame.title")); // NOI18N
+        setTitle(i18n.getString("SignatureFrame.title")); // NOI18N
 
         messageLabel.setDisplayedMnemonic('i');
-        messageLabel.setText(i18n.getString("ECSignerFrame.messageLabel.text")); // NOI18N
+        messageLabel.setText(i18n.getString("SignatureFrame.messageLabel.text")); // NOI18N
 
         messageField.setColumns(20);
         messageField.setLineWrap(true);
         messageField.setRows(5);
         plaintextScrollPane.setViewportView(messageField);
 
-        signVerifyVutton.setMnemonic('o');
-        signVerifyVutton.setText(i18n.getString("ECSignerFrame.signVerifyVutton.text")); // NOI18N
-        signVerifyVutton.addMouseListener(new java.awt.event.MouseAdapter() {
+        signVerifyButton.setMnemonic('o');
+        signVerifyButton.setText(i18n.getString("SignatureFrame.signVerifyButton.text")); // NOI18N
+        signVerifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                signVerifyVuttonMouseClicked(evt);
+                signVerifyButtonMouseClicked(evt);
             }
         });
 
         signatureLabel.setDisplayedMnemonic('o');
-        signatureLabel.setText(i18n.getString("ECSignerFrame.signatureLabel.text")); // NOI18N
+        signatureLabel.setText(i18n.getString("SignatureFrame.signatureLabel.text")); // NOI18N
 
-        keyLabel.setText(i18n.getString("ECSignerFrame.keyLabel.text")); // NOI18N
+        keyLabel.setText(i18n.getString("SignatureFrame.keyLabel.text")); // NOI18N
 
         signatureField.setColumns(20);
-        signatureField.setEditable(false);
         signatureField.setLineWrap(true);
         signatureField.setRows(5);
         ciphertextScrollPane.setViewportView(signatureField);
 
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
 
-        fileMenu.setText(i18n.getString("ECSignerFrame.fileMenu.text")); // NOI18N
+        fileMenu.setText(i18n.getString("SignatureFrame.fileMenu.text")); // NOI18N
 
         loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadFromFileMenuItem.setMnemonic('l');
-        loadFromFileMenuItem.setText(i18n.getString("ECSignerFrame.loadFromFileMenuItem.text")); // NOI18N
-        loadFromFileMenuItem.setToolTipText(i18n.getString("ECSignerFrame.loadFromFileMenuItem.toolTipText")); // NOI18N
+        loadFromFileMenuItem.setText(i18n.getString("SignatureFrame.loadFromFileMenuItem.text")); // NOI18N
+        loadFromFileMenuItem.setToolTipText("null");
         loadFromFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadFromFileMenuItemActionPerformed(evt);
@@ -126,8 +117,8 @@ public class ECSignerFrame extends javax.swing.JFrame {
 
         saveToFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveToFileMenuItem.setMnemonic('s');
-        saveToFileMenuItem.setText(i18n.getString("ECSignerFrame.saveToFileMenuItem.text")); // NOI18N
-        saveToFileMenuItem.setToolTipText(i18n.getString("ECSignerFrame.saveToFileMenuItem.toolTipText")); // NOI18N
+        saveToFileMenuItem.setText(i18n.getString("SignatureFrame.saveToFileMenuItem.text")); // NOI18N
+        saveToFileMenuItem.setToolTipText("null");
         saveToFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToFileMenuItemActionPerformed(evt);
@@ -137,18 +128,18 @@ public class ECSignerFrame extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        eccMenu.setText(i18n.getString("ECSignerFrame.eccMenu.text")); // NOI18N
+        signatureMenu.setText(i18n.getString("SignatureFrame.signatureMenu.text")); // NOI18N
 
         generateKeyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        generateKeyMenuItem.setText(i18n.getString("ECSignerFrame.generateKeyMenuItem.text")); // NOI18N
+        generateKeyMenuItem.setText(i18n.getString("SignatureFrame.generateKeyMenuItem.text")); // NOI18N
         generateKeyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateKeyMenuItemActionPerformed(evt);
             }
         });
-        eccMenu.add(generateKeyMenuItem);
+        signatureMenu.add(generateKeyMenuItem);
 
-        menuBar.add(eccMenu);
+        menuBar.add(signatureMenu);
 
         setJMenuBar(menuBar);
 
@@ -156,27 +147,25 @@ public class ECSignerFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(messageLabel)
-                    .addComponent(signatureLabel)
-                    .addComponent(keyLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(signVerifyVutton, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
-                .addComponent(keyComboBox, 0, 302, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                .addContainerGap(12, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(messageLabel)
+                            .addComponent(signatureLabel)
+                            .addComponent(keyLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(signVerifyButton, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                            .addComponent(keyComboBox, 0, 260, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,11 +175,11 @@ public class ECSignerFrame extends javax.swing.JFrame {
                     .addComponent(messageLabel)
                     .addComponent(plaintextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(signVerifyVutton)
+                .addComponent(signVerifyButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(keyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(keyLabel))
+                    .addComponent(keyLabel)
+                    .addComponent(keyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(signatureLabel)
@@ -201,9 +190,27 @@ public class ECSignerFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void signVerifyVuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signVerifyVuttonMouseClicked
-        signECC();
-}//GEN-LAST:event_signVerifyVuttonMouseClicked
+    private void signVerifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signVerifyButtonMouseClicked
+        String selection = (String) keyComboBox.getSelectedItem();
+        if (((String) keyComboBox.getSelectedItem()).endsWith("p"))
+        {
+            if (selection.endsWith(".dss"))
+            {
+                verifyDSA();
+            }
+        }
+        else
+        {
+            if (selection.endsWith(".dss"))
+            {
+                signDSA();
+            }
+        }
+        //TODO algorithm-dependent function call
+//            if(selection.endsWith(".rss")) {algorithm = "RSA";}
+//            
+//            else if(selection.endsWith(".ecs")) {algorithm = "ECDSA";}
+}//GEN-LAST:event_signVerifyButtonMouseClicked
 
     private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
         FileInputStream fin = null;
@@ -266,55 +273,83 @@ public class ECSignerFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
 private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateKeyMenuItemActionPerformed
-    new ECKeyGeneratorFrame().setVisible(true);
+    new KeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_generateKeyMenuItemActionPerformed
 
-    private void signECC() //Encrypt using elliptic curve cryptography
+    private void signDSA() //Encrypt using elliptic curve cryptography
     {
         try
         {
-            String plaintext = messageField.getText();
-            String keySelection = (String) keyComboBox.getSelectedItem();
-            if(keySelection.endsWith(".ecp")) //Sign
-            {
-                    ECPublicKey key = pubkeys.get(keySelection);
-                    //TODO Make using ECGOST possible
-                    Cipher cipher = Cipher.getInstance("ECGOST-3410", "BC");
-                    cipher.init(Cipher.ENCRYPT_MODE, key);
-                    byte[] ciphertext = cipher.doFinal(plaintext.getBytes());
-                    signatureField.setText(new String(Base64.encode(ciphertext)));
-            }
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            PrivateKey privkey = dsaKf.getPrivateKey(selection);
+            //Generate the signature
+            Signature sig = Signature.getInstance("DSA", "BC");
+            sig.initSign(privkey);
+            sig.update(message);
+            signatureField.setText(new String(Base64.encode(sig.sign())));
         }
-
-
-
-        catch (IllegalBlockSizeException ex)
+        catch (InvalidKeyException ex)
         {
-            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (BadPaddingException ex)
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
         {
-            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (NoSuchAlgorithmException ex)
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (NoSuchProviderException ex)
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
         {
-            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (NoSuchPaddingException ex)
-        {
-            Logger.getLogger(ECSignerFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (InvalidKeyException ex)
-        {
-            ex.printStackTrace();
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void verifyDSA()
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            PublicKey pubkey = dsaKf.getPublicKey(selection);
+            //Gnerate the signature
+            Signature sig = Signature.getInstance("DSA", "BC");
+            sig.initVerify(pubkey);
+            sig.update(message);
+            signatureField.setText(new String(Base64.encode(sig.sign())));
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new ECSignerFrame().setVisible(true);
+                new SignatureFrame().setVisible(true);
             }
         });
     }
@@ -324,10 +359,13 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     //Dialog members
     JFileChooser fileChooser = new JFileChooser();
     
-    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/ecc/Bundle");
+    KeyFinder ecdsaKf = new KeyFinder(".ecp", ".ecs", "ECDSA");
+    KeyFinder dsaKf = new KeyFinder(".dsp", ".dss", "DSA");
+    KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
+    
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/signature/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ciphertextScrollPane;
-    private javax.swing.JMenu eccMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem generateKeyMenuItem;
     private javax.swing.JComboBox keyComboBox;
@@ -338,9 +376,9 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JLabel messageLabel;
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenuItem saveToFileMenuItem;
-    private javax.swing.JButton signVerifyVutton;
+    private javax.swing.JButton signVerifyButton;
     private javax.swing.JTextArea signatureField;
     private javax.swing.JLabel signatureLabel;
+    private javax.swing.JMenu signatureMenu;
     // End of variables declaration//GEN-END:variables
-
 }

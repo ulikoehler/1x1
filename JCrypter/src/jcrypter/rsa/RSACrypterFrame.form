@@ -18,10 +18,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="108"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="RSACrypterFrame.loadFromFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="RSACrypterFrame.loadFromFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="RSACrypterFrame.loadFromFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="RSACrypterFrame.loadFromFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -35,10 +35,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="115"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="RSACrypterFrame.saveToFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="RSACrypterFrame.saveToFileMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="RSACrypterFrame.saveToFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="RSACrypterFrame.saveToFileMenuItem.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -50,7 +50,7 @@
         <Menu class="javax.swing.JMenu" name="rsaMenu">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="RSACrypterFrame.rsaMenu.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jcrypter/signature/Bundle.properties" key="RSACrypterFrame.rsaMenu.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <SubComponents>
@@ -60,7 +60,7 @@
                   <KeyStroke key="Ctrl+G"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="RSACrypterFrame.generateKeyMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jcrypter/signature/Bundle.properties" key="RSACrypterFrame.generateKeyMenuItem.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>

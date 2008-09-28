@@ -6,6 +6,7 @@
 
 package jcrypter.rsa;
 
+import jcrypter.utils.KeyGeneratorFrame;
 import java.security.InvalidAlgorithmParameterException;
 import jcrypter.utils.KeyFinder;
 import java.io.*;
@@ -42,11 +43,8 @@ public class RSACrypterFrame extends javax.swing.JFrame {
     /** Creates new form RSACrypterFrame */
     public RSACrypterFrame() {
         initComponents();
-        //Add public keys
-        for(String s : kf.getNames())
-        {
-            keyComboBox.addItem(s);
-        }
+        //Add keys
+        kf.fillComboBox(keyComboBox);
         //Set the selected cipher, mode and padding
         cmpDialog.setCipher("Twofish");
         cmpDialog.setMode("CBC");
@@ -74,7 +72,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
                 }
             
             //Initialize the RSA cipher object
-            RSAPrivateKey privkey = kf.getPrivateKey(selection);
+            RSAPrivateKey privkey = (RSAPrivateKey) kf.getPrivateKey(selection);
             Cipher rsaCipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
             rsaCipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
             
@@ -172,7 +170,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream(); //Everything is written into this stream
             
             //Init the asymmetric cipher
-            RSAPublicKey pubkey = kf.getPublicKey(selection); //Retrieve the public key
+            RSAPublicKey pubkey = (RSAPublicKey) kf.getPublicKey(selection); //Retrieve the public key
             Cipher rsaCipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
             rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
             
@@ -461,7 +459,7 @@ private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
 private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateKeyMenuItemActionPerformed
-    new RSAKeyGeneratorFrame().setVisible(true);
+    new KeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_generateKeyMenuItemActionPerformed
 
 private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectCmpMenuItemActionPerformed
