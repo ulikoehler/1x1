@@ -9,9 +9,10 @@
  * Created on 08.09.2008, 14:04:07
  */
 
-package jcrypter;
+package jcrypter.utils;
 
 import java.util.ResourceBundle;
+import javax.swing.JFrame;
 
 /**
  *
@@ -20,15 +21,18 @@ import java.util.ResourceBundle;
 public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
 
     /** Creates new form CipherModePaddingSelectorDialog */
-    public CipherModePaddingSelectorDialog(JCrypterFrame parent, boolean modal) {
+    public CipherModePaddingSelectorDialog(JFrame parent,
+                                            boolean modal,
+                                            String[] ciphers,
+                                            String[] modes,
+                                            String[] paddings)
+    {
         super(parent, modal);
         initComponents();
-        //Save the parent frame in a member variable
-        this.jcframe = parent;
         //Save the parameter arrays to member variables
-        this.ciphers = jcframe.getCiphers();
-        this.modes = jcframe.getModes();
-        this.paddings = jcframe.getPaddings();
+        this.ciphers = ciphers;
+        this.modes = modes;
+        this.paddings = paddings;
         //Init combo boxes
         for(String c : ciphers)
         {
@@ -42,10 +46,6 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         {
             paddingComboBox.addItem(c);
         }
-        //Set combo box selected indices
-        cipherComboBox.setSelectedItem(jcframe.getCipher());
-        modeComboBox.setSelectedItem(jcframe.getMode());
-        paddingComboBox.setSelectedItem(jcframe.getPadding());
     }
 
     /** This method is called from within the constructor to
@@ -68,9 +68,9 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("Select_Cipher")); // NOI18N
 
-        cipherLabel.setText(i18n.getString("Cipher:")); // NOI18N
+        cipherLabel.setText("Cipher:");
 
-        modeLabel.setText(i18n.getString("Mode:")); // NOI18N
+        modeLabel.setText("Mode:");
 
         okButton.setText(i18n.getString("OK")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -79,7 +79,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
             }
         });
 
-        paddingLabel.setText(i18n.getString("Padding:")); // NOI18N
+        paddingLabel.setText("Padding:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,15 +127,43 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        jcframe.setCipher((String) cipherComboBox.getSelectedItem());
-        jcframe.setMode((String) modeComboBox.getSelectedItem());
-        jcframe.setPadding((String) paddingComboBox.getSelectedItem());
         this.setVisible(false);
 }//GEN-LAST:event_okButtonMouseClicked
 
+    //Getters
+    public String getCipher()
+    {
+        return (String) cipherComboBox.getSelectedItem();
+    }
+                                         
+    public String getMode()
+    {
+        return (String) modeComboBox.getSelectedItem();
+    }
+    
+    public String getPadding()
+    {
+        return (String) paddingComboBox.getSelectedItem() + "Padding";
+    }
+    
+    //Setters
+    public void setCipher(String cipher)
+    {
+        cipherComboBox.setSelectedItem(cipher);
+    }
+    
+    public void setMode(String mode)
+    {
+        cipherComboBox.setSelectedItem(mode);
+    }
+    
+    public void setPadding(String padding)
+    {
+        cipherComboBox.setSelectedItem(padding);
+    }
+    
     
     //Members
-    private JCrypterFrame jcframe;
     private String[] ciphers;
     private String[] modes;
     private String[] paddings;

@@ -9,6 +9,7 @@
 
 package jcrypter;
 
+import jcrypter.utils.CipherModePaddingSelectorDialog;
 import jcrypter.pgp.PGPKeyRingReader;
 import jcrypter.pgp.PGPCrypterFrame;
 import java.io.ByteArrayOutputStream;
@@ -44,6 +45,10 @@ public class JCrypterFrame extends javax.swing.JFrame {
         Security.addProvider(new BouncyCastleProvider());  
         //Init the GUI components
         initComponents();
+        //Set the selected cipher, mode and padding
+        cmpDialog.setCipher("Twofish");
+        cmpDialog.setMode("CBC");
+        cmpDialog.setPadding("Twofish");
     }
 
     
@@ -72,7 +77,7 @@ public class JCrypterFrame extends javax.swing.JFrame {
         saveToFileMenuItem = new javax.swing.JMenuItem();
         extrasMenu = new javax.swing.JMenu();
         pgpMenuItem = new javax.swing.JMenuItem();
-        cipherModeMenuItem = new javax.swing.JMenuItem();
+        cmpMenuItem = new javax.swing.JMenuItem();
         eccMenuItem = new javax.swing.JMenuItem();
         rsaMenuItem = new javax.swing.JMenuItem();
 
@@ -152,19 +157,19 @@ public class JCrypterFrame extends javax.swing.JFrame {
         });
         extrasMenu.add(pgpMenuItem);
 
-        cipherModeMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        cipherModeMenuItem.setText("Cipher and Mode");
-        cipherModeMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        cmpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        cmpMenuItem.setText("Cipher and Mode");
+        cmpMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cipherModeMenuItemMouseClicked(evt);
+                cmpMenuItemMouseClicked(evt);
             }
         });
-        cipherModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        cmpMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cipherModeMenuItemActionPerformed(evt);
+                cmpMenuItemActionPerformed(evt);
             }
         });
-        extrasMenu.add(cipherModeMenuItem);
+        extrasMenu.add(cmpMenuItem);
 
         eccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         eccMenuItem.setText("ECC");
@@ -247,14 +252,13 @@ public class JCrypterFrame extends javax.swing.JFrame {
         encryptSymmetric();
     }//GEN-LAST:event_okButtonMouseClicked
 
-    private void cipherModeMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cipherModeMenuItemMouseClicked
-        cipherDialog.setVisible(true);
-        //new CipherModePaddingSelectorDialog(this, false).setVisible(true);//GEN-HEADEREND:event_cipherModeMenuItemMouseClicked
-    }//GEN-LAST:event_cipherModeMenuItemMouseClicked
+    private void cmpMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmpMenuItemMouseClicked
+        cmpDialog.setVisible(true);
+}//GEN-LAST:event_cmpMenuItemMouseClicked
 
-    private void cipherModeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cipherModeMenuItemActionPerformed
-        cipherDialog.setVisible(true);
-    }//GEN-LAST:event_cipherModeMenuItemActionPerformed
+    private void cmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmpMenuItemActionPerformed
+        cmpDialog.setVisible(true);
+}//GEN-LAST:event_cmpMenuItemActionPerformed
 
     private void pgpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pgpMenuItemActionPerformed
         new PGPCrypterFrame().setVisible(true);
@@ -333,6 +337,7 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     {
         try
         {
+            //Get the selected cipher, mode and padding from 
             boolean decrypt = decryptCheckbox.isSelected();
             //Using BouncyCastle JCE
             Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
@@ -436,18 +441,18 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private String cipherName = "Twofish";
     private String modeName = "CBC";
     private String paddingName = "PKCS7";
-    private final String[] ciphers = {"Serpent","Twofish", "AES", "CAST5", "Camellia", "IDEA"};
-    private final String[] modes = {"ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
-    private final String[] paddings = {"PKCS7", "TBC", "X923", "No", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
+    private static final String[] ciphers = {"Serpent","Twofish", "AES", "CAST5", "Camellia", "IDEA"};
+    private static final String[] modes = {"ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
+    private static final String[] paddings = {"PKCS7", "TBC", "X923", "None", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
 
     //Dialog members
-    CipherModePaddingSelectorDialog cipherDialog = new CipherModePaddingSelectorDialog(this, true);
+    CipherModePaddingSelectorDialog cmpDialog = new CipherModePaddingSelectorDialog(this, true, ciphers, modes, paddings);
     JFileChooser fileChooser = new JFileChooser();
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem cipherModeMenuItem;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
+    private javax.swing.JMenuItem cmpMenuItem;
     private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JMenuItem eccMenuItem;
     private javax.swing.JMenu extrasMenu;
@@ -517,7 +522,7 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     /**
      * @return the ciphers
      */
-    public String[] getCiphers()
+    public static String[] getCiphers()
         {
         return ciphers;
         }
@@ -525,7 +530,7 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     /**
      * @return the modes
      */
-    public String[] getModes()
+    public static String[] getModes()
         {
         return modes;
         }
@@ -533,7 +538,7 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     /**
      * @return the paddings
      */
-    public String[] getPaddings()
+    public static String[] getPaddings()
         {
         return paddings;
         }

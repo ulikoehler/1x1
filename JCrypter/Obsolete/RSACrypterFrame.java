@@ -6,13 +6,13 @@
 
 package jcrypter.rsa;
 
-import java.security.InvalidAlgorithmParameterException;
 import jcrypter.utils.KeyFinder;
 import java.io.*;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ResourceBundle;
@@ -21,9 +21,7 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
@@ -46,10 +44,6 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         {
             keyComboBox.addItem(s);
         }
-        //Set the selected cipher, mode and padding
-        cmpDialog.setCipher("Twofish");
-        cmpDialog.setMode("CBC");
-        cmpDialog.setPadding("PKCS5Padding");
     }
 
     private void decryptRSA()
@@ -82,7 +76,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             }
             detSize *= 2; //Only half the size is determinated until now, so multi it by 2
             
-            Cipher cipher = Cipher.getInstance("RSA/None/" + cmpDialog.getPadding(), "BC");
+            Cipher cipher = Cipher.getInstance("RSA/None/" + cmpSelectorDialog.getPadding(), "BC");
             cipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
             outputField.setText(new String(cipher.doFinal(ciphertext)));
         }
@@ -116,11 +110,6 @@ public class RSACrypterFrame extends javax.swing.JFrame {
     {
         try
         {
-            //Get the selected cipher mode and padding
-            String cipher = cmpDialog.getCipher();
-            String mode = cmpDialog.getMode();
-            String padding = cmpDialog.getPadding();
-            //Get the plaintext
             byte[] plaintext = inputField.getText().getBytes();
             //If no key is selected, sho a warning message and abort encryption
             String selection = (String) keyComboBox.getSelectedItem();
@@ -129,53 +118,11 @@ public class RSACrypterFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Select a public key before encrypting!", "No valid key selected", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+            RSAPublicKey pubkey = kf.getPublicKey(selection);
             
-            //Generate the (random symmetric key
-            KeyGenerator symKeyGenerator = KeyGenerator.getInstance(cipher, "BC");
-            symKeyGenerator.init(256, JCrypterFrame.rand);
-            Key symKey = symKeyGenerator.generateKey();
-            
-            Cipher symCipher = Cipher.getInstance(cipher + "/" + mode + "/" + padding, "BC");
-            
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream(); //Everything is written into this stream
-            
-            //Generate a random IV if we are not using ECC
-            if(!mode.equals("ECB"))
-            {
-                byte[] iv = new byte[symCipher.getBlockSize()];
-                JCrypterFrame.rand.nextBytes(iv);
-                symCipher.init(Cipher.ENCRYPT_MODE, symKey, new IvParameterSpec(iv));
-                outStream.write(iv); //Print the IV into the output stream
-            }
-            else //Mode = ECC
-            {
-                symCipher.init(Cipher.ENCRYPT_MODE, symKey);
-            }
-            
-            //Init the asymmetric cipher
-            RSAPublicKey pubkey = kf.getPublicKey(selection); //Retrieve the public key
-            Cipher rsaCipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
+            Cipher rsaCipher = Cipher.getInstance("RSA/None/" + cmpSelectorDialog.getPadding(), "BC");
             rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
-            
-            //Encrypt the encoded key with RSA
-            byte[] encodedKey = rsaCipher.doFinal(symKey.getEncoded());
-            
-            outStream.write(encodedKey);
-            
-            //Encrypt the plaintext with the symmetric cipher
-            outStream.write(symCipher.doFinal(plaintext));
-            
-            outStream.close();
-            
-            outputField.setText(new String(Base64.encode(outStream.toByteArray())));
-        }
-        catch (InvalidAlgorithmParameterException ex)
-        {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            outputField.setText(new String(Base64.encode(rsaCipher.doFinal(plaintext))));
         }
         catch (IllegalBlockSizeException ex)
         {
@@ -228,7 +175,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         saveToFileMenuItem = new javax.swing.JMenuItem();
         rsaMenu = new javax.swing.JMenu();
         generateKeyMenuItem = new javax.swing.JMenuItem();
-        selectCmpMenuItem = new javax.swing.JMenuItem();
+        selectPaddingMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("RSACrypterFrame.title")); // NOI18N
@@ -302,14 +249,9 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         });
         rsaMenu.add(generateKeyMenuItem);
 
-        selectCmpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        selectCmpMenuItem.setText("Cipher parameters");
-        selectCmpMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectCmpMenuItemActionPerformed(evt);
-            }
-        });
-        rsaMenu.add(selectCmpMenuItem);
+        selectPaddingMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        selectPaddingMenuItem.setText("Padding");
+        rsaMenu.add(selectPaddingMenuItem);
 
         menuBar.add(rsaMenu);
 
@@ -430,10 +372,6 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     new RSAKeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_generateKeyMenuItemActionPerformed
 
-private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectCmpMenuItemActionPerformed
-    cmpDialog.setVisible(true);
-}//GEN-LAST:event_selectCmpMenuItemActionPerformed
-
     /**
     * @param args the command line arguments
     */
@@ -448,12 +386,7 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     
     //Dialog members
     JFileChooser fileChooser = new JFileChooser();
-    CipherModePaddingSelectorDialog cmpDialog =
-                                new CipherModePaddingSelectorDialog(this,
-                                                                    true,
-                                                                    JCrypterFrame.getCiphers(),
-                                                                    JCrypterFrame.getModes(),
-                                                                    JCrypterFrame.getPaddings());
+    CipherModePaddingSelectorDialog cmpSelectorDialog = new CipherModePaddingSelectorDialog();
     
     //Cryptography members
     KeyFinder kf = new KeyFinder(".rsp", ".rss", "RSA");
@@ -476,7 +409,7 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenu rsaMenu;
     private javax.swing.JMenuItem saveToFileMenuItem;
-    private javax.swing.JMenuItem selectCmpMenuItem;
+    private javax.swing.JMenuItem selectPaddingMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }

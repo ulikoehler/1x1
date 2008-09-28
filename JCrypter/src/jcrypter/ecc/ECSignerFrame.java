@@ -11,7 +11,7 @@
 
 package jcrypter.ecc;
 
-import JCrypter.utils.KeyFinder;
+import jcrypter.utils.KeyFinder;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
