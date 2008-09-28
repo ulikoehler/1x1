@@ -24,6 +24,7 @@ import java.security.Signature;
 import java.util.ResourceBundle;
 import java.util.logging.*;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import jcrypter.*;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -194,7 +195,7 @@ public class SignatureFrame extends javax.swing.JFrame {
         String selection = (String) keyComboBox.getSelectedItem();
         if (((String) keyComboBox.getSelectedItem()).endsWith("p"))
         {
-            if (selection.endsWith(".dss"))
+            if (selection.endsWith(".dsp"))
             {
                 verifyDSA();
             }
@@ -206,10 +207,6 @@ public class SignatureFrame extends javax.swing.JFrame {
                 signDSA();
             }
         }
-        //TODO algorithm-dependent function call
-//            if(selection.endsWith(".rss")) {algorithm = "RSA";}
-//            
-//            else if(selection.endsWith(".ecs")) {algorithm = "ECDSA";}
 }//GEN-LAST:event_signVerifyButtonMouseClicked
 
     private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
@@ -317,12 +314,27 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             String selection = (String) keyComboBox.getSelectedItem();
             //Get the plaintext,
             byte[] message = messageField.getText().getBytes();
+            byte[] signature = Base64.decode(signatureField.getText());
             PublicKey pubkey = dsaKf.getPublicKey(selection);
             //Gnerate the signature
             Signature sig = Signature.getInstance("DSA", "BC");
             sig.initVerify(pubkey);
             sig.update(message);
-            signatureField.setText(new String(Base64.encode(sig.sign())));
+            if(sig.verify(signature))
+            {
+                JOptionPane.showMessageDialog(this,
+                                        "Signature verified successfully",
+                                        "The signatures has been verified successfully",
+                                        JOptionPane.WARNING_MESSAGE);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this,
+                                        "Signature verification error",
+                                        "The signatures could not been verified!",
+                                        JOptionPane.ERROR_MESSAGE);
+                
+            }
         }
         catch (InvalidKeyException ex)
         {
