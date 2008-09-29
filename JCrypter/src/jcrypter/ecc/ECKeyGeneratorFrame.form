@@ -2,7 +2,7 @@
 
 <Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="standardButtonGroup">
+    <Component class="javax.swing.ButtonGroup" name="algorithmButtonGroup">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -31,26 +31,31 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="privkeyFileLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="privFileField" pref="236" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="12" pref="12" max="12" attributes="0"/>
+                      <Component id="ecdsaRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                      <Component id="ecdhRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="ecgostRadioButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="okButton" alignment="0" pref="298" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="keyTypeLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+                      <Component id="keyTypeComboBox" pref="187" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="okButton" alignment="0" pref="301" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pubkeyFileLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="curveLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="privkeyFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="pubFileField" alignment="1" pref="229" max="32767" attributes="0"/>
-                          <Component id="curveComboBox" alignment="1" pref="229" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="ecdsaRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="47" max="32767" attributes="0"/>
-                              <Component id="ecgostRadioButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="privFileField" alignment="0" pref="193" max="32767" attributes="0"/>
+                          <Component id="pubFileField" alignment="1" pref="193" max="32767" attributes="0"/>
+                          <Component id="curveComboBox" alignment="1" pref="193" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -61,12 +66,18 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="keyTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="keyTypeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="ecgostRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ecdsaRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ecdhRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="curveComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="curveLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -106,7 +117,7 @@
     <Component class="javax.swing.JRadioButton" name="ecgostRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="standardButtonGroup"/>
+          <ComponentRef name="algorithmButtonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecgostRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
@@ -119,7 +130,7 @@
     <Component class="javax.swing.JRadioButton" name="ecdsaRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="standardButtonGroup"/>
+          <ComponentRef name="algorithmButtonGroup"/>
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="ECDSA"/>
@@ -156,7 +167,7 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="pub.ecp"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.pubFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="" key="ECKeyGeneratorFrame.pubFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -164,9 +175,36 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="priv.ecs"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.privFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="" key="ECKeyGeneratorFrame.privFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="ecdhRadioButton">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="algorithmButtonGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecdhRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="keyTypeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.keyTypeLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="keyTypeComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keyTypeComboBoxActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

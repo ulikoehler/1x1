@@ -123,12 +123,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="passwordLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="passwordField" pref="383" max="32767" attributes="0"/>
+                      <Component id="passwordField" pref="241" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="inputLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="plaintextScrollPane" pref="404" max="32767" attributes="0"/>
+                      <Component id="plaintextScrollPane" pref="262" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="ciphertextLabel" min="-2" max="-2" attributes="0"/>
@@ -137,11 +137,11 @@
                               <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                               <Component id="decryptCheckbox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="okButton" pref="335" max="32767" attributes="0"/>
+                              <Component id="okButton" pref="193" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ciphertextScrollPane" pref="399" max="32767" attributes="0"/>
+                              <Component id="ciphertextScrollPane" pref="257" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -153,27 +153,27 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="inputLabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="plaintextScrollPane" min="-2" pref="151" max="-2" attributes="0"/>
+                  <Component id="plaintextScrollPane" pref="151" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="passwordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="passwordField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="decryptCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="ciphertextLabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="ciphertextScrollPane" min="-2" pref="151" max="-2" attributes="0"/>
+                  <Component id="ciphertextScrollPane" pref="151" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

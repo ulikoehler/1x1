@@ -199,12 +199,20 @@ public class SignatureFrame extends javax.swing.JFrame {
             {
                 verifyDSA();
             }
+            else if (selection.endsWith(".ecp"))
+            {
+                verifyECDSA();
+            }
         }
         else
         {
             if (selection.endsWith(".dss"))
             {
                 signDSA();
+            }
+            else if (selection.endsWith(".ecs"))
+            {
+                signECDSA();
             }
         }
 }//GEN-LAST:event_signVerifyButtonMouseClicked
@@ -306,6 +314,79 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
         }
     }
     
+    private void signECDSA() //Encrypt using elliptic curve cryptography
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            PrivateKey privkey = ecdsaKf.getPrivateKey(selection);
+            //Generate the signature
+            Signature sig = Signature.getInstance("ECDSA", "BC");
+            sig.initSign(privkey);
+            sig.update(message);
+            signatureField.setText(new String(Base64.encode(sig.sign())));
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void verifyECDSA()
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            byte[] signature = Base64.decode(signatureField.getText());
+            PublicKey pubkey = ecdsaKf.getPublicKey(selection);
+            //Gnerate the signature
+            Signature sig = Signature.getInstance("ECDSA", "BC");
+            sig.initVerify(pubkey);
+            sig.update(message);
+            if(sig.verify(signature))
+            {
+                displaySuccessMessage();
+            }
+            else
+            {
+                displayErrorMessage();
+            }
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void verifyDSA()
     {
         try
@@ -322,18 +403,11 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             sig.update(message);
             if(sig.verify(signature))
             {
-                JOptionPane.showMessageDialog(this,
-                                        "Signature verified successfully",
-                                        "The signatures has been verified successfully",
-                                        JOptionPane.WARNING_MESSAGE);
+                displaySuccessMessage();
             }
             else
             {
-                JOptionPane.showMessageDialog(this,
-                                        "Signature verification error",
-                                        "The signatures could not been verified!",
-                                        JOptionPane.ERROR_MESSAGE);
-                
+                displayErrorMessage();
             }
         }
         catch (InvalidKeyException ex)
@@ -366,6 +440,21 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
         });
     }
     
+    private void displaySuccessMessage()
+    {
+        JOptionPane.showMessageDialog(this,
+                "Signature verified successfully",
+                "The signature has been verified successfully!",
+                JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private void displayErrorMessage()
+    {
+        JOptionPane.showMessageDialog(this,
+                "Signature verification error",
+                "This is not a valid signature!",
+                JOptionPane.ERROR_MESSAGE);
+    }
     //Cryptography members
 
     //Dialog members

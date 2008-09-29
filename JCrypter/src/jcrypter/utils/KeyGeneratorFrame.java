@@ -17,34 +17,32 @@ import jcrypter.JCrypterFrame;
  *
  * Created on 20. September 2008, 15:59
  */
-
-
+import jcrypter.signature.ECKeyGeneratorFrame;
 
 /**
  *
  * @author  uli
  */
-public class KeyGeneratorFrame extends javax.swing.JFrame {
+public class KeyGeneratorFrame extends javax.swing.JFrame
+{
 
     /** Creates new form KeyGeneratorFrame */
     public KeyGeneratorFrame()
     {
         initComponents();
         //Add the items in the keysizes array to the keysize combo box
-        for(int i : keysizes)
+        for (int i : keysizes)
         {
             keysizeComboBox.addItem(i);
         }
         //Add the items to the key type combo box
         keyTypeComboBox.addItem("RSA");
         keyTypeComboBox.addItem("DSA");
-        keyTypeComboBox.addItem("ECDSA");
         keyTypeComboBox.addItem("ElGamal");
         keyTypeComboBox.addItem("DH");
-        keyTypeComboBox.addItem("ECDH");
+        keyTypeComboBox.addItem("ECC");
     }
-    
-    public static final int[] keysizes = {512, 1024, 2048, 4096, 8192, 16384, 32768};
+    public static final int[] keysizes = {256, 512, 1024, 2048, 4096, 8192, 16384, 32768};
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -145,7 +143,7 @@ public class KeyGeneratorFrame extends javax.swing.JFrame {
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
     try
     {
-        KeyPairGenerator kpgen = KeyPairGenerator.getInstance((String)keyTypeComboBox.getSelectedItem(), "BC");
+        KeyPairGenerator kpgen = KeyPairGenerator.getInstance((String) keyTypeComboBox.getSelectedItem(), "BC");
         kpgen.initialize((Integer) keysizeComboBox.getSelectedItem(), JCrypterFrame.rand);
 
         //Generate the key pair
@@ -179,13 +177,13 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyTypeComboBoxActionPerformed
     String sel = (String) keyTypeComboBox.getSelectedItem();
-    if(sel.equals("RSA"))
+    if (sel.equals("RSA"))
     {
         pubFileField.setText("pub.rsp");
         privFileField.setText("sec.rss");
-        
+
         keysizeComboBox.removeAllItems();
-        for(int i : keysizes)
+        for (int i : keysizes)
         {
             keysizeComboBox.addItem(i);
         }
@@ -194,31 +192,23 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     {
         pubFileField.setText("pub.dsp");
         privFileField.setText("sec.dss");
-        
+
         keysizeComboBox.removeAllItems();
-        for(int i : keysizes)
+        for (int i : keysizes)
         {
-            if(i <= 1024 && i >= 512) {keysizeComboBox.addItem(i);}
-        }        
-    }
-    else if (sel.equals("ECDSA"))
-    {
-        pubFileField.setText("pub.ecp");
-        privFileField.setText("sec.ecs");
-        
-        keysizeComboBox.removeAllItems();
-        for(int i : keysizes)
-        {
-            keysizeComboBox.addItem(i);
+            if (i <= 1024 && i >= 512)
+            {
+                keysizeComboBox.addItem(i);
+            }
         }
     }
     else if (sel.equals("ElGamal"))
     {
         pubFileField.setText("pub.elp");
         privFileField.setText("sec.els");
-        
+
         keysizeComboBox.removeAllItems();
-        for(int i : keysizes)
+        for (int i : keysizes)
         {
             keysizeComboBox.addItem(i);
         }
@@ -227,40 +217,46 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     {
         pubFileField.setText("pub.dhp");
         privFileField.setText("sec.dhs");
-        
+
         keysizeComboBox.removeAllItems();
-        for(int i : keysizes)
+        for (int i : keysizes)
         {
             keysizeComboBox.addItem(i);
         }
     }
-    else if (sel.equals("ECDH"))
+    else if (sel.equals("ECC"))
     {
         pubFileField.setText("pub.edp");
         privFileField.setText("sec.eds");
-        
+
         keysizeComboBox.removeAllItems();
-        for(int i : keysizes)
+        for (int i : keysizes)
         {
             keysizeComboBox.addItem(i);
         }
+        //Show the ECC key generator window and hide the standard keygen window
+        this.setVisible(false);
+        eckeygenFrame.setVisible(true);
     }
 }//GEN-LAST:event_keyTypeComboBoxActionPerformed
-          
-                          
+
+
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 new KeyGeneratorFrame().setVisible(true);
             }
         });
     }
-    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
+    ECKeyGeneratorFrame eckeygenFrame = new ECKeyGeneratorFrame(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox keyTypeComboBox;
     private javax.swing.JLabel keyTypeLabel;
@@ -272,5 +268,4 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JTextField pubFileField;
     private javax.swing.JLabel pubFileLabel;
     // End of variables declaration//GEN-END:variables
-
 }

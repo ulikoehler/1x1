@@ -8,7 +8,6 @@
  *
  * Created on 10.09.2008, 23:25:49
  */
-
 package jcrypter.signature;
 
 import java.awt.EventQueue;
@@ -27,6 +26,7 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -34,15 +34,27 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  *
  * @author uli
  */
-public class ECKeyGeneratorFrame extends javax.swing.JFrame {
+public class ECKeyGeneratorFrame extends javax.swing.JFrame
+{
 
     /** Creates new form ECKeyGeneratorFrame */
-    public ECKeyGeneratorFrame() {
+    public ECKeyGeneratorFrame(KeyGeneratorFrame parent)
+    {
         initComponents();
         //Register Bouncy castle provider
-        Security.addProvider(new BouncyCastleProvider()); 
+        Security.addProvider(new BouncyCastleProvider());
         //Populate the named curve selection combo box
         loadEcdsaCurves();
+        //Set the parent reference
+        this.parent = parent;
+        //Add the items to the key type combo box
+        keyTypeComboBox.addItem("RSA");
+        keyTypeComboBox.addItem("DSA");
+        keyTypeComboBox.addItem("ElGamal");
+        keyTypeComboBox.addItem("DH");
+        keyTypeComboBox.addItem("ECC");
+        //Set "ECC" as the selected item
+        keyTypeComboBox.setSelectedItem("ECC");
     }
 
     /** This method is called from within the constructor to
@@ -54,7 +66,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        standardButtonGroup = new javax.swing.ButtonGroup();
+        algorithmButtonGroup = new javax.swing.ButtonGroup();
         curveComboBox = new javax.swing.JComboBox();
         curveLabel = new javax.swing.JLabel();
         ecgostRadioButton = new javax.swing.JRadioButton();
@@ -64,12 +76,15 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
         privkeyFileLabel = new javax.swing.JLabel();
         pubFileField = new javax.swing.JTextField();
         privFileField = new javax.swing.JTextField();
+        ecdhRadioButton = new javax.swing.JRadioButton();
+        keyTypeLabel = new javax.swing.JLabel();
+        keyTypeComboBox = new javax.swing.JComboBox();
 
         setTitle(i18n.getString("ECKeyGeneratorFrame.title")); // NOI18N
 
         curveLabel.setText(i18n.getString("ECKeyGeneratorFrame.curveLabel.text")); // NOI18N
 
-        standardButtonGroup.add(ecgostRadioButton);
+        algorithmButtonGroup.add(ecgostRadioButton);
         ecgostRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecgostRadioButton.text")); // NOI18N
         ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,7 +92,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
             }
         });
 
-        standardButtonGroup.add(ecdsaRadioButton);
+        algorithmButtonGroup.add(ecdsaRadioButton);
         ecdsaRadioButton.setSelected(true);
         ecdsaRadioButton.setText("ECDSA");
         ecdsaRadioButton.addActionListener(new java.awt.event.ActionListener() {
@@ -98,10 +113,21 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
         privkeyFileLabel.setText(i18n.getString("ECKeyGeneratorFrame.privkeyFileLabel.text")); // NOI18N
 
         pubFileField.setText("pub.ecp");
-        pubFileField.setToolTipText(i18n.getString("ECKeyGeneratorFrame.pubFileField.toolTipText")); // NOI18N
+        pubFileField.setToolTipText("null");
 
         privFileField.setText("priv.ecs");
-        privFileField.setToolTipText(i18n.getString("ECKeyGeneratorFrame.privFileField.toolTipText")); // NOI18N
+        privFileField.setToolTipText("null");
+
+        algorithmButtonGroup.add(ecdhRadioButton);
+        ecdhRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecdhRadioButton.text")); // NOI18N
+
+        keyTypeLabel.setText(i18n.getString("ECKeyGeneratorFrame.keyTypeLabel.text")); // NOI18N
+
+        keyTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyTypeComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,32 +137,42 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(privkeyFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                        .addGap(12, 12, 12)
+                        .addComponent(ecdsaRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(ecdhRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(ecgostRadioButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(keyTypeLabel)
+                        .addGap(81, 81, 81)
+                        .addComponent(keyTypeComboBox, 0, 187, Short.MAX_VALUE))
+                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pubkeyFileLabel)
-                            .addComponent(curveLabel))
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pubFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                            .addComponent(curveComboBox, 0, 229, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ecdsaRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                .addComponent(ecgostRadioButton)))))
+                            .addComponent(curveLabel)
+                            .addComponent(privkeyFileLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(pubFileField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(curveComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 193, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(keyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(keyTypeLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ecgostRadioButton)
-                    .addComponent(ecdsaRadioButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(ecdsaRadioButton)
+                    .addComponent(ecdhRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(curveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(curveLabel))
@@ -157,49 +193,91 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ecdsaRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ecdsaRadioButtonActionPerformed
-        EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable()
+        {
 
-                    @Override
-                    public void run()
-                        {
-                            if(ecdsaRadioButton.isSelected()) {loadEcdsaCurves();}
-                        }
-                });
+            @Override
+            public void run()
+            {
+                if (ecdsaRadioButton.isSelected())
+                {
+                    loadEcdsaCurves();
+                }
+            }
+        });
     }//GEN-LAST:event_ecdsaRadioButtonActionPerformed
 
     private void ecgostRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ecgostRadioButtonActionPerformed
-        EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable()
+        {
 
-                    @Override
-                    public void run()
-                        {
-                            if(ecgostRadioButton.isSelected()) {loadEcgostCurves();}
-                        }
-                });
+            @Override
+            public void run()
+            {
+                if (ecgostRadioButton.isSelected())
+                {
+                    loadEcgostCurves();
+                }
+            }
+        });
     }//GEN-LAST:event_ecgostRadioButtonActionPerformed
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        {
+    {
 
-            BufferedOutputStream pubOut = null;
-            BufferedOutputStream privOut = null;
+        BufferedOutputStream pubOut = null;
+        BufferedOutputStream privOut = null;
+        try
+        {
+            ECGenParameterSpec ecGenSpec = new ECGenParameterSpec((String) curveComboBox.getSelectedItem());
+            //TODO Make using ECGOST possible
+            //TODO Make using ECDH possible
+            KeyPairGenerator g = null;
+            if (ecgostRadioButton.isSelected())
+            {
+                g = KeyPairGenerator.getInstance("ECGOST3410", "BC");
+            }
+            else if (ecdsaRadioButton.isSelected())
+            {
+                g = KeyPairGenerator.getInstance("ECDSA", "BC");
+            }
+            else // ECDH radio button is selected
+            {
+                g = KeyPairGenerator.getInstance("ECDH", "BC");
+            }
+            g.initialize(ecGenSpec, new SecureRandom());
+            KeyPair pair = g.generateKeyPair();
+
+            //TODO Encode in X509 or so, not in serializing
+            pubOut = new BufferedOutputStream(new FileOutputStream(pubFileField.getText()));
+            privOut = new BufferedOutputStream(new FileOutputStream(privFileField.getText()));
+
+            pubOut.write(pair.getPublic().getEncoded());
+            privOut.write(pair.getPrivate().getEncoded());
+
+            pubOut.close();
+            privOut.close();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (InvalidAlgorithmParameterException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (NoSuchProviderException ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
             try
             {
-                ECGenParameterSpec ecGenSpec = new ECGenParameterSpec((String)curveComboBox.getSelectedItem());
-                //TODO Make using ECGOST possible
-                KeyPairGenerator g = null;
-                if(ecgostRadioButton.isSelected()) {g = KeyPairGenerator.getInstance("ECGOST3410", "BC");}
-                else {g = KeyPairGenerator.getInstance("ECDSA", "BC");}
-                g.initialize(ecGenSpec, new SecureRandom());
-                KeyPair pair = g.generateKeyPair();
-                
-                //TODO Encode in X509 or so, not in serializing
-                pubOut = new BufferedOutputStream(new FileOutputStream(pubFileField.getText()));
-                privOut = new BufferedOutputStream(new FileOutputStream(privFileField.getText()));
-                
-                pubOut.write(pair.getPublic().getEncoded());
-                privOut.write(pair.getPrivate().getEncoded());
-                
                 pubOut.close();
                 privOut.close();
             }
@@ -207,40 +285,26 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             {
                 Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            catch (InvalidAlgorithmParameterException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (NoSuchAlgorithmException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (NoSuchProviderException ex)
-            {
-                ex.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    pubOut.close();
-                    privOut.close();
-                }
-                catch (IOException ex)
-                {
-                    Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
+    }
 
 
 }//GEN-LAST:event_okButtonMouseClicked
+
+private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyTypeComboBoxActionPerformed
+    String sel = (String) keyTypeComboBox.getSelectedItem();
+    if (!sel.equals("ECC"))
+    {
+        this.setVisible(false);
+        parent.setVisible(true);
+    }
+}//GEN-LAST:event_keyTypeComboBoxActionPerformed
 
     private void loadEcdsaCurves()
     {
         curveComboBox.removeAllItems();
         Enumeration<String> curves = ECNamedCurveTable.getNames();
-        while(curves.hasMoreElements())
+        while (curves.hasMoreElements())
         {
             curveComboBox.addItem(curves.nextElement());
         }
@@ -251,7 +315,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     {
         curveComboBox.removeAllItems();
         Enumeration<String> curves = ECNamedCurveTable.getNames();
-        while(curves.hasMoreElements())
+        while (curves.hasMoreElements())
         {
             curveComboBox.addItem(curves.nextElement());
         }
@@ -259,32 +323,36 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     }
 
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
-                new ECKeyGeneratorFrame().setVisible(true);
+            public void run()
+            {
+                new ECKeyGeneratorFrame(null).setVisible(true);
             }
         });
 
-    }
-
-    //Resource bundle
+    }    //Resource bundle
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/ecc/Bundle");
+    KeyGeneratorFrame parent = null; //Stores a reference 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup algorithmButtonGroup;
     private javax.swing.JComboBox curveComboBox;
     private javax.swing.JLabel curveLabel;
+    private javax.swing.JRadioButton ecdhRadioButton;
     private javax.swing.JRadioButton ecdsaRadioButton;
     private javax.swing.JRadioButton ecgostRadioButton;
+    private javax.swing.JComboBox keyTypeComboBox;
+    private javax.swing.JLabel keyTypeLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField privFileField;
     private javax.swing.JLabel privkeyFileLabel;
     private javax.swing.JTextField pubFileField;
     private javax.swing.JLabel pubkeyFileLabel;
-    private javax.swing.ButtonGroup standardButtonGroup;
     // End of variables declaration//GEN-END:variables
-
 }
