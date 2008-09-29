@@ -33,7 +33,7 @@ import jcrypter.utils.CipherModePaddingSelectorDialog;
 import org.bouncycastle.util.encoders.Base64;
 
 
-
+//TODO remove decrypt checkbox and determinate by key selection
 /**
  *
  * @author  uli
@@ -394,7 +394,8 @@ public class RSACrypterFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-    if(decryptCheckbox.isSelected()){decryptRSA();}
+    String selection = (String) keyComboBox.getSelectedItem();
+    if(selection.endsWith("s")){decryptRSA();}
     else{encryptRSA();}
 }//GEN-LAST:event_okButtonMouseClicked
 

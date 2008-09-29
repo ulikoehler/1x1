@@ -31,19 +31,6 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="12" pref="12" max="12" attributes="0"/>
-                      <Component id="ecdsaRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="29" max="32767" attributes="0"/>
-                      <Component id="ecdhRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="ecgostRadioButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="keyTypeLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                      <Component id="keyTypeComboBox" pref="187" max="32767" attributes="0"/>
-                  </Group>
                   <Component id="okButton" alignment="0" pref="301" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -58,6 +45,24 @@
                           <Component id="curveComboBox" alignment="1" pref="193" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="12" pref="12" max="12" attributes="0"/>
+                              <Component id="ecdsaRadioButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="keyTypeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="keyTypeComboBox" alignment="0" max="32767" attributes="1"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="ecdhRadioButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="ecgostRadioButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -68,8 +73,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="keyTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="keyTypeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="keyTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -173,7 +178,9 @@
     </Component>
     <Component class="javax.swing.JTextField" name="privFileField">
       <Properties>
-        <Property name="text" type="java.lang.String" value="priv.ecs"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.privFileField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="" key="ECKeyGeneratorFrame.privFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
@@ -188,6 +195,9 @@
           <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecdhRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecdhRadioButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="keyTypeLabel">
       <Properties>

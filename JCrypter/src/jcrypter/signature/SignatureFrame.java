@@ -8,7 +8,6 @@
  *
  * Created on 10.09.2008, 19:57:18
  */
-
 package jcrypter.signature;
 
 import java.security.InvalidKeyException;
@@ -34,11 +33,12 @@ import org.bouncycastle.util.encoders.Base64;
  *
  * @author uli
  */
-public class SignatureFrame extends javax.swing.JFrame {
-    
+public class SignatureFrame extends javax.swing.JFrame
+{
 
     /** Creates new form SignatureFrame */
-    public SignatureFrame() {
+    public SignatureFrame()
+    {
         initComponents();
         //Register Bouncy castle provider
         Security.addProvider(new BouncyCastleProvider());
@@ -72,6 +72,7 @@ public class SignatureFrame extends javax.swing.JFrame {
         saveToFileMenuItem = new javax.swing.JMenuItem();
         signatureMenu = new javax.swing.JMenu();
         generateKeyMenuItem = new javax.swing.JMenuItem();
+        rsaSigAlgorithmMenuItem = new javax.swing.JMenuItem();
 
         setTitle(i18n.getString("SignatureFrame.title")); // NOI18N
 
@@ -140,6 +141,15 @@ public class SignatureFrame extends javax.swing.JFrame {
         });
         signatureMenu.add(generateKeyMenuItem);
 
+        rsaSigAlgorithmMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        rsaSigAlgorithmMenuItem.setText(i18n.getString("SignatureFrame.rsaSigAlgorithmMenuItem.text")); // NOI18N
+        rsaSigAlgorithmMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rsaSigAlgorithmMenuItemActionPerformed(evt);
+            }
+        });
+        signatureMenu.add(rsaSigAlgorithmMenuItem);
+
         menuBar.add(signatureMenu);
 
         setJMenuBar(menuBar);
@@ -203,6 +213,10 @@ public class SignatureFrame extends javax.swing.JFrame {
             {
                 verifyECDSA();
             }
+            else if (selection.endsWith(".rsp"))
+            {
+                verifyRSA();
+            }
         }
         else
         {
@@ -213,6 +227,10 @@ public class SignatureFrame extends javax.swing.JFrame {
             else if (selection.endsWith(".ecs"))
             {
                 signECDSA();
+            }
+            else if (selection.endsWith(".rss"))
+            {
+                signRSA();
             }
         }
 }//GEN-LAST:event_signVerifyButtonMouseClicked
@@ -281,6 +299,10 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     new KeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_generateKeyMenuItemActionPerformed
 
+private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsaSigAlgorithmMenuItemActionPerformed
+    rsaSigSelDialog.setVisible(true);
+}//GEN-LAST:event_rsaSigAlgorithmMenuItemActionPerformed
+
     private void signDSA() //Encrypt using elliptic curve cryptography
     {
         try
@@ -313,7 +335,48 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    private void verifyDSA()
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            byte[] signature = Base64.decode(signatureField.getText());
+            PublicKey pubkey = dsaKf.getPublicKey(selection);
+            //Gnerate the signature
+            Signature sig = Signature.getInstance("DSA", "BC");
+            sig.initVerify(pubkey);
+            sig.update(message);
+            if (sig.verify(signature))
+            {
+                displaySuccessMessage();
+            }
+            else
+            {
+                displayErrorMessage();
+            }
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void signECDSA() //Encrypt using elliptic curve cryptography
     {
         try
@@ -346,6 +409,7 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     private void verifyECDSA()
     {
         try
@@ -360,7 +424,7 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             Signature sig = Signature.getInstance("ECDSA", "BC");
             sig.initVerify(pubkey);
             sig.update(message);
-            if(sig.verify(signature))
+            if (sig.verify(signature))
             {
                 displaySuccessMessage();
             }
@@ -386,8 +450,42 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    private void signRSA() //Encrypt using elliptic curve cryptography
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            PrivateKey privkey = rsaKf.getPrivateKey(selection);
+            //Generate the signature
+            String algorithm = rsaSigSelDialog.getAlgorithm();
+            Signature sig = Signature.getInstance(algorithm, "BC");
+            sig.initSign(privkey);
+            sig.update(message);
+            signatureField.setText(new String(Base64.encode(sig.sign())));
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
-    private void verifyDSA()
+    private void verifyRSA()
     {
         try
         {
@@ -396,12 +494,13 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             //Get the plaintext,
             byte[] message = messageField.getText().getBytes();
             byte[] signature = Base64.decode(signatureField.getText());
-            PublicKey pubkey = dsaKf.getPublicKey(selection);
+            PublicKey pubkey = rsaKf.getPublicKey(selection);
             //Gnerate the signature
-            Signature sig = Signature.getInstance("DSA", "BC");
+            String algorithm = rsaSigSelDialog.getAlgorithm();
+            Signature sig = Signature.getInstance(algorithm, "BC");
             sig.initVerify(pubkey);
             sig.update(message);
-            if(sig.verify(signature))
+            if (sig.verify(signature))
             {
                 displaySuccessMessage();
             }
@@ -431,15 +530,19 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+
             @Override
-            public void run() {
+            public void run()
+            {
                 new SignatureFrame().setVisible(true);
             }
         });
     }
-    
+
     private void displaySuccessMessage()
     {
         JOptionPane.showMessageDialog(this,
@@ -447,7 +550,7 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
                 "The signature has been verified successfully!",
                 JOptionPane.WARNING_MESSAGE);
     }
-    
+
     private void displayErrorMessage()
     {
         JOptionPane.showMessageDialog(this,
@@ -459,11 +562,10 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
 
     //Dialog members
     JFileChooser fileChooser = new JFileChooser();
-    
+    RSASignatureAlgorithmSelectorDialog rsaSigSelDialog = new RSASignatureAlgorithmSelectorDialog(this, true);
     KeyFinder ecdsaKf = new KeyFinder(".ecp", ".ecs", "ECDSA");
     KeyFinder dsaKf = new KeyFinder(".dsp", ".dss", "DSA");
     KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
-    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/signature/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ciphertextScrollPane;
@@ -476,6 +578,7 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JTextArea messageField;
     private javax.swing.JLabel messageLabel;
     private javax.swing.JScrollPane plaintextScrollPane;
+    private javax.swing.JMenuItem rsaSigAlgorithmMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JButton signVerifyButton;
     private javax.swing.JTextArea signatureField;

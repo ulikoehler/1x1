@@ -115,11 +115,16 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         pubFileField.setText("pub.ecp");
         pubFileField.setToolTipText("null");
 
-        privFileField.setText("priv.ecs");
+        privFileField.setText(i18n.getString("ECKeyGeneratorFrame.privFileField.text")); // NOI18N
         privFileField.setToolTipText("null");
 
         algorithmButtonGroup.add(ecdhRadioButton);
         ecdhRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecdhRadioButton.text")); // NOI18N
+        ecdhRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ecdhRadioButtonActionPerformed(evt);
+            }
+        });
 
         keyTypeLabel.setText(i18n.getString("ECKeyGeneratorFrame.keyTypeLabel.text")); // NOI18N
 
@@ -136,17 +141,6 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(ecdsaRadioButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                        .addComponent(ecdhRadioButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(ecgostRadioButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(keyTypeLabel)
-                        .addGap(81, 81, 81)
-                        .addComponent(keyTypeComboBox, 0, 187, Short.MAX_VALUE))
                     .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,7 +151,20 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                             .addComponent(pubFileField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                            .addComponent(curveComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 193, Short.MAX_VALUE))))
+                            .addComponent(curveComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 193, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(ecdsaRadioButton))
+                            .addComponent(keyTypeLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(keyTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(ecdhRadioButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(ecgostRadioButton)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -165,8 +172,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(keyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(keyTypeLabel))
+                    .addComponent(keyTypeLabel)
+                    .addComponent(keyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ecgostRadioButton)
@@ -202,6 +209,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                 if (ecdsaRadioButton.isSelected())
                 {
                     loadEcdsaCurves();
+                    pubFileField.setText("pub.ecp");
+                    privFileField.setText("sec.ecs");
                 }
             }
         });
@@ -217,6 +226,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                 if (ecgostRadioButton.isSelected())
                 {
                     loadEcgostCurves();
+                    pubFileField.setText("pub.egp");
+                    privFileField.setText("sec.egs");
                 }
             }
         });
@@ -299,6 +310,22 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
         parent.setVisible(true);
     }
 }//GEN-LAST:event_keyTypeComboBoxActionPerformed
+
+private void ecdhRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ecdhRadioButtonActionPerformed
+    EventQueue.invokeLater(new Runnable()
+    {
+
+        @Override
+        public void run()
+        {
+            if (ecdhRadioButton.isSelected())
+            {
+                pubFileField.setText("pub.edh");
+                privFileField.setText("sec.eds");
+            }
+        }
+    });
+}//GEN-LAST:event_ecdhRadioButtonActionPerformed
 
     private void loadEcdsaCurves()
     {
