@@ -132,6 +132,19 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecgostRadioButtonActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JRadioButton" name="ecdhRadioButton">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="algorithmButtonGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecdhRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecdhRadioButtonActionPerformed"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JRadioButton" name="ecdsaRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -185,19 +198,6 @@
           <ResourceString bundle="" key="ECKeyGeneratorFrame.privFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="ecdhRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="algorithmButtonGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecdhRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecdhRadioButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="keyTypeLabel">
       <Properties>

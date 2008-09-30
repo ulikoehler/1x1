@@ -28,6 +28,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
 import jcrypter.signature.SignatureFrame;
 import jcrypter.rsa.RSACrypterFrame;
+import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -80,6 +81,8 @@ public class JCrypterFrame extends javax.swing.JFrame {
         cmpMenuItem = new javax.swing.JMenuItem();
         signatureMenuItem = new javax.swing.JMenuItem();
         rsaMenuItem = new javax.swing.JMenuItem();
+        genKeysMenuItem = new javax.swing.JMenuItem();
+        passGenMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -147,6 +150,11 @@ public class JCrypterFrame extends javax.swing.JFrame {
 
         extrasMenu.setMnemonic('e');
         extrasMenu.setText("Extras");
+        extrasMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                extrasMenuActionPerformed(evt);
+            }
+        });
 
         pgpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         pgpMenuItem.setText("PGP");
@@ -188,6 +196,19 @@ public class JCrypterFrame extends javax.swing.JFrame {
             }
         });
         extrasMenu.add(rsaMenuItem);
+
+        genKeysMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        genKeysMenuItem.setText("Generate keys");
+        extrasMenu.add(genKeysMenuItem);
+
+        passGenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        passGenMenuItem.setText("Password generator");
+        passGenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passGenMenuItemActionPerformed(evt);
+            }
+        });
+        extrasMenu.add(passGenMenuItem);
 
         menuBar.add(extrasMenu);
 
@@ -332,6 +353,14 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     new RSACrypterFrame().setVisible(true);
 }//GEN-LAST:event_rsaMenuItemActionPerformed
 
+private void extrasMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extrasMenuActionPerformed
+    new KeyGeneratorFrame().setVisible(true);
+}//GEN-LAST:event_extrasMenuActionPerformed
+
+private void passGenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passGenMenuItemActionPerformed
+    new PasswordGeneratorFrame().setVisible(true);
+}//GEN-LAST:event_passGenMenuItemActionPerformed
+
     
     private void encryptSymmetric()
     {
@@ -456,12 +485,14 @@ private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem genKeysMenuItem;
     private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
     private javax.swing.JMenuItem loadFromFileMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea outputField;
+    private javax.swing.JMenuItem passGenMenuItem;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JMenuItem pgpMenuItem;

@@ -70,13 +70,13 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         curveComboBox = new javax.swing.JComboBox();
         curveLabel = new javax.swing.JLabel();
         ecgostRadioButton = new javax.swing.JRadioButton();
+        ecdhRadioButton = new javax.swing.JRadioButton();
         ecdsaRadioButton = new javax.swing.JRadioButton();
         okButton = new javax.swing.JButton();
         pubkeyFileLabel = new javax.swing.JLabel();
         privkeyFileLabel = new javax.swing.JLabel();
         pubFileField = new javax.swing.JTextField();
         privFileField = new javax.swing.JTextField();
-        ecdhRadioButton = new javax.swing.JRadioButton();
         keyTypeLabel = new javax.swing.JLabel();
         keyTypeComboBox = new javax.swing.JComboBox();
 
@@ -89,6 +89,14 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ecgostRadioButtonActionPerformed(evt);
+            }
+        });
+
+        algorithmButtonGroup.add(ecdhRadioButton);
+        ecdhRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecdhRadioButton.text")); // NOI18N
+        ecdhRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ecdhRadioButtonActionPerformed(evt);
             }
         });
 
@@ -117,14 +125,6 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
 
         privFileField.setText(i18n.getString("ECKeyGeneratorFrame.privFileField.text")); // NOI18N
         privFileField.setToolTipText("null");
-
-        algorithmButtonGroup.add(ecdhRadioButton);
-        ecdhRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecdhRadioButton.text")); // NOI18N
-        ecdhRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ecdhRadioButtonActionPerformed(evt);
-            }
-        });
 
         keyTypeLabel.setText(i18n.getString("ECKeyGeneratorFrame.keyTypeLabel.text")); // NOI18N
 
