@@ -453,10 +453,11 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
 
     private void signRSA() //Encrypt using elliptic curve cryptography
     {
+        String selection = null;
         try
         {
             //Determinate which algorithm to use
-            String selection = (String) keyComboBox.getSelectedItem();
+            selection = (String) keyComboBox.getSelectedItem();
             //Get the plaintext,
             byte[] message = messageField.getText().getBytes();
             PrivateKey privkey = rsaKf.getPrivateKey(selection);
@@ -469,7 +470,8 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
         }
         catch (InvalidKeyException ex)
         {
-            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+            //The selected file does not contain a valid key
+            JOptionPane.showMessageDialog(this, "Invalid key", "The file " + selection + " does not contain a valid key!", JOptionPane.ERROR_MESSAGE);
         }
         catch (SignatureException ex)
         {

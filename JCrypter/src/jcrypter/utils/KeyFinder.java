@@ -10,13 +10,14 @@ import java.io.FilenameFilter;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 
 /**
@@ -60,11 +61,18 @@ public class KeyFinder
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
                 in.close();
+                
+                try
+                {
+                    PublicKey pubKey = fact.generatePublic(new X509EncodedKeySpec(keyBytes));
+                    pubkeys.put(f.getName(), pubKey);
 
-                PublicKey pubKey = fact.generatePublic(new X509EncodedKeySpec(keyBytes));
-                pubkeys.put(f.getName(), pubKey);
-
-                keys.add(f.getName());
+                    keys.add(f.getName());
+                }
+                catch (InvalidKeySpecException ex) //Non-valid key in file
+                {
+                    continue;
+                }
             }
             //Load private keys
             File[] ecs = thisDir.listFiles(new FilenameFilter()
@@ -85,16 +93,23 @@ public class KeyFinder
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
                 in.close();
+                
+                try
+                {
+                    PrivateKey privKey = fact.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
+                    privkeys.put(f.getName(), privKey);
 
-                PrivateKey privKey = fact.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
-                privkeys.put(f.getName(), privKey);
-
-                keys.add(f.getName());
+                    keys.add(f.getName());
+                }
+                catch (InvalidKeySpecException ex) //Non-valid key in file
+                {
+                    continue;
+                }
             }
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+           Logger.getLogger(KeyFinder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

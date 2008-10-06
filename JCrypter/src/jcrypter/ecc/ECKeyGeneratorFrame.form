@@ -38,7 +38,7 @@
                           <Component id="curveLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="privkeyFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="13" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="privFileField" alignment="0" pref="193" max="32767" attributes="0"/>
                           <Component id="pubFileField" alignment="1" pref="193" max="32767" attributes="0"/>
@@ -124,9 +124,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="algorithmButtonGroup"/>
         </Property>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecgostRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="ECGOST-3410" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecgostRadioButtonActionPerformed"/>
@@ -137,9 +135,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="algorithmButtonGroup"/>
         </Property>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.ecdhRadioButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="ECDH" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecdhRadioButtonActionPerformed"/>
@@ -151,7 +147,7 @@
           <ComponentRef name="algorithmButtonGroup"/>
         </Property>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="ECDSA"/>
+        <Property name="text" type="java.lang.String" value="ECDSA" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ecdsaRadioButtonActionPerformed"/>
@@ -191,9 +187,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="privFileField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/ecc/Bundle.properties" key="ECKeyGeneratorFrame.privFileField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="sec.ecs" noResource="true"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="" key="ECKeyGeneratorFrame.privFileField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>

@@ -25,7 +25,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="okButton" alignment="0" pref="221" max="32767" attributes="0"/>
+                  <Component id="okButton" alignment="0" pref="281" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pubFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -35,10 +35,19 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="privFileField" alignment="0" pref="154" max="32767" attributes="0"/>
-                          <Component id="keysizeComboBox" alignment="0" pref="154" max="32767" attributes="1"/>
-                          <Component id="pubFileField" alignment="0" pref="154" max="32767" attributes="0"/>
-                          <Component id="keyTypeComboBox" alignment="0" pref="154" max="32767" attributes="0"/>
+                          <Component id="keysizeComboBox" alignment="0" pref="214" max="32767" attributes="1"/>
+                          <Component id="keyTypeComboBox" alignment="0" pref="214" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="privFileField" alignment="0" pref="138" max="32767" attributes="1"/>
+                                  <Component id="pubFileField" alignment="1" pref="138" max="32767" attributes="1"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="selectPrivFileButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="selectPubFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -62,12 +71,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="pubFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="selectPubFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pubFileField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="privFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="privFileField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="selectPrivFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="okButton" min="-2" max="-2" attributes="0"/>
@@ -134,6 +145,22 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keyTypeComboBoxActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="selectPubFileButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Select"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectPubFileButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="selectPrivFileButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Select"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectPrivFileButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

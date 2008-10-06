@@ -6,9 +6,9 @@
  * GNUCrypto version: Revision 122
  * Released under Apache License
  */
-
 package jcrypter;
 
+import java.io.ByteArrayInputStream;
 import jcrypter.utils.CipherModePaddingSelectorDialog;
 import jcrypter.pgp.PGPKeyRingReader;
 import jcrypter.pgp.PGPCrypterFrame;
@@ -21,13 +21,14 @@ import java.security.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
 import jcrypter.signature.SignatureFrame;
-import jcrypter.rsa.RSACrypterFrame;
+import jcrypter.asymmetric.RSACrypterFrame;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -38,12 +39,14 @@ import org.bouncycastle.util.encoders.Base64;
  *
  * @author  uli
  */
-public class JCrypterFrame extends javax.swing.JFrame {
-    
+public class JCrypterFrame extends javax.swing.JFrame
+{
+
     /** Creates new form JCrypterFrame */
-    public JCrypterFrame() {
+    public JCrypterFrame()
+    {
         //Register Bouncy castle provider
-        Security.addProvider(new BouncyCastleProvider());  
+        Security.addProvider(new BouncyCastleProvider());
         //Init the GUI components
         initComponents();
         //Set the selected cipher, mode and padding
@@ -52,8 +55,6 @@ public class JCrypterFrame extends javax.swing.JFrame {
         cmpDialog.setPadding("Twofish");
     }
 
-    
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -267,10 +268,16 @@ public class JCrypterFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     @SuppressWarnings("empty-statement")
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        encryptSymmetric();
+        if (decryptCheckbox.isSelected())
+        {
+            decryptSymmetric();
+        }
+        else
+        {
+            encryptSymmetric();
+        }
     }//GEN-LAST:event_okButtonMouseClicked
 
     private void cmpMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmpMenuItemMouseClicked
@@ -288,61 +295,61 @@ public class JCrypterFrame extends javax.swing.JFrame {
     private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
         FileInputStream fin = null;
         try
-            {
-                fileChooser.showOpenDialog(this);
-                File file = fileChooser.getSelectedFile();
-                byte[] buffer = new byte[(int)file.length()];
-                fin = new FileInputStream(file);
-                fin.read(buffer);
-                fin.close();
-                inputField.setText(new String(buffer));
-            }
+        {
+            fileChooser.showOpenDialog(this);
+            File file = fileChooser.getSelectedFile();
+            byte[] buffer = new byte[(int) file.length()];
+            fin = new FileInputStream(file);
+            fin.read(buffer);
+            fin.close();
+            inputField.setText(new String(buffer));
+        }
         catch (IOException ex)
+        {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                fin.close();
+            }
+            catch (IOException ex)
             {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
                 ex.printStackTrace();
             }
-        finally
-            {
-                try
-                    {
-                    fin.close();
-                    }
-                catch (IOException ex)
-                    {
-                    Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.printStackTrace();
-                    }
-            }
+        }
     }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
 
     private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
         FileOutputStream fout = null;
         try
+        {
+            fileChooser.showSaveDialog(this);
+            File file = fileChooser.getSelectedFile();
+            byte[] buffer = outputField.getText().getBytes();
+            fout = new FileOutputStream(file);
+            fout.write(buffer);
+            fout.close();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            try
             {
-                fileChooser.showSaveDialog(this);
-                File file = fileChooser.getSelectedFile();
-                byte[] buffer = outputField.getText().getBytes();
-                fout = new FileOutputStream(file);
-                fout.write(buffer);
                 fout.close();
             }
-        catch (IOException ex)
+            catch (IOException ex)
             {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
-        finally
-            {
-                try
-                    {
-                     fout.close();
-                    }
-                catch (IOException ex)
-                    {
-                    Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.printStackTrace();
-                    }
-            }
+        }
     }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
     private void signatureMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signatureMenuItemActionPerformed
@@ -361,13 +368,11 @@ private void passGenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//G
     new PasswordGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_passGenMenuItemActionPerformed
 
-    
-    private void encryptSymmetric()
+
+    private void decryptSymmetric()
     {
         try
         {
-            //Get the selected cipher, mode and padding from 
-            boolean decrypt = decryptCheckbox.isSelected();
             //Using BouncyCastle JCE
             Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
             int bs = cipher.getBlockSize(); //Blocksize
@@ -375,52 +380,117 @@ private void passGenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//G
             byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
             byte[] input;
             //Base64-decode the ciphertext
-            if(decrypt) {input = Base64.decode(inputField.getText().getBytes());}
-            else {input = inputField.getText().getBytes();}
+            input = Base64.decode(inputField.getText().getBytes());
             
-            //Hash the password to fit it into the right size
-            Digest digest = new SHA256Digest();
-            digest.update(passwordBytes, 0, passwordBytes.length);
+            //All data will be read from this stream
+            ByteArrayInputStream bin = new ByteArrayInputStream(input);
+            
+            //Hash the password to fit it into the right size (with salt)
+            byte[] salt = new byte[8];
             byte[] keyBytes = new byte[32];
-            digest.doFinal(keyBytes, 0);
-
-            //State whether to encrypt or to decrypt
-            int cryptMode;
-            if(decrypt) {cryptMode = Cipher.DECRYPT_MODE;}
-            else {cryptMode = Cipher.ENCRYPT_MODE;}
-
+            bin.read(salt); //Get the salt from the input stream 
+            
+            Digest digest = new SHA256Digest();
+            digest.update(salt, 0, salt.length); //Add the salt...
+            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
+            digest.doFinal(keyBytes, 0); //Do the final hashing
+            
             //IV generation/retrievement
-            byte[] iv = null;
-            if(decrypt)
-            {
-                iv = input; //Using iv array only with offset
-            }
-            else
-            {
-                //Generate the iv and the IvParameter spec
-                iv = new byte[cipher.getBlockSize()];
-                rand.nextBytes(iv);                
-            }
+            byte[] iv = new byte[cipher.getBlockSize()]; //Using iv array only with offset
+            bin.read(iv);
             IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
 
             //Generate the secret key spec
             SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
-            cipher.init(cryptMode, keySpec, ivSpec);
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
             
+            CipherInputStream cin = new CipherInputStream(bin, cipher);
+            
+            //Print the input (minus the IV, if decrypting) into cout
+            
+            byte[] plaintext = new byte[bin.available()];
+            cin.read(plaintext); //Decrypts the rest data in bin
+            //Close the cipher stream
+            cin.close();
+            //Print the output into outputField and Base64-encode if we have to encrypt
+            outputField.setText(new String(plaintext).trim());
+        }
+        catch (InvalidAlgorithmParameterException ex)
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        catch (IOException ex) //Must not occure
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            }
+        catch (InvalidKeyException ex)
+            {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        catch (NoSuchAlgorithmException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+        catch (NoSuchProviderException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+        catch (NoSuchPaddingException ex)
+            {
+                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+    }
+    
+    private void encryptSymmetric()
+    {
+        try
+        {
+            //Using BouncyCastle JCE
+            Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
+            int bs = cipher.getBlockSize(); //Blocksize
+            //Get data
+            byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
+            byte[] input;
+            //Base64-decode the ciphertext
+            input = inputField.getText().getBytes();
+            
+            //All data is written to this stream
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            
+            //Hash the password to fit it into the right size (with salt)
+            byte[] salt = new byte[8];
+            byte[] keyBytes = new byte[32]; //Assume a 256-bit key
+            rand.nextBytes(salt);
+            bout.write(salt); //Write the salt to the stream
+            
+            Digest digest = new SHA256Digest(); //Assume a 256-bit key
+            digest.update(salt, 0, salt.length); //Add the salt...
+            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
+            digest.doFinal(keyBytes, 0); //Do the final hashing
+
+            //Generate the iv and the IvParameter spec
+            byte[] iv = new byte[cipher.getBlockSize()];
+            rand.nextBytes(iv);
+            IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
+
+            //Generate the secret key spec
+            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+            
             CipherOutputStream cout = new CipherOutputStream(bout, cipher);
             
             //If print the IV into bout
-            if(!decrypt){bout.write(iv);}
-            //Print the input (minus the IV, if decrypting) into cout
-            if(decrypt){cout.write(input, bs, input.length - bs);}
-            else{cout.write(input);}
-            //All data has been written
+            bout.write(iv);
+            cout.write(input);
+            //All data has been written so close the streams
             cout.close();
             bout.close();
             //Print the output into outputField and Base64-encode if we have to encrypt
-            if(decrypt) {outputField.setText(new String(bout.toByteArray()));}
-            else {outputField.setText(new String(Base64.encode(bout.toByteArray())));}
+            outputField.setText(new String(Base64.encode(bout.toByteArray())));
         }
         catch (InvalidAlgorithmParameterException ex)
             {

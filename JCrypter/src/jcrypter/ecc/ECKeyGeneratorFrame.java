@@ -85,7 +85,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         curveLabel.setText(i18n.getString("ECKeyGeneratorFrame.curveLabel.text")); // NOI18N
 
         algorithmButtonGroup.add(ecgostRadioButton);
-        ecgostRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecgostRadioButton.text")); // NOI18N
+        ecgostRadioButton.setText("ECGOST-3410"); // NOI18N
         ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ecgostRadioButtonActionPerformed(evt);
@@ -93,7 +93,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         });
 
         algorithmButtonGroup.add(ecdhRadioButton);
-        ecdhRadioButton.setText(i18n.getString("ECKeyGeneratorFrame.ecdhRadioButton.text")); // NOI18N
+        ecdhRadioButton.setText("ECDH"); // NOI18N
         ecdhRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ecdhRadioButtonActionPerformed(evt);
@@ -102,7 +102,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
 
         algorithmButtonGroup.add(ecdsaRadioButton);
         ecdsaRadioButton.setSelected(true);
-        ecdsaRadioButton.setText("ECDSA");
+        ecdsaRadioButton.setText("ECDSA"); // NOI18N
         ecdsaRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ecdsaRadioButtonActionPerformed(evt);
@@ -123,7 +123,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         pubFileField.setText("pub.ecp");
         pubFileField.setToolTipText("null");
 
-        privFileField.setText(i18n.getString("ECKeyGeneratorFrame.privFileField.text")); // NOI18N
+        privFileField.setText("sec.ecs"); // NOI18N
         privFileField.setToolTipText("null");
 
         keyTypeLabel.setText(i18n.getString("ECKeyGeneratorFrame.keyTypeLabel.text")); // NOI18N
@@ -147,7 +147,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                             .addComponent(pubkeyFileLabel)
                             .addComponent(curveLabel)
                             .addComponent(privkeyFileLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                             .addComponent(pubFileField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)

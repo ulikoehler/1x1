@@ -4,7 +4,7 @@
  * Created on 20. September 2008, 15:58
  */
 
-package jcrypter.rsa;
+package jcrypter.asymmetric;
 
 import jcrypter.utils.KeyGeneratorFrame;
 import java.security.InvalidAlgorithmParameterException;
@@ -67,7 +67,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             String selection = (String) keyComboBox.getSelectedItem();
             if(!selection.endsWith(".rss"))
                 {
-                    JOptionPane.showMessageDialog(this, "Select a private key before decrypting!", "No valid key selected", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, i18n.getString("Select_a_private_key_before_decrypting!"), i18n.getString("No_valid_key_selected"), JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             
@@ -144,6 +144,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
 
     private void encryptRSA()
     {
+        String selection = null;
         try
         {
             //Get the selected cipher mode and padding
@@ -153,10 +154,10 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             //Get the plaintext
             byte[] plaintext = inputField.getText().getBytes();
             //If no key is selected, sho a warning message and abort encryption
-            String selection = (String) keyComboBox.getSelectedItem();
+            selection = (String) keyComboBox.getSelectedItem();
             if(!selection.endsWith(".rsp"))
                 {
-                    JOptionPane.showMessageDialog(this, "Select a public key before encrypting!", "No valid key selected", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, i18n.getString("Select_a_public_key_before_encrypting!"), i18n.getString("No_valid_key_selected"), JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             
@@ -171,7 +172,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             
             //Init the asymmetric cipher
             RSAPublicKey pubkey = (RSAPublicKey) kf.getPublicKey(selection); //Retrieve the public key
-            Cipher rsaCipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
+            Cipher rsaCipher = Cipher.getInstance(i18n.getString("RSA/None/OAEPWithSHA1AndMGF1Padding"), "BC");
             rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
             
             //Generate a random (encrypted) IV if we are not using ECC
@@ -201,6 +202,11 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             
             outputField.setText(new String(Base64.encode(outStream.toByteArray())));
         }
+        catch (InvalidKeyException ex)
+        {
+            //The selected file does not contain a valid key
+            JOptionPane.showMessageDialog(this, i18n.getString("Invalid_key"), i18n.getString("The_file_") + selection + i18n.getString("_does_not_contain_a_valid_key!"), JOptionPane.ERROR_MESSAGE);
+        }
         catch (InvalidAlgorithmParameterException ex)
         {
             Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -226,10 +232,6 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchPaddingException ex)
-        {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InvalidKeyException ex)
         {
             Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -263,7 +265,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         selectCmpMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(i18n.getString("RSACrypterFrame.title")); // NOI18N
+        setTitle(i18n.getString("RSACrypterFrame.title_1")); // NOI18N
 
         inputLabel.setDisplayedMnemonic('i');
         inputLabel.setText(i18n.getString("RSACrypterFrame.inputLabel.text")); // NOI18N
@@ -274,7 +276,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         plaintextScrollPane.setViewportView(inputField);
 
         okButton.setMnemonic('o');
-        okButton.setText(i18n.getString("RSACrypterFrame.okButton.text")); // NOI18N
+        okButton.setText(i18n.getString("RSACrypterFrame.okButton.text_1")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -295,9 +297,9 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
 
         decryptCheckbox.setMnemonic('d');
-        decryptCheckbox.setText(i18n.getString("decryptCheckbox.text")); // NOI18N
+        decryptCheckbox.setText(i18n.getString("RSACrypterFrame.decryptCheckbox.text")); // NOI18N
 
-        fileMenu.setText(i18n.getString("RSACrypterFrame.fileMenu.text")); // NOI18N
+        fileMenu.setText(i18n.getString("RSACrypterFrame.fileMenu.text_1")); // NOI18N
 
         loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadFromFileMenuItem.setMnemonic('l');
@@ -335,7 +337,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         rsaMenu.add(generateKeyMenuItem);
 
         selectCmpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        selectCmpMenuItem.setText("Cipher parameters");
+        selectCmpMenuItem.setText(i18n.getString("Cipher_parameters")); // NOI18N
         selectCmpMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectCmpMenuItemActionPerformed(evt);
@@ -359,13 +361,13 @@ public class RSACrypterFrame extends javax.swing.JFrame {
                     .addComponent(inputLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(keyComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 317, Short.MAX_VALUE)
+                    .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(keyComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 250, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(decryptCheckbox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)))
+                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

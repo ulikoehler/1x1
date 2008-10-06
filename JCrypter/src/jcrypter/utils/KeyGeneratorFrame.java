@@ -1,5 +1,6 @@
 package jcrypter.utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.security.NoSuchProviderException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import jcrypter.JCrypterFrame;
 
 /*
@@ -62,6 +64,8 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
         okButton = new javax.swing.JButton();
         keyTypeLabel = new javax.swing.JLabel();
         keyTypeComboBox = new javax.swing.JComboBox();
+        selectPubFileButton = new javax.swing.JButton();
+        selectPrivFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Generate key");
@@ -91,6 +95,20 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
             }
         });
 
+        selectPubFileButton.setText("Select");
+        selectPubFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPubFileButtonActionPerformed(evt);
+            }
+        });
+
+        selectPrivFileButton.setText("Select");
+        selectPrivFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPrivFileButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,7 +116,7 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pubFileLabel)
@@ -107,10 +125,16 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
                             .addComponent(keyTypeLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                            .addComponent(keysizeComboBox, 0, 154, Short.MAX_VALUE)
-                            .addComponent(pubFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                            .addComponent(keyTypeComboBox, 0, 154, Short.MAX_VALUE))))
+                            .addComponent(keysizeComboBox, 0, 214, Short.MAX_VALUE)
+                            .addComponent(keyTypeComboBox, 0, 214, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(privFileField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                                    .addComponent(pubFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(selectPrivFileButton)
+                                    .addComponent(selectPubFileButton))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -127,11 +151,13 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pubFileLabel)
+                    .addComponent(selectPubFileButton)
                     .addComponent(pubFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(privFileLabel)
-                    .addComponent(privFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(privFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectPrivFileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -238,7 +264,20 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
         this.setVisible(false);
         eckeygenFrame.setVisible(true);
     }
+    //Set file chooser dialog selected frame
+    pubFileChooser.setSelectedFile(new File(pubFileField.getText()));
+    privFileChooser.setSelectedFile(new File(privFileField.getText()));
 }//GEN-LAST:event_keyTypeComboBoxActionPerformed
+
+private void selectPubFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPubFileButtonActionPerformed
+    pubFileChooser.showSaveDialog(this);
+    pubFileField.setText(pubFileChooser.getSelectedFile().getAbsolutePath());
+}//GEN-LAST:event_selectPubFileButtonActionPerformed
+
+private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPrivFileButtonActionPerformed
+    privFileChooser.showSaveDialog(this);
+    privFileField.setText(privFileChooser.getSelectedFile().getAbsolutePath());
+}//GEN-LAST:event_selectPrivFileButtonActionPerformed
 
 
     /**
@@ -257,6 +296,9 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     }
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
     ECKeyGeneratorFrame eckeygenFrame = new ECKeyGeneratorFrame(this);
+    
+    JFileChooser pubFileChooser = new JFileChooser();
+    JFileChooser privFileChooser = new JFileChooser();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox keyTypeComboBox;
     private javax.swing.JLabel keyTypeLabel;
@@ -267,5 +309,7 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel privFileLabel;
     private javax.swing.JTextField pubFileField;
     private javax.swing.JLabel pubFileLabel;
+    private javax.swing.JButton selectPrivFileButton;
+    private javax.swing.JButton selectPubFileButton;
     // End of variables declaration//GEN-END:variables
 }
