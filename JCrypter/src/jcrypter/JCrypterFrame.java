@@ -368,160 +368,159 @@ private void passGenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//G
     new PasswordGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_passGenMenuItemActionPerformed
 
-
-    private void decryptSymmetric()
+private void decryptSymmetric()
+{
+    try
     {
-        try
-        {
-            //Using BouncyCastle JCE
-            Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
-            int bs = cipher.getBlockSize(); //Blocksize
-            //Get data
-            byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
-            byte[] input;
-            //Base64-decode the ciphertext
-            input = Base64.decode(inputField.getText().getBytes());
-            
-            //All data will be read from this stream
-            ByteArrayInputStream bin = new ByteArrayInputStream(input);
-            
-            //Hash the password to fit it into the right size (with salt)
-            byte[] salt = new byte[8];
-            byte[] keyBytes = new byte[32];
-            bin.read(salt); //Get the salt from the input stream 
-            
-            Digest digest = new SHA256Digest();
-            digest.update(salt, 0, salt.length); //Add the salt...
-            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
-            digest.doFinal(keyBytes, 0); //Do the final hashing
-            
-            //IV generation/retrievement
-            byte[] iv = new byte[cipher.getBlockSize()]; //Using iv array only with offset
-            bin.read(iv);
-            IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
+        //Using BouncyCastle JCE
+        Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
+        int bs = cipher.getBlockSize(); //Blocksize
+        //Get data
+        byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
+        byte[] input;
+        //Base64-decode the ciphertext
+        input = Base64.decode(inputField.getText().getBytes());
 
-            //Generate the secret key spec
-            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-            
-            CipherInputStream cin = new CipherInputStream(bin, cipher);
-            
-            //Print the input (minus the IV, if decrypting) into cout
-            
-            byte[] plaintext = new byte[bin.available()];
-            cin.read(plaintext); //Decrypts the rest data in bin
-            //Close the cipher stream
-            cin.close();
-            //Print the output into outputField and Base64-encode if we have to encrypt
-            outputField.setText(new String(plaintext).trim());
+        //All data will be read from this stream
+        ByteArrayInputStream bin = new ByteArrayInputStream(input);
+
+        //Hash the password to fit it into the right size (with salt)
+        byte[] salt = new byte[8];
+        byte[] keyBytes = new byte[32];
+        bin.read(salt); //Get the salt from the input stream 
+
+        Digest digest = new SHA256Digest();
+        digest.update(salt, 0, salt.length); //Add the salt...
+        digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
+        digest.doFinal(keyBytes, 0); //Do the final hashing
+
+        //IV generation/retrievement
+        byte[] iv = new byte[cipher.getBlockSize()]; //Using iv array only with offset
+        bin.read(iv);
+        IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
+
+        //Generate the secret key spec
+        SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+
+        CipherInputStream cin = new CipherInputStream(bin, cipher);
+
+        //Print the input (minus the IV, if decrypting) into cout
+
+        byte[] plaintext = new byte[bin.available()];
+        cin.read(plaintext); //Decrypts the rest data in bin
+        //Close the cipher stream
+        cin.close();
+        //Print the output into outputField and Base64-encode if we have to encrypt
+        outputField.setText(new String(plaintext).trim());
+    }
+    catch (InvalidAlgorithmParameterException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    catch (IOException ex) //Must not occure
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
+    catch (InvalidKeyException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    catch (NoSuchAlgorithmException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
+    catch (NoSuchProviderException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
+    catch (NoSuchPaddingException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
+}
+
+private void encryptSymmetric()
+{
+    try
+    {
+        //Using BouncyCastle JCE
+        Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
+        int bs = cipher.getBlockSize(); //Blocksize
+        //Get data
+        byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
+        byte[] input;
+        //Base64-decode the ciphertext
+        input = inputField.getText().getBytes();
+
+        //All data is written to this stream
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+        //Hash the password to fit it into the right size (with salt)
+        byte[] salt = new byte[8];
+        byte[] keyBytes = new byte[32]; //Assume a 256-bit key
+        rand.nextBytes(salt);
+        bout.write(salt); //Write the salt to the stream
+
+        Digest digest = new SHA256Digest(); //Assume a 256-bit key
+        digest.update(salt, 0, salt.length); //Add the salt...
+        digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
+        digest.doFinal(keyBytes, 0); //Do the final hashing
+
+        //Generate the iv and the IvParameter spec
+        byte[] iv = new byte[cipher.getBlockSize()];
+        rand.nextBytes(iv);
+        IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
+
+        //Generate the secret key spec
+        SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+
+        CipherOutputStream cout = new CipherOutputStream(bout, cipher);
+
+        //If print the IV into bout
+        bout.write(iv);
+        cout.write(input);
+        //All data has been written so close the streams
+        cout.close();
+        bout.close();
+        //Print the output into outputField and Base64-encode if we have to encrypt
+        outputField.setText(new String(Base64.encode(bout.toByteArray())));
+    }
+    catch (InvalidAlgorithmParameterException ex)
+        {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (InvalidAlgorithmParameterException ex)
-            {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        catch (IOException ex) //Must not occure
-            {
+    catch (IOException ex) //Must not occure
+        {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+        }
+    catch (InvalidKeyException ex)
+        {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    catch (NoSuchAlgorithmException ex)
+        {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-            }
-        catch (InvalidKeyException ex)
-            {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        catch (NoSuchAlgorithmException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-        catch (NoSuchProviderException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-        catch (NoSuchPaddingException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-    }
-    
-    private void encryptSymmetric()
-    {
-        try
-        {
-            //Using BouncyCastle JCE
-            Cipher cipher = Cipher.getInstance(cipherName + "/" + modeName + "/" + paddingName + "Padding", "BC");
-            int bs = cipher.getBlockSize(); //Blocksize
-            //Get data
-            byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
-            byte[] input;
-            //Base64-decode the ciphertext
-            input = inputField.getText().getBytes();
-            
-            //All data is written to this stream
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            
-            //Hash the password to fit it into the right size (with salt)
-            byte[] salt = new byte[8];
-            byte[] keyBytes = new byte[32]; //Assume a 256-bit key
-            rand.nextBytes(salt);
-            bout.write(salt); //Write the salt to the stream
-            
-            Digest digest = new SHA256Digest(); //Assume a 256-bit key
-            digest.update(salt, 0, salt.length); //Add the salt...
-            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
-            digest.doFinal(keyBytes, 0); //Do the final hashing
-
-            //Generate the iv and the IvParameter spec
-            byte[] iv = new byte[cipher.getBlockSize()];
-            rand.nextBytes(iv);
-            IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
-
-            //Generate the secret key spec
-            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cipherName);
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            
-            CipherOutputStream cout = new CipherOutputStream(bout, cipher);
-            
-            //If print the IV into bout
-            bout.write(iv);
-            cout.write(input);
-            //All data has been written so close the streams
-            cout.close();
-            bout.close();
-            //Print the output into outputField and Base64-encode if we have to encrypt
-            outputField.setText(new String(Base64.encode(bout.toByteArray())));
         }
-        catch (InvalidAlgorithmParameterException ex)
-            {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        catch (IOException ex) //Must not occure
-            {
+    catch (NoSuchProviderException ex)
+        {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-            }
-        catch (InvalidKeyException ex)
-            {
+        }
+    catch (NoSuchPaddingException ex)
+        {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        catch (NoSuchAlgorithmException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-        catch (NoSuchProviderException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-        catch (NoSuchPaddingException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-    }
-    
+            ex.printStackTrace();
+        }
+}
+
     /**
      * @param args the command line arguments
      */
