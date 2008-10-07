@@ -265,18 +265,18 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
         eckeygenFrame.setVisible(true);
     }
     //Set file chooser dialog selected frame
-    pubFileChooser.setSelectedFile(new File(pubFileField.getText()));
-    privFileChooser.setSelectedFile(new File(privFileField.getText()));
+    fileChooser.setSelectedFile(new File(pubFileField.getText()));
+    fileChooser.setSelectedFile(new File(privFileField.getText()));
 }//GEN-LAST:event_keyTypeComboBoxActionPerformed
 
 private void selectPubFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPubFileButtonActionPerformed
-    pubFileChooser.showSaveDialog(this);
-    pubFileField.setText(pubFileChooser.getSelectedFile().getAbsolutePath());
+    fileChooser.showSaveDialog(this);
+    pubFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectPubFileButtonActionPerformed
 
 private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPrivFileButtonActionPerformed
-    privFileChooser.showSaveDialog(this);
-    privFileField.setText(privFileChooser.getSelectedFile().getAbsolutePath());
+    fileChooser.showSaveDialog(this);
+    privFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectPrivFileButtonActionPerformed
 
 
@@ -297,8 +297,7 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
     ECKeyGeneratorFrame eckeygenFrame = new ECKeyGeneratorFrame(this);
     
-    JFileChooser pubFileChooser = new JFileChooser();
-    JFileChooser privFileChooser = new JFileChooser();
+    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox keyTypeComboBox;
     private javax.swing.JLabel keyTypeLabel;

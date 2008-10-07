@@ -486,9 +486,9 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     CipherModePaddingSelectorDialog cmpDialog =
                                 new CipherModePaddingSelectorDialog(this,
                                                                     true,
-                                                                    JCrypterFrame.getCiphers(),
-                                                                    JCrypterFrame.getModes(),
-                                                                    JCrypterFrame.getPaddings());
+                                                                    JCrypterFrame.ciphers,
+                                                                    JCrypterFrame.modes,
+                                                                    JCrypterFrame.paddings);
     
     //Cryptography members
     KeyFinder kf = new KeyFinder(".rsp", ".rss", "RSA");

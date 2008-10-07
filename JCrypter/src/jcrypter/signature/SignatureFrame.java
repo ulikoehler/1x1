@@ -563,7 +563,7 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
     //Cryptography members
 
     //Dialog members
-    JFileChooser fileChooser = new JFileChooser();
+    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     RSASignatureAlgorithmSelectorDialog rsaSigSelDialog = new RSASignatureAlgorithmSelectorDialog(this, true);
     KeyFinder ecdsaKf = new KeyFinder(".ecp", ".ecs", "ECDSA");
     KeyFinder dsaKf = new KeyFinder(".dsp", ".dss", "DSA");

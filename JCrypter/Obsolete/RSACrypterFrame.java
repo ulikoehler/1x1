@@ -3,7 +3,6 @@
  *
  * Created on 20. September 2008, 15:58
  */
-
 package jcrypter.rsa;
 
 import jcrypter.utils.KeyFinder;
@@ -11,8 +10,6 @@ import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ResourceBundle;
@@ -26,21 +23,22 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
 import jcrypter.utils.CipherModePaddingSelectorDialog;
+import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.util.encoders.Base64;
-
-
 
 /**
  *
  * @author  uli
  */
-public class RSACrypterFrame extends javax.swing.JFrame {
+public class RSACrypterFrame extends javax.swing.JFrame
+{
 
     /** Creates new form RSACrypterFrame */
-    public RSACrypterFrame() {
+    public RSACrypterFrame()
+    {
         initComponents();
         //Add public keys
-        for(String s : kf.getNames())
+        for (String s : kf.getNames())
         {
             keyComboBox.addItem(s);
         }
@@ -52,57 +50,48 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         {
             byte[] ciphertext = Base64.decode(inputField.getText());
             String selection = (String) keyComboBox.getSelectedItem();
-            if(!selection.endsWith(".rss"))
-                {
-                    JOptionPane.showMessageDialog(this, "Select a private key before decrypting!", "No valid key selected", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            RSAPrivateKey privkey = kf.getPrivateKey(selection);
-            //Determinate keysize
-            int modSize = privkey.getModulus().bitCount();
-            int minDelta = Integer.MAX_VALUE; //Minimal difference between modSize and a supported key size
-            int detSize = 0; //Dterminated size
-            for(int size : RSAKeyGeneratorFrame.keysizes)
+            if (!selection.endsWith(".rss"))
             {
-                int diff = modSize - size;
-                //Make sure diff is positive
-                if(diff < 0) diff = -diff;
-                //Determinate the lowest difference between modDiff one of the supported keysizes
-                if(diff < minDelta)
-                    {
-                       minDelta = modSize - size;
-                       detSize = size;
-                    }
+                JOptionPane.showMessageDialog(this,
+                        "Select a private key before decrypting!",
+                        "No valid key selected", JOptionPane.WARNING_MESSAGE);
+                return;
             }
-            detSize *= 2; //Only half the size is determinated until now, so multi it by 2
-            
-            Cipher cipher = Cipher.getInstance("RSA/None/" + cmpSelectorDialog.getPadding(), "BC");
+            RSAPrivateKey privkey = (RSAPrivateKey) kf.getPrivateKey(selection);
+
+            Cipher cipher = Cipher.getInstance("RSA/None/" + cmpDialog.getPadding(), "BC");
             cipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
             outputField.setText(new String(cipher.doFinal(ciphertext)));
         }
         catch (IllegalBlockSizeException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (BadPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (NoSuchProviderException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (NoSuchPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (InvalidKeyException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
     }
 
@@ -113,40 +102,49 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             byte[] plaintext = inputField.getText().getBytes();
             //If no key is selected, sho a warning message and abort encryption
             String selection = (String) keyComboBox.getSelectedItem();
-            if(!selection.endsWith(".rsp"))
-                {
-                    JOptionPane.showMessageDialog(this, "Select a public key before encrypting!", "No valid key selected", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            RSAPublicKey pubkey = kf.getPublicKey(selection);
-            
-            Cipher rsaCipher = Cipher.getInstance("RSA/None/" + cmpSelectorDialog.getPadding(), "BC");
+            if (!selection.endsWith(".rsp"))
+            {
+                JOptionPane.showMessageDialog(this,
+                        "Select a public key before encrypting!",
+                        "No valid key selected", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            RSAPublicKey pubkey = (RSAPublicKey) kf.getPublicKey(selection);
+
+            Cipher rsaCipher = Cipher.getInstance("RSA/None/" + cmpDialog.getPadding(), "BC");
             rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
-            outputField.setText(new String(Base64.encode(rsaCipher.doFinal(plaintext))));
+            outputField.setText(new String(Base64.encode(rsaCipher.doFinal(
+                    plaintext))));
         }
         catch (IllegalBlockSizeException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (BadPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (NoSuchProviderException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (NoSuchPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         catch (InvalidKeyException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
     }
 
@@ -304,8 +302,14 @@ public class RSACrypterFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-    if(decryptCheckbox.isSelected()){decryptRSA();}
-    else{encryptRSA();}
+    if (decryptCheckbox.isSelected())
+    {
+        decryptRSA();
+    }
+    else
+    {
+        encryptRSA();
+    }
 }//GEN-LAST:event_okButtonMouseClicked
 
 private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
@@ -322,7 +326,8 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
     }
     catch (IOException ex)
     {
-        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null,
+                ex);
         ex.printStackTrace();
     }
     finally
@@ -333,7 +338,8 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE,
+                    null, ex);
             ex.printStackTrace();
         }
     }
@@ -341,56 +347,59 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
 
 private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
     FileOutputStream fout = null;
+    try
+    {
+        fileChooser.showSaveDialog(this);
+        File file = fileChooser.getSelectedFile();
+        byte[] buffer = outputField.getText().getBytes();
+        fout = new FileOutputStream(file);
+        fout.write(buffer);
+        fout.close();
+    }
+    catch (IOException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null,
+                ex);
+    }
+    finally
+    {
         try
         {
-            fileChooser.showSaveDialog(this);
-            File file = fileChooser.getSelectedFile();
-            byte[] buffer = outputField.getText().getBytes();
-            fout = new FileOutputStream(file);
-            fout.write(buffer);
             fout.close();
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        finally
-        {
-            try
-            {
-                fout.close();
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-            }
 
-        }
+    }
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
 private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateKeyMenuItemActionPerformed
-    new RSAKeyGeneratorFrame().setVisible(true);
+    new KeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_generateKeyMenuItemActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+
             @Override
-            public void run() {
+            public void run()
+            {
                 new RSACrypterFrame().setVisible(true);
             }
         });
-    }
-    
-    //Dialog members
-    JFileChooser fileChooser = new JFileChooser();
-    CipherModePaddingSelectorDialog cmpSelectorDialog = new CipherModePaddingSelectorDialog();
-    
+    }    //Dialog members
+    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
+    CipherModePaddingSelectorDialog cmpDialog = new CipherModePaddingSelectorDialog(
+                                                        this, true, JCrypterFrame.ciphers, JCrypterFrame.modes,
+                                                        JCrypterFrame.paddings);
     //Cryptography members
     KeyFinder kf = new KeyFinder(".rsp", ".rss", "RSA");
-    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/rsa/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
@@ -411,5 +420,4 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JMenuItem selectPaddingMenuItem;
     // End of variables declaration//GEN-END:variables
-
 }

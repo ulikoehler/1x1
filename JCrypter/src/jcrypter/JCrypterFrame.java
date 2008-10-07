@@ -29,6 +29,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
 import jcrypter.signature.SignatureFrame;
 import jcrypter.asymmetric.RSACrypterFrame;
+import jcrypter.digest.DigestFrame;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -53,6 +54,8 @@ public class JCrypterFrame extends javax.swing.JFrame
         cmpDialog.setCipher("Twofish");
         cmpDialog.setMode("CBC");
         cmpDialog.setPadding("Twofish");
+        //Set the static reference (see javadoc of the field)
+        JCrypterFrame.mainFrame = this;
     }
 
     /** This method is called from within the constructor to
@@ -83,7 +86,8 @@ public class JCrypterFrame extends javax.swing.JFrame
         signatureMenuItem = new javax.swing.JMenuItem();
         rsaMenuItem = new javax.swing.JMenuItem();
         genKeysMenuItem = new javax.swing.JMenuItem();
-        passGenMenuItem = new javax.swing.JMenuItem();
+        passwordGeneratorMenuItem = new javax.swing.JMenuItem();
+        digestMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -202,14 +206,23 @@ public class JCrypterFrame extends javax.swing.JFrame
         genKeysMenuItem.setText("Generate keys");
         extrasMenu.add(genKeysMenuItem);
 
-        passGenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        passGenMenuItem.setText("Password generator");
-        passGenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        passwordGeneratorMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        passwordGeneratorMenuItem.setText("Password generator");
+        passwordGeneratorMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passGenMenuItemActionPerformed(evt);
+                passwordGeneratorMenuItemActionPerformed(evt);
             }
         });
-        extrasMenu.add(passGenMenuItem);
+        extrasMenu.add(passwordGeneratorMenuItem);
+
+        digestMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
+        digestMenuItem.setText("Digests");
+        digestMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                digestMenuItemActionPerformed(evt);
+            }
+        });
+        extrasMenu.add(digestMenuItem);
 
         menuBar.add(extrasMenu);
 
@@ -364,9 +377,13 @@ private void extrasMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     new KeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_extrasMenuActionPerformed
 
-private void passGenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passGenMenuItemActionPerformed
+private void passwordGeneratorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordGeneratorMenuItemActionPerformed
     new PasswordGeneratorFrame().setVisible(true);
-}//GEN-LAST:event_passGenMenuItemActionPerformed
+}//GEN-LAST:event_passwordGeneratorMenuItemActionPerformed
+
+private void digestMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_digestMenuItemActionPerformed
+    new DigestFrame().setVisible(true);
+}//GEN-LAST:event_digestMenuItemActionPerformed
 
 private void decryptSymmetric()
 {
@@ -539,19 +556,31 @@ private void encryptSymmetric()
     private String cipherName = "Twofish";
     private String modeName = "CBC";
     private String paddingName = "PKCS7";
-    private static final String[] ciphers = {"Serpent","Twofish", "AES", "CAST5", "Camellia", "IDEA"};
-    private static final String[] modes = {"ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
-    private static final String[] paddings = {"PKCS7", "TBC", "X923", "None", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
+    public static final String[] ciphers = {"Serpent","Twofish", "AES", "CAST5", "Camellia", "IDEA"};
+    public static final String[] modes = {"ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"};
+    public static final String[] paddings = {"PKCS7", "TBC", "X923", "None", "ZeroByte", "ISO10126d2", "ISO 7816d4"};
+    public static final String[] digests = {"MD5", "SHA1", "SHA256", "SHA384", "SHA512", "Whirlpool", "RIPEMD160"};
 
     //Dialog members
     CipherModePaddingSelectorDialog cmpDialog = new CipherModePaddingSelectorDialog(this, true, ciphers, modes, paddings);
-    JFileChooser fileChooser = new JFileChooser();
+    
+    //This field is used by all other frames to save the properties over all frames
+    public JFileChooser fileChooser = new JFileChooser();
+    
+    /**
+     * This implements singleton design pattern:
+     * Every time a new JCrypterFrame is created (has to happen only once!)
+     * it is saved in this static field so other apps have access to all
+     * commonly used fields etc.
+     */
+    public static JCrypterFrame mainFrame;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JMenuItem cmpMenuItem;
     private javax.swing.JCheckBox decryptCheckbox;
+    private javax.swing.JMenuItem digestMenuItem;
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem genKeysMenuItem;
@@ -561,8 +590,8 @@ private void encryptSymmetric()
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea outputField;
-    private javax.swing.JMenuItem passGenMenuItem;
     private javax.swing.JPasswordField passwordField;
+    private javax.swing.JMenuItem passwordGeneratorMenuItem;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JMenuItem pgpMenuItem;
     private javax.swing.JScrollPane plaintextScrollPane;
@@ -617,30 +646,5 @@ private void encryptSymmetric()
     public void setPadding(String padding)
         {
         this.paddingName = padding;
-        }
-
-    /**
-     * @return the ciphers
-     */
-    public static String[] getCiphers()
-        {
-        return ciphers;
-        }
-
-    /**
-     * @return the modes
-     */
-    public static String[] getModes()
-        {
-        return modes;
-        }
-
-    /**
-     * @return the paddings
-     */
-    public static String[] getPaddings()
-        {
-        return paddings;
-        }
-    
+        }    
 }
