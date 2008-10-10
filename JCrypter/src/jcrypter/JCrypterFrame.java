@@ -30,6 +30,7 @@ import javax.swing.JFileChooser;
 import jcrypter.signature.SignatureFrame;
 import jcrypter.asymmetric.RSACrypterFrame;
 import jcrypter.digest.DigestFrame;
+import jcrypter.hmac.HMACFrame;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -88,6 +89,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         genKeysMenuItem = new javax.swing.JMenuItem();
         passwordGeneratorMenuItem = new javax.swing.JMenuItem();
         digestMenuItem = new javax.swing.JMenuItem();
+        hmacMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -223,6 +225,15 @@ public class JCrypterFrame extends javax.swing.JFrame
             }
         });
         extrasMenu.add(digestMenuItem);
+
+        hmacMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        hmacMenuItem.setText("HMAC");
+        hmacMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hmacMenuItemActionPerformed(evt);
+            }
+        });
+        extrasMenu.add(hmacMenuItem);
 
         menuBar.add(extrasMenu);
 
@@ -384,6 +395,10 @@ private void passwordGeneratorMenuItemActionPerformed(java.awt.event.ActionEvent
 private void digestMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_digestMenuItemActionPerformed
     new DigestFrame().setVisible(true);
 }//GEN-LAST:event_digestMenuItemActionPerformed
+
+private void hmacMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hmacMenuItemActionPerformed
+    new HMACFrame().setVisible(true);
+}//GEN-LAST:event_hmacMenuItemActionPerformed
 
 private void decryptSymmetric()
 {
@@ -584,6 +599,7 @@ private void encryptSymmetric()
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem genKeysMenuItem;
+    private javax.swing.JMenuItem hmacMenuItem;
     private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
     private javax.swing.JMenuItem loadFromFileMenuItem;

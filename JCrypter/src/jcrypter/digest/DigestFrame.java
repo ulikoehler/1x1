@@ -156,7 +156,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         {
             //Get the data from the GUI
             String algorithm = (String) algorithmComboBox.getSelectedItem();
-            String text = (String) textField.getText();
+            String text = textField.getText();
             //Calculate the bytesToHex representation of the hash and print into the desired field
             MessageDigest digest = MessageDigest.getInstance(algorithm);
             String hexHash = bytesToHex(digest.digest(text.getBytes()));
