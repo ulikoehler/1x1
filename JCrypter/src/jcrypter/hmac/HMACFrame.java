@@ -3,7 +3,6 @@
  *
  * Created on 10. Oktober 2008, 13:36
  */
-
 package jcrypter.hmac;
 
 import java.io.*;
@@ -15,6 +14,7 @@ import java.util.logging.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -22,16 +22,22 @@ import org.bouncycastle.util.encoders.Base64;
  *
  * @author  uli
  */
-public class HMACFrame extends javax.swing.JFrame {
+public class HMACFrame extends javax.swing.JFrame
+{
 
     /** Creates new form HMACFrame */
-    public HMACFrame() {
+    public HMACFrame()
+    {
         initComponents();
         //Add the digest algorithms to the combo box
         for (String digest : JCrypterFrame.digests)
         {
             digestComboBox.addItem(digest);
         }
+        //Whirlpool is NOT available as HMAC
+        digestComboBox.removeItem("Whirlpool");
+        //Set SHA-256 as default
+        digestComboBox.setSelectedItem("SHA256");
     }
 
     /** This method is called from within the constructor to
@@ -61,6 +67,7 @@ public class HMACFrame extends javax.swing.JFrame {
         extrasMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(i18n.getString("HMACFrame.title")); // NOI18N
 
         inputLabel.setText(i18n.getString("HMACFrame.inputLabel.text")); // NOI18N
 
@@ -83,7 +90,6 @@ public class HMACFrame extends javax.swing.JFrame {
 
         hmacLabel.setText(i18n.getString("HMACFrame.hmacLabel.text")); // NOI18N
 
-        hmacField.setEditable(false);
         hmacField.setText(i18n.getString("HMACFrame.hmacField.text")); // NOI18N
 
         digestLabel.setText(i18n.getString("HMACFrame.digestLabel.text")); // NOI18N
@@ -183,90 +189,101 @@ public class HMACFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
-FileInputStream fin = null;
+    FileInputStream fin = null;
+    try
+    {
+        fileChooser.showOpenDialog(this);
+        File file = fileChooser.getSelectedFile();
+        byte[] buffer = new byte[(int) file.length()];
+        fin = new FileInputStream(file);
+        fin.read(buffer);
+        fin.close();
+        inputField.setText(new String(buffer));
+    }
+    catch (IOException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
+    finally
+    {
         try
         {
-            fileChooser.showOpenDialog(this);
-            File file = fileChooser.getSelectedFile();
-            byte[] buffer = new byte[(int) file.length()];
-            fin = new FileInputStream(file);
-            fin.read(buffer);
             fin.close();
-            inputField.setText(new String(buffer));
         }
         catch (IOException ex)
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
-        finally
-        {
-            try
-            {
-                fin.close();
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-        }
+    }
 }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
 
 private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
-FileOutputStream fout = null;
+    FileOutputStream fout = null;
+    try
+    {
+        fileChooser.showSaveDialog(this);
+        File file = fileChooser.getSelectedFile();
+        byte[] buffer = hmacField.getText().getBytes();
+        fout = new FileOutputStream(file);
+        fout.write(buffer);
+        fout.close();
+    }
+    catch (IOException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    finally
+    {
         try
         {
-            fileChooser.showSaveDialog(this);
-            File file = fileChooser.getSelectedFile();
-            byte[] buffer = hmacField.getText().getBytes();
-            fout = new FileOutputStream(file);
-            fout.write(buffer);
             fout.close();
         }
         catch (IOException ex)
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        finally
-        {
-            try
-            {
-                fout.close();
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            }
-        }
+    }
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-if (verifyCheckbox.isSelected())
+    if (verifyCheckbox.isSelected())
+    {
+        if(verifyHMAC(inputField.getText(), passwordField.getPassword(),(String) digestComboBox.getSelectedItem(), hmacField.getText()))
         {
-            generateHMAC();
+            JOptionPane.showMessageDialog(this, "The HMAC has been validated successfully", "Validation success", JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
-            verifyHMAC();
+            JOptionPane.showMessageDialog(this,
+                "This HMAC is not valid!",
+                "Verification error",
+                JOptionPane.ERROR_MESSAGE);
         }
+    }
+    else
+    {
+        hmacField.setText(generateHMAC(inputField.getText(), passwordField.getPassword(),(String) digestComboBox.getSelectedItem()));
+    }
 }//GEN-LAST:event_okButtonMouseClicked
 
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 new HMACFrame().setVisible(true);
             }
         });
     }
-
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
-    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/hmac/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox digestComboBox;
@@ -286,29 +303,24 @@ if (verifyCheckbox.isSelected())
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JCheckBox verifyCheckbox;
     // End of variables declaration//GEN-END:variables
-
-    private void verifyHMAC()
-    {
-        
-    }
     
-    private void generateHMAC()
+    public static String generateHMAC(String input, char[] password, String algorithm)
     {
         try
         {
             //Get the data needed by the HMAC algorithm
-            String algorithm = "Hmac" + digestComboBox.getSelectedItem();
-            byte[] rawPassword = new String(passwordField.getPassword()).getBytes();;
-            Key hmacKey = new SecretKeySpec(rawPassword, algorithm);
-            byte[] inputBytes = inputField.getText().getBytes();
-            
+            String hmacAlgorithm = "Hmac" + algorithm; //NOI18N
+            byte[] rawPassword = new String(password).getBytes();
+            Key hmacKey = new SecretKeySpec(rawPassword, hmacAlgorithm);
+            byte[] inputBytes = input.getBytes();
+
             //Calculate the HMAC
-            Mac hmac = Mac.getInstance(algorithm);
+            Mac hmac = Mac.getInstance(hmacAlgorithm);
             hmac.init(hmacKey);
             byte[] hmacBytes = hmac.doFinal(inputBytes);
-            
+
             //Print the B64-encoded HMAC to the HMAC output field
-            hmacField.setText(new String(Base64.encode(hmacBytes)));
+            return new String(Base64.encode(hmacBytes));
         }
         catch (InvalidKeyException ex)
         {
@@ -318,6 +330,11 @@ if (verifyCheckbox.isSelected())
         {
             Logger.getLogger(HMACFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
-
+    
+    public static boolean verifyHMAC(String input, char[] password, String algorithm, String hmac)
+    {
+        return generateHMAC(input, password, algorithm).equals(hmac);
+    }
 }

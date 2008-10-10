@@ -625,7 +625,7 @@ private void encryptSymmetric()
         }
 
     /**
-     * @param cipherName the cipherName to set
+     * @param cipher the cipherName to set
      */
     public void setCipher(String cipher)
         {
@@ -641,7 +641,7 @@ private void encryptSymmetric()
         }
 
     /**
-     * @param modeName the modeName to set
+     * @param mode the modeName to set
      */
     public void setMode(String mode)
         {
@@ -657,7 +657,7 @@ private void encryptSymmetric()
         }
 
     /**
-     * @param paddingName the paddingName to set
+     * @param padding the paddingName to set
      */
     public void setPadding(String padding)
         {

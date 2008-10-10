@@ -8,6 +8,7 @@
  *
  * Created on 10.09.2008, 19:57:18
  */
+//TODO ECGOST
 package jcrypter.signature;
 
 import java.security.InvalidKeyException;
@@ -548,16 +549,16 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
     private void displaySuccessMessage()
     {
         JOptionPane.showMessageDialog(this,
-                "Signature verified successfully",
                 "The signature has been verified successfully!",
-                JOptionPane.WARNING_MESSAGE);
+                "Signature verified",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void displayErrorMessage()
     {
         JOptionPane.showMessageDialog(this,
-                "Signature verification error",
                 "This is not a valid signature!",
+                "Signature verification error",
                 JOptionPane.ERROR_MESSAGE);
     }
     //Cryptography members
