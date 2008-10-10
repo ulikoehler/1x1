@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcrypter.utils.KeyGeneratorFrame;
+import org.bouncycastle.jce.ECGOST3410NamedCurveTable;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -37,7 +38,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 public class ECKeyGeneratorFrame extends javax.swing.JFrame
 {
 
-    /** Creates new form ECKeyGeneratorFrame */
+    /** Creates new form ECKeyGeneratorFrame
+     * @param parent The calling KeyGeneratorFrame
+     */
     public ECKeyGeneratorFrame(KeyGeneratorFrame parent)
     {
         initComponents();
@@ -306,6 +309,7 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     String sel = (String) keyTypeComboBox.getSelectedItem();
     if (!sel.equals("ECC"))
     {
+        parent.setSelection(sel);
         this.setVisible(false);
         parent.setVisible(true);
     }
@@ -341,7 +345,7 @@ private void ecdhRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     private void loadEcgostCurves()
     {
         curveComboBox.removeAllItems();
-        Enumeration<String> curves = ECNamedCurveTable.getNames();
+        Enumeration<String> curves = ECGOST3410NamedCurveTable.getNames();
         while (curves.hasMoreElements())
         {
             curveComboBox.addItem(curves.nextElement());

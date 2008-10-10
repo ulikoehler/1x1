@@ -90,6 +90,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         passwordGeneratorMenuItem = new javax.swing.JMenuItem();
         digestMenuItem = new javax.swing.JMenuItem();
         hmacMenuItem = new javax.swing.JMenuItem();
+        utilsMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -206,6 +207,11 @@ public class JCrypterFrame extends javax.swing.JFrame
 
         genKeysMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         genKeysMenuItem.setText("Generate keys");
+        genKeysMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genKeysMenuItemActionPerformed(evt);
+            }
+        });
         extrasMenu.add(genKeysMenuItem);
 
         passwordGeneratorMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
@@ -236,6 +242,10 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(hmacMenuItem);
 
         menuBar.add(extrasMenu);
+
+        utilsMenu.setMnemonic('u');
+        utilsMenu.setText("Utils");
+        menuBar.add(utilsMenu);
 
         setJMenuBar(menuBar);
 
@@ -399,6 +409,10 @@ private void digestMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GE
 private void hmacMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hmacMenuItemActionPerformed
     new HMACFrame().setVisible(true);
 }//GEN-LAST:event_hmacMenuItemActionPerformed
+
+private void genKeysMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genKeysMenuItemActionPerformed
+    new KeyGeneratorFrame().setVisible(true);
+}//GEN-LAST:event_genKeysMenuItemActionPerformed
 
 private void decryptSymmetric()
 {
@@ -614,6 +628,7 @@ private void encryptSymmetric()
     private javax.swing.JMenuItem rsaMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JMenuItem signatureMenuItem;
+    private javax.swing.JMenu utilsMenu;
     // End of variables declaration//GEN-END:variables
 
     /**

@@ -68,7 +68,7 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
         selectPrivFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Generate key");
+        setTitle("Generate keys");
 
         keysizeLabel.setText("Key size:");
 
@@ -80,7 +80,7 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
 
         privFileField.setText("sec.rss"); // NOI18N
 
-        okButton.setText(i18n.getString("OK")); // NOI18N
+        okButton.setText("null");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -294,6 +294,15 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
             }
         });
     }
+    
+    public void setSelection(String selection)
+    {
+        if(keyTypeComboBox != null)
+        {
+            keyTypeComboBox.setSelectedItem(selection);
+        }
+    }
+    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
     ECKeyGeneratorFrame eckeygenFrame = new ECKeyGeneratorFrame(this);
     

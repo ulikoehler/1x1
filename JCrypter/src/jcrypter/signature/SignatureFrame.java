@@ -47,6 +47,7 @@ public class SignatureFrame extends javax.swing.JFrame
         ecdsaKf.fillComboBox(keyComboBox);
         dsaKf.fillComboBox(keyComboBox);
         rsaKf.fillComboBox(keyComboBox);
+        ecgostKf.fillComboBox(keyComboBox);
     }
 
     /** This method is called from within the constructor to
@@ -202,6 +203,39 @@ public class SignatureFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void signECGOST()
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            PrivateKey privkey = ecgostKf.getPrivateKey(selection);
+            //Generate the signature
+            Signature sig = Signature.getInstance("ECGOST3410", "BC");
+            sig.initSign(privkey);
+            sig.update(message);
+            signatureField.setText(new String(Base64.encode(sig.sign())));
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void signVerifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signVerifyButtonMouseClicked
         String selection = (String) keyComboBox.getSelectedItem();
         if (((String) keyComboBox.getSelectedItem()).endsWith("p"))
@@ -213,6 +247,10 @@ public class SignatureFrame extends javax.swing.JFrame
             else if (selection.endsWith(".ecp"))
             {
                 verifyECDSA();
+            }
+            else if (selection.endsWith(".egp"))
+            {
+                verifyECGOST();
             }
             else if (selection.endsWith(".rsp"))
             {
@@ -228,6 +266,10 @@ public class SignatureFrame extends javax.swing.JFrame
             else if (selection.endsWith(".ecs"))
             {
                 signECDSA();
+            }
+            else if (selection.endsWith(".egs"))
+            {
+                signECGOST();
             }
             else if (selection.endsWith(".rss"))
             {
@@ -487,6 +529,47 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
             Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    private void verifyECGOST()
+    {
+        try
+        {
+            //Determinate which algorithm to use
+            String selection = (String) keyComboBox.getSelectedItem();
+            //Get the plaintext,
+            byte[] message = messageField.getText().getBytes();
+            byte[] signature = Base64.decode(signatureField.getText());
+            PublicKey pubkey = ecgostKf.getPublicKey(selection);
+            //Gnerate the signature
+            Signature sig = Signature.getInstance("ECGOST3410", "BC");
+            sig.initVerify(pubkey);
+            sig.update(message);
+            if (sig.verify(signature))
+            {
+                displaySuccessMessage();
+            }
+            else
+            {
+                displayErrorMessage();
+            }
+        }
+        catch (InvalidKeyException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SignatureException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(SignatureFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private void verifyRSA()
     {
@@ -569,6 +652,7 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
     KeyFinder ecdsaKf = new KeyFinder(".ecp", ".ecs", "ECDSA");
     KeyFinder dsaKf = new KeyFinder(".dsp", ".dss", "DSA");
     KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
+    KeyFinder ecgostKf = new KeyFinder(".egp", ".egs", "RSA");
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/signature/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ciphertextScrollPane;
