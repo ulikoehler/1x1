@@ -8,7 +8,6 @@
  *
  * Created on 10.09.2008, 19:57:18
  */
-//TODO ECGOST
 package jcrypter.signature;
 
 import java.security.InvalidKeyException;

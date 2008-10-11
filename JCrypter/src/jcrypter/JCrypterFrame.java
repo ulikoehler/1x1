@@ -31,6 +31,7 @@ import jcrypter.signature.SignatureFrame;
 import jcrypter.asymmetric.RSACrypterFrame;
 import jcrypter.digest.DigestFrame;
 import jcrypter.hmac.HMACFrame;
+import jcrypter.utils.Base64UtilFrame;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -91,6 +92,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         digestMenuItem = new javax.swing.JMenuItem();
         hmacMenuItem = new javax.swing.JMenuItem();
         utilsMenu = new javax.swing.JMenu();
+        base64MenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JCrypter");
@@ -245,6 +247,16 @@ public class JCrypterFrame extends javax.swing.JFrame
 
         utilsMenu.setMnemonic('u');
         utilsMenu.setText("Utils");
+
+        base64MenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+        base64MenuItem.setText("Base64");
+        base64MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                base64MenuItemActionPerformed(evt);
+            }
+        });
+        utilsMenu.add(base64MenuItem);
+
         menuBar.add(utilsMenu);
 
         setJMenuBar(menuBar);
@@ -413,6 +425,10 @@ private void hmacMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 private void genKeysMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genKeysMenuItemActionPerformed
     new KeyGeneratorFrame().setVisible(true);
 }//GEN-LAST:event_genKeysMenuItemActionPerformed
+
+private void base64MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_base64MenuItemActionPerformed
+    new Base64UtilFrame().setVisible(true);
+}//GEN-LAST:event_base64MenuItemActionPerformed
 
 private void decryptSymmetric()
 {
@@ -605,6 +621,7 @@ private void encryptSymmetric()
     public static JCrypterFrame mainFrame;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem base64MenuItem;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JMenuItem cmpMenuItem;
