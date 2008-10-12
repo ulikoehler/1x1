@@ -61,6 +61,7 @@ public class DigestFrame extends javax.swing.JFrame
 
         textField.setColumns(20);
         textField.setRows(5);
+        textField.setText(i18n.getString("DigestFrame.textField.text")); // NOI18N
         textScrollPane.setViewportView(textField);
 
         algorithmLabel.setText(i18n.getString("DigestFrame.algorithmLabel.text")); // NOI18N
@@ -68,7 +69,6 @@ public class DigestFrame extends javax.swing.JFrame
         digestLabel.setText(i18n.getString("DigestFrame.digestLabel.text")); // NOI18N
 
         digestField.setEditable(false);
-        digestField.setText(i18n.getString("DigestFrame.digestField.text")); // NOI18N
 
         okButton.setText(i18n.getString("DigestFrame.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
