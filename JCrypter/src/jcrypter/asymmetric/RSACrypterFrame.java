@@ -8,7 +8,7 @@ package jcrypter.asymmetric;
 
 import jcrypter.utils.KeyGeneratorFrame;
 import java.security.InvalidAlgorithmParameterException;
-import jcrypter.utils.KeyFinder;
+import jcrypter.utils.keyfinder.KeyFinder;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.Key;

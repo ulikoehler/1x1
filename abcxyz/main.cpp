@@ -6,6 +6,7 @@
 #include <cmath>
 #include <stdio.h>
 #include <iostream>
+#include <MersenneTwister.h>
 
 #include <cln/integer.h>
 #include <cln/integer_io.h>
@@ -15,10 +16,12 @@ using namespace cln;
 
 //Operation defins
 #define root(n,x) pow(x, 1.0/n)
-#define inc(x) x = x+1
+#define inc(x) x = x+1;
 
-#define BLIMIT 150
-#define RLIMIT 30
+#define ATRIES
+#define BTRIES 100
+#define ABCLIMIT 150
+#define XYZLIMIT 20
 #define ABCSV 2
 #define XYZSV 2
 
@@ -75,10 +78,7 @@ typedef unsigned long ul;
  */
 int main(int argc, char** argv)
 {
-    long numSolutions = 0; //Number of correct solutions
-    ull numTried = 0;
-
-    FILE *f = fopen("/ram/formulas.txt", "w");
+    FILE *f = fopen("/ram/formulasd.txt", "w");
 
     cl_I a = ABCSV;
     cl_I b = ABCSV;
@@ -89,56 +89,51 @@ int main(int argc, char** argv)
     cl_I z = XYZSV;
 
     //Main loop
-    for (; z <= RLIMIT; inc(x))
+    for (; z <= XYZLIMIT; inc(x))
     {
-        for (a = ABCSV; a <= BLIMIT; inc(a))
+        for (a = ABCSV; a <= ABCLIMIT; inc(a))
         {
-            for (b = ABCSV; b <= BLIMIT; inc(b))
+            for (b = ABCSV; b <= ABCLIMIT; inc(b))
             {
-                for (c = ABCSV; c <= BLIMIT; inc(c))
+                for (c = ABCSV; c <= ABCLIMIT; inc(c))
                 {
                     #ifdef DEBUG
-                    cout << "a: " << a << "    x: " << x << "      ";
-                    cout << "b: " << b << "    y: " << y << "      ";
-                    cout << "c: " << c << "    z: " << z << endl;
+                        cout << "a: " << a << "    x: " << x << "      ";
+                        cout << "b: " << b << "    y: " << y << "      ";
+                        cout << "c: " << c << "    z: " << z << endl;
                     #endif
+                    if(    a == x || a == b || a == y || a == c || a == z
+                        || x == b || x == y || x == c || x == z
+                        || b == y || b == c || b == z
+                        || y == c || y == z
+                        || c == z) {continue;}
+
+                    if((a == c && x == z) || (b == c && y == z)) {continue;}
 
                     cl_I leftSide = expt_pos(a, x) + expt_pos(b, y);
                     cl_I rightSide = expt_pos(c, z);
 
-
                     if (leftSide == rightSide)
                     {
                         //Check if !exp == a^x + b^x = b^x
-                        if((a == c && x == z) || (b == c && y == z)) {continue;}
-                        inc(numSolutions);
-                        printf("Found solution %lu: %s^%s + %s^%s = %s^%s\n",numSolutions, cdc(a), cdc(x), cdc(b), cdc(y), cdc(c), cdc(z));
-
+                        printf("Found solution: %s^%s + %s^%s = %s^%s\n", cdc(a), cdc(x), cdc(b), cdc(y), cdc(c), cdc(z));
                         fprintf(f, "%s^%s + %s^%s = %s^%s\n", cdc(a), cdc(x), cdc(b), cdc(y), cdc(c), cdc(z));
-
-                        if(numTried % 10000 == 0)
-                        {
-                            printf("10000 expressions processed\n");
-                        }
                     }
-                    inc(numTried);
                 }
             }
         }
         //Overflow handling
-        if (x > RLIMIT)
+        if (x > XYZLIMIT)
         {
             x = XYZSV;
             inc(y);
-            if (y > RLIMIT)
+            if (y > XYZLIMIT)
             {
                 y = XYZSV;
-                inc(z); //z > RLIMIT checked in for declaration
+                inc(z); //z > XYZLIMIT checked in for declaration
             }
         }
     }
-    cout << "Expressions tried: " << numTried << endl;
-    cout << "Solutions found: " << numSolutions << endl;
     fclose(f);
     return (EXIT_SUCCESS);
 }

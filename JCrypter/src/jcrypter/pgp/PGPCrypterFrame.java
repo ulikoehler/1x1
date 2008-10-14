@@ -8,10 +8,9 @@
  *
  * Created on 08.09.2008, 00:56:38
  */
-
 package jcrypter.pgp;
 
-import jcrypter.pgp.PGPKeyRingReader;
+import jcrypter.utils.keyfinder.PGPKeyReader;
 import jcrypter.*;
 import java.io.*;
 import java.security.NoSuchProviderException;
@@ -20,7 +19,10 @@ import java.security.SignatureException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import jcrypter.utils.KeyGeneratorFrame;
+import jcrypter.utils.keyfinder.KeyFinder;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.*;
 
@@ -28,17 +30,16 @@ import org.bouncycastle.openpgp.*;
  *
  * @author uli
  */
-public class PGPCrypterFrame extends javax.swing.JFrame {
+public class PGPCrypterFrame extends javax.swing.JFrame
+{
 
     /** Creates new form PGPCrypterFrame */
-    public PGPCrypterFrame() {
+    public PGPCrypterFrame()
+    {
         initComponents();
         //Load PGP keyrings and update the key selection combo box
-        pkr = new PGPKeyRingReader();
-        for(String s : pkr.getPubKeyNames())
-        {
-            keyComboBox.addItem(s);
-        }
+        KeyFinder kf = new KeyFinder(".pgp", ".asc", new PGPKeyReader)
+    (
     }
 
     /** This method is called from within the constructor to
@@ -62,15 +63,21 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         ciphertextScrollPane = new javax.swing.JScrollPane();
         outputField = new javax.swing.JTextArea();
         keyComboBox = new javax.swing.JComboBox();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        loadFromFileMenuItem = new javax.swing.JMenuItem();
+        saveToFileMenuItem = new javax.swing.JMenuItem();
+        pgpMenu = new javax.swing.JMenu();
+        generateKeyMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PGP Encryption");
 
         passwordLabel.setDisplayedMnemonic('p');
-        passwordLabel.setText("Password:");
+        passwordLabel.setText(i18n.getString("PGPCrypterFrame.passwordLabel.text")); // NOI18N
 
         inputLabel.setDisplayedMnemonic('i');
-        inputLabel.setText("Input:");
+        inputLabel.setText(i18n.getString("PGPCrypterFrame.inputLabel.text")); // NOI18N
 
         inputField.setColumns(20);
         inputField.setLineWrap(true);
@@ -78,7 +85,7 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         plaintextScrollPane.setViewportView(inputField);
 
         decryptCheckbox.setMnemonic('d');
-        decryptCheckbox.setText("Decrypt");
+        decryptCheckbox.setText(i18n.getString("PGPCrypterFrame.decryptCheckbox.text")); // NOI18N
 
         okButton.setMnemonic('o');
         okButton.setText("OK");
@@ -89,9 +96,9 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         });
 
         ciphertextLabel.setDisplayedMnemonic('o');
-        ciphertextLabel.setText("Output:");
+        ciphertextLabel.setText(i18n.getString("PGPCrypterFrame.outputLabel.text")); // NOI18N
 
-        keyLabel.setText("Key:");
+        keyLabel.setText(i18n.getString("PGPCrypterFrame.keyLabel.text")); // NOI18N
 
         outputField.setColumns(20);
         outputField.setEditable(false);
@@ -100,6 +107,45 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         ciphertextScrollPane.setViewportView(outputField);
 
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
+
+        fileMenu.setText(i18n.getString("PGPCrypterFrame.fileMenu.text")); // NOI18N
+
+        loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        loadFromFileMenuItem.setMnemonic('l');
+        loadFromFileMenuItem.setText(i18n.getString("PGPCrypterFrame.loadFromFileMenuItem.text")); // NOI18N
+        loadFromFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadFromFileMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(loadFromFileMenuItem);
+
+        saveToFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveToFileMenuItem.setMnemonic('s');
+        saveToFileMenuItem.setText(i18n.getString("PGPCrypterFrame.saveToFileMenuItem.text")); // NOI18N
+        saveToFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveToFileMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveToFileMenuItem);
+
+        menuBar.add(fileMenu);
+
+        pgpMenu.setText(i18n.getString("PGPCrypterFrame.pgpMenu.text")); // NOI18N
+
+        generateKeyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        generateKeyMenuItem.setText(i18n.getString("PGPCrypterFrame.generateKeyMenuItem.text")); // NOI18N
+        generateKeyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateKeyMenuItemActionPerformed(evt);
+            }
+        });
+        pgpMenu.add(generateKeyMenuItem);
+
+        menuBar.add(pgpMenu);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,36 +213,111 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         encryptAsymmetric();
 }//GEN-LAST:event_okButtonMouseClicked
 
-    
-    private static void processLiteralData(PGPLiteralData ld, OutputStream out, PGPOnePassSignature ops) throws IOException, SignatureException, SignatureException{
+private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
+    FileInputStream fin = null;
+    try
+    {
+        fileChooser.showOpenDialog(this);
+        File file = fileChooser.getSelectedFile();
+        byte[] buffer = new byte[(int) file.length()];
+        fin = new FileInputStream(file);
+        fin.read(buffer);
+        fin.close();
+        inputField.setText(new String(buffer));
+    }
+    catch (IOException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
+    finally
+    {
+        try
+        {
+            fin.close();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
+}//GEN-LAST:event_loadFromFileMenuItemActionPerformed
+
+private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
+    FileOutputStream fout = null;
+    try
+    {
+        fileChooser.showSaveDialog(this);
+        File file = fileChooser.getSelectedFile();
+        byte[] buffer = outputField.getText().getBytes();
+        fout = new FileOutputStream(file);
+        fout.write(buffer);
+        fout.close();
+    }
+    catch (IOException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    finally
+    {
+        try
+        {
+            fout.close();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
+}//GEN-LAST:event_saveToFileMenuItemActionPerformed
+
+private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateKeyMenuItemActionPerformed
+    new PGPKeyGeneratorFrame().setVisible(true);
+}//GEN-LAST:event_generateKeyMenuItemActionPerformed
+
+    private static void processLiteralData(PGPLiteralData ld, OutputStream out, PGPOnePassSignature ops) throws IOException, SignatureException, SignatureException
+    {
         InputStream unc = ld.getInputStream();
         int ch;
-        if(ops==null){
-            while ((ch = unc.read()) >= 0) 
+        if (ops == null)
+        {
+            while ((ch = unc.read()) >= 0)
+            {
                 out.write(ch);
-        }else{
-            while ((ch = unc.read()) >= 0) {
+            }
+        }
+        else
+        {
+            while ((ch = unc.read()) >= 0)
+            {
                 out.write(ch);
-                ops.update((byte)ch);
+                ops.update((byte) ch);
             }
         }
     }
+
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+
+            public void run()
+            {
                 new PGPCrypterFrame().setVisible(true);
             }
         });
     }
-    
+
     private void encryptAsymmetric()
     {
         try
         {
-            if(decryptCheckbox.isSelected())
+            if (decryptCheckbox.isSelected())
             {
                 //Get text
                 InputStream in = new ByteArrayInputStream(inputField.getText().getBytes());
@@ -211,10 +332,13 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
                 PGPEncryptedDataList enc;
                 Object o = pgpF.nextObject();
 
-                if(o == null) throw new PGPException("Cannot recognize input data format");
+                if (o == null)
+                {
+                    throw new PGPException("Cannot recognize input data format");
                 //
                 // the first object might be a PGP marker packet.
                 //
+                }
                 if (o instanceof PGPEncryptedDataList)
                 {
                     enc = (PGPEncryptedDataList) o;
@@ -228,14 +352,19 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
                 // find the secret key
                 //
                 Iterator encObjects = enc.getEncryptedDataObjects();
-                if(!encObjects.hasNext()) throw new PGPException("No encrypted data");
-                pbe=(PGPPublicKeyEncryptedData) encObjects.next();
+                if (!encObjects.hasNext())
+                {
+                    throw new PGPException("No encrypted data");
+                }
+                pbe = (PGPPublicKeyEncryptedData) encObjects.next();
 
                 PGPPrivateKey sKey = null;
                 System.out.println(Long.toHexString(pbe.getKeyID()));
                 PGPSecretKey secretKey = pkr.getSecKeysID().get(pbe.getKeyID());
-                if (secretKey == null) throw new IllegalArgumentException("Secret key for message not found.");
-
+                if (secretKey == null)
+                {
+                    throw new IllegalArgumentException("Secret key for message not found.");
+                }
                 sKey = secretKey.extractPrivateKey(password, "BC");
                 //sKey = findSecretKey(it, passwd);
 
@@ -252,43 +381,47 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
                     PGPCompressedData cData = (PGPCompressedData) message;
                     pgpFact = new PGPObjectFactory(cData.getDataStream());
                     message = pgpFact.nextObject();
-                    if(message instanceof PGPOnePassSignatureList)
+                    if (message instanceof PGPOnePassSignatureList)
                     {
-                        sigLiteralData =  pgpFact.nextObject();
+                        sigLiteralData = pgpFact.nextObject();
                     }
                 }
-                
+
                 if (message instanceof PGPLiteralData)
-                    {
-                        //Message is just encrypted
-                        //processLiteralData((PGPLiteralData) message,out,null);
+                {
+                    //Message is just encrypted
+                    //processLiteralData((PGPLiteralData) message,out,null);
                     }
-                
                 else if (message instanceof PGPOnePassSignatureList)
                 {
-                    PGPOnePassSignature ops = ((PGPOnePassSignatureList)message).get(0);
+                    PGPOnePassSignature ops = ((PGPOnePassSignatureList) message).get(0);
                     PGPPublicKey pubKey = pkr.getPubKeysID().get(ops.getKeyID());
-                    if(pubKey == null)
-                        {
-                            System.out.println("Cannot find the public key 0x"+Integer.toHexString((int)ops.getKeyID()).toUpperCase());
-                            //... decrypt without checking signature
-                            //processLiteralData((PGPLiteralData) sigLiteralData,out,null);
-                        }
+                    if (pubKey == null)
+                    {
+                        System.out.println("Cannot find the public key 0x" + Integer.toHexString((int) ops.getKeyID()).toUpperCase());
+                    //... decrypt without checking signature
+                    //processLiteralData((PGPLiteralData) sigLiteralData,out,null);
+                    }
                     else
-                        {
-                            System.out.println((String)pubKey.getUserIDs().next());
-                            ops.initVerify(pubKey, "BC");
-                            //processLiteralData((PGPLiteralData) sigLiteralData,out,ops);
-                            PGPSignatureList sigList =  (PGPSignatureList) pgpFact.nextObject();
-                        }
+                    {
+                        System.out.println((String) pubKey.getUserIDs().next());
+                        ops.initVerify(pubKey, "BC");
+                        //processLiteralData((PGPLiteralData) sigLiteralData,out,ops);
+                        PGPSignatureList sigList = (PGPSignatureList) pgpFact.nextObject();
+                    }
                 }
-                else {throw new PGPException("message is not a simple encrypted file - type unknown.");}
+                else
+                {
+                    throw new PGPException("message is not a simple encrypted file - type unknown.");
+                }
 
                 if (pbe.isIntegrityProtected())
+                {
+                    if (!pbe.verify())
                     {
-                        if (!pbe.verify())
-                            {throw new PGPException("Message failed integrity check!");}
+                        throw new PGPException("Message failed integrity check!");
                     }
+                }
 
                 outputField.setText(new String(out.toByteArray()));
 
@@ -299,7 +432,7 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
                 PGPPublicKey pubkey = pkr.getPubKeys().get(keyComboBox.getSelectedItem());
                 ByteArrayOutputStream finalOut = new ByteArrayOutputStream();
                 OutputStream aOut = new ArmoredOutputStream(finalOut);
-                        
+
                 ByteArrayOutputStream bOut = new ByteArrayOutputStream();
                 PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.BZIP2);
                 OutputStreamWriter comWriter = new OutputStreamWriter(comData.open(bOut));
@@ -327,43 +460,45 @@ public class PGPCrypterFrame extends javax.swing.JFrame {
         {
             ex.printStackTrace();
         }
-        catch(PGPException ex) //Data not decryptible
+        catch (PGPException ex) //Data not decryptible
         {
             JOptionPane.showMessageDialog(this, ex, "PGP Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
             ex.getUnderlyingException().printStackTrace();
         }
-        catch(IllegalArgumentException ex)
+        catch (IllegalArgumentException ex)
         {
             JOptionPane.showMessageDialog(this, ex, "Argument Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
-        catch(SecurityException ex)
+        catch (SecurityException ex)
         {
             JOptionPane.showMessageDialog(this, ex, "Argument Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
-//        catch(SignatureException ex)
-//        {
-//            JOptionPane.showMessageDialog(this, ex, "Argument Error", JOptionPane.ERROR_MESSAGE);
-//            ex.printStackTrace();
-//        }
     }
-
-    PGPKeyRingReader pkr = new PGPKeyRingReader();
+    
+    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
+    PGPKeyReader pkr = new PGPKeyReader();
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/pgp/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
     private javax.swing.JCheckBox decryptCheckbox;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem generateKeyMenuItem;
     private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
     private javax.swing.JComboBox keyComboBox;
     private javax.swing.JLabel keyLabel;
+    private javax.swing.JMenuItem loadFromFileMenuItem;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea outputField;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
+    private javax.swing.JMenu pgpMenu;
     private javax.swing.JScrollPane plaintextScrollPane;
+    private javax.swing.JMenuItem saveToFileMenuItem;
     // End of variables declaration//GEN-END:variables
-
 }

@@ -1,31 +1,22 @@
-package jcrypter.pgp;
+package jcrypter.utils.keyfinder;
 
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 import org.bouncycastle.openpgp.*;
 
 /**
  *
  * @author uli
  */
-public class PGPKeyRingReader
+public class PGPKeyReader implements KeyReader
 {
-    private HashMap<String, PGPPublicKey> pubKeys = new HashMap<String, PGPPublicKey>();
-    private HashMap<String, PGPSecretKey> secKeys = new HashMap<String, PGPSecretKey>();
-    private HashMap<Long, PGPSecretKey> secKeysID = new HashMap<Long, PGPSecretKey>();
-    private HashMap<Long, PGPPublicKey> pubKeysID = new HashMap<Long, PGPPublicKey>();
-    private Vector<String> pubKeyNames = new Vector<String>();
-    private Vector<String> secKeyNames = new Vector<String>();
 
-    public PGPKeyRingReader()
+    public PGPKeyReader()
     {
         File thisDir = new File(".");
         File[] asc = thisDir.listFiles(new FilenameFilter() {
@@ -196,4 +187,23 @@ public class PGPKeyRingReader
     public HashMap<Long, PGPPublicKey> getPubKeysID() {
         return pubKeysID;
     }
+
+    @Override
+    public void readPublicKey(File file, KeyFinder instance)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void readPrivateKey(File file, KeyFinder instance)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<String> getUnreadableFiles()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

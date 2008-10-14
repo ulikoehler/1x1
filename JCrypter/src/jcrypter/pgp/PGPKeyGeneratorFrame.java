@@ -11,6 +11,8 @@
 
 package jcrypter.pgp;
 
+import java.util.ResourceBundle;
+
 /**
  *
  * @author uli
@@ -49,24 +51,25 @@ public class PGPKeyGeneratorFrame extends javax.swing.JFrame {
         passphraseAgainField = new javax.swing.JPasswordField();
         generateButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Generate PGP keys");
 
-        generateKeyPairLabel.setFont(new java.awt.Font("Tahoma", 1, 12));
-        generateKeyPairLabel.setText("Generate a new key pair:");
+        generateKeyPairLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        generateKeyPairLabel.setText(i18n.getString("PGPKeyGeneratorFrame.generateKeyPairLabel.text")); // NOI18N
 
-        resultingKeyLabelLabel.setText("Resulting key:");
+        resultingKeyLabelLabel.setText(i18n.getString("PGPKeyGeneratorFrame.resultingKeyLabel.text")); // NOI18N
 
-        commentLabel.setText("Comment:");
+        commentLabel.setText(i18n.getString("PGPKeyGeneratorFrame.commentLabel.text")); // NOI18N
 
-        emailLabel.setText("E-mail:");
+        emailLabel.setText(i18n.getString("PGPKeyGeneratorFrame.emailLabel.text")); // NOI18N
 
-        nameLabel.setText("Name:");
+        nameLabel.setText(i18n.getString("PGPKeyGeneratorFrame.nameLabel.text")); // NOI18N
 
-        keySizeLabel.setText("Key size:");
+        keySizeLabel.setText(i18n.getString("PGPKeyGeneratorFrame.keySizeLabel.text")); // NOI18N
 
         resultingKeyLabel.setText("<>");
 
-        jLabel7.setText("bits");
+        jLabel7.setText(i18n.getString("PGPKeyGeneratorFrame.bitsLabel.text")); // NOI18N
 
         commentField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -81,11 +84,11 @@ public class PGPKeyGeneratorFrame extends javax.swing.JFrame {
 
         keySizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1024", "2048", "4096", "8192" }));
 
-        passphraseLabel.setText("Passphrase:");
+        passphraseLabel.setText(i18n.getString("PGPKeyGeneratorFrame.passphraseLabel.text")); // NOI18N
 
-        passphraseAgainLabel.setText("Again:");
+        passphraseAgainLabel.setText(i18n.getString("PGPKeyGeneratorFrame.passpharseAgainLabel.text")); // NOI18N
 
-        generateButton.setText("Generate");
+        generateButton.setText(i18n.getString("PGPKeyGeneratorFrame.generateButton.text")); // NOI18N
         generateButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 generateButtonMouseClicked(evt);
@@ -202,6 +205,7 @@ public class PGPKeyGeneratorFrame extends javax.swing.JFrame {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new PGPKeyGeneratorFrame().setVisible(true);
             }
@@ -209,6 +213,7 @@ public class PGPKeyGeneratorFrame extends javax.swing.JFrame {
     }
 
     StringBuilder keyIdBuilder = new StringBuilder();
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/pgp/Bundle");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField commentField;

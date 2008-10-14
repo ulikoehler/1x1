@@ -10,7 +10,7 @@ package jcrypter;
 
 import java.io.ByteArrayInputStream;
 import jcrypter.utils.CipherModePaddingSelectorDialog;
-import jcrypter.pgp.PGPKeyRingReader;
+import jcrypter.utils.keyfinder.PGPKeyReader;
 import jcrypter.pgp.PGPCrypterFrame;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -596,7 +596,7 @@ private void encryptSymmetric()
     }
     
     //Encryption variables
-    PGPKeyRingReader pkr = null;
+    PGPKeyReader pkr = null;
     public static SecureRandom rand = new SecureRandom();
     private String cipherName = "Twofish";
     private String modeName = "CBC";
