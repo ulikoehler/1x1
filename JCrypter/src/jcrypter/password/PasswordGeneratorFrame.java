@@ -4,8 +4,9 @@
  * Created on 29. September 2008, 19:21
  */
 
-package jcrypter;
+package jcrypter.password;
 
+import jcrypter.*;
 import java.security.SecureRandom;
 import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
@@ -60,8 +61,6 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame {
         characterSetButtonGroup.add(useSpecifiedCharacterSetRadioButton);
         useSpecifiedCharacterSetRadioButton.setText(i18n.getString("PasswordGeneratorFrame.useSpecifiedCharacterSetRadioButton.text")); // NOI18N
 
-        characterSetField.setText(i18n.getString("PasswordGeneratorFrame.characterSetField.text")); // NOI18N
-
         upperLetterCheckBox.setSelected(true);
         upperLetterCheckBox.setText(i18n.getString("PasswordGeneratorFrame.upperLetterCheckBox.text")); // NOI18N
 
@@ -86,8 +85,6 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame {
         qualityLabel.setText(i18n.getString("PasswordGeneratorFrame.qualityLabel.text")); // NOI18N
 
         newPasswordLabel.setText(i18n.getString("PasswordGeneratorFrame.newPasswordLabel.text")); // NOI18N
-
-        newPasswordField.setText(i18n.getString("PasswordGeneratorFrame.newPasswordField.text")); // NOI18N
 
         generatePasswordButton.setText(i18n.getString("PasswordGeneratorFrame.generatePasswordButton.text")); // NOI18N
         generatePasswordButton.addMouseListener(new java.awt.event.MouseAdapter() {

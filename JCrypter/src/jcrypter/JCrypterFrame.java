@@ -8,10 +8,9 @@
  */
 package jcrypter;
 
+import jcrypter.password.PasswordGeneratorFrame;
 import java.io.ByteArrayInputStream;
 import jcrypter.utils.CipherModePaddingSelectorDialog;
-import jcrypter.utils.keyfinder.PGPKeyReader;
-import jcrypter.pgp.PGPCrypterFrame;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,7 +82,6 @@ public class JCrypterFrame extends javax.swing.JFrame
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
         extrasMenu = new javax.swing.JMenu();
-        pgpMenuItem = new javax.swing.JMenuItem();
         cmpMenuItem = new javax.swing.JMenuItem();
         signatureMenuItem = new javax.swing.JMenuItem();
         rsaMenuItem = new javax.swing.JMenuItem();
@@ -166,15 +164,6 @@ public class JCrypterFrame extends javax.swing.JFrame
             }
         });
 
-        pgpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        pgpMenuItem.setText("PGP");
-        pgpMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pgpMenuItemActionPerformed(evt);
-            }
-        });
-        extrasMenu.add(pgpMenuItem);
-
         cmpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         cmpMenuItem.setText("Cipher and Mode");
         cmpMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -216,7 +205,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         });
         extrasMenu.add(genKeysMenuItem);
 
-        passwordGeneratorMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        passwordGeneratorMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         passwordGeneratorMenuItem.setText("Password generator");
         passwordGeneratorMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,10 +322,6 @@ public class JCrypterFrame extends javax.swing.JFrame
     private void cmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmpMenuItemActionPerformed
         cmpDialog.setVisible(true);
 }//GEN-LAST:event_cmpMenuItemActionPerformed
-
-    private void pgpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pgpMenuItemActionPerformed
-        new PGPCrypterFrame().setVisible(true);
-    }//GEN-LAST:event_pgpMenuItemActionPerformed
 
     private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
         FileInputStream fin = null;
@@ -596,7 +581,6 @@ private void encryptSymmetric()
     }
     
     //Encryption variables
-    PGPKeyReader pkr = null;
     public static SecureRandom rand = new SecureRandom();
     private String cipherName = "Twofish";
     private String modeName = "CBC";
@@ -640,7 +624,6 @@ private void encryptSymmetric()
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JMenuItem passwordGeneratorMenuItem;
     private javax.swing.JLabel passwordLabel;
-    private javax.swing.JMenuItem pgpMenuItem;
     private javax.swing.JScrollPane plaintextScrollPane;
     private javax.swing.JMenuItem rsaMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;

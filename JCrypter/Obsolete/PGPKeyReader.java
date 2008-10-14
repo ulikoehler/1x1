@@ -45,51 +45,7 @@ public class PGPKeyReader implements KeyReader
     
     public void readFileSecret(File file)
     {
-        InputStream in = null;
-        try
-        {
-            in = PGPUtil.getDecoderStream(new FileInputStream(file));
-
-            PGPSecretKeyRingCollection pgpSec = new PGPSecretKeyRingCollection(in);
-
-            Iterator rIt = pgpSec.getKeyRings();
-
-            while (rIt.hasNext())
-            {
-                PGPSecretKeyRing kRing = (PGPSecretKeyRing) rIt.next();
-                Iterator kIt = kRing.getSecretKeys();
-
-                while (kIt.hasNext())
-                {
-                    PGPSecretKey k = (PGPSecretKey) kIt.next();
-                    Iterator ids = k.getUserIDs();
-                    String idString = (String)ids.next();
-                    secKeys.put(idString, k);
-                    secKeyNames.add(idString);
-                    //Put into container associating by key ID
-                    secKeysID.put(k.getKeyID(), k);
-                }
-            }
-        }
-        catch (PGPException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                in.close();
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+        
     }
     
     private void readFilePublic(File file)
@@ -197,7 +153,49 @@ public class PGPKeyReader implements KeyReader
     @Override
     public void readPrivateKey(File file, KeyFinder instance)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        InputStream in = null;
+        try
+        {
+            in = PGPUtil.getDecoderStream(new FileInputStream(file));
+
+            PGPSecretKeyRingCollection pgpSec = new PGPSecretKeyRingCollection(in);
+
+            Iterator rIt = pgpSec.getKeyRings();
+
+            while (rIt.hasNext())
+            {
+                PGPSecretKeyRing kRing = (PGPSecretKeyRing) rIt.next();
+                Iterator kIt = kRing.getSecretKeys();
+
+                while (kIt.hasNext())
+                {
+                    PGPSecretKey k = (PGPSecretKey) kIt.next();
+                    Iterator ids = k.getUserIDs();
+                    String idString = (String)ids.next();
+                    //Add to the key finder map
+                    instance.addPrivateKey(idString, k);
+                }
+            }
+        }
+        catch (PGPException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                in.close();
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
