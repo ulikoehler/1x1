@@ -5,7 +5,7 @@
 
 package jcrypter.password;
 
-import java.security.SecureRandom;
+import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,6 +57,34 @@ public class PasswordGeneratorTest {
         int[] result = instance.byteToInt(input);
         assertEquals(expResult[0], result[0]);
         assertEquals(expResult[1], result[1]);
+        //Test with input with an additional array
+        byte[] input2 = {1,0,0,0,2};
+        int[] expResult2 = {1};
+        result = instance.byteToInt(input2);
+        assertEquals(expResult[0], result[0]);
+    }
+
+    /**
+     * Test of generatePasswordList method, of class PasswordGenerator.
+     * Also checks generatePassword implicitly because it is called by generatePasswordList
+     */
+    @Test
+    public void testGeneratePasswordList()
+    {
+        System.out.println("generatePasswordList");
+        String charset = PasswordGenerator.completeCharset;
+        int num = 10;
+        int length = 5;
+        PasswordGenerator instance = new PasswordGenerator();
+        List<char[]> result = instance.generatePasswordList(charset, length, num);
+        
+        int count = 0;
+        for(char[] password : result)
+        {
+            count++;
+            assertTrue(password.length == length); //Check password length
+        }
+        assertTrue(count == num); //Check the password count
     }
 
 }

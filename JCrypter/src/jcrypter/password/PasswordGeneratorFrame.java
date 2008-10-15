@@ -188,44 +188,8 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
 
 private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generatePasswordButtonMouseClicked
     //Build a charset
-    StringBuilder charsetBuilder = new StringBuilder();
-    if (useCharacterGroupsRadioButton.isSelected())
-    {
-        if (upperLetterCheckBox.isSelected())
-        {
-            charsetBuilder.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        }
-        if (lowerLetterCheckBox.isSelected())
-        {
-            charsetBuilder.append("abcdefghijklmnopqrstuvwxyz");
-        }
-        if (numbersCheckBox.isSelected())
-        {
-            charsetBuilder.append("0123456789");
-        }
-        if (specialCharactersCheckBox.isSelected())
-        {
-            charsetBuilder.append("^°!\"§$%&/()=?`'\\}][{³²@äöüÄÖÜ#'+*~,;.:<>|");
-        }
-        if (whiteSpacesCheckBox.isSelected())
-        {
-            charsetBuilder.append(" ");
-        }
-        if (minusCheckBox.isSelected())
-        {
-            charsetBuilder.append("-");
-        }
-        if (underlineCheckBox.isSelected())
-        {
-            charsetBuilder.append("_");
-        }
-    }
-    else //Use only specified characters
-    {
-        charsetBuilder.append(characterSetField.getText());
-    }
-    String charsetString = charsetBuilder.toString();
-    int charsetLength = charsetString.length();
+    String charset = PasswordGenerator.generateCharset(upperLetterCheckBox.isSelected(), lowerLetterCheckBox.isSelected(), numbersCheckBox.isSelected(), specialCharactersCheckBox.isSelected(), whiteSpacesCheckBox.isSelected(), minusCheckBox.isSelected(), underlineCheckBox.isSelected());
+    int charsetLength = charset.length();
     //If the user has not selected any character sets, show an error message and return
     if (charsetLength == 0)
     {
@@ -235,26 +199,11 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
                 JOptionPane.ERROR_MESSAGE);
         return;
     }
+    //Generate a password and seed 
+    SpinnerNumberModel lengthSpinnerModel = (SpinnerNumberModel) lengthSpinner.getModel();
+    int length = lengthSpinnerModel.getNumber().intValue();
+    newPasswordField.setText(new String(pwgen.generatePassword(charset, length)));
 }//GEN-LAST:event_generatePasswordButtonMouseClicked
-
-    public static void generatePasswordList(String charset, int length, int count)
-    {
-        //Generate a password char-by-char
-        SecureRandom rand = JCrypterFrame.rand;
-
-        StringBuilder passwordBuilder = new StringBuilder();
-        for (int i = 0; i < length; i++)
-        {
-            int randInt = rand.nextInt();
-            if (randInt < 0)
-            {
-                randInt = -randInt;
-            }
-            passwordBuilder.append(charset.charAt(randInt % charset.length()));
-        }
-        //TODO Move to password generator
-        //newPasswordField.setText(passwordBuilder.toString());
-    }
 
     /**
     * @param args the command line arguments
@@ -268,8 +217,8 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
         });
     }
     
-    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/Bundle");
-
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/password/Bundle");
+    PasswordGenerator pwgen = new PasswordGenerator(JCrypterFrame.rand);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup characterSetButtonGroup;
     private javax.swing.JTextField characterSetField;
