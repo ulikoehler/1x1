@@ -3,7 +3,6 @@
  *
  * Created on 29. September 2008, 19:21
  */
-
 package jcrypter.password;
 
 import jcrypter.*;
@@ -16,10 +15,12 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author  uli
  */
-public class PasswordGeneratorFrame extends javax.swing.JFrame {
+public class PasswordGeneratorFrame extends javax.swing.JFrame
+{
 
     /** Creates new form PasswordGeneratorFrame */
-    public PasswordGeneratorFrame() {
+    public PasswordGeneratorFrame()
+    {
         initComponents();
     }
 
@@ -188,33 +189,33 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame {
 private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generatePasswordButtonMouseClicked
     //Build a charset
     StringBuilder charsetBuilder = new StringBuilder();
-    if(useCharacterGroupsRadioButton.isSelected())
+    if (useCharacterGroupsRadioButton.isSelected())
     {
-        if(upperLetterCheckBox.isSelected())
+        if (upperLetterCheckBox.isSelected())
         {
             charsetBuilder.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         }
-        if(lowerLetterCheckBox.isSelected())
+        if (lowerLetterCheckBox.isSelected())
         {
             charsetBuilder.append("abcdefghijklmnopqrstuvwxyz");
         }
-        if(numbersCheckBox.isSelected())
+        if (numbersCheckBox.isSelected())
         {
             charsetBuilder.append("0123456789");
         }
-        if(specialCharactersCheckBox.isSelected())
+        if (specialCharactersCheckBox.isSelected())
         {
             charsetBuilder.append("^°!\"§$%&/()=?`'\\}][{³²@äöüÄÖÜ#'+*~,;.:<>|");
         }
-        if(whiteSpacesCheckBox.isSelected())
+        if (whiteSpacesCheckBox.isSelected())
         {
             charsetBuilder.append(" ");
         }
-        if(minusCheckBox.isSelected())
+        if (minusCheckBox.isSelected())
         {
             charsetBuilder.append("-");
         }
-        if(underlineCheckBox.isSelected())
+        if (underlineCheckBox.isSelected())
         {
             charsetBuilder.append("_");
         }
@@ -234,20 +235,26 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
                 JOptionPane.ERROR_MESSAGE);
         return;
     }
-    //Generate a password char-by-char
-    SecureRandom rand = JCrypterFrame.rand;
-    SpinnerNumberModel lengthModel = (SpinnerNumberModel) lengthSpinner.getModel();
-    int length = lengthModel.getNumber().intValue();
-    
-    StringBuilder passwordBuilder = new StringBuilder();
-    for(int i = 0; i < length;i++)
-    {
-        int randInt = rand.nextInt();
-        if(randInt < 0) {randInt = -randInt;}
-        passwordBuilder.append(charsetString.charAt(randInt % charsetLength));
-    }
-    newPasswordField.setText(passwordBuilder.toString());
 }//GEN-LAST:event_generatePasswordButtonMouseClicked
+
+    public static void generatePasswordList(String charset, int length, int count)
+    {
+        //Generate a password char-by-char
+        SecureRandom rand = JCrypterFrame.rand;
+
+        StringBuilder passwordBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++)
+        {
+            int randInt = rand.nextInt();
+            if (randInt < 0)
+            {
+                randInt = -randInt;
+            }
+            passwordBuilder.append(charset.charAt(randInt % charset.length()));
+        }
+        //TODO Move to password generator
+        //newPasswordField.setText(passwordBuilder.toString());
+    }
 
     /**
     * @param args the command line arguments
