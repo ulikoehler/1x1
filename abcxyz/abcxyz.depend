@@ -1,9 +1,12 @@
 # depslib dependency file v1.0
-1223826657 source:/home/uli/dev/1x1/abcxyz/main.cpp
+1224167966 source:/home/uli/dev/1x1/abcxyz/main.cpp
 	<stdlib.h>
 	<cmath>
 	<stdio.h>
 	<iostream>
 	<cln/integer.h>
 	<cln/integer_io.h>
+	<cln/ring.h>
+	<cln/modinteger.h>
+	<boost/thread/thread.hpp>
 
