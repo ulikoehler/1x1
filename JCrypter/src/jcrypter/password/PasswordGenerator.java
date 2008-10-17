@@ -20,8 +20,12 @@ public class PasswordGenerator
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789^°!\"§$%&/()=?`'\\}][{³²@äöüÄÖÜ#'+*~,;.:<>| -_";
     public static final String alphanumericCharset =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    SecureRandom randomSource;
-    MersenneTwisterFast mt;
+    
+    private String charset = null;
+    private int charsetLength;
+            
+    private SecureRandom randomSource;
+    private MersenneTwisterFast mt;
 
     /**
      * Seeds using the seed generation algorithm of randomSource
@@ -34,6 +38,8 @@ public class PasswordGenerator
         byte[] seedBytes = new byte[2496];
         randomSource.nextBytes(seedBytes);
         mt = new MersenneTwisterFast(byteToInt(seedBytes));
+        //Set standard charset
+        this.charset = alphanumericCharset;
     }
 
     public PasswordGenerator()
@@ -43,6 +49,8 @@ public class PasswordGenerator
         byte[] seedBytes = new byte[2496];
         randomSource.nextBytes(seedBytes);
         mt = new MersenneTwisterFast(byteToInt(seedBytes));
+        //Set standard charset
+        this.charset = alphanumericCharset;
     }
 
     public void reseed()
@@ -52,9 +60,8 @@ public class PasswordGenerator
         mt.setSeed(byteToInt(seedBytes));
     }
 
-    public char[] generatePassword(String charset, int length)
+    public char[] generatePassword(int length)
     {
-        int charsetLength = charset.length();
         char[] password = new char[length];
         for (int i = 0; i < length; i++)
         {
@@ -64,13 +71,13 @@ public class PasswordGenerator
         return password;
     }
     
-    public List<char[]> generatePasswordList(String charset, int length, int num)
+    public List<char[]> generatePasswordList(int length, int num)
     {
         //Generate a password char-by-char
         List<char[]> passwords = new LinkedList<char[]>();
         for (int i = 0; i < num; i++)
         {
-            passwords.add(generatePassword(charset, length));
+            passwords.add(generatePassword(length));
         }
         return passwords;
     }
@@ -126,5 +133,16 @@ public class PasswordGenerator
             array[i] += (int) input[4 * i + 3] << 24;
         }
         return array;
+    }
+
+    public String getCharset()
+    {
+        return charset;
+    }
+
+    public void setCharset(String charset)
+    {
+        this.charset = charset;
+        charsetLength = charset.length();
     }
 }

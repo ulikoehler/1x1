@@ -482,7 +482,7 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     }
     
     //Dialog members
-    JFileChooser fileChooser = new JFileChooser();
+    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     CipherModePaddingSelectorDialog cmpDialog =
                                 new CipherModePaddingSelectorDialog(this,
                                                                     true,

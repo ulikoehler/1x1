@@ -6,7 +6,6 @@
 package jcrypter.password;
 
 import jcrypter.*;
-import java.security.SecureRandom;
 import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
@@ -51,6 +50,9 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
         newPasswordLabel = new javax.swing.JLabel();
         newPasswordField = new javax.swing.JTextField();
         generatePasswordButton = new javax.swing.JButton();
+        menuBar = new javax.swing.JMenuBar();
+        extrasMenu = new javax.swing.JMenu();
+        passwordListsItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("PasswordGeneratorFrame.title")); // NOI18N
@@ -93,6 +95,23 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
                 generatePasswordButtonMouseClicked(evt);
             }
         });
+
+        extrasMenu.setMnemonic('e');
+        extrasMenu.setText(i18n.getString("PasswordGeneratorFrame.extrasMenu.text")); // NOI18N
+
+        passwordListsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        passwordListsItem.setMnemonic('l');
+        passwordListsItem.setText(i18n.getString("PasswordGeneratorFrame.passwordListsItem.text")); // NOI18N
+        passwordListsItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordListsItemActionPerformed(evt);
+            }
+        });
+        extrasMenu.add(passwordListsItem);
+
+        menuBar.add(extrasMenu);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,11 +206,20 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
 private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generatePasswordButtonMouseClicked
+    updateCharset();
+    newPasswordField.setText(new String(pwgen.generatePassword(getLength())));
+}//GEN-LAST:event_generatePasswordButtonMouseClicked
+
+private void passwordListsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordListsItemActionPerformed
+ pwlistFrame.setVisible(true);
+}//GEN-LAST:event_passwordListsItemActionPerformed
+ 
+public void updateCharset()
+{
     //Build a charset
     String charset = PasswordGenerator.generateCharset(upperLetterCheckBox.isSelected(), lowerLetterCheckBox.isSelected(), numbersCheckBox.isSelected(), specialCharactersCheckBox.isSelected(), whiteSpacesCheckBox.isSelected(), minusCheckBox.isSelected(), underlineCheckBox.isSelected());
-    int charsetLength = charset.length();
     //If the user has not selected any character sets, show an error message and return
-    if (charsetLength == 0)
+    if (charset.length() == 0)
     {
         JOptionPane.showMessageDialog(this,
                 "No character sets selected",
@@ -200,11 +228,8 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
         return;
     }
     //Generate a password and seed 
-    SpinnerNumberModel lengthSpinnerModel = (SpinnerNumberModel) lengthSpinner.getModel();
-    int length = lengthSpinnerModel.getNumber().intValue();
-    newPasswordField.setText(new String(pwgen.generatePassword(charset, length)));
-}//GEN-LAST:event_generatePasswordButtonMouseClicked
-
+    pwgen.setCharset(charset);
+}
     /**
     * @param args the command line arguments
     */
@@ -217,19 +242,23 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
         });
     }
     
-    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/password/Bundle");
-    PasswordGenerator pwgen = new PasswordGenerator(JCrypterFrame.rand);
+    private ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/password/Bundle");
+    private PasswordGenerator pwgen = new PasswordGenerator(JCrypterFrame.rand);
+    private PasswordListGeneratorFrame pwlistFrame = new PasswordListGeneratorFrame(this); //alphanumeric charset is default
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup characterSetButtonGroup;
     private javax.swing.JTextField characterSetField;
+    private javax.swing.JMenu extrasMenu;
     private javax.swing.JButton generatePasswordButton;
     private javax.swing.JLabel lengthLabel;
     private javax.swing.JSpinner lengthSpinner;
     private javax.swing.JCheckBox lowerLetterCheckBox;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JCheckBox minusCheckBox;
     private javax.swing.JTextField newPasswordField;
     private javax.swing.JLabel newPasswordLabel;
     private javax.swing.JCheckBox numbersCheckBox;
+    private javax.swing.JMenuItem passwordListsItem;
     private javax.swing.JProgressBar qualityBar;
     private javax.swing.JLabel qualityLabel;
     private javax.swing.JCheckBox specialCharactersCheckBox;
@@ -239,5 +268,16 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
     private javax.swing.JRadioButton useSpecifiedCharacterSetRadioButton;
     private javax.swing.JCheckBox whiteSpacesCheckBox;
     // End of variables declaration//GEN-END:variables
+
+    public PasswordGenerator getPwgen()
+    {
+        return pwgen;
+    }
+    
+    public int getLength()
+    {
+        SpinnerNumberModel lenModel = (SpinnerNumberModel) lengthSpinner.getModel();
+        return lenModel.getNumber().intValue();
+    }
 
 }
