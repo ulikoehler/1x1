@@ -141,7 +141,7 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
                 .addComponent(enumerateCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -185,7 +185,8 @@ latexSettingsDialog.setVisible(true);
             //Write header
             fw.write(latexSettingsDialog.getDocumentclassDirective() + " \n"); //Write documentclass directive
             fw.write("\\usepackage{multicol}\n");
-            fw.write(latexSettingsDialog.getAdditionalDirectives() + " \n\n");
+            fw.write(latexSettingsDialog.getAdditionalDirectives() + " \n");
+            fw.write("\\parindent 0pt \n\n");
             fw.write("\\begin{document} \n");
             fw.write(latexSettingsDialog.getMulticolDirective().replaceAll("%n", Integer.toString(cols)) + "\n");
             //Main loop preparations
@@ -206,7 +207,7 @@ latexSettingsDialog.setVisible(true);
             }
             //Write the end directives
             fw.write("\\end{multicols} \n");
-            fw.write("\\end{document} \n");
+            fw.write("\\end{document}\\noindend \n");
         }
         catch (IOException ex)
         {
