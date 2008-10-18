@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.*;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
@@ -93,11 +94,11 @@ public class JCrypterFrame extends javax.swing.JFrame
         base64MenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("JCrypter");
+        setTitle(i18n.getString("JCrypter")); // NOI18N
 
         inputLabel.setDisplayedMnemonic('i');
         inputLabel.setLabelFor(inputField);
-        inputLabel.setText("Input:");
+        inputLabel.setText(i18n.getString("Input:")); // NOI18N
 
         inputField.setColumns(20);
         inputField.setLineWrap(true);
@@ -106,11 +107,11 @@ public class JCrypterFrame extends javax.swing.JFrame
 
         passwordLabel.setDisplayedMnemonic('p');
         passwordLabel.setLabelFor(passwordField);
-        passwordLabel.setText("Password:");
+        passwordLabel.setText(i18n.getString("Password:")); // NOI18N
 
         ciphertextLabel.setDisplayedMnemonic('o');
         ciphertextLabel.setLabelFor(outputField);
-        ciphertextLabel.setText("Output:");
+        ciphertextLabel.setText(i18n.getString("Output:")); // NOI18N
 
         outputField.setColumns(20);
         outputField.setEditable(false);
@@ -119,7 +120,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         ciphertextScrollPane.setViewportView(outputField);
 
         okButton.setMnemonic('o');
-        okButton.setText("OK");
+        okButton.setText(i18n.getString("OK")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -127,15 +128,15 @@ public class JCrypterFrame extends javax.swing.JFrame
         });
 
         decryptCheckbox.setMnemonic('d');
-        decryptCheckbox.setText("Decrypt");
+        decryptCheckbox.setText(i18n.getString("Decrypt")); // NOI18N
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
+        fileMenu.setText(i18n.getString("File")); // NOI18N
 
         loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadFromFileMenuItem.setMnemonic('l');
-        loadFromFileMenuItem.setText("Load from file");
-        loadFromFileMenuItem.setToolTipText("Load data from a file into the input field");
+        loadFromFileMenuItem.setText(i18n.getString("Load_from_file")); // NOI18N
+        loadFromFileMenuItem.setToolTipText(i18n.getString("Load_data_from_a_file_into_the_input_field")); // NOI18N
         loadFromFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadFromFileMenuItemActionPerformed(evt);
@@ -145,8 +146,8 @@ public class JCrypterFrame extends javax.swing.JFrame
 
         saveToFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveToFileMenuItem.setMnemonic('s');
-        saveToFileMenuItem.setText("Save to file");
-        saveToFileMenuItem.setToolTipText("Save the data from the output field to a file");
+        saveToFileMenuItem.setText(i18n.getString("Save_to_file")); // NOI18N
+        saveToFileMenuItem.setToolTipText(i18n.getString("Save_the_data_from_the_output_field_to_a_file")); // NOI18N
         saveToFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToFileMenuItemActionPerformed(evt);
@@ -157,7 +158,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         menuBar.add(fileMenu);
 
         extrasMenu.setMnemonic('e');
-        extrasMenu.setText("Extras");
+        extrasMenu.setText(i18n.getString("Extras")); // NOI18N
         extrasMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 extrasMenuActionPerformed(evt);
@@ -165,7 +166,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         });
 
         cmpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        cmpMenuItem.setText("Cipher and Mode");
+        cmpMenuItem.setText(i18n.getString("Cipher_and_Mode")); // NOI18N
         cmpMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cmpMenuItemMouseClicked(evt);
@@ -179,7 +180,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(cmpMenuItem);
 
         signatureMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        signatureMenuItem.setText("Signatures");
+        signatureMenuItem.setText(i18n.getString("Signatures")); // NOI18N
         signatureMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signatureMenuItemActionPerformed(evt);
@@ -188,7 +189,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(signatureMenuItem);
 
         rsaMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        rsaMenuItem.setText("RSA");
+        rsaMenuItem.setText(i18n.getString("RSA")); // NOI18N
         rsaMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rsaMenuItemActionPerformed(evt);
@@ -197,7 +198,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(rsaMenuItem);
 
         genKeysMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        genKeysMenuItem.setText("Generate keys");
+        genKeysMenuItem.setText(i18n.getString("Generate_keys")); // NOI18N
         genKeysMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genKeysMenuItemActionPerformed(evt);
@@ -206,7 +207,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(genKeysMenuItem);
 
         passwordGeneratorMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        passwordGeneratorMenuItem.setText("Password generator");
+        passwordGeneratorMenuItem.setText(i18n.getString("Password_generator")); // NOI18N
         passwordGeneratorMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordGeneratorMenuItemActionPerformed(evt);
@@ -215,7 +216,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(passwordGeneratorMenuItem);
 
         digestMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
-        digestMenuItem.setText("Digests");
+        digestMenuItem.setText(i18n.getString("Digests")); // NOI18N
         digestMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 digestMenuItemActionPerformed(evt);
@@ -224,7 +225,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu.add(digestMenuItem);
 
         hmacMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        hmacMenuItem.setText("HMAC");
+        hmacMenuItem.setText(i18n.getString("HMAC")); // NOI18N
         hmacMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hmacMenuItemActionPerformed(evt);
@@ -235,10 +236,10 @@ public class JCrypterFrame extends javax.swing.JFrame
         menuBar.add(extrasMenu);
 
         utilsMenu.setMnemonic('u');
-        utilsMenu.setText("Utils");
+        utilsMenu.setText(i18n.getString("Utils")); // NOI18N
 
         base64MenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
-        base64MenuItem.setText("Base64");
+        base64MenuItem.setText(i18n.getString("Base64")); // NOI18N
         base64MenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 base64MenuItemActionPerformed(evt);
@@ -579,6 +580,8 @@ private void encryptSymmetric()
             }
         });
     }
+    
+    private ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/Bundle");
     
     //Encryption variables
     public static SecureRandom rand = new SecureRandom();
