@@ -46,7 +46,7 @@ public class Base64UtilFrame extends javax.swing.JFrame {
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("Base64UtilFrame.title")); // NOI18N
 
         inputLabel.setText(i18n.getString("Base64UtilFrame.inputLabel.text")); // NOI18N

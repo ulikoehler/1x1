@@ -168,7 +168,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         });
 
         cmpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        cmpMenuItem.setText(i18n.getString("Cipher_and_Mode")); // NOI18N
+        cmpMenuItem.setText(i18n.getString("Cipher_settings")); // NOI18N
         cmpMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cmpMenuItemMouseClicked(evt);
@@ -250,7 +250,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         utilsMenu.add(base64MenuItem);
 
         generateRandomFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        generateRandomFileMenuItem.setText("Generate random file");
+        generateRandomFileMenuItem.setText(i18n.getString("Generate_entropy_file")); // NOI18N
         generateRandomFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateRandomFileMenuItemActionPerformed(evt);

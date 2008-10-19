@@ -64,7 +64,6 @@ public class HMACFrame extends javax.swing.JFrame
         fileMenu = new javax.swing.JMenu();
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
-        extrasMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("HMACFrame.title")); // NOI18N
@@ -120,9 +119,6 @@ public class HMACFrame extends javax.swing.JFrame
         fileMenu.add(saveToFileMenuItem);
 
         menuBar.add(fileMenu);
-
-        extrasMenu.setText(i18n.getString("HMACFrame.extrasMenu.text")); // NOI18N
-        menuBar.add(extrasMenu);
 
         setJMenuBar(menuBar);
 
@@ -288,7 +284,6 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox digestComboBox;
     private javax.swing.JLabel digestLabel;
-    private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTextField hmacField;
     private javax.swing.JLabel hmacLabel;

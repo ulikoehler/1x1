@@ -12,6 +12,7 @@ package jcrypter.signature;
 
 import java.awt.EventQueue;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -26,6 +27,8 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import jcrypter.JCrypterFrame;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.jce.ECGOST3410NamedCurveTable;
 import org.bouncycastle.jce.ECNamedCurveTable;
@@ -72,9 +75,6 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         algorithmButtonGroup = new javax.swing.ButtonGroup();
         curveComboBox = new javax.swing.JComboBox();
         curveLabel = new javax.swing.JLabel();
-        ecgostRadioButton = new javax.swing.JRadioButton();
-        ecdhRadioButton = new javax.swing.JRadioButton();
-        ecdsaRadioButton = new javax.swing.JRadioButton();
         okButton = new javax.swing.JButton();
         pubkeyFileLabel = new javax.swing.JLabel();
         privkeyFileLabel = new javax.swing.JLabel();
@@ -82,35 +82,15 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         privFileField = new javax.swing.JTextField();
         keyTypeLabel = new javax.swing.JLabel();
         keyTypeComboBox = new javax.swing.JComboBox();
+        selectPubFileButton = new javax.swing.JButton();
+        selectPrivFileButton = new javax.swing.JButton();
+        curveTypePanel = new javax.swing.JPanel();
+        ecdsaRadioButton = new javax.swing.JRadioButton();
+        ecgostRadioButton = new javax.swing.JRadioButton();
 
         setTitle(i18n.getString("ECKeyGeneratorFrame.title")); // NOI18N
 
         curveLabel.setText(i18n.getString("ECKeyGeneratorFrame.curveLabel.text")); // NOI18N
-
-        algorithmButtonGroup.add(ecgostRadioButton);
-        ecgostRadioButton.setText("ECGOST-3410"); // NOI18N
-        ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ecgostRadioButtonActionPerformed(evt);
-            }
-        });
-
-        algorithmButtonGroup.add(ecdhRadioButton);
-        ecdhRadioButton.setText("ECDH"); // NOI18N
-        ecdhRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ecdhRadioButtonActionPerformed(evt);
-            }
-        });
-
-        algorithmButtonGroup.add(ecdsaRadioButton);
-        ecdsaRadioButton.setSelected(true);
-        ecdsaRadioButton.setText("ECDSA"); // NOI18N
-        ecdsaRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ecdsaRadioButtonActionPerformed(evt);
-            }
-        });
 
         okButton.setText(i18n.getString("ECKeyGeneratorFrame.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -137,66 +117,115 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
             }
         });
 
+        selectPubFileButton.setText(i18n.getString("ECKeyGeneratorFrame.selectPubFileButton.text")); // NOI18N
+        selectPubFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPubFileButtonActionPerformed(evt);
+            }
+        });
+
+        selectPrivFileButton.setText(i18n.getString("ECKeyGeneratorFrame.selectPrivFileButton.text")); // NOI18N
+        selectPrivFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPrivFileButtonActionPerformed(evt);
+            }
+        });
+
+        curveTypePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(i18n.getString("ECKeyGeneratorFrame.curveTypePanel.border.title"))); // NOI18N
+
+        algorithmButtonGroup.add(ecdsaRadioButton);
+        ecdsaRadioButton.setSelected(true);
+        ecdsaRadioButton.setText("ECDSA"); // NOI18N
+        ecdsaRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ecdsaRadioButtonActionPerformed(evt);
+            }
+        });
+
+        algorithmButtonGroup.add(ecgostRadioButton);
+        ecgostRadioButton.setText("ECGOST-3410"); // NOI18N
+        ecgostRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ecgostRadioButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout curveTypePanelLayout = new javax.swing.GroupLayout(curveTypePanel);
+        curveTypePanel.setLayout(curveTypePanelLayout);
+        curveTypePanelLayout.setHorizontalGroup(
+            curveTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(curveTypePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ecdsaRadioButton)
+                .addGap(18, 18, 18)
+                .addComponent(ecgostRadioButton))
+        );
+        curveTypePanelLayout.setVerticalGroup(
+            curveTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(curveTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(ecdsaRadioButton)
+                .addComponent(ecgostRadioButton))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(okButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(pubkeyFileLabel)
+                                .addComponent(privkeyFileLabel))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(privFileField)
+                                .addComponent(pubFileField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(selectPrivFileButton)
+                                .addComponent(selectPubFileButton))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pubkeyFileLabel)
-                            .addComponent(curveLabel)
-                            .addComponent(privkeyFileLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(privFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                            .addComponent(pubFileField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                            .addComponent(curveComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 193, Short.MAX_VALUE)))
+                        .addComponent(curveLabel)
+                        .addGap(68, 68, 68)
+                        .addComponent(curveComboBox, 0, 216, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(ecdsaRadioButton))
-                            .addComponent(keyTypeLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(keyTypeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(keyTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(ecdhRadioButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(ecgostRadioButton)))))
+                            .addComponent(curveTypePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(keyTypeLabel)
                     .addComponent(keyTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ecgostRadioButton)
-                    .addComponent(ecdsaRadioButton)
-                    .addComponent(ecdhRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(curveTypePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(curveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(curveLabel))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pubkeyFileLabel)
+                    .addComponent(pubFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectPubFileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pubFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pubkeyFileLabel))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(privkeyFileLabel)
+                    .addComponent(selectPrivFileButton)
                     .addComponent(privFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -315,21 +344,17 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     }
 }//GEN-LAST:event_keyTypeComboBoxActionPerformed
 
-private void ecdhRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ecdhRadioButtonActionPerformed
-    EventQueue.invokeLater(new Runnable()
-    {
+private void selectPubFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPubFileButtonActionPerformed
+    fileChooser.setSelectedFile(new File(pubFileField.getText()));
+    fileChooser.showSaveDialog(this);
+    pubFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+}//GEN-LAST:event_selectPubFileButtonActionPerformed
 
-        @Override
-        public void run()
-        {
-            if (ecdhRadioButton.isSelected())
-            {
-                pubFileField.setText("pub.edh");
-                privFileField.setText("sec.eds");
-            }
-        }
-    });
-}//GEN-LAST:event_ecdhRadioButtonActionPerformed
+private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPrivFileButtonActionPerformed
+    fileChooser.setSelectedFile(new File(privFileField.getText()));
+    fileChooser.showSaveDialog(this);
+    privFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+}//GEN-LAST:event_selectPrivFileButtonActionPerformed
 
     private void loadEcdsaCurves()
     {
@@ -371,11 +396,12 @@ private void ecdhRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/ecc/Bundle");
     KeyGeneratorFrame parent = null; //Stores a reference 
 
+    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup algorithmButtonGroup;
     private javax.swing.JComboBox curveComboBox;
     private javax.swing.JLabel curveLabel;
-    private javax.swing.JRadioButton ecdhRadioButton;
+    private javax.swing.JPanel curveTypePanel;
     private javax.swing.JRadioButton ecdsaRadioButton;
     private javax.swing.JRadioButton ecgostRadioButton;
     private javax.swing.JComboBox keyTypeComboBox;
@@ -385,5 +411,7 @@ private void ecdhRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel privkeyFileLabel;
     private javax.swing.JTextField pubFileField;
     private javax.swing.JLabel pubkeyFileLabel;
+    private javax.swing.JButton selectPrivFileButton;
+    private javax.swing.JButton selectPubFileButton;
     // End of variables declaration//GEN-END:variables
 }

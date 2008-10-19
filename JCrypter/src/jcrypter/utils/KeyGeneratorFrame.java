@@ -38,7 +38,10 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
         keyTypeComboBox.addItem("DH");
         keyTypeComboBox.addItem("ECC");
     }
-    public static final int[] keysizes = {256, 512, 1024, 2048, 4096, 8192, 16384, 32768};
+    public static final int[] keysizes =
+    {
+        256, 512, 1024, 2048, 4096, 8192, 16384, 32768
+    };
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -62,19 +65,19 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
         selectPrivFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Generate keys");
+        setTitle(i18n.getString("Generate_keys")); // NOI18N
 
-        keysizeLabel.setText("Key size:");
+        keysizeLabel.setText(i18n.getString("Key_size:")); // NOI18N
 
-        pubFileLabel.setText("Pub file:");
+        pubFileLabel.setText(i18n.getString("Pub_file:")); // NOI18N
 
         pubFileField.setText("pub.rsp"); // NOI18N
 
-        privFileLabel.setText("Priv file:");
+        privFileLabel.setText(i18n.getString("Priv_file:")); // NOI18N
 
         privFileField.setText("sec.rss"); // NOI18N
 
-        okButton.setText("null");
+        okButton.setText(i18n.getString("OK_1")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -89,14 +92,14 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
             }
         });
 
-        selectPubFileButton.setText("Select");
+        selectPubFileButton.setText(i18n.getString("Select")); // NOI18N
         selectPubFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectPubFileButtonActionPerformed(evt);
             }
         });
 
-        selectPrivFileButton.setText("Select");
+        selectPrivFileButton.setText(i18n.getString("Select")); // NOI18N
         selectPrivFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectPrivFileButtonActionPerformed(evt);
@@ -163,7 +166,8 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
     try
     {
-        KeyPairGenerator kpgen = KeyPairGenerator.getInstance((String) keyTypeComboBox.getSelectedItem(), "BC");
+        KeyPairGenerator kpgen =
+                KeyPairGenerator.getInstance((String) keyTypeComboBox.getSelectedItem(), "BC");
         kpgen.initialize((Integer) keysizeComboBox.getSelectedItem(), JCrypterFrame.rand);
 
         //Generate the key pair
@@ -264,15 +268,16 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
 }//GEN-LAST:event_keyTypeComboBoxActionPerformed
 
 private void selectPubFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPubFileButtonActionPerformed
+    fileChooser.setSelectedFile(new File(pubFileField.getText()));
     fileChooser.showSaveDialog(this);
     pubFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectPubFileButtonActionPerformed
 
 private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPrivFileButtonActionPerformed
+    fileChooser.setSelectedFile(new File(privFileField.getText()));
     fileChooser.showSaveDialog(this);
     privFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectPrivFileButtonActionPerformed
-
 
     /**
      * @param args the command line arguments
@@ -281,6 +286,7 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
     {
         java.awt.EventQueue.invokeLater(new Runnable()
         {
+
             @Override
             public void run()
             {
@@ -288,18 +294,16 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
             }
         });
     }
-    
+
     public void setSelection(String selection)
     {
-        if(keyTypeComboBox != null)
+        if (keyTypeComboBox != null)
         {
             keyTypeComboBox.setSelectedItem(selection);
         }
     }
-    
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
     ECKeyGeneratorFrame eckeygenFrame = new ECKeyGeneratorFrame(this);
-    
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox keyTypeComboBox;

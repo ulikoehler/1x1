@@ -53,9 +53,9 @@ public class LaTeXSettingsDialog extends javax.swing.JDialog
 
         documentclassLabel.setText(i18n.getString("LaTeXSettingsDialog.documentclassLabel.text")); // NOI18N
 
-        enumMarkupField.setText(i18n.getString("LaTeXSettingsDialog.enumMarkupField.text")); // NOI18N
+        enumMarkupField.setText("\\textbf{%n}"); // NOI18N
 
-        passwordMarkupField.setText(i18n.getString("LaTeXSettingsDialog.passwordMarkupField.text")); // NOI18N
+        passwordMarkupField.setText("%s"); // NOI18N
 
         okButton.setText(i18n.getString("LaTeXSettingsDialog.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -64,15 +64,13 @@ public class LaTeXSettingsDialog extends javax.swing.JDialog
             }
         });
 
-        documentclassField.setText(i18n.getString("LaTeXSettingsDialog.documentclassField.text")); // NOI18N
+        documentclassField.setText("\\documentclass[a4paper]{article}"); // NOI18N
 
-        columnsDirectiveField.setText(i18n.getString("LaTeXSettingsDialog.columnsDirectiveField.text")); // NOI18N
+        columnsDirectiveField.setText("\\begin{multicols}{%n}"); // NOI18N
 
         columnsDirectiveLabel.setText(i18n.getString("LaTeXSettingsDialog.columnsDirectiveLabel.text")); // NOI18N
 
         additionalDirectives.setText(i18n.getString("LaTeXSettingsDialog.additionalDirectives.text")); // NOI18N
-
-        addDirectivesField.setText(i18n.getString("LaTeXSettingsDialog.addDirectivesField.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

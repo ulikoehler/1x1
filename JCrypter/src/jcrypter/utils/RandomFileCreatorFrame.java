@@ -146,7 +146,6 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
         algorithmButtonGroup = new javax.swing.ButtonGroup();
         okButton = new javax.swing.JButton();
         sizePanel = new javax.swing.JPanel();
-        sizeLabel = new javax.swing.JLabel();
         sizeSpinner = new javax.swing.JSpinner();
         byteRadioButton = new javax.swing.JRadioButton();
         kbRadioButton = new javax.swing.JRadioButton();
@@ -167,8 +166,6 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
         });
 
         sizePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(i18n.getString("RandomFileCreatorFrame.sizePanel.border.title"))); // NOI18N
-
-        sizeLabel.setText(i18n.getString("RandomFileCreatorFrame.sizeLabel.text")); // NOI18N
 
         sizeSpinner.setModel(new SpinnerNumberModel(1,1,1000000,1));
 
@@ -191,9 +188,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
             sizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sizePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(sizeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(byteRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -208,12 +203,11 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
             sizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sizePanelLayout.createSequentialGroup()
                 .addGroup(sizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(byteRadioButton)
                     .addComponent(kbRadioButton)
                     .addComponent(mbRadioButton)
                     .addComponent(gbRadioButton)
-                    .addComponent(sizeLabel))
+                    .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -267,7 +261,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 .addComponent(algorithmPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -338,7 +332,6 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     private javax.swing.JButton okButton;
     private javax.swing.JRadioButton secureRandomRadioButton;
     private javax.swing.ButtonGroup sizeButtonGroup;
-    private javax.swing.JLabel sizeLabel;
     private javax.swing.JPanel sizePanel;
     private javax.swing.JSpinner sizeSpinner;
     // End of variables declaration//GEN-END:variables

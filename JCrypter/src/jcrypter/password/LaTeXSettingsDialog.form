@@ -111,16 +111,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="enumMarkupField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/password/Bundle.properties" key="LaTeXSettingsDialog.enumMarkupField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="\textbf{%n}" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="passwordMarkupField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/password/Bundle.properties" key="LaTeXSettingsDialog.passwordMarkupField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="%s" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="okButton">
@@ -135,16 +131,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="documentclassField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/password/Bundle.properties" key="LaTeXSettingsDialog.documentclassField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="\documentclass[a4paper]{article}" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="columnsDirectiveField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/password/Bundle.properties" key="LaTeXSettingsDialog.columnsDirectiveField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="\begin{multicols}{%n}" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="columnsDirectiveLabel">
@@ -162,11 +154,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="addDirectivesField">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jcrypter/password/Bundle.properties" key="LaTeXSettingsDialog.addDirectivesField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>
