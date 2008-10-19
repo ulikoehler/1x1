@@ -13,12 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import jcrypter.JCrypterFrame;
-
-/*
- * KeyGeneratorFrame.java
- *
- * Created on 20. September 2008, 15:59
- */
 import jcrypter.signature.ECKeyGeneratorFrame;
 
 /**

@@ -8,6 +8,7 @@ import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
 import jcrypter.utils.MersenneTwisterFast;
+import jcrypter.utils.Utils;
 
 /**
  *
@@ -34,10 +35,7 @@ public class PasswordGenerator
     public PasswordGenerator(SecureRandom randomSource)
     {
         this.randomSource = randomSource;
-        //Seed; 624(*4) = max number of seed nums
-        byte[] seedBytes = new byte[2496];
-        randomSource.nextBytes(seedBytes);
-        mt = new MersenneTwisterFast(byteToInt(seedBytes));
+        mt = new MersenneTwisterFast(Utils.MTSeed(randomSource));
         //Set standard charset
         this.charset = alphanumericCharset;
     }
@@ -48,7 +46,7 @@ public class PasswordGenerator
         //Seed; 624(*4) = max number of seed nums
         byte[] seedBytes = new byte[2496];
         randomSource.nextBytes(seedBytes);
-        mt = new MersenneTwisterFast(byteToInt(seedBytes));
+        mt = new MersenneTwisterFast(Utils.byteToInt(seedBytes));
         //Set standard charset
         this.charset = alphanumericCharset;
     }
@@ -57,7 +55,7 @@ public class PasswordGenerator
     {
         byte[] seedBytes = new byte[2496];
         randomSource.nextBytes(seedBytes);
-        mt.setSeed(byteToInt(seedBytes));
+        mt.setSeed(Utils.byteToInt(seedBytes));
     }
 
     public char[] generatePassword(int length)
@@ -120,19 +118,6 @@ public class PasswordGenerator
             return null;
         }
         return charsetBuilder.toString();
-    }
-
-    public int[] byteToInt(byte[] input)
-    {
-        int[] array = new int[input.length / 4]; //sizeof(int) = 4 bytes
-        for (int i = 0; i < array.length; i++)
-        {
-            array[i] = (int) input[4 * i];
-            array[i] += (int) input[4 * i + 1] << 8;
-            array[i] += (int) input[4 * i + 2] << 16;
-            array[i] += (int) input[4 * i + 3] << 24;
-        }
-        return array;
     }
 
     public String getCharset()

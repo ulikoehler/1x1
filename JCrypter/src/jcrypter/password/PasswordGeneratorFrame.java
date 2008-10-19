@@ -230,18 +230,7 @@ public void updateCharset()
     //Generate a password and seed 
     pwgen.setCharset(charset);
 }
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new PasswordGeneratorFrame().setVisible(true);
-            }
-        });
-    }
-    
+
     private ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/password/Bundle");
     private PasswordGenerator pwgen = new PasswordGenerator(JCrypterFrame.rand);
     private PasswordListGeneratorFrame pwlistFrame = new PasswordListGeneratorFrame(this); //alphanumeric charset is default

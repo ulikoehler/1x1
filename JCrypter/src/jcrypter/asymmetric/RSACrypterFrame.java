@@ -265,7 +265,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         selectCmpMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(i18n.getString("RSACrypterFrame.title_1")); // NOI18N
+        setTitle(i18n.getString("RSACrypterFrame.title")); // NOI18N
 
         inputLabel.setDisplayedMnemonic('i');
         inputLabel.setText(i18n.getString("RSACrypterFrame.inputLabel.text")); // NOI18N
@@ -304,7 +304,6 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         loadFromFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadFromFileMenuItem.setMnemonic('l');
         loadFromFileMenuItem.setText(i18n.getString("RSACrypterFrame.loadFromFileMenuItem.text")); // NOI18N
-        loadFromFileMenuItem.setToolTipText(i18n.getString("RSACrypterFrame.loadFromFileMenuItem.toolTipText")); // NOI18N
         loadFromFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadFromFileMenuItemActionPerformed(evt);
@@ -315,7 +314,6 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         saveToFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveToFileMenuItem.setMnemonic('s');
         saveToFileMenuItem.setText(i18n.getString("RSACrypterFrame.saveToFileMenuItem.text")); // NOI18N
-        saveToFileMenuItem.setToolTipText(i18n.getString("RSACrypterFrame.saveToFileMenuItem.toolTipText")); // NOI18N
         saveToFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveToFileMenuItemActionPerformed(evt);
@@ -493,7 +491,7 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     //Cryptography members
     KeyFinder kf = new KeyFinder(".rsp", ".rss", "RSA");
     
-    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/rsa/Bundle");
+    ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/asymmetric/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;

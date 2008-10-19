@@ -33,6 +33,7 @@ import jcrypter.digest.DigestFrame;
 import jcrypter.hmac.HMACFrame;
 import jcrypter.utils.Base64UtilFrame;
 import jcrypter.utils.KeyGeneratorFrame;
+import jcrypter.utils.RandomFileCreatorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -92,6 +93,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         hmacMenuItem = new javax.swing.JMenuItem();
         utilsMenu = new javax.swing.JMenu();
         base64MenuItem = new javax.swing.JMenuItem();
+        generateRandomFileMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JCrypter")); // NOI18N
@@ -246,6 +248,15 @@ public class JCrypterFrame extends javax.swing.JFrame
             }
         });
         utilsMenu.add(base64MenuItem);
+
+        generateRandomFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        generateRandomFileMenuItem.setText("Generate random file");
+        generateRandomFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateRandomFileMenuItemActionPerformed(evt);
+            }
+        });
+        utilsMenu.add(generateRandomFileMenuItem);
 
         menuBar.add(utilsMenu);
 
@@ -415,6 +426,10 @@ private void genKeysMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//G
 private void base64MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_base64MenuItemActionPerformed
     new Base64UtilFrame().setVisible(true);
 }//GEN-LAST:event_base64MenuItemActionPerformed
+
+private void generateRandomFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateRandomFileMenuItemActionPerformed
+    new RandomFileCreatorFrame().setVisible(true);
+}//GEN-LAST:event_generateRandomFileMenuItemActionPerformed
 
 private void decryptSymmetric()
 {
@@ -617,6 +632,7 @@ private void encryptSymmetric()
     private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem genKeysMenuItem;
+    private javax.swing.JMenuItem generateRandomFileMenuItem;
     private javax.swing.JMenuItem hmacMenuItem;
     private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
