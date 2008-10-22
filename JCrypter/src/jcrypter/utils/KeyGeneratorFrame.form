@@ -187,7 +187,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="inProgressLabelLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="In progress:"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jcrypter/utils/Bundle.properties" key="In_progress:" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="inProgressLabel">

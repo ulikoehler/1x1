@@ -111,7 +111,7 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
             }
         });
 
-        inProgressLabelLabel.setText("In progress:");
+        inProgressLabelLabel.setText(i18n.getString("In_progress:")); // NOI18N
 
         inProgressLabel.setText("0");
 

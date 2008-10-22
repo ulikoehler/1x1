@@ -5,6 +5,7 @@
  * http://1x1.googlecode.com
  * GNUCrypto version: Revision 122
  * Released under Apache License
+ * Implements Singleton, saved instance called mainFrame
  */
 package jcrypter;
 
@@ -30,7 +31,6 @@ import java.util.regex.Pattern;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -54,6 +54,16 @@ import org.bouncycastle.util.encoders.Base64;
  */
 public class JCrypterFrame extends javax.swing.JFrame
 {
+
+    public static List<String> getModes()
+    {
+        return modes;
+    }
+
+    public static List<String> getPaddings()
+    {
+        return paddings;
+    }
 
     public Set<String> getCiphers()
     {
@@ -126,15 +136,13 @@ public class JCrypterFrame extends javax.swing.JFrame
         initComponents();
         //Init the cipher parameters selector
         cmpDialog =
-                new CipherModePaddingSelectorDialog(this, true, getCiphers(), modes, paddings); //Modal
-        //Set the selected cipher, mode and padding
-        cmpDialog.setCipher("TWOFISH");
-        cmpDialog.setMode("OFB");
-        cmpDialog.setPadding("PKCS7");
+                new CipherModePaddingSelectorDialog(this, true); //Modal; Selections automatically set
         //Force seeding of the random generator by requesting a random number
         rand.nextLong();
         //Init the cipher field
         cmpDialog.updateCipher();
+        //Test if the usr has installed the Unlimited Strength Policy Files
+        testUnlimitedPolicy();
     }
 
     /** This method is called from within the constructor to
@@ -162,7 +170,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         extrasMenu = new javax.swing.JMenu();
         cmpMenuItem = new javax.swing.JMenuItem();
         signatureMenuItem = new javax.swing.JMenuItem();
-        rsaMenuItem = new javax.swing.JMenuItem();
+        asymmetricEncryptionMenuItem = new javax.swing.JMenuItem();
         genKeysMenuItem = new javax.swing.JMenuItem();
         passwordGeneratorMenuItem = new javax.swing.JMenuItem();
         digestMenuItem = new javax.swing.JMenuItem();
@@ -267,14 +275,14 @@ public class JCrypterFrame extends javax.swing.JFrame
         });
         extrasMenu.add(signatureMenuItem);
 
-        rsaMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        rsaMenuItem.setText(i18n.getString("RSA")); // NOI18N
-        rsaMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        asymmetricEncryptionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        asymmetricEncryptionMenuItem.setText(i18n.getString("RSA")); // NOI18N
+        asymmetricEncryptionMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rsaMenuItemActionPerformed(evt);
+                asymmetricEncryptionMenuItemActionPerformed(evt);
             }
         });
-        extrasMenu.add(rsaMenuItem);
+        extrasMenu.add(asymmetricEncryptionMenuItem);
 
         genKeysMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         genKeysMenuItem.setText(i18n.getString("Generate_keys")); // NOI18N
@@ -314,6 +322,11 @@ public class JCrypterFrame extends javax.swing.JFrame
 
         showOIDsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         showOIDsMenuItem.setText(i18n.getString("Show_OID_Algorithms")); // NOI18N
+        showOIDsMenuItem.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                showOIDsMenuItemStateChanged(evt);
+            }
+        });
         extrasMenu.add(showOIDsMenuItem);
 
         menuBar.add(extrasMenu);
@@ -483,9 +496,9 @@ public class JCrypterFrame extends javax.swing.JFrame
         new SignatureFrame().setVisible(true);
 }//GEN-LAST:event_signatureMenuItemActionPerformed
 
-private void rsaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsaMenuItemActionPerformed
+private void asymmetricEncryptionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asymmetricEncryptionMenuItemActionPerformed
     new AsymmetricCrypterFrame().setVisible(true);
-}//GEN-LAST:event_rsaMenuItemActionPerformed
+}//GEN-LAST:event_asymmetricEncryptionMenuItemActionPerformed
 
 private void extrasMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extrasMenuActionPerformed
     new KeyGeneratorFrame().setVisible(true);
@@ -514,6 +527,10 @@ private void base64MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GE
 private void generateRandomFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateRandomFileMenuItemActionPerformed
     new RandomFileCreatorFrame().setVisible(true);
 }//GEN-LAST:event_generateRandomFileMenuItemActionPerformed
+
+private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_showOIDsMenuItemStateChanged
+    cmpDialog.updateComboBoxContents();
+}//GEN-LAST:event_showOIDsMenuItemStateChanged
 
     private void decryptSymmetric()
     {
@@ -706,6 +723,7 @@ private void generateRandomFileMenuItemActionPerformed(java.awt.event.ActionEven
     private static Pattern oidPattern = //Used to filter OIDs from algorithms
             Pattern.compile("(OID\\.)?(\\d+\\.)+\\d+");
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem asymmetricEncryptionMenuItem;
     private javax.swing.JMenuItem base64MenuItem;
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
@@ -727,7 +745,6 @@ private void generateRandomFileMenuItemActionPerformed(java.awt.event.ActionEven
     private javax.swing.JMenuItem passwordGeneratorMenuItem;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JScrollPane plaintextScrollPane;
-    private javax.swing.JMenuItem rsaMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JCheckBoxMenuItem showOIDsMenuItem;
     private javax.swing.JMenuItem signatureMenuItem;
@@ -885,9 +902,10 @@ private void generateRandomFileMenuItemActionPerformed(java.awt.event.ActionEven
                 {
                     String algorithm =
                             entry.substring("MessageDigest.".length());
-                    messageDigests.add(algorithm);
                     
                     if(algorithm.endsWith("ImplementedIn")) {continue;}
+                    
+                    messageDigests.add(algorithm);
 
                     Matcher m = oidPattern.matcher(algorithm);
                     if (!m.matches())

@@ -34,14 +34,26 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
      * @param modes
      * @param paddings 
      */
-    public CipherModePaddingSelectorDialog(JFrame parent,
-            boolean modal,
-            Iterable<String> ciphers,
-            Iterable<String> modes,
-            Iterable<String> paddings)
+    public CipherModePaddingSelectorDialog(JFrame parent, boolean modal)
     {
         super(parent, modal);
         initComponents();
+        
+        updateComboBoxContents();
+    }
+
+    /**
+     * Re-initializes the combo box contents by reading from mainFrame. 
+     */
+    public void updateComboBoxContents()
+    {
+        Iterable<String> ciphers = JCrypterFrame.mainFrame.getCiphers();
+        Iterable<String> modes = JCrypterFrame.mainFrame.getModes();
+        Iterable<String> paddings = JCrypterFrame.mainFrame.getPaddings();
+        //Remove combo box items
+        cipherComboBox.removeAllItems();
+        modeComboBox.removeAllItems();
+        paddingComboBox.removeAllItems();
         //Init combo boxes
         for (String c : ciphers)
         {
@@ -55,6 +67,10 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
         {
             paddingComboBox.addItem(c);
         }
+        //Set the selected cipher, mode and padding
+        setCipher(defaultCipher);
+        setMode(defaultMode);
+        setPadding(defaultPadding);
     }
 
     /** This method is called from within the constructor to
@@ -78,11 +94,6 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
         setBackground(java.awt.Color.lightGray);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("cmpDialog"); // NOI18N
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                cmpDialogClosing(evt);
-            }
-        });
 
         cipherLabel.setText(i18n.getString("CipherLabel.text")); // NOI18N
 
@@ -157,12 +168,9 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        this.setVisible(false);
-}//GEN-LAST:event_okButtonMouseClicked
-
-private void cmpDialogClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_cmpDialogClosing
+    this.setVisible(false);
     updateCipher();
-}//GEN-LAST:event_cmpDialogClosing
+}//GEN-LAST:event_okButtonMouseClicked
 
 private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_comboBoxPropertyChange
     changed = true;
@@ -173,42 +181,45 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
     {
         return (String) cipherComboBox.getSelectedItem();
     }
-                                         
+
     public String getMode()
     {
         return (String) modeComboBox.getSelectedItem();
     }
-    
+
     public String getPadding()
     {
         return (String) paddingComboBox.getSelectedItem() + "Padding";
     }
-    
     //Setters
     public void setCipher(String cipher)
     {
         cipherComboBox.setSelectedItem(cipher);
     }
-    
+
     public void setMode(String mode)
     {
         modeComboBox.setSelectedItem(mode);
     }
-    
+
     public void setPadding(String padding)
     {
         paddingComboBox.setSelectedItem(padding);
     }
-    
+
     /**
      * Updates the cipher field in the JCrypterFrame main instance
      */
     public void updateCipher()
     {
-        if(!changed) {return;}
+        if (!changed)
+        {
+            return;
+        }
         //This is invoked before a OK button click is processed
         //so the cipher field is up to date at any time
-        EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable()
+        {
 
             @Override
             public void run()
@@ -216,10 +227,10 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
                 try
                 {
                     JCrypterFrame.mainFrame.setCipher(Cipher.getInstance(getCipher() +
-                                                                "/" +
-                                                                 getMode() +
-                                                                 "/" +
-                                                                 getPadding()));
+                                                        "/" +
+                                                        getMode() +
+                                                        "/" +
+                                                        getPadding()));
                 }
                 catch (NoSuchAlgorithmException ex)
                 {
@@ -233,11 +244,13 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
         });
     }
     
-    public
-       
+    private String defaultCipher = "TWOFISH";
+    private String defaultMode = "OFB";
+    private String defaultPadding = "PKCS7";
+    
+    boolean changed; //True if parameters have changed
     //Resource bundles
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
-    boolean changed; //True if parameters have changed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cipherComboBox;
     private javax.swing.JLabel cipherLabel;
@@ -247,5 +260,4 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
     private javax.swing.JComboBox paddingComboBox;
     private javax.swing.JLabel paddingLabel;
     // End of variables declaration//GEN-END:variables
-
 }

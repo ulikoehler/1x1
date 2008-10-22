@@ -268,6 +268,7 @@ public class AsymmetricCrypterFrame extends javax.swing.JFrame
         rsaMenu = new javax.swing.JMenu();
         generateKeyMenuItem = new javax.swing.JMenuItem();
         selectCmpMenuItem = new javax.swing.JMenuItem();
+        resarchKeysMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("RSACrypterFrame.title")); // NOI18N
@@ -347,6 +348,15 @@ public class AsymmetricCrypterFrame extends javax.swing.JFrame
             }
         });
         rsaMenu.add(selectCmpMenuItem);
+
+        resarchKeysMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        resarchKeysMenuItem.setText("Re-search for keys");
+        resarchKeysMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resarchKeysMenuItemActionPerformed(evt);
+            }
+        });
+        rsaMenu.add(resarchKeysMenuItem);
 
         menuBar.add(rsaMenu);
 
@@ -477,12 +487,18 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
 private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectCmpMenuItemActionPerformed
     cmpDialog.setVisible(true);
 }//GEN-LAST:event_selectCmpMenuItemActionPerformed
+
+private void resarchKeysMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resarchKeysMenuItemActionPerformed
+    rsaKf.findKeys();
+}//GEN-LAST:event_resarchKeysMenuItemActionPerformed
     //Dialog members
-    JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
-    CipherModePaddingSelectorDialog cmpDialog =
+    private JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
+    private CipherModePaddingSelectorDialog cmpDialog =
             JCrypterFrame.mainFrame.cmpDialog;
-    KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
+    private static KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/asymmetric/Bundle");
+    
+    public AsymmetricCrypterFrame instance;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
@@ -498,6 +514,7 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea outputField;
     private javax.swing.JScrollPane plaintextScrollPane;
+    private javax.swing.JMenuItem resarchKeysMenuItem;
     private javax.swing.JMenu rsaMenu;
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JMenuItem selectCmpMenuItem;

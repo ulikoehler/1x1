@@ -74,6 +74,7 @@ public class SignatureFrame extends javax.swing.JFrame
         signatureMenu = new javax.swing.JMenu();
         generateKeyMenuItem = new javax.swing.JMenuItem();
         rsaSigAlgorithmMenuItem = new javax.swing.JMenuItem();
+        resarchKeysMenuItem = new javax.swing.JMenuItem();
 
         setTitle(i18n.getString("SignatureFrame.title")); // NOI18N
 
@@ -150,6 +151,15 @@ public class SignatureFrame extends javax.swing.JFrame
             }
         });
         signatureMenu.add(rsaSigAlgorithmMenuItem);
+
+        resarchKeysMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        resarchKeysMenuItem.setText(i18n.getString("SignatureFrame.resarchKeysMenuItem.text")); // NOI18N
+        resarchKeysMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resarchKeysMenuItemActionPerformed(evt);
+            }
+        });
+        signatureMenu.add(resarchKeysMenuItem);
 
         menuBar.add(signatureMenu);
 
@@ -344,6 +354,13 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
 private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsaSigAlgorithmMenuItemActionPerformed
     rsaSigSelDialog.setVisible(true);
 }//GEN-LAST:event_rsaSigAlgorithmMenuItemActionPerformed
+
+private void resarchKeysMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resarchKeysMenuItemActionPerformed
+    ecdsaKf.findKeys();
+    dsaKf.findKeys();
+    rsaKf.findKeys();
+    ecgostKf.findKeys();
+}//GEN-LAST:event_resarchKeysMenuItemActionPerformed
 
     private void signDSA() //Encrypt using elliptic curve cryptography
     {
@@ -664,6 +681,7 @@ private void rsaSigAlgorithmMenuItemActionPerformed(java.awt.event.ActionEvent e
     private javax.swing.JTextArea messageField;
     private javax.swing.JLabel messageLabel;
     private javax.swing.JScrollPane plaintextScrollPane;
+    private javax.swing.JMenuItem resarchKeysMenuItem;
     private javax.swing.JMenuItem rsaSigAlgorithmMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JButton signVerifyButton;

@@ -23,10 +23,14 @@ import javax.swing.JComboBox;
  */
 public final class KeyFinder
 {
+
     Map<String, PublicKey> pubkeys = null;
     Map<String, PrivateKey> privkeys = null;
-    Vector<String> keys = new Vector<String>();
+    Vector<String> keys = null;
     private KeyReader kr;
+    private String directory;
+    private String pubSuffix;
+    private String privSuffix;
 
     /**
      * Loads public and secret key files from this directory and append each filename to the combobox
@@ -37,9 +41,23 @@ public final class KeyFinder
     public void findKeys(String directory, final String pubSuffix,
             final String privSuffix)
     {
-        //(Re)initialize the maps
+        this.directory = directory;
+        this.pubSuffix = pubSuffix;
+        this.privSuffix = privSuffix;
+        //Search the directory for keys
+        findKeys();
+    }
+
+    /**
+     * Searches the directory for keys and finds them
+     * Called at initialization and when the key index should be updated
+     */
+    public void findKeys()
+    {
+        //(Re)initialize the maps and the name vector
         pubkeys = new HashMap<String, PublicKey>();
         privkeys = new HashMap<String, PrivateKey>();
+        keys = new Vector<String>();
         //Load public keys
         try
         {
@@ -57,9 +75,7 @@ public final class KeyFinder
                     return false;
                 }
             });
-            for (File f : ecp)
-            {
-            }
+
             //Load private keys
             File[] ecs = thisDir.listFiles(new FilenameFilter()
             {
