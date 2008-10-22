@@ -54,11 +54,10 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         //Set the parent reference
         this.parent = parent;
         //Add the items to the key type combo box
-        keyTypeComboBox.addItem("RSA");
-        keyTypeComboBox.addItem("DSA");
-        keyTypeComboBox.addItem("ElGamal");
-        keyTypeComboBox.addItem("DH");
-        keyTypeComboBox.addItem("ECC");
+        for(String s : KeyGeneratorFrame.keyTypes)
+        {
+            keyTypeComboBox.addItem(s);
+        }
         //Set "ECC" as the selected item
         keyTypeComboBox.setSelectedItem("ECC");
     }
@@ -225,7 +224,7 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                     .addComponent(privFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -273,8 +272,6 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         try
         {
             ECGenParameterSpec ecGenSpec = new ECGenParameterSpec((String) curveComboBox.getSelectedItem());
-            //TODO Make using ECGOST possible
-            //TODO Make using ECDH possible
             KeyPairGenerator g = null;
             if (ecgostRadioButton.isSelected())
             {
@@ -284,14 +281,9 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             {
                 g = KeyPairGenerator.getInstance("ECDSA", "BC");
             }
-            else // ECDH radio button is selected
-            {
-                g = KeyPairGenerator.getInstance("ECDH", "BC");
-            }
             g.initialize(ecGenSpec, new SecureRandom());
             KeyPair pair = g.generateKeyPair();
 
-            //TODO Encode in X509 or so, not in serializing
             pubOut = new BufferedOutputStream(new FileOutputStream(pubFileField.getText()));
             privOut = new BufferedOutputStream(new FileOutputStream(privFileField.getText()));
 
@@ -300,6 +292,8 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
             pubOut.close();
             privOut.close();
+            //Display a success message
+            parent.displaySuccessMessage(this);
         }
         catch (IOException ex)
         {
@@ -338,7 +332,7 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     String sel = (String) keyTypeComboBox.getSelectedItem();
     if (!sel.equals("ECC"))
     {
-        parent.setSelection(sel);
+        parent.setTypeSelection(sel);
         this.setVisible(false);
         parent.setVisible(true);
     }

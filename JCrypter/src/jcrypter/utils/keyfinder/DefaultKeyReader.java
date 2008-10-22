@@ -6,7 +6,6 @@ package jcrypter.utils.keyfinder;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +30,6 @@ public class DefaultKeyReader implements KeyReader
 
     String algorithm;
     KeyFactory fact = null;
-    
     List<String> unreadableFiles = new LinkedList<String>();
 
     public DefaultKeyReader(String algorithm)
@@ -62,7 +60,8 @@ public class DefaultKeyReader implements KeyReader
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
                 in.close();
-                PublicKey pubKey = fact.generatePublic(new X509EncodedKeySpec(keyBytes));
+                PublicKey pubKey =
+                        fact.generatePublic(new X509EncodedKeySpec(keyBytes));
                 instance.addPublicKey(algorithm, pubKey);
             }
             catch (IOException ex)
@@ -97,7 +96,8 @@ public class DefaultKeyReader implements KeyReader
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
                 in.close();
-                PrivateKey privKey = fact.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
+                PrivateKey privKey =
+                        fact.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
                 instance.addPrivateKey(f.getName(), privKey);
             }
             catch (IOException ex)

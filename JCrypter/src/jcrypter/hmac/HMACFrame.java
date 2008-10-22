@@ -30,12 +30,10 @@ public class HMACFrame extends javax.swing.JFrame
     {
         initComponents();
         //Add the digest algorithms to the combo box
-        for (String digest : JCrypterFrame.digests)
+        for (String digest : JCrypterFrame.mainFrame.getMacs())
         {
             digestComboBox.addItem(digest);
         }
-        //Whirlpool is NOT available as HMAC
-        digestComboBox.removeItem("Whirlpool");
         //Set SHA-256 as default
         digestComboBox.setSelectedItem("SHA256");
     }

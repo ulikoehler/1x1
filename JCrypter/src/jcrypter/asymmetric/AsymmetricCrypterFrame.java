@@ -1,9 +1,8 @@
 /*
- * RSACrypterFrame.java
+ * AsymmetricCrypterFrame.java
  *
  * Created on 20. September 2008, 15:58
  */
-
 package jcrypter.asymmetric;
 
 import jcrypter.utils.KeyGeneratorFrame;
@@ -32,26 +31,26 @@ import jcrypter.JCrypterFrame;
 import jcrypter.utils.CipherModePaddingSelectorDialog;
 import org.bouncycastle.util.encoders.Base64;
 
-
-//TODO remove decrypt checkbox and determinate by key selection
 /**
  *
  * @author  uli
  */
-public class RSACrypterFrame extends javax.swing.JFrame {
+public class AsymmetricCrypterFrame extends javax.swing.JFrame
+{
 
-    /** Creates new form RSACrypterFrame */
-    public RSACrypterFrame() {
+    /** Creates new form AsymmetricCrypterFrame */
+    public AsymmetricCrypterFrame()
+    {
         initComponents();
         //Add keys
-        kf.fillComboBox(keyComboBox);
+        rsaKf.fillComboBox(keyComboBox);
         //Set the selected cipher, mode and padding
         cmpDialog.setCipher("Twofish");
         cmpDialog.setMode("CBC");
         cmpDialog.setPadding("PKCS5Padding");
     }
 
-    private void decryptRSA()
+    private void decryptRSAELG()
     {
         try
         {
@@ -59,42 +58,45 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             String cipher = cmpDialog.getCipher();
             String mode = cmpDialog.getMode();
             String padding = cmpDialog.getPadding();
-            
+
             //Construct a ByteArrayInputStream from which to read 
-            ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(inputField.getText()));
-            
+            ByteArrayInputStream bin =
+                    new ByteArrayInputStream(Base64.decode(inputField.getText()));
+
             //Check if a public key is selected, otherwise display a warning message
             String selection = (String) keyComboBox.getSelectedItem();
-            if(!selection.endsWith(".rss"))
-                {
-                    JOptionPane.showMessageDialog(this, i18n.getString("Select_a_private_key_before_decrypting!"), i18n.getString("No_valid_key_selected"), JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            
+            if (!selection.endsWith(".rss"))
+            {
+                JOptionPane.showMessageDialog(this, i18n.getString("Select_a_private_key_before_decrypting!"), i18n.getString("No_valid_key_selected"), JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             //Initialize the RSA cipher object
-            RSAPrivateKey privkey = (RSAPrivateKey) kf.getPrivateKey(selection);
-            Cipher rsaCipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
-            rsaCipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
-            
-            //Get the symmetric cipher object
-            Cipher symCipher = Cipher.getInstance(cipher + "/" + mode + "/" + padding, "BC");
+            RSAPrivateKey privkey =
+                    (RSAPrivateKey) rsaKf.getPrivateKey(selection);
+            Cipher asymCipher =
+                    Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC"); //Default provider makes call faster
+            asymCipher.init(Cipher.DECRYPT_MODE, privkey, JCrypterFrame.rand);
+
+            //Get the symmetric cipher object from the main frame (automatically updated by the CMP dialog)
+            Cipher symCipher = JCrypterFrame.mainFrame.getCipher();
             //Get the IV if we are not using ECB#
             byte[] iv = null;
-            if(!mode.equals("ECB"))
+            if (!mode.equals("ECB"))
             {
                 iv = new byte[symCipher.getBlockSize()];
                 bin.read(iv); //Read the IV from the input stream
-                iv = rsaCipher.doFinal(iv);
+                iv = asymCipher.doFinal(iv);
             }
-            
+
             //Read the key data from the stream and decrypt it
             byte[] encryptedKey = new byte[256];
             bin.read(encryptedKey);
-            byte[] encodedKey = rsaCipher.doFinal(encryptedKey);
+            byte[] encodedKey = asymCipher.doFinal(encryptedKey);
             SecretKeySpec keySpec = new SecretKeySpec(encodedKey, cipher);
-            
+
             //Init the cipher
-            if(mode.equals("ECB"))
+            if (mode.equals("ECB"))
             {
                 symCipher.init(Cipher.DECRYPT_MODE, keySpec);
             }
@@ -102,7 +104,7 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             {
                 symCipher.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv));
             }
-            
+
             //Decrypt the ciphertext and write the result into the output field
             byte[] ciphertext = new byte[bin.available()];
             bin.read(ciphertext);
@@ -110,39 +112,39 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         }
         catch (InvalidAlgorithmParameterException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IllegalBlockSizeException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (BadPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchProviderException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (InvalidKeyException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void encryptRSA()
+    private void encryptRSAELG()
     {
         String selection = null;
         try
@@ -155,51 +157,54 @@ public class RSACrypterFrame extends javax.swing.JFrame {
             byte[] plaintext = inputField.getText().getBytes();
             //If no key is selected, sho a warning message and abort encryption
             selection = (String) keyComboBox.getSelectedItem();
-            if(!selection.endsWith(".rsp"))
-                {
-                    JOptionPane.showMessageDialog(this, i18n.getString("Select_a_public_key_before_encrypting!"), i18n.getString("No_valid_key_selected"), JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            
+            if (!selection.endsWith(".rsp"))
+            {
+                JOptionPane.showMessageDialog(this, i18n.getString("Select_a_public_key_before_encrypting!"), i18n.getString("No_valid_key_selected"), JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             //Generate the (random symmetric key
-            KeyGenerator symKeyGenerator = KeyGenerator.getInstance(cipher, "BC");
+            KeyGenerator symKeyGenerator =
+                    KeyGenerator.getInstance(cipher, "BC");
             symKeyGenerator.init(256, JCrypterFrame.rand);
             Key symKey = symKeyGenerator.generateKey();
-            
-            Cipher symCipher = Cipher.getInstance(cipher + "/" + mode + "/" + padding, "BC");
-            
+
+            //Get the symmetric cipher object from the main frame (automatically updated by the CMP dialog)
+            Cipher symCipher = JCrypterFrame.mainFrame.getCipher();
+
             ByteArrayOutputStream outStream = new ByteArrayOutputStream(); //Everything is written into this stream
-            
+
             //Init the asymmetric cipher
-            RSAPublicKey pubkey = (RSAPublicKey) kf.getPublicKey(selection); //Retrieve the public key
-            Cipher rsaCipher = Cipher.getInstance(i18n.getString("RSA/None/OAEPWithSHA1AndMGF1Padding"), "BC");
-            rsaCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
-            
+            RSAPublicKey pubkey = (RSAPublicKey) rsaKf.getPublicKey(selection); //Retrieve the public key
+            Cipher asymCipher =
+                    Cipher.getInstance(i18n.getString("RSA/None/OAEPWithSHA1AndMGF1Padding"), "BC"); //NOI18N
+            asymCipher.init(Cipher.ENCRYPT_MODE, pubkey, JCrypterFrame.rand);
+
             //Generate a random (encrypted) IV if we are not using ECC
-            if(mode.equals("ECB"))
+            if (mode.equals("ECB"))
             {
                 symCipher.init(Cipher.ENCRYPT_MODE, symKey);
             }
-            else //Mode != ECC
+            else //mode != "ECC"
             {
                 byte[] iv = new byte[symCipher.getBlockSize()];
                 JCrypterFrame.rand.nextBytes(iv);
-                iv = rsaCipher.doFinal(iv); //Encrypt the IV
+                iv = asymCipher.doFinal(iv); //Encrypt the IV
                 symCipher.init(Cipher.ENCRYPT_MODE, symKey, new IvParameterSpec(iv));
                 outStream.write(iv); //Print the IV into the output stream
             }
-            
-            
+
+
             //Encrypt the encoded key with RSA
-            byte[] encodedKey = rsaCipher.doFinal(symKey.getEncoded());
-            
+            byte[] encodedKey = asymCipher.doFinal(symKey.getEncoded());
+
             outStream.write(encodedKey);
-            
+
             //Encrypt the plaintext with the symmetric cipher
             outStream.write(symCipher.doFinal(plaintext));
-            
+
             outStream.close();
-            
+
             outputField.setText(new String(Base64.encode(outStream.toByteArray())));
         }
         catch (InvalidKeyException ex)
@@ -209,31 +214,31 @@ public class RSACrypterFrame extends javax.swing.JFrame {
         }
         catch (InvalidAlgorithmParameterException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IllegalBlockSizeException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (BadPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchAlgorithmException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchProviderException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchPaddingException ex)
         {
-            Logger.getLogger(RSACrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsymmetricCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -395,8 +400,14 @@ public class RSACrypterFrame extends javax.swing.JFrame {
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
     String selection = (String) keyComboBox.getSelectedItem();
-    if(selection.endsWith("s")){decryptRSA();}
-    else{encryptRSA();}
+    if (selection.endsWith("s"))
+    {
+        decryptRSAELG();
+    }
+    else
+    {
+        encryptRSAELG();
+    }
 }//GEN-LAST:event_okButtonMouseClicked
 
 private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFromFileMenuItemActionPerformed
@@ -432,31 +443,31 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
 
 private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToFileMenuItemActionPerformed
     FileOutputStream fout = null;
+    try
+    {
+        fileChooser.showSaveDialog(this);
+        File file = fileChooser.getSelectedFile();
+        byte[] buffer = outputField.getText().getBytes();
+        fout = new FileOutputStream(file);
+        fout.write(buffer);
+        fout.close();
+    }
+    catch (IOException ex)
+    {
+        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    finally
+    {
         try
         {
-            fileChooser.showSaveDialog(this);
-            File file = fileChooser.getSelectedFile();
-            byte[] buffer = outputField.getText().getBytes();
-            fout = new FileOutputStream(file);
-            fout.write(buffer);
             fout.close();
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        finally
-        {
-            try
-            {
-                fout.close();
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-            }
 
-        }
+    }
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed
 
 private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateKeyMenuItemActionPerformed
@@ -466,31 +477,11 @@ private void generateKeyMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
 private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectCmpMenuItemActionPerformed
     cmpDialog.setVisible(true);
 }//GEN-LAST:event_selectCmpMenuItemActionPerformed
-
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new RSACrypterFrame().setVisible(true);
-            }
-        });
-    }
-    
     //Dialog members
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     CipherModePaddingSelectorDialog cmpDialog =
-                                new CipherModePaddingSelectorDialog(this,
-                                                                    true,
-                                                                    JCrypterFrame.ciphers,
-                                                                    JCrypterFrame.modes,
-                                                                    JCrypterFrame.paddings);
-    
-    //Cryptography members
-    KeyFinder kf = new KeyFinder(".rsp", ".rss", "RSA");
-    
+            JCrypterFrame.mainFrame.cmpDialog;
+    KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/asymmetric/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
@@ -511,5 +502,4 @@ private void selectCmpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JMenuItem selectCmpMenuItem;
     // End of variables declaration//GEN-END:variables
-
 }

@@ -26,7 +26,8 @@ public class DigestFrame extends javax.swing.JFrame
     {
         initComponents();
         //Add the digest algorithms to the combo box
-        for (String digest : JCrypterFrame.digests)
+        //Pattern
+        for (String digest : JCrypterFrame.mainFrame.getMessageDigests())
         {
             algorithmComboBox.addItem(digest);
         }

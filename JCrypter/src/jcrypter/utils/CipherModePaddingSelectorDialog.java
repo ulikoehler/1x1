@@ -8,41 +8,50 @@
  *
  * Created on 08.09.2008, 14:04:07
  */
-
 package jcrypter.utils;
 
+import java.awt.EventQueue;
+import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JFrame;
+import jcrypter.JCrypterFrame;
 
 /**
  *
  * @author uli
  */
-public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
+public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
+{
 
-    /** Creates new form CipherModePaddingSelectorDialog */
+    /** Creates new form CipherModePaddingSelectorDialog
+     * @param parent
+     * @param modal
+     * @param ciphers
+     * @param modes
+     * @param paddings 
+     */
     public CipherModePaddingSelectorDialog(JFrame parent,
-                                            boolean modal,
-                                            String[] ciphers,
-                                            String[] modes,
-                                            String[] paddings)
+            boolean modal,
+            Iterable<String> ciphers,
+            Iterable<String> modes,
+            Iterable<String> paddings)
     {
         super(parent, modal);
         initComponents();
-        //Save the parameter arrays to member variables
-        this.ciphers = ciphers;
-        this.modes = modes;
-        this.paddings = paddings;
         //Init combo boxes
-        for(String c : ciphers)
+        for (String c : ciphers)
         {
             cipherComboBox.addItem(c);
         }
-        for(String c : modes)
+        for (String c : modes)
         {
             modeComboBox.addItem(c);
         }
-        for(String c : paddings)
+        for (String c : paddings)
         {
             paddingComboBox.addItem(c);
         }
@@ -65,12 +74,31 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         paddingLabel = new javax.swing.JLabel();
         paddingComboBox = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("Select_Cipher")); // NOI18N
+        setBackground(java.awt.Color.lightGray);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("cmpDialog"); // NOI18N
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                cmpDialogClosing(evt);
+            }
+        });
 
         cipherLabel.setText(i18n.getString("CipherLabel.text")); // NOI18N
 
+        cipherComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                comboBoxPropertyChange(evt);
+            }
+        });
+
         modeLabel.setText(i18n.getString("ModeLabel.text")); // NOI18N
+
+        modeComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                comboBoxPropertyChange(evt);
+            }
+        });
 
         okButton.setText(i18n.getString("OK")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -81,26 +109,28 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
 
         paddingLabel.setText(i18n.getString("PaddingLabel.text")); // NOI18N
 
+        paddingComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                comboBoxPropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(modeLabel)
-                            .addComponent(paddingLabel)
-                            .addComponent(cipherLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cipherComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 98, Short.MAX_VALUE)
-                            .addComponent(paddingComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 98, Short.MAX_VALUE)
-                            .addComponent(modeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(modeLabel)
+                    .addComponent(paddingLabel)
+                    .addComponent(cipherLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paddingComboBox, 0, 98, Short.MAX_VALUE)
+                    .addComponent(modeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cipherComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 258, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -130,6 +160,14 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
         this.setVisible(false);
 }//GEN-LAST:event_okButtonMouseClicked
 
+private void cmpDialogClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_cmpDialogClosing
+    updateCipher();
+}//GEN-LAST:event_cmpDialogClosing
+
+private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_comboBoxPropertyChange
+    changed = true;
+}//GEN-LAST:event_comboBoxPropertyChange
+
     //Getters
     public String getCipher()
     {
@@ -154,23 +192,52 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog {
     
     public void setMode(String mode)
     {
-        cipherComboBox.setSelectedItem(mode);
+        modeComboBox.setSelectedItem(mode);
     }
     
     public void setPadding(String padding)
     {
-        cipherComboBox.setSelectedItem(padding);
+        paddingComboBox.setSelectedItem(padding);
     }
     
+    /**
+     * Updates the cipher field in the JCrypterFrame main instance
+     */
+    public void updateCipher()
+    {
+        if(!changed) {return;}
+        //This is invoked before a OK button click is processed
+        //so the cipher field is up to date at any time
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run()
+            {
+                try
+                {
+                    JCrypterFrame.mainFrame.setCipher(Cipher.getInstance(getCipher() +
+                                                                "/" +
+                                                                 getMode() +
+                                                                 "/" +
+                                                                 getPadding()));
+                }
+                catch (NoSuchAlgorithmException ex)
+                {
+                    Logger.getLogger(CipherModePaddingSelectorDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                catch (NoSuchPaddingException ex)
+                {
+                    Logger.getLogger(CipherModePaddingSelectorDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
     
-    //Members
-    private String[] ciphers;
-    private String[] modes;
-    private String[] paddings;
-    
+    public
+       
     //Resource bundles
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
-
+    boolean changed; //True if parameters have changed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cipherComboBox;
     private javax.swing.JLabel cipherLabel;

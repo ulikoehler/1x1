@@ -1,5 +1,6 @@
 package jcrypter.utils;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,8 +13,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
-import jcrypter.signature.ECKeyGeneratorFrame;
+import jcrypter.signature.*;
 
 /**
  *
@@ -32,11 +34,12 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
             keysizeComboBox.addItem(i);
         }
         //Add the items to the key type combo box
-        keyTypeComboBox.addItem("RSA");
-        keyTypeComboBox.addItem("DSA");
-        keyTypeComboBox.addItem("ElGamal");
-        keyTypeComboBox.addItem("DH");
-        keyTypeComboBox.addItem("ECC");
+        for(String s : keyTypes)
+        {
+            keyTypeComboBox.addItem(s);
+        }
+        //Set the selected keysize to 2048 (for RSA)
+        setSizeSelection(3); //2048
     }
     public static final int[] keysizes =
     {
@@ -63,6 +66,8 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
         keyTypeComboBox = new javax.swing.JComboBox();
         selectPubFileButton = new javax.swing.JButton();
         selectPrivFileButton = new javax.swing.JButton();
+        inProgressLabelLabel = new javax.swing.JLabel();
+        inProgressLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("Generate_keys")); // NOI18N
@@ -106,6 +111,10 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
             }
         });
 
+        inProgressLabelLabel.setText("In progress:");
+
+        inProgressLabel.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,7 +140,11 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(selectPrivFileButton)
-                                    .addComponent(selectPubFileButton))))))
+                                    .addComponent(selectPubFileButton)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(inProgressLabelLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inProgressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -157,47 +170,77 @@ public class KeyGeneratorFrame extends javax.swing.JFrame
                     .addComponent(selectPrivFileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inProgressLabelLabel)
+                    .addComponent(inProgressLabel))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-    try
+    new Thread(new Runnable()
     {
-        KeyPairGenerator kpgen =
-                KeyPairGenerator.getInstance((String) keyTypeComboBox.getSelectedItem(), "BC");
-        kpgen.initialize((Integer) keysizeComboBox.getSelectedItem(), JCrypterFrame.rand);
-
-        //Generate the key pair
-        KeyPair kp = kpgen.generateKeyPair();
-        //Write the public key
-        FileOutputStream fout = new FileOutputStream(pubFileField.getText());
-        fout.write(kp.getPublic().getEncoded());
-        fout.close();
-        //Write the secret key
-        fout = new FileOutputStream(privFileField.getText());
-        fout.write(kp.getPrivate().getEncoded());
-        fout.close();
-    }
-    catch (FileNotFoundException ex)
-    {
-        Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (IOException ex)
-    {
-        Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (NoSuchAlgorithmException ex)
-    {
-        Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (NoSuchProviderException ex)
-    {
-        Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        @Override
+        public void run()
+        {
+            inProgress++;
+            updateInProgressLabel();
+            generateKey();
+        }
+    }).start();
 }//GEN-LAST:event_okButtonMouseClicked
+
+    public void generateKey()
+    {
+        try
+        {
+            KeyPairGenerator kpgen =
+                    KeyPairGenerator.getInstance((String) keyTypeComboBox.getSelectedItem(), "BC");
+            kpgen.initialize((Integer) keysizeComboBox.getSelectedItem(), JCrypterFrame.rand);
+
+            //Generate the key pair
+            KeyPair kp = kpgen.generateKeyPair();
+            //Write the public key
+            FileOutputStream fout = new FileOutputStream(pubFileField.getText());
+            fout.write(kp.getPublic().getEncoded());
+            fout.close();
+            //Write the secret key
+            fout = new FileOutputStream(privFileField.getText());
+            fout.write(kp.getPrivate().getEncoded());
+            fout.close();
+            //Display a success message
+            displaySuccessMessage(this);
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProviderException ex)
+        {
+            Logger.getLogger(KeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            inProgress--;
+            updateInProgressLabel();
+        }
+    }
+
+    public void displaySuccessMessage(Component parent) //Also used by ECKeyGeneratorFrame
+    {
+        JOptionPane.showMessageDialog(parent, "The key pair has been created successfully!", "Key pair generated", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyTypeComboBoxActionPerformed
     String sel = (String) keyTypeComboBox.getSelectedItem();
@@ -211,6 +254,7 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
         {
             keysizeComboBox.addItem(i);
         }
+        setSizeSelection(3); //2048
     }
     else if (sel.equals("DSA"))
     {
@@ -225,28 +269,7 @@ private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
                 keysizeComboBox.addItem(i);
             }
         }
-    }
-    else if (sel.equals("ElGamal"))
-    {
-        pubFileField.setText("pub.elp");
-        privFileField.setText("sec.els");
-
-        keysizeComboBox.removeAllItems();
-        for (int i : keysizes)
-        {
-            keysizeComboBox.addItem(i);
-        }
-    }
-    else if (sel.equals("DH"))
-    {
-        pubFileField.setText("pub.dhp");
-        privFileField.setText("sec.dhs");
-
-        keysizeComboBox.removeAllItems();
-        for (int i : keysizes)
-        {
-            keysizeComboBox.addItem(i);
-        }
+        setTypeSelection(1); //1024
     }
     else if (sel.equals("ECC"))
     {
@@ -295,17 +318,47 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
         });
     }
 
-    public void setSelection(String selection)
+    public void setTypeSelection(String selection)
     {
         if (keyTypeComboBox != null)
         {
             keyTypeComboBox.setSelectedItem(selection);
         }
     }
+
+    public void setSizeSelection(String selection)
+    {
+        if (keysizeComboBox != null)
+        {
+            keysizeComboBox.setSelectedItem(selection);
+        }
+    }
+
+    public void setSizeSelection(int selection)
+    {
+        if (keysizeComboBox != null)
+        {
+            keysizeComboBox.setSelectedIndex(selection);
+        }
+    }
+
+    public void setTypeSelection(int selection)
+    {
+        if (keyTypeComboBox != null)
+        {
+            keyTypeComboBox.setSelectedIndex(selection);
+        }
+    }
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
     ECKeyGeneratorFrame eckeygenFrame = new ECKeyGeneratorFrame(this);
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
+    
+    public static final String[] keyTypes = {"RSA", "DSA", "ECC"};
+    
+    short inProgress = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel inProgressLabel;
+    private javax.swing.JLabel inProgressLabelLabel;
     private javax.swing.JComboBox keyTypeComboBox;
     private javax.swing.JLabel keyTypeLabel;
     private javax.swing.JComboBox keysizeComboBox;
@@ -318,4 +371,9 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JButton selectPrivFileButton;
     private javax.swing.JButton selectPubFileButton;
     // End of variables declaration//GEN-END:variables
+
+    private void updateInProgressLabel()
+    {
+        inProgressLabel.setText(Short.toString(inProgress));
+    }
 }

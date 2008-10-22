@@ -1,9 +1,13 @@
 package jcrypter.utils;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -30,6 +34,13 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
     public RandomFileCreatorFrame()
     {
         initComponents();
+        //Test if /dev/urandom is available
+        File urandom = new File("/dev/urandom");
+        if (!urandom.exists())
+        {
+            urandomRadioButton.setEnabled(false);
+            mt19937RadioButton.setSelected(true);
+        }
     }
 
     private void genRandFileMT(int size, File file)
@@ -58,10 +69,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 mt.nextBytes(bytes);
                 fout.write(bytes);
             }
-            //Close the output stream
-            fout.close();
-            //Show a success message
-            JOptionPane.showMessageDialog(this, "The random data file has been created successfully!", "File created", JOptionPane.INFORMATION_MESSAGE);
+            displaySucessMessage();
         }
         catch (FileNotFoundException ex)
         {
@@ -86,11 +94,11 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
 
     private void genRandFileSec(int size, File file, SecureRandom rand)
     {
-        FileOutputStream fout = null;
+        OutputStream fout = null;
         try
         {
             //Init the required objects
-            fout = new FileOutputStream(file);
+            fout = new BufferedOutputStream(new FileOutputStream(file));
             //Main random data write loop
             final int blocksize = 1024;
             for (int i = 0; i < size; i += blocksize)
@@ -108,9 +116,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 rand.nextBytes(bytes);
                 fout.write(bytes);
             }
-            //Close the output stream
-            fout.close();
-            JOptionPane.showMessageDialog(this, "The random data file has been created successfully!", "File created", JOptionPane.INFORMATION_MESSAGE);
+            displaySucessMessage();
         }
         catch (FileNotFoundException ex)
         {
@@ -131,6 +137,68 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 JOptionPane.showMessageDialog(this, ex, "IO Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    private void genRandFileUrandom(int size, File file)
+    {
+        OutputStream fout = null;
+        InputStream fin = null;
+        try
+        {
+            //Init the required objects
+            fout = new BufferedOutputStream(new FileOutputStream(file));
+            MersenneTwisterFast mt =
+                    new MersenneTwisterFast(Utils.MTSeed(JCrypterFrame.rand));
+            fin = new FileInputStream("/dev/urandom");
+            //Main random data write loop
+            final int blocksize = 4096;
+            for (int i = 0; i < size; i += blocksize)
+            {
+                byte[] bytes;
+                if (i + blocksize <= size)
+                {
+                    bytes = new byte[blocksize];
+                }
+                else
+                {
+                    bytes = new byte[size - i];
+                }
+
+                fin.read(bytes);
+                fout.write(bytes);
+            }
+            displaySucessMessage();
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(RandomFileCreatorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            JOptionPane.showMessageDialog(this, ex, "IO Error", JOptionPane.ERROR_MESSAGE);
+        }
+        finally
+        {
+            try
+            {
+                fout.close();
+                fin.close();
+            }
+            catch (IOException ex)
+            {
+                JOptionPane.showMessageDialog(this, ex, "IO Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch(NullPointerException ex)
+            {
+                
+            }
+        }
+    }
+
+    private void displaySucessMessage()
+    {
+        //Show a success message
+        JOptionPane.showMessageDialog(this, "The entropy file has been created successfully!", "File created", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** This method is called from within the constructor to
@@ -154,6 +222,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
         algorithmPanel = new javax.swing.JPanel();
         secureRandomRadioButton = new javax.swing.JRadioButton();
         mt19937RadioButton = new javax.swing.JRadioButton();
+        urandomRadioButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(i18n.getString("RandomFileCreatorFrame.title")); // NOI18N
@@ -197,7 +266,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 .addComponent(mbRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(gbRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         sizePanelLayout.setVerticalGroup(
             sizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,8 +286,12 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
         secureRandomRadioButton.setText(i18n.getString("RandomFileCreatorFrame.secureRandomRadioButton.text")); // NOI18N
 
         algorithmButtonGroup.add(mt19937RadioButton);
-        mt19937RadioButton.setSelected(true);
         mt19937RadioButton.setText(i18n.getString("RandomFileCreatorFrame.mt19937RadioButton.text")); // NOI18N
+        mt19937RadioButton.setToolTipText(i18n.getString("RandomFileCreatorFrame.mt19937RadioButton.toolTipText")); // NOI18N
+
+        algorithmButtonGroup.add(urandomRadioButton);
+        urandomRadioButton.setSelected(true);
+        urandomRadioButton.setText("/dev/urandom"); // NOI18N
 
         javax.swing.GroupLayout algorithmPanelLayout = new javax.swing.GroupLayout(algorithmPanel);
         algorithmPanel.setLayout(algorithmPanelLayout);
@@ -229,15 +302,18 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 .addComponent(secureRandomRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mt19937RadioButton)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(urandomRadioButton)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         algorithmPanelLayout.setVerticalGroup(
             algorithmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(algorithmPanelLayout.createSequentialGroup()
                 .addGroup(algorithmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(secureRandomRadioButton)
-                    .addComponent(mt19937RadioButton))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(mt19937RadioButton)
+                    .addComponent(urandomRadioButton))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -249,7 +325,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sizePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(algorithmPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -261,7 +337,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 .addComponent(algorithmPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -298,7 +374,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                 genRandFileMT(size, file);
             }
         });
-    
+
     }
     else if (secureRandomRadioButton.isSelected())
     {
@@ -311,14 +387,27 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                 genRandFileMT(size, file);
             }
         });
-        
+
+        genRandFileSec(size, file, JCrypterFrame.rand);
+    }
+    else if (urandomRadioButton.isSelected())
+    {
+        new Thread(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                genRandFileMT(size, file);
+            }
+        });
+
         genRandFileSec(size, file, JCrypterFrame.rand);
     }
 }//GEN-LAST:event_okButtonMouseClicked
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     private ResourceBundle i18n =
             ResourceBundle.getBundle("jcrypter/utils/Bundle");
-    
     int size;
     File file;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -334,5 +423,6 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     private javax.swing.ButtonGroup sizeButtonGroup;
     private javax.swing.JPanel sizePanel;
     private javax.swing.JSpinner sizeSpinner;
+    private javax.swing.JRadioButton urandomRadioButton;
     // End of variables declaration//GEN-END:variables
 }

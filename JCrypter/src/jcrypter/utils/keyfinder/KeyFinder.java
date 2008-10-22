@@ -23,11 +23,9 @@ import javax.swing.JComboBox;
  */
 public final class KeyFinder
 {
-
     Map<String, PublicKey> pubkeys = null;
     Map<String, PrivateKey> privkeys = null;
     Vector<String> keys = new Vector<String>();
-    
     private KeyReader kr;
 
     /**
@@ -36,7 +34,8 @@ public final class KeyFinder
      * @param pubSuffix The suffix of the public key files
      * @param privSuffix The suffix of the private key files
      */
-    public void findKeys(String directory, final String pubSuffix, final String privSuffix)
+    public void findKeys(String directory, final String pubSuffix,
+            final String privSuffix)
     {
         //(Re)initialize the maps
         pubkeys = new HashMap<String, PublicKey>();
@@ -60,12 +59,11 @@ public final class KeyFinder
             });
             for (File f : ecp)
             {
-                             
-                
             }
             //Load private keys
             File[] ecs = thisDir.listFiles(new FilenameFilter()
             {
+
                 @Override
                 public boolean accept(File arg0, String arg1)
                 {
@@ -82,35 +80,39 @@ public final class KeyFinder
                 byte[] keyBytes = new byte[in.available()];
                 in.read(keyBytes);
                 in.close();
-                
-                getKr().readPrivateKey(f, this);
+
+                getKeyReader().readPrivateKey(f, this);
             }
         }
         catch (Exception ex)
         {
-           Logger.getLogger(KeyFinder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(KeyFinder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public KeyFinder(final String pubSuffix, final String privSuffix, KeyReader kr)
+    public KeyFinder(final String pubSuffix, final String privSuffix,
+            KeyReader kr)
     {
         this.kr = kr;
         findKeys(".", pubSuffix, privSuffix);
     }
-    
-    public KeyFinder(String directory, final String pubSuffix, final String privSuffix, KeyReader kr)
+
+    public KeyFinder(String directory, final String pubSuffix,
+            final String privSuffix, KeyReader kr)
     {
         this.kr = kr;
         findKeys(directory, pubSuffix, privSuffix);
     }
 
-    public KeyFinder(String directory, final String pubSuffix, final String privSuffix, String algorithm)
+    public KeyFinder(String directory, final String pubSuffix,
+            final String privSuffix, String algorithm)
     {
         this.kr = new DefaultKeyReader(algorithm);
         findKeys(directory, pubSuffix, privSuffix);
     }
-    
-    public KeyFinder(final String pubSuffix, final String privSuffix, String algorithm)
+
+    public KeyFinder(final String pubSuffix, final String privSuffix,
+            String algorithm)
     {
         this.kr = new DefaultKeyReader(algorithm);
         findKeys(".", pubSuffix, privSuffix);
@@ -130,28 +132,28 @@ public final class KeyFinder
     {
         return privkeys.get(name);
     }
-    
+
     public void fillComboBox(JComboBox cb)
     {
-        for(String s : this.getNames())
+        for (String s : this.getNames())
         {
             cb.addItem(s);
         }
     }
-    
+
     public void addPublicKey(String name, PublicKey key)
     {
         pubkeys.put(name, key);
         keys.add(name);
     }
-    
+
     public void addPrivateKey(String name, PrivateKey key)
     {
         privkeys.put(name, key);
         keys.add(name);
     }
 
-    public KeyReader getKr()
+    public KeyReader getKeyReader()
     {
         return kr;
     }

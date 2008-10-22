@@ -42,27 +42,6 @@ public class PasswordGeneratorTest {
         instance.reseed();
     }
 
-    /**
-     * Test of byteToInt method, of class PasswordGenerator.
-     * Test if correct results are produced
-     */
-    @Test
-    public void testByteToInt()
-    {
-        System.out.println("byteToInt");
-        //Test with expected results: 1; 1+(2<<8); 35+(115<<8)+(31<<16)+(127<<24)
-        byte[] input = {1,0,0,0, 1,2,0,0, 35,115,31,127};
-        PasswordGenerator instance = new PasswordGenerator();
-        int[] expResult = {1, 1+(2<<8),35+(115<<8)+(31<<16)+(127<<24)};
-        int[] result = instance.byteToInt(input);
-        assertEquals(expResult[0], result[0]);
-        assertEquals(expResult[1], result[1]);
-        //Test with input with an additional array
-        byte[] input2 = {1,0,0,0,2};
-        int[] expResult2 = {1};
-        result = instance.byteToInt(input2);
-        assertEquals(expResult[0], result[0]);
-    }
 
     /**
      * Test of generatePasswordList method, of class PasswordGenerator.
@@ -76,7 +55,8 @@ public class PasswordGeneratorTest {
         int num = 10;
         int length = 5;
         PasswordGenerator instance = new PasswordGenerator();
-        List<char[]> result = instance.generatePasswordList(charset, length, num);
+        instance.setCharset(charset);
+        List<char[]> result = instance.generatePasswordList(length, num);
         
         int count = 0;
         for(char[] password : result)
