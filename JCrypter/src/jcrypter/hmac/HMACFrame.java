@@ -35,7 +35,7 @@ public class HMACFrame extends javax.swing.JFrame
             digestComboBox.addItem(digest);
         }
         //Set SHA-256 as default
-        digestComboBox.setSelectedItem("SHA256");
+        digestComboBox.setSelectedItem("SHA256"); //NOI18N
     }
 
     /** This method is called from within the constructor to
@@ -196,8 +196,7 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
     }
     catch (IOException ex)
     {
-        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
     }
     finally
     {
@@ -226,7 +225,7 @@ private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
     }
     catch (IOException ex)
     {
-        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
     }
     finally
     {
@@ -247,13 +246,13 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     {
         if(verifyHMAC(inputField.getText(), passwordField.getPassword(),(String) digestComboBox.getSelectedItem(), hmacField.getText()))
         {
-            JOptionPane.showMessageDialog(this, "The HMAC has been validated successfully", "Validation success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, i18n.getString("The_HMAC_has_been_validated_successfully"), i18n.getString("Validation_success"), JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
             JOptionPane.showMessageDialog(this,
-                "This HMAC is not valid!",
-                "Verification error",
+                i18n.getString("This_HMAC_is_not_valid!"),
+                i18n.getString("Verification_error"),
                 JOptionPane.ERROR_MESSAGE);
         }
     }

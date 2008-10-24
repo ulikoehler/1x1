@@ -434,8 +434,7 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
     }
     catch (IOException ex)
     {
-        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "IO_Error", JOptionPane.ERROR_MESSAGE);
     }
     finally
     {
@@ -446,7 +445,6 @@ private void loadFromFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)
         catch (IOException ex)
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
         }
     }
 }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
@@ -464,7 +462,7 @@ private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
     }
     catch (IOException ex)
     {
-        Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), "IO_Error", JOptionPane.ERROR_MESSAGE);
     }
     finally
     {
@@ -474,7 +472,7 @@ private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         }
         catch (IOException ex)
         {
-            ex.printStackTrace();
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -497,7 +495,6 @@ private void resarchKeysMenuItemActionPerformed(java.awt.event.ActionEvent evt) 
             JCrypterFrame.mainFrame.cmpDialog;
     private static KeyFinder rsaKf = new KeyFinder(".rsp", ".rss", "RSA");
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/asymmetric/Bundle");
-    
     public AsymmetricCrypterFrame instance;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;

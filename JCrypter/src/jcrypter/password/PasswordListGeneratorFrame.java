@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import jcrypter.JCrypterFrame;
 
@@ -183,12 +184,12 @@ latexSettingsDialog.setVisible(true);
                     pwgen.generatePasswordList(parent.getLength(), count);
             //Main write directives and loop
             //Write header
-            fw.write(latexSettingsDialog.getDocumentclassDirective() + " \n"); //Write documentclass directive
-            fw.write("\\usepackage{multicol}\n");
-            fw.write(latexSettingsDialog.getAdditionalDirectives() + " \n");
-            fw.write("\\parindent 0pt \n\n");
-            fw.write("\\begin{document} \n");
-            fw.write(latexSettingsDialog.getMulticolDirective().replaceAll("%n", Integer.toString(cols)) + "\n");
+            fw.write(latexSettingsDialog.getDocumentclassDirective() + " \n"); //Write documentclass directive //NOI18N
+            fw.write("\\usepackage{multicol}\n"); //NOI18N
+            fw.write(latexSettingsDialog.getAdditionalDirectives() + " \n"); //NOI18N
+            fw.write("\\parindent 0pt \n\n"); //NOI18N
+            fw.write("\\begin{document} \n"); //NOI18N
+            fw.write(latexSettingsDialog.getMulticolDirective().replaceAll("%n", Integer.toString(cols)) + "\n"); //NOI18N
             //Main loop preparations
             String passwordString;
             boolean enumerate = enumerateCheckbox.isSelected();
@@ -199,19 +200,19 @@ latexSettingsDialog.setVisible(true);
                 //Write the formatted password number if selected
                 if (enumerate)
                 {
-                    fw.write(latexSettingsDialog.getEnumMarkup().replaceAll("%n", Integer.toString(i) + ": "));
+                    fw.write(latexSettingsDialog.getEnumMarkup().replaceAll("%n", Integer.toString(i) + ": ")); //NOI18N
                 }
                 //Write the formatted password
                 passwordString = new String(pwIterator.next());
-                fw.write(latexSettingsDialog.getPasswordMarkup().replaceAll("%s", passwordString) + "\\\\ \n"); //Write the password
+                fw.write(latexSettingsDialog.getPasswordMarkup().replaceAll("%s", passwordString) + "\\\\ \n"); //Write the password //NOI18N
             }
             //Write the end directives
-            fw.write("\\end{multicols} \n");
-            fw.write("\\end{document}\\noindend \n");
+            fw.write("\\end{multicols} \n"); //NOI18N
+            fw.write("\\end{document}\\noindend \n"); //NOI18N
         }
         catch (IOException ex)
         {
-            Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -247,21 +248,21 @@ latexSettingsDialog.setVisible(true);
             {
                 if (enumerate)
                 {
-                    fw.write(i + ": "); //Write the password number if selected
+                    fw.write(i + ": "); //Write the password number if selected //NOI18N
                 }
                 fw.write(new String(pwIterator.next())); //Write the password
                 fw.write(' '); //Put a space between two passwords
                 colCount++;
                 if (colCount == cols)
                 {
-                    fw.write("\n");
+                    fw.write("\n"); //NOI18N
                     colCount = 0;
                 }
             }
         }
         catch (IOException ex)
         {
-            Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {

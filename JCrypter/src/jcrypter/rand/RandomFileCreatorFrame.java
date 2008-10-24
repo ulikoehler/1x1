@@ -1,5 +1,6 @@
-package jcrypter.utils;
+package jcrypter.rand;
 
+import jcrypter.utils.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -337,7 +338,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
                 .addComponent(algorithmPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -407,7 +408,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_okButtonMouseClicked
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     private ResourceBundle i18n =
-            ResourceBundle.getBundle("jcrypter/utils/Bundle");
+            ResourceBundle.getBundle("jcrypter/rand/Bundle");
     int size;
     File file;
     // Variables declaration - do not modify//GEN-BEGIN:variables

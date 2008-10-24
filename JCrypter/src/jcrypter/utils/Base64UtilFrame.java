@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.ResourceBundle;
 import java.util.logging.*;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -155,9 +156,8 @@ FileInputStream fin = null;
             inputField.setText(new String(buffer));
         }
         catch (IOException ex)
-        {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
+        {            
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -186,7 +186,7 @@ FileOutputStream fout = null;
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -212,18 +212,6 @@ private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         outputField.setText(new String(Base64.encode(inputField.getText().getBytes())));
     }
 }//GEN-LAST:event_okButtonActionPerformed
-
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Base64UtilFrame().setVisible(true);
-            }
-        });
-    }
 
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");

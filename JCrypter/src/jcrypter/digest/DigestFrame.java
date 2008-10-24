@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import jcrypter.JCrypterFrame;
 import java.io.*;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -184,8 +185,7 @@ FileInputStream fin = null;
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -196,7 +196,6 @@ FileInputStream fin = null;
             catch (IOException ex)
             {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
             }
         }
 }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
@@ -214,7 +213,7 @@ FileOutputStream fout = null;
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -225,7 +224,6 @@ FileOutputStream fout = null;
             catch (IOException ex)
             {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
             }
         }
 }//GEN-LAST:event_saveToFileMenuItemActionPerformed

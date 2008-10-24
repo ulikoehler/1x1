@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import jcrypter.JCrypterFrame;
 import jcrypter.utils.KeyGeneratorFrame;
 import org.bouncycastle.jce.ECGOST3410NamedCurveTable;
@@ -54,12 +55,12 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
         //Set the parent reference
         this.parent = parent;
         //Add the items to the key type combo box
-        for(String s : KeyGeneratorFrame.keyTypes)
+        for (String s : KeyGeneratorFrame.keyTypes)
         {
             keyTypeComboBox.addItem(s);
         }
         //Set "ECC" as the selected item
-        keyTypeComboBox.setSelectedItem("ECC");
+        keyTypeComboBox.setSelectedItem("ECC"); //NOI18N
     }
 
     /** This method is called from within the constructor to
@@ -240,8 +241,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                 if (ecdsaRadioButton.isSelected())
                 {
                     loadEcdsaCurves();
-                    pubFileField.setText("pub.ecp");
-                    privFileField.setText("sec.ecs");
+                    pubFileField.setText("pub.ecp"); //NOI18N
+                    privFileField.setText("sec.ecs"); //NOI18N
                 }
             }
         });
@@ -257,8 +258,8 @@ public class ECKeyGeneratorFrame extends javax.swing.JFrame
                 if (ecgostRadioButton.isSelected())
                 {
                     loadEcgostCurves();
-                    pubFileField.setText("pub.egp");
-                    privFileField.setText("sec.egs");
+                    pubFileField.setText("pub.egp"); //NOI18N
+                    privFileField.setText("sec.egs"); //NOI18N
                 }
             }
         });
@@ -271,21 +272,24 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         BufferedOutputStream privOut = null;
         try
         {
-            ECGenParameterSpec ecGenSpec = new ECGenParameterSpec((String) curveComboBox.getSelectedItem());
+            ECGenParameterSpec ecGenSpec =
+                    new ECGenParameterSpec((String) curveComboBox.getSelectedItem());
             KeyPairGenerator g = null;
             if (ecgostRadioButton.isSelected())
             {
-                g = KeyPairGenerator.getInstance("ECGOST3410", "BC");
+                g = KeyPairGenerator.getInstance("ECGOST3410", "BC"); //NOI18N
             }
             else if (ecdsaRadioButton.isSelected())
             {
-                g = KeyPairGenerator.getInstance("ECDSA", "BC");
+                g = KeyPairGenerator.getInstance("ECDSA", "BC"); //NOI18N
             }
             g.initialize(ecGenSpec, new SecureRandom());
             KeyPair pair = g.generateKeyPair();
 
-            pubOut = new BufferedOutputStream(new FileOutputStream(pubFileField.getText()));
-            privOut = new BufferedOutputStream(new FileOutputStream(privFileField.getText()));
+            pubOut =
+                    new BufferedOutputStream(new FileOutputStream(pubFileField.getText()));
+            privOut =
+                    new BufferedOutputStream(new FileOutputStream(privFileField.getText()));
 
             pubOut.write(pair.getPublic().getEncoded());
             privOut.write(pair.getPrivate().getEncoded());
@@ -297,19 +301,19 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         }
         catch (IOException ex)
         {
-            Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         catch (InvalidAlgorithmParameterException ex)
         {
-            ex.printStackTrace();
+            Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchAlgorithmException ex)
         {
-            ex.printStackTrace();
+            Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchProviderException ex)
         {
-            ex.printStackTrace();
+            Logger.getLogger(ECKeyGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -330,7 +334,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 private void keyTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyTypeComboBoxActionPerformed
     String sel = (String) keyTypeComboBox.getSelectedItem();
-    if (!sel.equals("ECC"))
+    if (!sel.equals("ECC")) //NOI18N
     {
         parent.setTypeSelection(sel);
         this.setVisible(false);
@@ -358,7 +362,7 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
         {
             curveComboBox.addItem(curves.nextElement());
         }
-        curveComboBox.setSelectedItem("prime192v1");
+        curveComboBox.setSelectedItem("prime192v1"); //NOI18N
     }
 
     private void loadEcgostCurves()
@@ -369,7 +373,7 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
         {
             curveComboBox.addItem(curves.nextElement());
         }
-        curveComboBox.setSelectedItem("GOSTR3410-2001-CryptoProA");
+        curveComboBox.setSelectedItem("GOSTR3410-2001-CryptoProA"); //NOI18N
     }
 
     /**
@@ -379,6 +383,7 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
     {
         java.awt.EventQueue.invokeLater(new Runnable()
         {
+
             @Override
             public void run()
             {
@@ -389,7 +394,6 @@ private void selectPrivFileButtonActionPerformed(java.awt.event.ActionEvent evt)
     }    //Resource bundle
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/ecc/Bundle");
     KeyGeneratorFrame parent = null; //Stores a reference 
-
     JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup algorithmButtonGroup;

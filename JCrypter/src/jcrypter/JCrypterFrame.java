@@ -42,7 +42,8 @@ import jcrypter.digest.DigestFrame;
 import jcrypter.hmac.HMACFrame;
 import jcrypter.utils.Base64UtilFrame;
 import jcrypter.utils.KeyGeneratorFrame;
-import jcrypter.utils.RandomFileCreatorFrame;
+import jcrypter.rand.RandomFileCreatorFrame;
+import jcrypter.rand.RandomNumberGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -113,8 +114,8 @@ public class JCrypterFrame extends javax.swing.JFrame
         }
         //else implied (return)
         return signaturesNoOIDs;
-    }  
-    
+    }
+
     /**
      * @return the cipherName
      */
@@ -122,7 +123,7 @@ public class JCrypterFrame extends javax.swing.JFrame
     {
         return cipher;
     }
-    
+
     /** Creates new form JCrypterFrame */
     public JCrypterFrame()
     {
@@ -137,6 +138,8 @@ public class JCrypterFrame extends javax.swing.JFrame
         //Init the cipher parameters selector
         cmpDialog =
                 new CipherModePaddingSelectorDialog(this, true); //Modal; Selections automatically set
+        //Init the random number generator frame
+        rngFrame = new RandomNumberGeneratorFrame();
         //Force seeding of the random generator by requesting a random number
         rand.nextLong();
         //Init the cipher field
@@ -179,6 +182,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         utilsMenu = new javax.swing.JMenu();
         base64MenuItem = new javax.swing.JMenuItem();
         generateRandomFileMenuItem = new javax.swing.JMenuItem();
+        randomNumberGeneratorMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JCrypter")); // NOI18N
@@ -352,6 +356,15 @@ public class JCrypterFrame extends javax.swing.JFrame
         });
         utilsMenu.add(generateRandomFileMenuItem);
 
+        randomNumberGeneratorMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        randomNumberGeneratorMenuItem.setText(i18n.getString("Random_number_generator")); // NOI18N
+        randomNumberGeneratorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomNumberGeneratorMenuItemActionPerformed(evt);
+            }
+        });
+        utilsMenu.add(randomNumberGeneratorMenuItem);
+
         menuBar.add(utilsMenu);
 
         setJMenuBar(menuBar);
@@ -443,8 +456,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         }
         catch (IOException ex)
         {
-            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -455,7 +467,6 @@ public class JCrypterFrame extends javax.swing.JFrame
             catch (IOException ex)
             {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
@@ -484,7 +495,6 @@ public class JCrypterFrame extends javax.swing.JFrame
             catch (IOException ex)
             {
                 Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
             }
             catch (NullPointerException ex)
             {
@@ -532,6 +542,10 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
     cmpDialog.updateComboBoxContents();
 }//GEN-LAST:event_showOIDsMenuItemStateChanged
 
+private void randomNumberGeneratorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomNumberGeneratorMenuItemActionPerformed
+    rngFrame.setVisible(true);
+}//GEN-LAST:event_randomNumberGeneratorMenuItemActionPerformed
+
     private void decryptSymmetric()
     {
         try
@@ -564,7 +578,8 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
             IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
 
             //Generate the secret key spec
-            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cmpDialog.getCipher());
+            SecretKeySpec keySpec =
+                    new SecretKeySpec(keyBytes, cmpDialog.getCipher());
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
             CipherInputStream cin = new CipherInputStream(bin, cipher);
@@ -585,7 +600,6 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
         catch (IOException ex) //Must not occure
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
         }
         catch (InvalidKeyException ex)
         {
@@ -598,7 +612,7 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
         try
         {
             //cipher field is initalized by the cmp dialog and at the beginning
-            
+
             //Using BouncyCastle JCEs
             int bs = cipher.getBlockSize(); //Blocksize
             //Get data
@@ -628,7 +642,8 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
             IvParameterSpec ivSpec = new IvParameterSpec(iv, 0, bs);
 
             //Generate the secret key spec
-            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, cmpDialog.getCipher());
+            SecretKeySpec keySpec =
+                    new SecretKeySpec(keyBytes, cmpDialog.getCipher());
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
             CipherOutputStream cout = new CipherOutputStream(bout, cipher);
@@ -649,7 +664,6 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
         catch (IOException ex) //Must not occure
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
         }
         catch (InvalidKeyException ex)
         {
@@ -675,15 +689,14 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
     public static SecureRandom rand = new SecureRandom();
     public static final String[] modesArray =
     {
-        "ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC"
+        "ECB", "CBC", "CCM", "CFB", "CTS", "EAX", "GCM", "GOF", "OFB", "SIC" //NOI18N
     };
     public static final String[] paddingsArray =
     {
-        "PKCS7", "TBC", "X923", "None", "ZeroByte", "ISO10126d2", "ISO7816d4"
+        "PKCS7", "TBC", "X923", "None", "ZeroByte", "ISO10126d2", "ISO7816d4" //NOI18N
     };
-    //Dialog members
-    public CipherModePaddingSelectorDialog cmpDialog = null;
     //The file chooser is used by all frames to save the current directory
+    //Declared here because many dialogs need a reference to it
     public JFileChooser fileChooser = new JFileChooser();
     /**
      * This implements singleton design pattern:
@@ -692,9 +705,8 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
      * commonly used fields etc.
      */
     private Cipher cipher = null;
-    
     public static JCrypterFrame mainFrame;
-    private ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/Bundle");
+    private ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/Bundle"); //NOI18N
     //Collections to save algorithm names
     private static Set<String> ciphers =
             new TreeSet(String.CASE_INSENSITIVE_ORDER);
@@ -721,7 +733,11 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
     private static List<String> paddings = Arrays.asList(paddingsArray);
     //Regex patterns
     private static Pattern oidPattern = //Used to filter OIDs from algorithms
-            Pattern.compile("(OID\\.)?(\\d+\\.)+\\d+");
+            Pattern.compile("(OID\\.)?(\\d+\\.)+\\d+"); //NOI18N
+    //Field to avoid time-consuming MT19937 reseeding
+    private RandomNumberGeneratorFrame rngFrame = null;
+    //Dialog members
+    public CipherModePaddingSelectorDialog cmpDialog = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem asymmetricEncryptionMenuItem;
     private javax.swing.JMenuItem base64MenuItem;
@@ -745,6 +761,7 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
     private javax.swing.JMenuItem passwordGeneratorMenuItem;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JScrollPane plaintextScrollPane;
+    private javax.swing.JMenuItem randomNumberGeneratorMenuItem;
     private javax.swing.JMenuItem saveToFileMenuItem;
     private javax.swing.JCheckBoxMenuItem showOIDsMenuItem;
     private javax.swing.JMenuItem signatureMenuItem;
@@ -776,15 +793,14 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
                     {
                         0x00, 0x01, 0x02,
                         0x03, 0x04, 0x05, 0x06, 0x07
-                    }, "Blowfish");
+                    }, "Blowfish"); //NOI18N
 
             // create a cipher and attempt to encrypt the data block with our key
 
-            Cipher c = Cipher.getInstance("Blowfish/ECB/NoPadding");
+            Cipher c = Cipher.getInstance("Blowfish/ECB/NoPadding"); //NOI18N
 
             c.init(Cipher.ENCRYPT_MODE, key64);
             c.doFinal(data);
-            System.out.println("64 bit test: passed");
 
             // create a 192 bit secret key from raw bytes
 
@@ -794,21 +810,24 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
                         0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c,
                         0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16,
                         0x17
-                    }, "Blowfish");
+                    }, "Blowfish"); //NOI18N
 
             // now try encrypting with the larger key
 
             c.init(Cipher.ENCRYPT_MODE, key192);
             c.doFinal(data);
+
+            System.out.println(i18n.getString("Unrestricted_policy_test:_passed"));
         }
         catch (InvalidKeyException ex)
         {
-            JOptionPane.showMessageDialog(this, "The Unrestricted Policy Files are not installed in your JRE." +
-                    "Please install them to enable strong cryptography!", "Restricted policy files",
+            JOptionPane.showMessageDialog(this, i18n.getString("The_Unrestricted_Policy_Files_are_not_installed_in_your_JRE.") +
+                    i18n.getString("Please_install_them_to_enable_strong_cryptography!"), i18n.getString("Restricted_policy_files"),
                     JOptionPane.ERROR_MESSAGE);
         }
         catch (Exception ex)
         {
+            Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -826,24 +845,24 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
             {
                 String entry = (String) it.next();
 
-                if (entry.startsWith("Alg.Alias."))
+                if (entry.startsWith("Alg.Alias.")) //NOI18N
                 {
-                    entry = entry.substring("Alg.Alias.".length());
+                    entry = entry.substring("Alg.Alias.".length()); //NOI18N
                 }
                 //Filter PBE, asymmetric and invalid algorithms (not case-sensitive
-                if (entry.contains("PBE") ||
-                        entry.toLowerCase().contains("supported") ||
-                        entry.toLowerCase().contains("wrap") ||
-                        entry.toLowerCase().contains("padding") ||
-                        entry.toLowerCase().contains("rsa") ||
-                        entry.toLowerCase().contains("elgamal"))
+                if (entry.contains("PBE") || //NOI18N
+                        entry.toLowerCase().contains("supported") || //NOI18N
+                        entry.toLowerCase().contains("wrap") || //NOI18N
+                        entry.toLowerCase().contains("padding") || //NOI18N
+                        entry.toLowerCase().contains("rsa") || //NOI18N
+                        entry.toLowerCase().contains("elgamal")) //NOI18N
                 {
                     continue;
                 }
 
-                if (entry.startsWith("Cipher."))
+                if (entry.startsWith("Cipher.")) //NOI18N
                 {
-                    String algorithm = entry.substring("Cipher.".length());
+                    String algorithm = entry.substring("Cipher.".length()); //NOI18N
                     ciphers.add(algorithm);
 
                     Matcher m = oidPattern.matcher(algorithm);
@@ -852,9 +871,9 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
                         ciphersNoOIDs.add(algorithm);
                     }
                 }
-                else if (entry.startsWith("KeyAgreement."))
+                else if (entry.startsWith("KeyAgreement.")) //NOI18N
                 {
-                    String algorithm = entry.substring("KeyAgreement.".length());
+                    String algorithm = entry.substring("KeyAgreement.".length()); //NOI18N
                     keyAgreements.add(algorithm);
 
                     Matcher m = oidPattern.matcher(algorithm);
@@ -863,12 +882,12 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
                         keyAgreementsNoOIDs.add(algorithm);
                     }
                 }
-                else if (entry.startsWith("Mac."))
+                else if (entry.startsWith("Mac.")) //NOI18N
                 {
                     //4 = "HMAC(-|/)".
-                    String algorithm = entry.substring("Mac.".length());
+                    String algorithm = entry.substring("Mac.".length()); //NOI18N
                     //Filter out algorithms not beginning with "HMAC"
-                    if (!algorithm.startsWith("HMAC"))
+                    if (!algorithm.startsWith("HMAC")) //NOI18N
                     {
                         continue;
                     }
@@ -898,13 +917,16 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
                         macsNoOIDs.add(algorithm);
                     }
                 }
-                else if (entry.startsWith("MessageDigest."))
+                else if (entry.startsWith("MessageDigest.")) //NOI18N
                 {
                     String algorithm =
-                            entry.substring("MessageDigest.".length());
-                    
-                    if(algorithm.endsWith("ImplementedIn")) {continue;}
-                    
+                            entry.substring("MessageDigest.".length()); //NOI18N
+
+                    if (algorithm.endsWith("ImplementedIn")) //NOI18N
+                    {
+                        continue;
+                    }
+
                     messageDigests.add(algorithm);
 
                     Matcher m = oidPattern.matcher(algorithm);
@@ -913,9 +935,9 @@ private void showOIDsMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//
                         messageDigestsNoOIDs.add(algorithm);
                     }
                 }
-                else if (entry.startsWith("Signature."))
+                else if (entry.startsWith("Signature.")) //NOI18N
                 {
-                    String algorithm = entry.substring("Signature.".length());
+                    String algorithm = entry.substring("Signature.".length()); //NOI18N
                     signatures.add(algorithm);
 
                     Matcher m = oidPattern.matcher(algorithm);
