@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import jcrypter.JCrypterFrame;
+import jcrypter.password.PasswordGenerator;
 
 /**
  *
@@ -52,7 +53,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
             //Init the required objects
             fout = new FileOutputStream(file);
             MersenneTwisterFast mt =
-                    new MersenneTwisterFast(Utils.MTSeed(JCrypterFrame.rand));
+                    new MersenneTwisterFast(PasswordGenerator.generateMTSeed(JCrypterFrame.rand));
             //Main random data write loop
             final int blocksize = 1024;
             for (int i = 0; i < size; i += blocksize)
@@ -149,7 +150,7 @@ public class RandomFileCreatorFrame extends javax.swing.JFrame
             //Init the required objects
             fout = new BufferedOutputStream(new FileOutputStream(file));
             MersenneTwisterFast mt =
-                    new MersenneTwisterFast(Utils.MTSeed(JCrypterFrame.rand));
+                    new MersenneTwisterFast(PasswordGenerator.generateMTSeed(JCrypterFrame.rand));
             fin = new FileInputStream("/dev/urandom");
             //Main random data write loop
             final int blocksize = 4096;

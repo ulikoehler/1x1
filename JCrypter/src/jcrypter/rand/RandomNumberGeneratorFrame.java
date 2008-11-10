@@ -20,8 +20,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import jcrypter.JCrypterFrame;
+import jcrypter.password.PasswordGenerator;
 import jcrypter.utils.MersenneTwisterFast;
-import jcrypter.utils.Utils;
 
 /**
  *
@@ -577,7 +577,7 @@ private void boundsEnabledCheckBoxStateChanged(javax.swing.event.ChangeEvent evt
         return model.getNumber().longValue();
     }
     private MersenneTwisterFast mt =
-            new MersenneTwisterFast(Utils.MTSeed(JCrypterFrame.rand));
+            new MersenneTwisterFast(PasswordGenerator.generateMTSeed(JCrypterFrame.rand));
     private ResourceBundle i18n =
             ResourceBundle.getBundle("jcrypter/rand/Bundle");
     private JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
