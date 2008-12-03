@@ -16,7 +16,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ResourceBundle;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -28,9 +27,6 @@ import javax.swing.SpinnerNumberModel;
  */
 public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 {
-
-    private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
-
     /** Creates new form JMathSheetGeneratorFrame */
     public JMathSheetGeneratorFrame()
     {
@@ -74,55 +70,55 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         numberToSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("0" + i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
+        setTitle(i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
 
-        okButton.setText("0" + i18n.getString("JMathSheetGeneratorFrame.okButton.text")); // NOI18N
+        okButton.setText(i18n.getString("JMathSheetGeneratorFrame.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
             }
         });
 
-        exercisesLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.exercisesLabel.text")); // NOI18N
+        exercisesLabel.setText(i18n.getString("JMathSheetGeneratorFrame.exercisesLabel.text")); // NOI18N
 
-        columnsLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.columnsLabel.text")); // NOI18N
+        columnsLabel.setText(i18n.getString("JMathSheetGeneratorFrame.columnsLabel.text")); // NOI18N
 
-        operatorLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.operatorLabel.text")); // NOI18N
+        operatorLabel.setText(i18n.getString("JMathSheetGeneratorFrame.operatorLabel.text")); // NOI18N
 
         exercisesSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(60), null, null, Integer.valueOf(1)));
-        exercisesSpinner.setToolTipText("0" + i18n.getString("JMathSheetGeneratorFrame.exercisesSpinner.toolTipText")); // NOI18N
+        exercisesSpinner.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.exercisesSpinner.toolTipText")); // NOI18N
 
         columnsSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(20), null, null, Integer.valueOf(1)));
 
         alignNumbersCheckbox.setSelected(true);
-        alignNumbersCheckbox.setText("0" + i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.text")); // NOI18N
-        alignNumbersCheckbox.setToolTipText("0" + i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.toolTipText")); // NOI18N
+        alignNumbersCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.text")); // NOI18N
+        alignNumbersCheckbox.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.toolTipText")); // NOI18N
 
-        floatingPointLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.text")); // NOI18N
-        floatingPointLabel.setToolTipText("0" + i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.toolTipText")); // NOI18N
+        floatingPointLabel.setText(i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.text")); // NOI18N
+        floatingPointLabel.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.toolTipText")); // NOI18N
 
-        placeholderLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.placeholderLabel.text")); // NOI18N
+        placeholderLabel.setText(i18n.getString("JMathSheetGeneratorFrame.placeholderLabel.text")); // NOI18N
 
         placeholderField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        placeholderField.setText("0" + i18n.getString("JMathSheetGeneratorFrame.placeholderField.text")); // NOI18N
+        placeholderField.setText(i18n.getString("JMathSheetGeneratorFrame.placeholderField.text")); // NOI18N
 
         plusCheckbox.setSelected(true);
-        plusCheckbox.setText("0" + i18n.getString("JMathSheetGeneratorFrame.plusCheckbox.text")); // NOI18N
+        plusCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.plusCheckbox.text")); // NOI18N
 
         minusCheckbox.setSelected(true);
-        minusCheckbox.setText("0" + i18n.getString("JMathSheetGeneratorFrame.minusCheckbox.text")); // NOI18N
+        minusCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.minusCheckbox.text")); // NOI18N
 
-        multCheckbox.setText("0" + i18n.getString("JMathSheetGeneratorFrame.multCheckbox.text")); // NOI18N
+        multCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.multCheckbox.text")); // NOI18N
 
-        divCheckbox.setText("0" + i18n.getString("JMathSheetGeneratorFrame.divCheckbox.text")); // NOI18N
+        divCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.divCheckbox.text")); // NOI18N
 
-        resultLimitsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("0" + i18n.getString("JMathSheetGeneratorFrame.resultLimitsPanel.border.title"))); // NOI18N
+        resultLimitsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(i18n.getString("JMathSheetGeneratorFrame.resultLimitsPanel.border.title"))); // NOI18N
 
-        numbersFromLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.numbersFromLabel.text")); // NOI18N
+        numbersFromLabel.setText(i18n.getString("JMathSheetGeneratorFrame.numbersFromLabel.text")); // NOI18N
 
         resultFromSpinner.setModel(new javax.swing.SpinnerNumberModel());
 
-        numbersToLabel.setText("0" + i18n.getString("JMathSheetGeneratorFrame.numbersToLabel.text")); // NOI18N
+        numbersToLabel.setText(i18n.getString("JMathSheetGeneratorFrame.numbersToLabel.text")); // NOI18N
 
         resultToSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(100), null, null, Integer.valueOf(1)));
 
@@ -152,13 +148,13 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        numberLimitsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("0" + i18n.getString("JMathSheetGeneratorFrame.numberLimitsPanel1.border.title"))); // NOI18N
+        numberLimitsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(i18n.getString("JMathSheetGeneratorFrame.numberLimitsPanel1.border.title"))); // NOI18N
 
-        numbersFromLabel1.setText("0" + i18n.getString("JMathSheetGeneratorFrame.numbersFromLabel1.text")); // NOI18N
+        numbersFromLabel1.setText(i18n.getString("JMathSheetGeneratorFrame.numbersFromLabel1.text")); // NOI18N
 
         numberFromSpinner.setModel(new javax.swing.SpinnerNumberModel());
 
-        numbersToLabel1.setText("0" + i18n.getString("JMathSheetGeneratorFrame.numbersToLabel1.text")); // NOI18N
+        numbersToLabel1.setText(i18n.getString("JMathSheetGeneratorFrame.numbersToLabel1.text")); // NOI18N
 
         numberToSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(100), null, null, Integer.valueOf(1)));
 
@@ -512,6 +508,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         });
     }
     private MersenneTwisterFast mt;
+    private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
     private javax.swing.JLabel columnsLabel;
