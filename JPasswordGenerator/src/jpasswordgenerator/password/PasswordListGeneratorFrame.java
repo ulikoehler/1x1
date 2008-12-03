@@ -274,11 +274,11 @@ latexSettingsDialog.setVisible(true);
             {
                 Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch (NullPointerException ex)
+            {
+            }
         }
     }
-
-
-    
     private PasswordGeneratorFrame parent = null;
     private ResourceBundle i18n =
             ResourceBundle.getBundle("jpasswordgenerator/password/Bundle");

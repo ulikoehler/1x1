@@ -212,33 +212,36 @@ private void generatePasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {
 }//GEN-LAST:event_generatePasswordButtonMouseClicked
 
 private void passwordListsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordListsItemActionPerformed
- pwlistFrame.setVisible(true);
+    pwlistFrame.setVisible(true);
 }//GEN-LAST:event_passwordListsItemActionPerformed
- 
-public void updateCharset()
-{
-    //Build a charset
-    String charset = PasswordGenerator.generateCharset(upperLetterCheckBox.isSelected(), lowerLetterCheckBox.isSelected(), numbersCheckBox.isSelected(), specialCharactersCheckBox.isSelected(), whiteSpacesCheckBox.isSelected(), minusCheckBox.isSelected(), underlineCheckBox.isSelected());
-    //If the user has not selected any character sets, show an error message and return
-    if (charset.length() == 0)
+
+    public void updateCharset()
     {
-        JOptionPane.showMessageDialog(this,
-                "No character sets selected",
-                "Select some character sets before trying to generate a password!",
-                JOptionPane.ERROR_MESSAGE);
-        return;
+        //Build a charset
+        String charset =
+                PasswordGenerator.generateCharset(upperLetterCheckBox.isSelected(), lowerLetterCheckBox.isSelected(), numbersCheckBox.isSelected(), specialCharactersCheckBox.isSelected(), whiteSpacesCheckBox.isSelected(), minusCheckBox.isSelected(), underlineCheckBox.isSelected());
+        //If the user has not selected any character sets, show an error message and return
+        if (charset.length() == 0)
+        {
+            JOptionPane.showMessageDialog(this,
+                    "No character sets selected",
+                    "Select some character sets before trying to generate a password!",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        //Generate a password and seed 
+        pwgen.setCharset(charset);
     }
-    //Generate a password and seed 
-    pwgen.setCharset(charset);
-}
+
     public static void main(String[] argv)
     {
         new PasswordGeneratorFrame().setVisible(true);
     }
-
-    private ResourceBundle i18n = ResourceBundle.getBundle("jpasswordgenerator/password/Bundle");
+    private ResourceBundle i18n =
+            ResourceBundle.getBundle("jpasswordgenerator/password/Bundle");
     private PasswordGenerator pwgen = new PasswordGenerator(new SecureRandom());
-    private PasswordListGeneratorFrame pwlistFrame = new PasswordListGeneratorFrame(this); //alphanumeric charset is default
+    private PasswordListGeneratorFrame pwlistFrame =
+            new PasswordListGeneratorFrame(this); //alphanumeric charset is default
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup characterSetButtonGroup;
     private javax.swing.JTextField characterSetField;
@@ -262,16 +265,15 @@ public void updateCharset()
     private javax.swing.JRadioButton useSpecifiedCharacterSetRadioButton;
     private javax.swing.JCheckBox whiteSpacesCheckBox;
     // End of variables declaration//GEN-END:variables
-
     public PasswordGenerator getPwgen()
     {
         return pwgen;
     }
-    
+
     public int getLength()
     {
-        SpinnerNumberModel lenModel = (SpinnerNumberModel) lengthSpinner.getModel();
+        SpinnerNumberModel lenModel =
+                (SpinnerNumberModel) lengthSpinner.getModel();
         return lenModel.getNumber().intValue();
     }
-
 }
