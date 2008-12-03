@@ -323,17 +323,17 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fc.showSaveDialog(this);
             fw = new FileWriter(fc.getSelectedFile());
             //Write the header
-            fw.write("\\documentclass[a4paper]{article}\n");
-            fw.write("\\usepackage[utf8]{inputenc}\n");
-            fw.write("\\usepackage[T1]{fontenc}\n");
-            fw.write("\\usepackage{multicol}\n");
-            fw.write("\\usepackage{longtable}\n");
-            fw.write("\\usepackage[ngerman]{babel}\n");
-            fw.write("\\parindent 0pt \n\n"); //NOI18N
-            fw.write("\\pagestyle{empty}\n");
-            fw.write("\\begin{document}\n");
-            fw.write("\\begin{multicol}{" + getColNumString() + "}\n");
-            fw.write("\\begin{longtable}{rcrcc}\n");
+            fw.write("\\documentclass[a4paper]{article}\n"); //NOI18N
+            fw.write("\\usepackage[utf8]{inputenc}\n"); //NOI18N
+            fw.write("\\usepackage[T1]{fontenc}\n"); //NOI18N
+            fw.write("\\usepackage{multicol}\n"); //NOI18N
+            fw.write("\\usepackage{longtable}\n"); //NOI18N
+            fw.write("\\usepackage[ngerman]{babel}\n"); //NOI18N
+            fw.write("\\parindent 0pt \n"); //NOI18N
+            fw.write("\\pagestyle{empty}\n\n"); //NOI18N
+            fw.write("\\begin{document}\n"); //NOI18N
+            fw.write("\\begin{multicols}{" + getColNumString() + "}\n"); //NOI18N
+            fw.write("\\begin{longtable}{rcrcc}\n"); //NOI18N
             /**
              * Main write loop
              */
