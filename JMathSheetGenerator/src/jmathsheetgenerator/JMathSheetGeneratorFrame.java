@@ -1,6 +1,8 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+ *
+ * NOTE: 43 lines per page
  */
 
 /*
@@ -45,15 +47,12 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private void initComponents() {
 
         okButton = new javax.swing.JButton();
-        exercisesLabel = new javax.swing.JLabel();
-        columnsLabel = new javax.swing.JLabel();
+        linesPerColumnLabel = new javax.swing.JLabel();
         operatorLabel = new javax.swing.JLabel();
-        exercisesSpinner = new javax.swing.JSpinner();
-        columnsSpinner = new javax.swing.JSpinner();
+        linesPerColSpinner = new javax.swing.JSpinner();
         alignNumbersCheckbox = new javax.swing.JCheckBox();
         floatingPointLabel = new javax.swing.JCheckBox();
-        placeholderLabel = new javax.swing.JLabel();
-        placeholderField = new javax.swing.JTextField();
+        lineLengthLabel = new javax.swing.JLabel();
         plusCheckbox = new javax.swing.JCheckBox();
         minusCheckbox = new javax.swing.JCheckBox();
         multCheckbox = new javax.swing.JCheckBox();
@@ -68,6 +67,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         numberFromSpinner = new javax.swing.JSpinner();
         numbersToLabel1 = new javax.swing.JLabel();
         numberToSpinner = new javax.swing.JSpinner();
+        lineLengthField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
@@ -79,16 +79,12 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             }
         });
 
-        exercisesLabel.setText(i18n.getString("JMathSheetGeneratorFrame.exercisesLabel.text")); // NOI18N
-
-        columnsLabel.setText( i18n.getString("JMathSheetGeneratorFrame.columnsLabel.text")); // NOI18N
+        linesPerColumnLabel.setText(i18n.getString("JMathSheetGeneratorFrame.linesPerColumnLabel.text")); // NOI18N
 
         operatorLabel.setText(i18n.getString("JMathSheetGeneratorFrame.operatorLabel.text")); // NOI18N
 
-        exercisesSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(60), null, null, Integer.valueOf(1)));
-        exercisesSpinner.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.exercisesSpinner.toolTipText")); // NOI18N
-
-        columnsSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(4), null, null, Integer.valueOf(1)));
+        linesPerColSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(60), null, null, Integer.valueOf(1)));
+        linesPerColSpinner.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.linesPerColSpinner.toolTipText")); // NOI18N
 
         alignNumbersCheckbox.setSelected(true);
         alignNumbersCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.text")); // NOI18N
@@ -97,10 +93,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         floatingPointLabel.setText(i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.text")); // NOI18N
         floatingPointLabel.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.toolTipText")); // NOI18N
 
-        placeholderLabel.setText(i18n.getString("JMathSheetGeneratorFrame.placeholderLabel.text")); // NOI18N
-
-        placeholderField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        placeholderField.setText(i18n.getString("JMathSheetGeneratorFrame.placeholderField.text")); // NOI18N
+        lineLengthLabel.setText(i18n.getString("JMathSheetGeneratorFrame.lineLengthLabel.text")); // NOI18N
 
         plusCheckbox.setSelected(true);
         plusCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.plusCheckbox.text")); // NOI18N
@@ -145,7 +138,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                     .addComponent(resultFromSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(numbersToLabel)
                     .addComponent(resultToSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         numberLimitsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(i18n.getString("JMathSheetGeneratorFrame.numberLimitsPanel1.border.title"))); // NOI18N
@@ -181,8 +174,11 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                     .addComponent(numberFromSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(numbersToLabel1)
                     .addComponent(numberToSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
+
+        lineLengthField.setText( i18n.getString("JMathSheetGeneratorFrame.lineLengthField.text")); // NOI18N
+        lineLengthField.setToolTipText( i18n.getString("JMathSheetGeneratorFrame.lineLengthField.toolTipText")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,37 +188,30 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(exercisesLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(exercisesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(operatorLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(plusCheckbox)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(minusCheckbox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(multCheckbox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(divCheckbox))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(columnsLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(columnsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(placeholderLabel)
+                        .addComponent(operatorLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(plusCheckbox)
+                        .addGap(17, 17, 17)
+                        .addComponent(minusCheckbox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(placeholderField, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))
+                        .addComponent(multCheckbox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(divCheckbox)
+                        .addGap(32, 32, 32))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lineLengthLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lineLengthField, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))
                     .addComponent(numberLimitsPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(resultLimitsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(floatingPointLabel)
                         .addComponent(alignNumbersCheckbox)
-                        .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(linesPerColumnLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(linesPerColSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -235,10 +224,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                         .addGap(9, 9, 9))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(columnsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(columnsLabel)
-                            .addComponent(exercisesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(exercisesLabel))
+                            .addComponent(linesPerColSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(linesPerColumnLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(plusCheckbox)
@@ -247,8 +234,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                             .addComponent(divCheckbox))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(placeholderLabel)
-                    .addComponent(placeholderField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lineLengthLabel)
+                    .addComponent(lineLengthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(numberLimitsPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -265,15 +252,15 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private String getColNumString()
+    private int getLinesPerCol()
     {
-        SpinnerNumberModel sm = (SpinnerNumberModel) columnsSpinner.getModel();
-        return Integer.toString(sm.getNumber().intValue());
+        SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
+        return sm.getNumber().intValue();
     }
 
     private int getExerciseNum()
     {
-        SpinnerNumberModel sm = (SpinnerNumberModel) exercisesSpinner.getModel();
+        SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
@@ -323,7 +310,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fc.showSaveDialog(this);
             fw = new FileWriter(fc.getSelectedFile());
             //Write the header
-            fw.write("\\documentclass[a4paper]{article}\n"); //NOI18N
+            fw.write("\\documentclass[a4paper,twocolumn]{srcartcl}\n"); //NOI18N
             fw.write("\\usepackage[utf8]{inputenc}\n"); //NOI18N
             fw.write("\\usepackage[T1]{fontenc}\n"); //NOI18N
             fw.write("\\usepackage{multicol}\n"); //NOI18N
@@ -332,13 +319,14 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fw.write("\\parindent 0pt \n"); //NOI18N
             fw.write("\\pagestyle{empty}\n\n"); //NOI18N
             fw.write("\\begin{document}\n"); //NOI18N
-            fw.write("\\begin{multicols}{" + getColNumString() + "}\n"); //NOI18N
             fw.write("\\begin{longtable}{rcrcc}\n"); //NOI18N
             /**
              * Main write loop
              */
             int exercises = getExerciseNum();
-            String placeholder = placeholderField.getText();
+            String placeholder = "\\underline{\\hspace{" + lineLengthField.getText() + "}}";
+            //Escape characters in the placeholder string
+            placeholder.replaceAll("_", "\\\\_");
             //Build a string containing all operators
             String operators = "";
             if (plusCheckbox.isSelected())
@@ -363,6 +351,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             int numberUpperLimit = getNumberTo();
             int resultLowerLimit = getResultFrom();
             int resultUpperLimit = getResultTo();
+
 
             int[] nums;
             int result = 0;
@@ -402,12 +391,11 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 }
                 while (!(inRange(result, resultLowerLimit, resultUpperLimit)));
                 //Write the exercise line
-                fw.write(Integer.toString(nums[0]) + " & " + op + " & " + Integer.toString(nums[1]) +
-                        " & = &" + placeholder + " \\\\\n");
+                fw.write("" + Integer.toString(nums[0]) + " & " + op + " & " + Integer.toString(nums[1]) +
+                        " & = & " + placeholder + " \\\\\n");
             }
             //Write the footer
             fw.write("\\end{longtable}\n");
-            fw.write("\\end{multicols}\n");
             fw.write("\\end{document}\n");
         }
         catch (IOException ex)
@@ -512,12 +500,12 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
-    private javax.swing.JLabel columnsLabel;
-    private javax.swing.JSpinner columnsSpinner;
     private javax.swing.JCheckBox divCheckbox;
-    private javax.swing.JLabel exercisesLabel;
-    private javax.swing.JSpinner exercisesSpinner;
     private javax.swing.JCheckBox floatingPointLabel;
+    private javax.swing.JTextField lineLengthField;
+    private javax.swing.JLabel lineLengthLabel;
+    private javax.swing.JSpinner linesPerColSpinner;
+    private javax.swing.JLabel linesPerColumnLabel;
     private javax.swing.JCheckBox minusCheckbox;
     private javax.swing.JCheckBox multCheckbox;
     private javax.swing.JSpinner numberFromSpinner;
@@ -529,8 +517,6 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private javax.swing.JLabel numbersToLabel1;
     private javax.swing.JButton okButton;
     private javax.swing.JLabel operatorLabel;
-    private javax.swing.JTextField placeholderField;
-    private javax.swing.JLabel placeholderLabel;
     private javax.swing.JCheckBox plusCheckbox;
     private javax.swing.JSpinner resultFromSpinner;
     private javax.swing.JPanel resultLimitsPanel;

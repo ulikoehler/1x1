@@ -29,38 +29,21 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="exercisesLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Component id="exercisesSpinner" min="-2" pref="60" max="-2" attributes="1"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="operatorLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="plusCheckbox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="minusCheckbox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="multCheckbox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="divCheckbox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="columnsLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="columnsSpinner" min="-2" pref="75" max="-2" attributes="1"/>
-                          </Group>
-                      </Group>
+                      <Component id="operatorLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="plusCheckbox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Component id="minusCheckbox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="multCheckbox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="divCheckbox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="placeholderLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="placeholderField" pref="202" max="32767" attributes="1"/>
+                      <Component id="lineLengthLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lineLengthField" pref="202" max="32767" attributes="0"/>
                   </Group>
                   <Component id="numberLimitsPanel1" alignment="0" max="32767" attributes="1"/>
                   <Component id="resultLimitsPanel" alignment="0" max="32767" attributes="1"/>
@@ -68,6 +51,11 @@
                       <Component id="floatingPointLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="alignNumbersCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="okButton" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="linesPerColumnLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="linesPerColSpinner" pref="163" max="32767" attributes="1"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -85,10 +73,8 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="columnsSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="columnsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="exercisesSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="exercisesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="linesPerColSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="linesPerColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -101,8 +87,8 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="placeholderLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="placeholderField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lineLengthLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lineLengthField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="numberLimitsPanel1" min="-2" max="-2" attributes="0"/>
@@ -130,17 +116,10 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="okButtonMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="exercisesLabel">
+    <Component class="javax.swing.JLabel" name="linesPerColumnLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.exercisesLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="columnsLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.columnsLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.linesPerColumnLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -151,20 +130,13 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="exercisesSpinner">
+    <Component class="javax.swing.JSpinner" name="linesPerColSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="60" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.exercisesSpinner.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JSpinner" name="columnsSpinner">
-      <Properties>
-        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="4" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.linesPerColSpinner.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -189,18 +161,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="placeholderLabel">
+    <Component class="javax.swing.JLabel" name="lineLengthLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.placeholderLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="placeholderField">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="11"/>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.placeholderField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.lineLengthLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -270,7 +234,7 @@
                       <Component id="numbersToLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="resultToSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -342,7 +306,7 @@
                       <Component id="numbersToLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="numberToSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <EmptySpace pref="18" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -378,5 +342,15 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JTextField" name="lineLengthField">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.lineLengthField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.lineLengthField.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>
