@@ -347,7 +347,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             String opString = "";
             //Declare a reference to the operators array
             String opArray[] = stdOperators;
-            if(schoolOperatorsCheckbox.isSelected())
+            if (schoolOperatorsCheckbox.isSelected())
             {
                 opArray = schoolOperators;
             }
@@ -380,7 +380,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                         }
                         case '/':
                         {
-                            if(nums[1] == 0) {continue;}
+                            if (nums[1] == 0)
+                            {
+                                continue;
+                            }
                             result = nums[0] / nums[1];
                             opString = opArray[3];
                             break;
@@ -422,10 +425,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
              * Change the tabular column format string
              * if number aligning is not activated
              */
-             if(!alignNumbersCheckbox.isSelected())
-             {
-                 tabularColFormatString = "ccccc";
-             }
+            if (!alignNumbersCheckbox.isSelected())
+            {
+                tabularColFormatString = "ccccc";
+            }
             /**
              * Write the main exercises
              */
@@ -479,16 +482,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 
     private int[] generateMTSeed()
     {
-        //Seed; 624(*4) = max number of seed bytes
-        final int mtSeedSize = 2496;
-        byte[] seedBytes = null;
-        seedBytes = getUrandMTSeed();
-        if (seedBytes == null)
-        {
-            seedBytes = new byte[mtSeedSize];
-            new SecureRandom().nextBytes(seedBytes);
-        }
-        return byteToInt(seedBytes);
+        return generateMTSeed(new SecureRandom());
     }
 
     private int[] generateMTSeed(SecureRandom randomSource)
@@ -536,8 +530,14 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     private String tabularColFormatString = "rcrcc"; //LaTeX table format string
-    private static final String[] stdOperators = {"+","-","*","/"};
-    private static final String[] schoolOperators = {"+","-","\\cdot",":"};
+    private static final String[] stdOperators =
+    {
+        "+", "-", "*", "/"
+    };
+    private static final String[] schoolOperators =
+    {
+        "+", "-", "$\\cdot$", ":"
+    };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
     private javax.swing.JCheckBox divCheckbox;
