@@ -29,6 +29,7 @@ import javax.swing.SpinnerNumberModel;
  */
 public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 {
+
     /** Creates new form JMathSheetGeneratorFrame */
     public JMathSheetGeneratorFrame()
     {
@@ -83,7 +84,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 
         operatorLabel.setText(i18n.getString("JMathSheetGeneratorFrame.operatorLabel.text")); // NOI18N
 
-        linesPerColSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(60), null, null, Integer.valueOf(1)));
+        linesPerColSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(43), null, null, Integer.valueOf(1)));
         linesPerColSpinner.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.linesPerColSpinner.toolTipText")); // NOI18N
 
         alignNumbersCheckbox.setSelected(true);
@@ -258,7 +259,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return sm.getNumber().intValue();
     }
 
-    private int getExerciseNum()
+    private int getExercisesPerCol()
     {
         SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
         return sm.getNumber().intValue();
@@ -301,29 +302,13 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return (arg >= lower && arg < upper);
     }
 
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_okButtonMouseClicked
-    {//GEN-HEADEREND:event_okButtonMouseClicked
-        FileWriter fw = null;
+    private void writeCol()
+    {
+
         try
         {
-            JFileChooser fc = new JFileChooser(new File("."));
-            fc.showSaveDialog(this);
-            fw = new FileWriter(fc.getSelectedFile());
-            //Write the header
-            fw.write("\\documentclass[a4paper,twocolumn]{srcartcl}\n"); //NOI18N
-            fw.write("\\usepackage[utf8]{inputenc}\n"); //NOI18N
-            fw.write("\\usepackage[T1]{fontenc}\n"); //NOI18N
-            fw.write("\\usepackage{multicol}\n"); //NOI18N
-            fw.write("\\usepackage{longtable}\n"); //NOI18N
-            fw.write("\\usepackage[ngerman]{babel}\n"); //NOI18N
-            fw.write("\\parindent 0pt \n"); //NOI18N
-            fw.write("\\pagestyle{empty}\n\n"); //NOI18N
-            fw.write("\\begin{document}\n"); //NOI18N
-            fw.write("\\begin{longtable}{rcrcc}\n"); //NOI18N
-            /**
-             * Main write loop
-             */
-            int exercises = getExerciseNum();
+            int exercises = getExercisesPerCol();
+            fw.write("\\begin{tabular}{rcrcc}\n"); //NOI18N
             String placeholder = "\\underline{\\hspace{" + lineLengthField.getText() + "}}";
             //Escape characters in the placeholder string
             placeholder.replaceAll("_", "\\\\_");
@@ -346,18 +331,15 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 operators += "/";
             }
             int opNum = operators.length(); //Number of operators
-
             int numberLowerLimit = getNumberFrom();
             int numberUpperLimit = getNumberTo();
             int resultLowerLimit = getResultFrom();
             int resultUpperLimit = getResultTo();
-
-
             int[] nums;
             int result = 0;
             char op;
-
-            for (int i = 0; i < exercises; i++)
+            for (int i = 0; i < exercises;
+                    i++)
             {
                 do
                 {
@@ -391,11 +373,39 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 }
                 while (!(inRange(result, resultLowerLimit, resultUpperLimit)));
                 //Write the exercise line
-                fw.write("" + Integer.toString(nums[0]) + " & " + op + " & " + Integer.toString(nums[1]) +
-                        " & = & " + placeholder + " \\\\\n");
+                fw.write("" + Integer.toString(nums[0]) + " & " + op + " & " +
+                        Integer.toString(nums[1]) + " & = & " + placeholder + " \\\\\n");
             }
             //Write the footer
-            fw.write("\\end{longtable}\n");
+            fw.write("\\end{tabular}\n");
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void okButtonMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_okButtonMouseClicked
+    {//GEN-HEADEREND:event_okButtonMouseClicked
+        try
+        {
+            JFileChooser fc = new JFileChooser(new File("."));
+            fc.showSaveDialog(this);
+            fw = new FileWriter(fc.getSelectedFile());
+            //Write the header
+            fw.write("\\documentclass[a4paper,twocolumn]{scrartcl}\n"); //NOI18N
+            fw.write("\\usepackage[utf8]{inputenc}\n"); //NOI18N
+            fw.write("\\usepackage[T1]{fontenc}\n"); //NOI18N
+            fw.write("\\usepackage[ngerman]{babel}\n"); //NOI18N
+            fw.write("\\parindent 0pt \n"); //NOI18N
+            fw.write("\\pagestyle{empty}\n\n"); //NOI18N
+            fw.write("\\begin{document}\n"); //NOI18N
+            /**
+             * Write the main exercises
+             */
+            writeCol();
+            writeCol();
+            //Write the main footer
             fw.write("\\end{document}\n");
         }
         catch (IOException ex)
@@ -497,6 +507,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         });
     }
     private MersenneTwisterFast mt;
+    private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
