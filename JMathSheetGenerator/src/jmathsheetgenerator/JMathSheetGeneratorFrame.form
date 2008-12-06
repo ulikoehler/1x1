@@ -25,9 +25,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="schoolOperatorsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="resultLimitsPanel" alignment="1" max="32767" attributes="1"/>
                   <Component id="numberLimitsPanel1" alignment="1" max="32767" attributes="1"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -42,11 +43,7 @@
                       <Component id="divCheckbox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                      <Component id="floatingPointLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="alignNumbersCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="okButton" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="floatingPointLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="linesPerColumnLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -58,6 +55,8 @@
                           <Component id="linesPerColSpinner" alignment="0" pref="167" max="32767" attributes="1"/>
                       </Group>
                   </Group>
+                  <Component id="alignNumbersCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="okButton" alignment="0" pref="260" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -97,11 +96,13 @@
               <Component id="resultLimitsPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="floatingPointLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="alignNumbersCheckbox" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="schoolOperatorsCheckbox" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Component id="okButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -134,7 +135,7 @@
     <Component class="javax.swing.JSpinner" name="linesPerColSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="43" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="43" maximum="43" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.linesPerColSpinner.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
@@ -235,7 +236,7 @@
                       <Component id="numbersToLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="resultToSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="21" max="32767" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -307,7 +308,7 @@
                       <Component id="numberFromSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="numbersFromLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -350,6 +351,17 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.lineLengthField.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="schoolOperatorsCheckbox">
+      <Properties>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.schoolOperatorsCheckbox.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.schoolOperatorsCheckbox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
