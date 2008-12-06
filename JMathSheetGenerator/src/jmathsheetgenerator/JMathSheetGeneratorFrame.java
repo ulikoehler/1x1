@@ -314,7 +314,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         try
         {
             int exercises = getExercisesPerCol();
-            fw.write("\\begin{tabular}{rcrcc}\n"); //NOI18N
+            fw.write("\\begin{tabular}{" + tabularColFormatString + "}\n"); //NOI18N
             String placeholder = "\\underline{\\hspace{" + lineLengthField.getText() + "}}";
             //Escape characters in the placeholder string
             placeholder.replaceAll("_", "\\\\_");
@@ -343,9 +343,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             int resultUpperLimit = getResultTo();
             int[] nums;
             int result = 0;
-            char op;
+            char op; //Used only for switching
+            String opString = "";
             //Declare a reference to the operators array
-            char opArray[] = stdOperators;
+            String opArray[] = stdOperators;
             if(schoolOperatorsCheckbox.isSelected())
             {
                 opArray = schoolOperators;
@@ -362,25 +363,26 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                         case '+':
                         {
                             result = nums[0] + nums[1];
-                            op = opArray[0];
+                            opString = opArray[0];
                             break;
                         }
                         case '-':
                         {
                             result = nums[0] - nums[1];
-                            op = opArray[1];
+                            opString = opArray[1];
                             break;
                         }
                         case '*':
                         {
                             result = nums[0] * nums[1];
-                            op = opArray[2];
+                            opString = opArray[2];
                             break;
                         }
                         case '/':
                         {
+                            if(nums[1] == 0) {continue;}
                             result = nums[0] / nums[1];
-                            op = opArray[3];
+                            opString = opArray[3];
                             break;
                         }
                         default:
@@ -389,7 +391,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 }
                 while (!(inRange(result, resultLowerLimit, resultUpperLimit)));
                 //Write the exercise line
-                fw.write("" + Integer.toString(nums[0]) + " & " + op + " & " +
+                fw.write("" + Integer.toString(nums[0]) + " & " + opString + " & " +
                         Integer.toString(nums[1]) + " & = & " + placeholder + " \\\\\n");
             }
             //Write the footer
@@ -534,8 +536,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     private String tabularColFormatString = "rcrcc"; //LaTeX table format string
-    private static final char[] stdOperators = {'+','-','*','/'};
-    private static final char[] schoolOperators = {'+','-','\u06d4',':'};
+    private static final String[] stdOperators = {"+","-","*","/"};
+    private static final String[] schoolOperators = {"+","-","\\cdot",":"};
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
     private javax.swing.JCheckBox divCheckbox;
