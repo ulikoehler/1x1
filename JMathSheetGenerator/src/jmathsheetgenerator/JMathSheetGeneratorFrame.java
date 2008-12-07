@@ -38,6 +38,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         initComponents();
         //Initialize the Mersenne Twister
         mt = new MersenneTwisterFast(generateMTSeed());
+    }
+
+    private void readConfigFile()
+    {
         /**
          * Try to load settings from the config file
          */
@@ -62,7 +66,6 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 realResultsCheckbox.setSelected(props.getProperty("realResults").equals("true"));
                 alignNumbersCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
                 schoolOperatorsCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
-
             }
             catch (IOException ex)
             {
