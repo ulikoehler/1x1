@@ -66,9 +66,9 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             props.setProperty("multEnabled", Boolean.toString(multCheckbox.isSelected()));
             props.setProperty("divEnabled", Boolean.toString(divCheckbox.isSelected()));
             //Options checkboxes
-            props.setProperty("realResults", Boolean.toString(divCheckbox.isSelected()));
-            props.setProperty("alignNumbers", Boolean.toString(divCheckbox.isSelected()));
-            props.setProperty("schoolOperators", Boolean.toString(divCheckbox.isSelected()));
+            props.setProperty("realResults", Boolean.toString(realResultsCheckbox.isSelected()));
+            props.setProperty("alignNumbers", Boolean.toString(alignNumbersCheckbox.isSelected()));
+            props.setProperty("schoolOperators", Boolean.toString(schoolOperatorsCheckbox.isSelected()));
             //Text fields
             props.setProperty("title", titleField.getText());
             props.setProperty("lineLength", lineLengthField.getText());
@@ -106,22 +106,27 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 setResultFrom(new Integer(props.getProperty("resultFrom")));
                 setResultTo(new Integer(props.getProperty("resultTo")));
                 //Operator checkboxes
-                plusCheckbox.setSelected(props.getProperty("plusEnabled").equals("true"));
-                minusCheckbox.setSelected(props.getProperty("minusEnabled").equals("true"));
-                multCheckbox.setSelected(props.getProperty("multEnabled").equals("true"));
-                divCheckbox.setSelected(props.getProperty("divEnabled").equals("true"));
+                plusCheckbox.setSelected(new Boolean(props.getProperty("plusEnabled")));
+                minusCheckbox.setSelected(new Boolean(props.getProperty("minusEnabled")));
+                multCheckbox.setSelected(new Boolean(props.getProperty("multEnabled")));
+                divCheckbox.setSelected(new Boolean(props.getProperty("divEnabled")));
                 //Options checkboxes
-                realResultsCheckbox.setSelected(props.getProperty("realResults").equals("true"));
-                alignNumbersCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
-                schoolOperatorsCheckbox.setSelected(props.getProperty("schoolOperators").equals("true"));
+                realResultsCheckbox.setSelected(new Boolean(props.getProperty("realResults")));
+                alignNumbersCheckbox.setSelected(new Boolean(props.getProperty("alignNumbers")));
+                schoolOperatorsCheckbox.setSelected(new Boolean(props.getProperty("schoolOperators")));
                 //Text fields
                 titleField.setText(props.getProperty("title"));
                 lineLengthField.setText(props.getProperty("lineLength"));
                 //Other
-                fc.setSelectedFile(new File(props.getProperty("fileChooserSelected")));
+                String fcSelectedFileName = props.getProperty("fileChooserSelected");
+                if (fcSelectedFileName != null)
+                {
+                    fc.setSelectedFile(new File(fcSelectedFileName));
+                }
             }
             catch (NumberFormatException ex)
             {
+                Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
             catch (IOException ex)
             {
@@ -551,6 +556,14 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                                 continue;
                             }
                             result = nums[0] / nums[1];
+                            if (realResultsCheckbox.isSelected())
+                            {
+                                float fResult = nums[0] / nums[1];
+                                if ((float) result != fResult) //result has decimal places
+                                {
+                                    continue;
+                                }
+                            }
                             opString = opArray[3];
                             break;
                         }
@@ -677,6 +690,9 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_formWindowClosing
         //Write the config file
         writeConfigFile();
+        //Exit
+        dispose();
+        System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 
     private byte[] getUrandMTSeed()
