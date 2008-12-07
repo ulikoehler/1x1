@@ -49,10 +49,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 props.load(new FileReader(configFile));
                 //Exercises per line
                 setLinesPerCol(new Integer(props.getProperty("linesPerCol")));
-                setLinesPerCol(new Integer(props.getProperty("numberFrom")));
-                setLinesPerCol(new Integer(props.getProperty("numberTo")));
-                setLinesPerCol(new Integer(props.getProperty("resultFrom")));
-                setLinesPerCol(new Integer(props.getProperty("resultTo")));
+                setNumberFrom(new Integer(props.getProperty("numberFrom")));
+                setNumberTo(new Integer(props.getProperty("numberTo")));
+                setResultFrom(new Integer(props.getProperty("resultFrom")));
+                setResultTo(new Integer(props.getProperty("resultTo")));
                 //Operator checkboxes
                 plusCheckbox.setSelected(props.getProperty("plusEnabled").equals("true"));
                 minusCheckbox.setSelected(props.getProperty("minusEnabled").equals("true"));
