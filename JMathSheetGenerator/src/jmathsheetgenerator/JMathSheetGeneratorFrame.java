@@ -50,6 +50,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             props.store(new FileWriter(configFile), "JMathSheetGenerator options");
             //Exercises per line
             props.setProperty("linesPerCol", Integer.toString(getLinesPerCol()));
+            props.setProperty("pageCount", Integer.toString(getPageCount()));
             props.setProperty("numberFrom", Integer.toString(getNumberFrom()));
             props.setProperty("numberTo", Integer.toString(getNumberTo()));
             props.setProperty("resultFrom", Integer.toString(getResultFrom()));
@@ -85,6 +86,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 props.load(new FileReader(configFile));
                 //Exercises per line
                 setLinesPerCol(new Integer(props.getProperty("linesPerCol")));
+                setPageCount(new Integer(props.getProperty("linesPerCol")));
                 setNumberFrom(new Integer(props.getProperty("numberFrom")));
                 setNumberTo(new Integer(props.getProperty("numberTo")));
                 setResultFrom(new Integer(props.getProperty("resultFrom")));
@@ -291,8 +293,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                     .addComponent(realResultsCheckbox)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lineLengthLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(lineLengthField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(lineLengthField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(alignNumbersCheckbox)
                     .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
@@ -300,9 +302,9 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                             .addComponent(linesPerColumnLabel)
                             .addComponent(pageCountLabel))
                         .addGap(52, 52, 52)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(pageCountSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(linesPerColSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
+                            .addComponent(linesPerColSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

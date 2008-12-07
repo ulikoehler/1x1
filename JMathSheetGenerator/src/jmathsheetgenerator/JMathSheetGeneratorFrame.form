@@ -49,8 +49,8 @@
                   <Component id="realResultsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lineLengthLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="lineLengthField" pref="171" max="32767" attributes="0"/>
+                      <EmptySpace pref="18" max="32767" attributes="1"/>
+                      <Component id="lineLengthField" min="-2" pref="171" max="-2" attributes="0"/>
                   </Group>
                   <Component id="alignNumbersCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="okButton" alignment="0" pref="264" max="32767" attributes="0"/>
@@ -60,7 +60,7 @@
                           <Component id="pageCountLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="pageCountSpinner" pref="171" max="32767" attributes="0"/>
                           <Component id="linesPerColSpinner" alignment="0" pref="171" max="32767" attributes="1"/>
                       </Group>
