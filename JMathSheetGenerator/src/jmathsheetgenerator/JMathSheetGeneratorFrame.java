@@ -141,7 +141,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         lineLengthField = new javax.swing.JTextField();
         schoolOperatorsCheckbox = new javax.swing.JCheckBox();
         pageCountLabel = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        pageCountSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
@@ -265,7 +265,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 
         pageCountLabel.setText( i18n.getString("JMathSheetGeneratorFrame.pageCountLabel.text")); // NOI18N
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        pageCountSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -301,7 +301,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                             .addComponent(pageCountLabel))
                         .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                            .addComponent(pageCountSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                             .addComponent(linesPerColSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -315,7 +315,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pageCountLabel)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pageCountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(plusCheckbox)
@@ -339,7 +339,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addComponent(schoolOperatorsCheckbox)
                 .addGap(6, 6, 6)
                 .addComponent(okButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -354,6 +354,18 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private void setLinesPerCol(int val)
     {
         SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
+        sm.setValue(val);
+    }
+
+    private int getPageCount()
+    {
+        SpinnerNumberModel sm = (SpinnerNumberModel) pageCountSpinner.getModel();
+        return sm.getNumber().intValue();
+    }
+
+    private void setPageCount(int val)
+    {
+        SpinnerNumberModel sm = (SpinnerNumberModel) pageCountSpinner.getModel();
         sm.setValue(val);
     }
 
@@ -538,11 +550,13 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             {
                 tabularColFormatString = "ccccc";
             }
-            /**
-             * Write the main exercises
-             */
-            writeCol();
-            writeCol();
+            //Main page writing loop
+            for(int i = getPageCount(); i > 0; i--)
+            {
+                writeCol();
+                writeCol();
+                if(i > 1) {fw.write("\\newpage\n");}
+            }
             //Write the main footer
             fw.write("\\end{document}\n");
         }
@@ -657,7 +671,6 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
     private javax.swing.JCheckBox divCheckbox;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField lineLengthField;
     private javax.swing.JLabel lineLengthLabel;
     private javax.swing.JSpinner linesPerColSpinner;
@@ -674,6 +687,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private javax.swing.JButton okButton;
     private javax.swing.JLabel operatorLabel;
     private javax.swing.JLabel pageCountLabel;
+    private javax.swing.JSpinner pageCountSpinner;
     private javax.swing.JCheckBox plusCheckbox;
     private javax.swing.JCheckBox realResultsCheckbox;
     private javax.swing.JSpinner resultFromSpinner;
