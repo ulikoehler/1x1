@@ -65,6 +65,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             props.setProperty("alignNumbers", Boolean.toString(divCheckbox.isSelected()));
             props.setProperty("schoolOperators", Boolean.toString(divCheckbox.isSelected()));
             //Text fields
+            props.setProperty("title", titleField.getText());
             props.setProperty("lineLength", lineLengthField.getText());
         }
         catch (IOException ex)
@@ -101,6 +102,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 alignNumbersCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
                 schoolOperatorsCheckbox.setSelected(props.getProperty("schoolOperators").equals("true"));
                 //Text fields
+                titleField.setText(props.getProperty("title"));
                 lineLengthField.setText(props.getProperty("lineLength"));
             }
             catch (IOException ex)
@@ -144,6 +146,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         schoolOperatorsCheckbox = new javax.swing.JCheckBox();
         pageCountLabel = new javax.swing.JLabel();
         pageCountSpinner = new javax.swing.JSpinner();
+        titleLabel = new javax.swing.JLabel();
+        titleField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
@@ -207,7 +211,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addComponent(resultFromSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(numbersToLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(resultToSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -219,7 +223,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                     .addComponent(resultFromSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(numbersToLabel)
                     .addComponent(resultToSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         numberLimitsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(i18n.getString("JMathSheetGeneratorFrame.numberLimitsPanel1.border.title"))); // NOI18N
@@ -237,7 +241,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         numberLimitsPanel1Layout.setHorizontalGroup(
             numberLimitsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, numberLimitsPanel1Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(numbersFromLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(numberFromSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,7 +259,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                     .addComponent(numbersToLabel1)
                     .addComponent(numberFromSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(numbersFromLabel1))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         lineLengthField.setText( i18n.getString("JMathSheetGeneratorFrame.lineLengthField.text")); // NOI18N
@@ -269,19 +273,21 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 
         pageCountSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
+        titleLabel.setText( i18n.getString("JMathSheetGeneratorFrame.titleLabel.text")); // NOI18N
+
+        titleField.setText( i18n.getString("JMathSheetGeneratorFrame.titleField.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(schoolOperatorsCheckbox)
-                    .addComponent(resultLimitsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(numberLimitsPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(operatorLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                         .addComponent(plusCheckbox)
                         .addGap(4, 4, 4)
                         .addComponent(minusCheckbox)
@@ -290,27 +296,37 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(divCheckbox)
                         .addGap(14, 14, 14))
-                    .addComponent(realResultsCheckbox)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lineLengthLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(lineLengthField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(alignNumbersCheckbox)
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(linesPerColumnLabel)
                             .addComponent(pageCountLabel))
                         .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pageCountSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(linesPerColSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
+                            .addComponent(pageCountSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(linesPerColSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lineLengthLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addComponent(lineLengthField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(titleLabel)
+                        .addGap(62, 62, 62)
+                        .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
+                    .addComponent(schoolOperatorsCheckbox, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(realResultsCheckbox, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(alignNumbersCheckbox, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resultLimitsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(numberLimitsPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleLabel)
+                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(linesPerColSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(linesPerColumnLabel))
@@ -341,7 +357,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addComponent(schoolOperatorsCheckbox)
                 .addGap(6, 6, 6)
                 .addComponent(okButton)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -696,5 +712,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private javax.swing.JPanel resultLimitsPanel;
     private javax.swing.JSpinner resultToSpinner;
     private javax.swing.JCheckBox schoolOperatorsCheckbox;
+    private javax.swing.JTextField titleField;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
