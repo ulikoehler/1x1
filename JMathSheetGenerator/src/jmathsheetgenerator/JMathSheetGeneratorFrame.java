@@ -40,6 +40,34 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         mt = new MersenneTwisterFast(generateMTSeed());
     }
 
+    private void writeConfigFile()
+    {
+        try
+        {
+            Properties props = new Properties();
+            props.store(new FileWriter(configFile), "JMathSheetGenerator options");
+            //Exercises per line
+            props.setProperty("linesPerCol", Integer.toString(getLinesPerCol()));
+            props.setProperty("numberFrom", Integer.toString(getNumberFrom()));
+            props.setProperty("numberTo", Integer.toString(getNumberTo()));
+            props.setProperty("resultFrom", Integer.toString(getResultFrom()));
+            props.setProperty("resultTo", Integer.toString(getResultTo()));
+            //Operator checkboxes
+            props.setProperty("plusEnabled", Boolean.toString(plusCheckbox.isSelected()));
+            props.setProperty("minusEnabled", Boolean.toString(minusCheckbox.isSelected()));
+            props.setProperty("multEnabled", Boolean.toString(multCheckbox.isSelected()));
+            props.setProperty("divEnabled", Boolean.toString(divCheckbox.isSelected()));
+            //Options checkboxes
+            props.setProperty("realResults", Boolean.toString(divCheckbox.isSelected()));
+            props.setProperty("alignNumbers", Boolean.toString(divCheckbox.isSelected()));
+            props.setProperty("schoolOperators", Boolean.toString(divCheckbox.isSelected()));
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void readConfigFile()
     {
         /**
@@ -65,7 +93,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 //Options checkboxes
                 realResultsCheckbox.setSelected(props.getProperty("realResults").equals("true"));
                 alignNumbersCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
-                schoolOperatorsCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
+                schoolOperatorsCheckbox.setSelected(props.getProperty("schoolOperators").equals("true"));
             }
             catch (IOException ex)
             {
