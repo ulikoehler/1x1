@@ -46,12 +46,11 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     {
         try
         {
-            if(!configFile.exists())
+            if (!configFile.exists())
             {
                 configFile.createNewFile();
             }
             Properties props = new Properties();
-            props.store(new FileWriter(configFile), "JMathSheetGenerator options");
             //Exercises per line
             props.setProperty("linesPerCol", Integer.toString(getLinesPerCol()));
             props.setProperty("pageCount", Integer.toString(getPageCount()));
@@ -72,7 +71,13 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             props.setProperty("title", titleField.getText());
             props.setProperty("lineLength", lineLengthField.getText());
             //Other
-            props.setProperty("fileChooserSelected", fc.getSelectedFile().getPath());
+            File fcSelectedFile = fc.getSelectedFile();
+            if (fcSelectedFile != null)
+            {
+                props.setProperty("fileChooserSelected", fcSelectedFile.getAbsolutePath());
+            }
+            //Write the properties to the config file
+            props.store(new FileWriter(configFile), "JMathSheetGenerator options");
         }
         catch (IOException ex)
         {
@@ -93,7 +98,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 props.load(new FileReader(configFile));
                 //Exercises per line
                 setLinesPerCol(new Integer(props.getProperty("linesPerCol")));
-                setPageCount(new Integer(props.getProperty("linesPerCol")));
+                setPageCount(new Integer(props.getProperty("pageCount")));
                 setNumberFrom(new Integer(props.getProperty("numberFrom")));
                 setNumberTo(new Integer(props.getProperty("numberTo")));
                 setResultFrom(new Integer(props.getProperty("resultFrom")));
@@ -113,9 +118,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 //Other
                 fc.setSelectedFile(new File(props.getProperty("fileChooserSelected")));
             }
-            catch(NumberFormatException ex)
+            catch (NumberFormatException ex)
             {
-                
             }
             catch (IOException ex)
             {
@@ -163,6 +167,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -369,7 +374,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addComponent(schoolOperatorsCheckbox)
                 .addGap(6, 6, 6)
                 .addComponent(okButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -561,7 +566,12 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         try
         {
             fc.showSaveDialog(this);
-            fw = new FileWriter(fc.getSelectedFile());
+            File selectedFile = fc.getSelectedFile();
+            if (selectedFile == null) //User aborted the save dialog
+            {
+                return;
+            }
+            fw = new FileWriter(selectedFile);
             //Write the header
             fw.write("\\documentclass[a4paper,twocolumn]{scrartcl}\n"); //NOI18N
             fw.write("\\usepackage[utf8]{inputenc}\n"); //NOI18N
@@ -570,17 +580,17 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fw.write("\\parindent 0pt \n"); //NOI18N
             //Write the title if the title is not empty
             String title = titleField.getText();
-            if(!title.isEmpty())
+            if (!title.isEmpty())
             {
                 fw.write("\\title{" + title + "}\n"); //NOI18N
                 fw.write("\\date{}\n"); //NOI18N
                 fw.write("\\author{}\n"); //NOI18N
             }
             fw.write("\\pagestyle{empty}\n\n"); //NOI18N
-            
+
             fw.write("\\begin{document}\n"); //NOI18N
             //Write the title page if the title is not empty
-            if(!title.isEmpty())
+            if (!title.isEmpty())
             {
                 fw.write("\\maketitle\n");
             }
@@ -595,11 +605,11 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             //Main page writing loop
             int pageCount = getPageCount();
             int linesPerCol = getLinesPerCol();
-            for(int i = getPageCount(); i > 0; i--)
+            for (int i = getPageCount(); i > 0; i--)
             {
                 //Write the columns
                 //Title page: 10 lines less
-                if(i == pageCount && !title.isEmpty())
+                if (i == pageCount && !title.isEmpty())
                 {
                     writeCol(linesPerCol - 10);
                     writeCol(linesPerCol - 10);
@@ -609,7 +619,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                     writeCol(linesPerCol);
                     writeCol(linesPerCol);
                 }
-                if(i > 1) {fw.write("\\newpage\n");}
+                if (i > 1)
+                {
+                    fw.write("\\newpage\n");
+                }
             }
             //Write the main footer
             fw.write("\\end{document}\n");
@@ -626,7 +639,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         {
             try
             {
-                if(fw != null) {fw.close();}
+                if (fw != null)
+                {
+                    fw.close();
+                }
             }
             catch (NullPointerException ex)
             {
