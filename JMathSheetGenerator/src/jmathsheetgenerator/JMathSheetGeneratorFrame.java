@@ -14,9 +14,11 @@ package jmathsheetgenerator;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +38,37 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         initComponents();
         //Initialize the Mersenne Twister
         mt = new MersenneTwisterFast(generateMTSeed());
+        /**
+         * Try to load settings from the config file
+         */
+        if (configFile.exists())
+        {
+            try
+            {
+                Properties props = new Properties();
+                props.load(new FileReader(configFile));
+                //Exercises per line
+                setLinesPerCol(new Integer(props.getProperty("linesPerCol")));
+                setLinesPerCol(new Integer(props.getProperty("numberFrom")));
+                setLinesPerCol(new Integer(props.getProperty("numberTo")));
+                setLinesPerCol(new Integer(props.getProperty("resultFrom")));
+                setLinesPerCol(new Integer(props.getProperty("resultTo")));
+                //Operator checkboxes
+                plusCheckbox.setSelected(props.getProperty("plusEnabled").equals("true"));
+                minusCheckbox.setSelected(props.getProperty("minusEnabled").equals("true"));
+                multCheckbox.setSelected(props.getProperty("multEnabled").equals("true"));
+                divCheckbox.setSelected(props.getProperty("divEnabled").equals("true"));
+                //Options checkboxes
+                realResultsCheckbox.setSelected(props.getProperty("realResults").equals("true"));
+                alignNumbersCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
+                schoolOperatorsCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
+
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /** This method is called from within the constructor to
@@ -52,7 +85,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         operatorLabel = new javax.swing.JLabel();
         linesPerColSpinner = new javax.swing.JSpinner();
         alignNumbersCheckbox = new javax.swing.JCheckBox();
-        floatingPointLabel = new javax.swing.JCheckBox();
+        realResultsCheckbox = new javax.swing.JCheckBox();
         lineLengthLabel = new javax.swing.JLabel();
         plusCheckbox = new javax.swing.JCheckBox();
         minusCheckbox = new javax.swing.JCheckBox();
@@ -92,8 +125,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         alignNumbersCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.text")); // NOI18N
         alignNumbersCheckbox.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.alignNumbersCheckbox.toolTipText")); // NOI18N
 
-        floatingPointLabel.setText(i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.text")); // NOI18N
-        floatingPointLabel.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.floatingPointLabel.toolTipText")); // NOI18N
+        realResultsCheckbox.setText(i18n.getString("JMathSheetGeneratorFrame.realResultsCheckbox.text")); // NOI18N
+        realResultsCheckbox.setToolTipText(i18n.getString("JMathSheetGeneratorFrame.realResultsCheckbox.toolTipText")); // NOI18N
 
         lineLengthLabel.setText(i18n.getString("JMathSheetGeneratorFrame.lineLengthLabel.text")); // NOI18N
 
@@ -207,7 +240,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(divCheckbox)
                         .addGap(14, 14, 14))
-                    .addComponent(floatingPointLabel)
+                    .addComponent(realResultsCheckbox)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(linesPerColumnLabel)
@@ -247,7 +280,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultLimitsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(floatingPointLabel)
+                .addComponent(realResultsCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(alignNumbersCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -266,10 +299,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return sm.getNumber().intValue();
     }
 
-    private int getExercisesPerCol()
+    private void setLinesPerCol(int val)
     {
         SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
-        return sm.getNumber().intValue();
+        sm.setValue(val);
     }
 
     private int getNumberFrom()
@@ -278,10 +311,22 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return sm.getNumber().intValue();
     }
 
+    private int setNumberFrom(int val)
+    {
+        SpinnerNumberModel sm = (SpinnerNumberModel) numberFromSpinner.getModel();
+        sm.setValue(val);
+    }
+
     private int getNumberTo()
     {
         SpinnerNumberModel sm = (SpinnerNumberModel) numberToSpinner.getModel();
         return sm.getNumber().intValue();
+    }
+
+    private void setNumberTo(int val)
+    {
+        SpinnerNumberModel sm = (SpinnerNumberModel) numberToSpinner.getModel();
+        sm.setValue(val);
     }
 
     private int getResultFrom()
@@ -290,10 +335,22 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return sm.getNumber().intValue();
     }
 
+    private void setResultFrom(int val)
+    {
+        SpinnerNumberModel sm = (SpinnerNumberModel) resultFromSpinner.getModel();
+        sm.setValue(val);
+    }
+
     private int getResultTo()
     {
         SpinnerNumberModel sm = (SpinnerNumberModel) resultToSpinner.getModel();
         return sm.getNumber().intValue();
+    }
+
+    private void setResultTo(int val)
+    {
+        SpinnerNumberModel sm = (SpinnerNumberModel) resultToSpinner.getModel();
+        sm.setValue(val);
     }
 
     private int[] getRandNums(int lowerLimit, int upperLimit)
@@ -313,7 +370,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     {
         try
         {
-            int exercises = getExercisesPerCol();
+            int exercises = getLinesPerCol();
             fw.write("\\begin{tabular}{" + tabularColFormatString + "}\n"); //NOI18N
             String placeholder = "\\underline{\\hspace{" + lineLengthField.getText() + "}}";
             //Escape characters in the placeholder string
@@ -530,6 +587,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     private String tabularColFormatString = "rcrcc"; //LaTeX table format string
+    private final File configFile = new File("/ram/.jmsgen"); //TODO
     private static final String[] stdOperators =
     {
         "+", "-", "*", "/"
@@ -541,7 +599,6 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alignNumbersCheckbox;
     private javax.swing.JCheckBox divCheckbox;
-    private javax.swing.JCheckBox floatingPointLabel;
     private javax.swing.JTextField lineLengthField;
     private javax.swing.JLabel lineLengthLabel;
     private javax.swing.JSpinner linesPerColSpinner;
@@ -558,6 +615,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private javax.swing.JButton okButton;
     private javax.swing.JLabel operatorLabel;
     private javax.swing.JCheckBox plusCheckbox;
+    private javax.swing.JCheckBox realResultsCheckbox;
     private javax.swing.JSpinner resultFromSpinner;
     private javax.swing.JPanel resultLimitsPanel;
     private javax.swing.JSpinner resultToSpinner;

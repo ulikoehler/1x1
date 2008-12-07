@@ -43,7 +43,7 @@
                       <Component id="divCheckbox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="floatingPointLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="realResultsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="linesPerColumnLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -95,7 +95,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="resultLimitsPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="floatingPointLabel" min="-2" max="-2" attributes="0"/>
+              <Component id="realResultsCheckbox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="alignNumbersCheckbox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -153,13 +153,13 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="floatingPointLabel">
+    <Component class="javax.swing.JCheckBox" name="realResultsCheckbox">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.floatingPointLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.realResultsCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.floatingPointLabel.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.realResultsCheckbox.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
