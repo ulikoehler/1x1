@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  *
- * NOTE: 43 lines per page
+ * NOTE: 43 lines per page without title, 33 with title ==> PageCount - 1
  */
 
 /*
@@ -46,6 +46,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     {
         try
         {
+            if(!configFile.exists())
+            {
+                configFile.createNewFile();
+            }
             Properties props = new Properties();
             props.store(new FileWriter(configFile), "JMathSheetGenerator options");
             //Exercises per line
@@ -104,6 +108,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 //Text fields
                 titleField.setText(props.getProperty("title"));
                 lineLengthField.setText(props.getProperty("lineLength"));
+            }
+            catch(NumberFormatException ex)
+            {
+                
             }
             catch (IOException ex)
             {
@@ -448,11 +456,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return (arg >= lower && arg < upper);
     }
 
-    private void writeCol()
+    private void writeCol(int exercises)
     {
         try
         {
-            int exercises = getLinesPerCol();
             fw.write("\\begin{tabular}{" + tabularColFormatString + "}\n"); //NOI18N
             String placeholder = "\\underline{\\hspace{" + lineLengthField.getText() + "}}";
             //Escape characters in the placeholder string
@@ -558,8 +565,22 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fw.write("\\usepackage[T1]{fontenc}\n"); //NOI18N
             fw.write("\\usepackage[ngerman]{babel}\n"); //NOI18N
             fw.write("\\parindent 0pt \n"); //NOI18N
+            //Write the title if the title is not empty
+            String title = titleField.getText();
+            if(!title.isEmpty())
+            {
+                fw.write("\\title{" + title + "}\n"); //NOI18N
+                fw.write("\\date{}\n"); //NOI18N
+                fw.write("\\author{}\n"); //NOI18N
+            }
             fw.write("\\pagestyle{empty}\n\n"); //NOI18N
+            
             fw.write("\\begin{document}\n"); //NOI18N
+            //Write the title page if the title is not empty
+            if(!title.isEmpty())
+            {
+                fw.write("\\maketitle\n");
+            }
             /**
              * Change the tabular column format string
              * if number aligning is not activated
@@ -569,10 +590,22 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 tabularColFormatString = "ccccc";
             }
             //Main page writing loop
+            int pageCount = getPageCount();
+            int linesPerCol = getLinesPerCol();
             for(int i = getPageCount(); i > 0; i--)
             {
-                writeCol();
-                writeCol();
+                //Write the columns
+                //Title page: 10 lines less
+                if(i == pageCount && !title.isEmpty())
+                {
+                    writeCol(linesPerCol - 10);
+                    writeCol(linesPerCol - 10);
+                }
+                else
+                {
+                    writeCol(linesPerCol);
+                    writeCol(linesPerCol);
+                }
                 if(i > 1) {fw.write("\\newpage\n");}
             }
             //Write the main footer
@@ -677,7 +710,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     private String tabularColFormatString = "rcrcc"; //LaTeX table format string
-    private final File configFile = new File("~/.jmsgen");
+    private final File configFile = new File(".jmsgen");
     private static final String[] stdOperators =
     {
         "+", "-", "*", "/"
