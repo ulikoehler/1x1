@@ -71,6 +71,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             //Text fields
             props.setProperty("title", titleField.getText());
             props.setProperty("lineLength", lineLengthField.getText());
+            //Other
+            props.setProperty("fileChooserSelected", fc.getSelectedFile().getPath());
         }
         catch (IOException ex)
         {
@@ -108,6 +110,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 //Text fields
                 titleField.setText(props.getProperty("title"));
                 lineLengthField.setText(props.getProperty("lineLength"));
+                //Other
+                fc.setSelectedFile(new File(props.getProperty("fileChooserSelected")));
             }
             catch(NumberFormatException ex)
             {
@@ -556,7 +560,6 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_okButtonMouseClicked
         try
         {
-            JFileChooser fc = new JFileChooser(new File("."));
             fc.showSaveDialog(this);
             fw = new FileWriter(fc.getSelectedFile());
             //Write the header
@@ -611,6 +614,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             //Write the main footer
             fw.write("\\end{document}\n");
         }
+        catch (NullPointerException ex) //Occurs if the user aborted the file selection dialog
+        {
+            Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         catch (IOException ex)
         {
             Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -619,13 +626,13 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         {
             try
             {
-                fw.close();
+                if(fw != null) {fw.close();}
             }
-            catch (IOException ex)
+            catch (NullPointerException ex)
             {
                 Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            catch (NullPointerException ex)
+            catch (IOException ex)
             {
                 Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -706,6 +713,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             }
         });
     }
+    private JFileChooser fc = new JFileChooser();
     private MersenneTwisterFast mt;
     private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
