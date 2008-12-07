@@ -311,7 +311,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         return sm.getNumber().intValue();
     }
 
-    private int setNumberFrom(int val)
+    private void setNumberFrom(int val)
     {
         SpinnerNumberModel sm = (SpinnerNumberModel) numberFromSpinner.getModel();
         sm.setValue(val);
