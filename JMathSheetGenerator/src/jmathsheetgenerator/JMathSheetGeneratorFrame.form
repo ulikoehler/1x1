@@ -29,50 +29,44 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="okButton" alignment="0" pref="268" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="numberLimitsPanel1" alignment="1" max="32767" attributes="1"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="operatorLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="38" max="32767" attributes="0"/>
+                      <EmptySpace pref="40" max="32767" attributes="0"/>
                       <Component id="plusCheckbox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="minusCheckbox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="multCheckbox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="divCheckbox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lineLengthLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="linesPerColumnLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="pageCountLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="titleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="pageCountSpinner" pref="175" max="32767" attributes="0"/>
-                          <Component id="linesPerColSpinner" alignment="0" pref="175" max="32767" attributes="1"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="titleField" alignment="0" pref="181" max="32767" attributes="2"/>
+                          <Component id="linesPerColSpinner" alignment="0" pref="181" max="32767" attributes="1"/>
+                          <Component id="pageCountSpinner" alignment="1" pref="181" max="32767" attributes="0"/>
+                          <Component id="lineLengthField" alignment="0" pref="181" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="lineLengthLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="22" max="32767" attributes="1"/>
-                      <Component id="lineLengthField" min="-2" pref="171" max="-2" attributes="1"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
-                      <Component id="titleField" pref="175" max="32767" attributes="2"/>
-                  </Group>
+                  <Component id="resultLimitsPanel" alignment="0" max="32767" attributes="1"/>
+                  <Component id="okButton" alignment="0" pref="268" max="32767" attributes="0"/>
                   <Component id="schoolOperatorsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="realResultsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="alignNumbersCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="resultLimitsPanel" alignment="0" max="32767" attributes="1"/>
-                  <Component id="numberLimitsPanel1" alignment="1" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -97,10 +91,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="plusCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="operatorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="minusCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="multCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="divCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="operatorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -119,7 +113,7 @@
               <Component id="schoolOperatorsCheckbox" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Component id="okButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -190,30 +184,34 @@
     <Component class="javax.swing.JCheckBox" name="plusCheckbox">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.plusCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        <Property name="text" type="java.lang.String" value="+" noResource="true"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.plusCheckbox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="minusCheckbox">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.minusCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        <Property name="text" type="java.lang.String" value="-" noResource="true"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.minusCheckbox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="multCheckbox">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.multCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&amp;middot" noResource="true"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.multCheckbox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="divCheckbox">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.divCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        <Property name="text" type="java.lang.String" value=":" noResource="true"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmathsheetgenerator/Bundle.properties" key="JMathSheetGeneratorFrame.divCheckbox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -231,14 +229,14 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Component id="numbersFromLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="resultFromSpinner" min="-2" pref="47" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="numbersToLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="resultToSpinner" min="-2" pref="100" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -248,12 +246,12 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="numbersFromLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="resultFromSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="numbersToLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="resultToSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="numbersToLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="resultFromSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="numbersFromLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -325,7 +323,7 @@
                       <Component id="numberFromSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="numbersFromLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="22" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
