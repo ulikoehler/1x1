@@ -38,6 +38,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         initComponents();
         //Initialize the Mersenne Twister
         mt = new MersenneTwisterFast(generateMTSeed());
+        //Read the config file
+        readConfigFile();
     }
 
     private void writeConfigFile()
@@ -61,6 +63,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             props.setProperty("realResults", Boolean.toString(divCheckbox.isSelected()));
             props.setProperty("alignNumbers", Boolean.toString(divCheckbox.isSelected()));
             props.setProperty("schoolOperators", Boolean.toString(divCheckbox.isSelected()));
+            //Text fields
+            props.setProperty("lineLength", lineLengthField.getText());
         }
         catch (IOException ex)
         {
@@ -94,6 +98,8 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 realResultsCheckbox.setSelected(props.getProperty("realResults").equals("true"));
                 alignNumbersCheckbox.setSelected(props.getProperty("alignNumbers").equals("true"));
                 schoolOperatorsCheckbox.setSelected(props.getProperty("schoolOperators").equals("true"));
+                //Text fields
+                lineLengthField.setText(props.getProperty("lineLength"));
             }
             catch (IOException ex)
             {
@@ -137,6 +143,11 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMathSheetGeneratorFrame.title")); // NOI18N
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         okButton.setText(i18n.getString("JMathSheetGeneratorFrame.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -546,6 +557,12 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         }
     }//GEN-LAST:event_okButtonMouseClicked
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_formWindowClosing
+    {//GEN-HEADEREND:event_formWindowClosing
+        //Write the config file
+        writeConfigFile();
+    }//GEN-LAST:event_formWindowClosing
+
     private byte[] getUrandMTSeed()
     {
         try
@@ -618,7 +635,7 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private FileWriter fw;
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle");
     private String tabularColFormatString = "rcrcc"; //LaTeX table format string
-    private final File configFile = new File("/ram/.jmsgen"); //TODO
+    private final File configFile = new File("~/.jmsgen");
     private static final String[] stdOperators =
     {
         "+", "-", "*", "/"
