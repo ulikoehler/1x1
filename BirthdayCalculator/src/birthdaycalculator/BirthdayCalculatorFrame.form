@@ -77,6 +77,7 @@
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="daySpinnerStateChanged"/>
         <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="daySpinnerPropertyChange"/>
+        <EventHandler event="vetoableChange" listener="java.beans.VetoableChangeListener" parameters="java.beans.PropertyChangeEvent" handler="daySpinnerVetoableChange"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="monthLabel">
