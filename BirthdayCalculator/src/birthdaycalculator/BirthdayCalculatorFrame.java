@@ -162,7 +162,7 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
     private void dateChanged()
     {
         //Clear the birthday text area
-        birthdayArea.setText(""); //Seems to be most simply
+        birthdayArea.setText(""); //Seems to be most simply //NOI18N
 
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(Calendar.DAY_OF_MONTH, getDay());
@@ -182,7 +182,7 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
             sb.append(day);
             sb.append(" "); //NOI18N
             sb.append(year);
-            sb.append(" is a ");
+            sb.append(i18n.getString("_is_a_"));
             sb.append(days[dayOfWeek]);
             sb.append("\n"); //NOI18N
             //Show it in the GUI
@@ -194,16 +194,32 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
             cal.set(Calendar.YEAR, year);
         }
     }
-
     private static final int years = 50; //Years to calculate
     private ResourceBundle i18n = ResourceBundle.getBundle("birthdaycalculator/Bundle"); //NOI18N
     private String[] months =
     {
-        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+        i18n.getString("January"),
+        i18n.getString("February"),
+        i18n.getString("March"), i18n.
+        getString("April"),
+        i18n.getString("May"),
+        i18n.getString("June"),
+        i18n.getString("July"),
+        i18n.getString("August"),
+        i18n.getString("September"),
+        i18n.getString("October"),
+        i18n.getString("November"),
+        i18n.getString("December")
     };
     private String[] days = //Must begin with Sunday due to calendar values
     {
-        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+        i18n.getString("Sunday"),
+        i18n.getString("Monday"),
+        i18n.getString("Tuesday"),
+        i18n.getString("Wednesday"),
+        i18n.getString("Thursday"),
+        i18n.getString("Friday"),
+        i18n.getString("Saturday")
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea birthdayArea;
