@@ -105,7 +105,7 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
                     .addComponent(monthLabel)
                     .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -161,6 +161,9 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
 
     private void dateChanged()
     {
+        //Clear the birthday text area
+        birthdayArea.setText(""); //Seems to be most simply
+
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(Calendar.DAY_OF_MONTH, getDay());
         cal.set(Calendar.MONTH, getMonthIndex());
@@ -170,7 +173,7 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
         int month = cal.get(Calendar.MONTH);
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < years; i++)
         {
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1; //-1: Array index begins with 0
             //Build the output string
@@ -191,6 +194,8 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
             cal.set(Calendar.YEAR, year);
         }
     }
+
+    private static final int years = 50; //Years to calculate
     private ResourceBundle i18n = ResourceBundle.getBundle("birthdaycalculator/Bundle"); //NOI18N
     private String[] months =
     {
