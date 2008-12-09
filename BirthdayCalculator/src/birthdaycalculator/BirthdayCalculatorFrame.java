@@ -58,16 +58,6 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
                 daySpinnerStateChanged(evt);
             }
         });
-        daySpinner.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                daySpinnerPropertyChange(evt);
-            }
-        });
-        daySpinner.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
-            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
-                daySpinnerVetoableChange(evt);
-            }
-        });
 
         monthLabel.setText( i18n.getString("BirthdayCalculatorFrame.monthLabel.text")); // NOI18N
 
@@ -122,20 +112,10 @@ public class BirthdayCalculatorFrame extends javax.swing.JFrame
         dateChanged();
     }//GEN-LAST:event_monthComboBoxPropertyChange
 
-    private void daySpinnerPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_daySpinnerPropertyChange
-    {//GEN-HEADEREND:event_daySpinnerPropertyChange
-        dateChanged();
-    }//GEN-LAST:event_daySpinnerPropertyChange
-
     private void daySpinnerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_daySpinnerStateChanged
     {//GEN-HEADEREND:event_daySpinnerStateChanged
         dateChanged();
     }//GEN-LAST:event_daySpinnerStateChanged
-
-    private void daySpinnerVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException//GEN-FIRST:event_daySpinnerVetoableChange
-    {//GEN-HEADEREND:event_daySpinnerVetoableChange
-        dateChanged();
-    }//GEN-LAST:event_daySpinnerVetoableChange
 
     /**
      * @param args the command line arguments
