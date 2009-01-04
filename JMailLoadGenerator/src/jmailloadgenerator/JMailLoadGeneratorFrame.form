@@ -30,73 +30,63 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" max="-2" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="1" attributes="1">
-                              <Component id="bodyLengthLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="bodyLengthSpinner" min="-2" pref="210" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="1">
-                              <Component id="subjectLengthLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="subjectLengthSpinner" min="-2" pref="210" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" max="-2" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="serverLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="userNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="passwordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="countLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="userNameField" min="-2" pref="212" max="-2" attributes="0"/>
-                                  <Component id="serverField" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
-                                  <Component id="passwordField" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
-                                  <Component id="countSpinner" alignment="1" min="-2" pref="210" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="subjectLengthLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="subjectLengthSpinner" min="-2" pref="210" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="targetLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="49" max="32767" attributes="1"/>
-                          <Component id="targetField" min="-2" pref="212" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="serverLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="userNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="passwordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="countLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="fromLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="57" max="32767" attributes="1"/>
-                          <Component id="fromField" min="-2" pref="212" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="userNameField" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="serverField" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="passwordField" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="countSpinner" alignment="1" min="-2" pref="210" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="2" max="-2" attributes="1"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="1" attributes="1">
-                                  <Component id="debugCheckbox" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="okButton" min="-2" pref="146" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="mailProgressBar" alignment="1" min="-2" pref="302" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="bodyLengthLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="targetLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="fromLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="progressLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="bodyLengthSpinner" alignment="0" max="32767" attributes="1"/>
+                              <Component id="targetField" alignment="0" pref="212" max="32767" attributes="1"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="mailProgressBar" alignment="0" max="32767" attributes="1"/>
+                              <Component id="fromField" alignment="0" pref="212" max="32767" attributes="1"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="debugCheckbox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="okButton" min="-2" pref="146" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="messageScrollPane" pref="317" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="messageScrollPane" alignment="1" pref="265" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="serverLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -129,22 +119,26 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="targetField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="targetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="targetField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fromField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="fromLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fromField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="mailProgressBar" min="-2" pref="19" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="progressLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="mailProgressBar" min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="debugCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="messageScrollPane" alignment="0" pref="268" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -265,6 +259,10 @@
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.mailProgressBar.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
+        <Property name="string" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.mailProgressBar.string" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+        <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="messageScrollPane">
@@ -303,6 +301,13 @@
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.debugCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="progressLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.progressLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
