@@ -10,6 +10,12 @@
  */
 package jmassmailer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.LineNumberReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
@@ -17,7 +23,6 @@ import java.util.logging.Logger;
 import javax.mail.*;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.SpinnerNumberModel;
@@ -41,6 +46,37 @@ public class JMassMailerFrame extends javax.swing.JFrame
         catch (NoSuchAlgorithmException ex)
         {
             Logger.getLogger(JMassMailerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Read the save data (if the config file exists
+        File configFile = new File(".jmassmailer");
+        if (configFile.exists())
+        {
+            LineNumberReader lr = null;
+            try
+            {
+                lr = new LineNumberReader(new FileReader(configFile));
+                serverField.setText(lr.readLine());
+                userNameField.setText(lr.readLine());
+                targetField.setText(lr.readLine());
+                fromField.setText(lr.readLine());
+                countSpinner.setValue(new Long(lr.readLine()));
+                lr.close();
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(JMassMailerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            finally
+            {
+                try
+                {
+                    lr.close();
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(JMassMailerFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 
@@ -68,9 +104,15 @@ public class JMassMailerFrame extends javax.swing.JFrame
         fromField = new javax.swing.JTextField();
         randLenLabel = new javax.swing.JLabel();
         randLengthSpinner = new javax.swing.JSpinner();
+        mailProgressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMassMailerFrame.title")); // NOI18N
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                mainFrameClosing(evt);
+            }
+        });
 
         serverLabel.setText(i18n.getString("JMassMailerFrame.serverLabel.text")); // NOI18N
 
@@ -112,33 +154,38 @@ public class JMassMailerFrame extends javax.swing.JFrame
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(serverLabel)
-                            .addComponent(userNameLabel)
-                            .addComponent(passwordLabel)
-                            .addComponent(countLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                            .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                            .addComponent(serverField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                            .addComponent(countSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(serverLabel)
+                                    .addComponent(userNameLabel)
+                                    .addComponent(passwordLabel)
+                                    .addComponent(countLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                                    .addComponent(serverField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                                    .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                                    .addComponent(countSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(targetLabel)
+                                .addGap(47, 47, 47)
+                                .addComponent(targetField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(randLenLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(randLengthSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(fromLabel)
+                                .addGap(55, 55, 55)
+                                .addComponent(fromField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                            .addComponent(mailProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(fromLabel)
-                        .addGap(55, 55, 55)
-                        .addComponent(fromField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(targetLabel)
-                        .addGap(47, 47, 47)
-                        .addComponent(targetField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(randLenLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(randLengthSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
+                        .addGap(102, 102, 102)
+                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -172,9 +219,11 @@ public class JMassMailerFrame extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fromField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fromLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mailProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -188,8 +237,8 @@ public class JMassMailerFrame extends javax.swing.JFrame
             props.put("mail.smtp.host", serverField.getText());
             props.put("mail.smtp.starttls.enable", true);
             props.put("mail.smtp.user", userNameField.getText());
-            props.put("mail.debug", "true");
-            props.put("mail.smtp.auth", true);
+            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.smtp.auth", "true");
             Session session =
                     Session.getInstance(props,
                     new javax.mail.Authenticator()
@@ -209,6 +258,7 @@ public class JMassMailerFrame extends javax.swing.JFrame
             //Maind send loop
             for (long i = 0; i < count; i++)
             {
+                //Create the message
                 MimeMessage message =
                         new MimeMessage(session);
                 message.setFrom(new InternetAddress(fromField.getText()));
@@ -216,7 +266,9 @@ public class JMassMailerFrame extends javax.swing.JFrame
                 message.setSubject(getRand(randLength));
                 message.setText(getRand(randLength));
                 message.saveChanges();
+                //Send the message
                 tr.sendMessage(message, message.getAllRecipients());
+                //Add the message
             }
             tr.close();
         }
@@ -225,6 +277,25 @@ public class JMassMailerFrame extends javax.swing.JFrame
             Logger.getLogger(JMassMailerFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_okButtonMouseClicked
+
+    private void mainFrameClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_mainFrameClosing
+    {//GEN-HEADEREND:event_mainFrameClosing
+        try
+        {
+            FileWriter fout = new FileWriter(".jmassmailer");
+            fout.write(serverField.getText() + "\n");
+            fout.write(userNameField.getText() + "\n");
+            fout.write(targetField.getText() + "\n");
+            fout.write(fromField.getText() + "\n");
+            fout.write(Long.toString(getCount()) + "\n");
+            fout.close();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JMassMailerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+}//GEN-LAST:event_mainFrameClosing
 
     private String getRand(int len)
     {
@@ -272,6 +343,7 @@ public class JMassMailerFrame extends javax.swing.JFrame
     private javax.swing.JSpinner countSpinner;
     private javax.swing.JTextField fromField;
     private javax.swing.JLabel fromLabel;
+    private javax.swing.JProgressBar mailProgressBar;
     private javax.swing.JButton okButton;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
