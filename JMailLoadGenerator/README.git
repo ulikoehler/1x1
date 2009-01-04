@@ -1,0 +1,3 @@
+mass-mail-sender.git.tar.bz2 contains a packed version of a original bare repository copy of the git working tree of JMassMailer and php-mmsender.
+All Revisions were merged into subversion manually but things as dates are not original,
+so if you want to reconstruct the real JMailLoadGenerator/php-mmsender version histroy, unpack /mass-mail-sender.git.tar.bz2 and look into git.
