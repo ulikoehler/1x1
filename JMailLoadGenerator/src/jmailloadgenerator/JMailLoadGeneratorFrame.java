@@ -64,7 +64,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                 lr = new LineNumberReader(new FileReader(configFile));
                 serverField.setText(lr.readLine());
                 userNameField.setText(lr.readLine());
-                targetField.setText(lr.readLine());
+                recipientField.setText(lr.readLine());
                 fromField.setText(lr.readLine());
                 countSpinner.setValue(new Integer(lr.readLine()));
                 subjectLengthSpinner.setValue(new Integer(lr.readLine()));
@@ -111,8 +111,8 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
         countLabel = new javax.swing.JLabel();
         countSpinner = new javax.swing.JSpinner();
         okButton = new javax.swing.JButton();
-        targetLabel = new javax.swing.JLabel();
-        targetField = new javax.swing.JTextField();
+        recipientLabel = new javax.swing.JLabel();
+        recipientField = new javax.swing.JTextField();
         fromLabel = new javax.swing.JLabel();
         fromField = new javax.swing.JTextField();
         subjectLengthLabel = new javax.swing.JLabel();
@@ -127,6 +127,9 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(i18n.getString("JMailLoadGeneratorFrame.title")); // NOI18N
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("jMailLoadGeneratorMainFrame"); // NOI18N
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 mainFrameClosing(evt);
@@ -135,38 +138,51 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
 
         serverLabel.setText(i18n.getString("JMailLoadGeneratorFrame.serverLabel.text")); // NOI18N
 
-        serverField.setText(i18n.getString("JMailLoadGeneratorFrame.serverField.text")); // NOI18N
+        serverField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.serverField.toolTipText")); // NOI18N
+        serverField.setNextFocusableComponent(userNameField);
 
         userNameLabel.setText(i18n.getString("JMailLoadGeneratorFrame.userNameLabel.text")); // NOI18N
 
-        userNameField.setText(i18n.getString("JMailLoadGeneratorFrame.userNameField.text")); // NOI18N
+        userNameField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.userNameField.toolTipText")); // NOI18N
+        userNameField.setNextFocusableComponent(passwordField);
 
         passwordLabel.setText(i18n.getString("JMailLoadGeneratorFrame.passwordLabel.text")); // NOI18N
 
         passwordField.setText(i18n.getString("JMailLoadGeneratorFrame.passwordField.text")); // NOI18N
+        passwordField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.passwordField.toolTipText")); // NOI18N
+        passwordField.setNextFocusableComponent(countSpinner);
 
         countLabel.setText(i18n.getString("JMailLoadGeneratorFrame.countLabel.text")); // NOI18N
 
         countSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(100), Integer.valueOf(0), null, Integer.valueOf(1)));
+        countSpinner.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.countSpinner.toolTipText")); // NOI18N
+        countSpinner.setNextFocusableComponent(subjectLengthSpinner);
 
         okButton.setText(i18n.getString("JMailLoadGeneratorFrame.okButton.text")); // NOI18N
+        okButton.setNextFocusableComponent(serverField);
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
             }
         });
 
-        targetLabel.setText(i18n.getString("JMailLoadGeneratorFrame.targetLabel.text")); // NOI18N
+        recipientLabel.setText(i18n.getString("JMailLoadGeneratorFrame.recipientLabel.text")); // NOI18N
 
-        targetField.setText(i18n.getString("JMailLoadGeneratorFrame.targetField.text")); // NOI18N
+        recipientField.setText(i18n.getString("JMailLoadGeneratorFrame.recipientField.text")); // NOI18N
+        recipientField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.recipientField.toolTipText")); // NOI18N
+        recipientField.setNextFocusableComponent(fromField);
 
         fromLabel.setText(i18n.getString("JMailLoadGeneratorFrame.fromLabel.text")); // NOI18N
 
         fromField.setText(i18n.getString("JMailLoadGeneratorFrame.fromField.text")); // NOI18N
+        fromField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.fromField.toolTipText")); // NOI18N
+        fromField.setNextFocusableComponent(okButton);
 
         subjectLengthLabel.setText(i18n.getString("JMailLoadGeneratorFrame.subjectLengthLabel.text")); // NOI18N
 
         subjectLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(10, 1, 100, 1));
+        subjectLengthSpinner.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.subjectLengthSpinner.toolTipText")); // NOI18N
+        subjectLengthSpinner.setNextFocusableComponent(bodyLengthSpinner);
 
         mailProgressBar.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.mailProgressBar.toolTipText")); // NOI18N
         mailProgressBar.setString(i18n.getString("JMailLoadGeneratorFrame.mailProgressBar.string")); // NOI18N
@@ -177,11 +193,14 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
         messageTextArea.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.messageTextArea.toolTipText")); // NOI18N
         messageScrollPane.setViewportView(messageTextArea);
 
-        bodyLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(32768), Integer.valueOf(1), null, Integer.valueOf(1)));
+        bodyLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(32768), Integer.valueOf(1), null, Integer.valueOf(100)));
+        bodyLengthSpinner.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.bodyLengthSpinner.toolTipText")); // NOI18N
+        bodyLengthSpinner.setNextFocusableComponent(recipientField);
 
         bodyLengthLabel.setText(i18n.getString("JMailLoadGeneratorFrame.bodyLengthLabel.text")); // NOI18N
 
         debugCheckbox.setText(i18n.getString("JMailLoadGeneratorFrame.debugCheckbox.text")); // NOI18N
+        debugCheckbox.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.debugCheckbox.toolTipText")); // NOI18N
 
         progressLabel.setText(i18n.getString("JMailLoadGeneratorFrame.progressLabel.text")); // NOI18N
 
@@ -193,49 +212,57 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(subjectLengthLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(subjectLengthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(serverLabel)
                             .addComponent(userNameLabel)
                             .addComponent(passwordLabel)
                             .addComponent(countLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(serverField, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(countSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(userNameField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                                .addComponent(serverField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                                .addComponent(passwordField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                            .addComponent(countSpinner)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bodyLengthLabel)
-                            .addComponent(targetLabel)
-                            .addComponent(fromLabel)
-                            .addComponent(progressLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(subjectLengthLabel)
+                                            .addComponent(recipientLabel)
+                                            .addComponent(fromLabel))
+                                        .addGap(16, 16, 16))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(progressLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(bodyLengthLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(debugCheckbox)
+                                .addGap(12, 12, 12)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(bodyLengthSpinner, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(targetField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                            .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                            .addComponent(bodyLengthSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                            .addComponent(recipientField, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(mailProgressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(fromField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(debugCheckbox)
-                        .addGap(18, 18, 18)
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(fromField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                            .addComponent(subjectLengthSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(messageScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                .addGap(44, 44, 44))
+                .addComponent(messageScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(messageScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(serverLabel)
                             .addComponent(serverField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -261,21 +288,20 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                             .addComponent(bodyLengthLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(targetLabel)
-                            .addComponent(targetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(recipientLabel)
+                            .addComponent(recipientField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(fromLabel)
                             .addComponent(fromField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(progressLabel)
-                            .addComponent(mailProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mailProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(progressLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(okButton)
-                            .addComponent(debugCheckbox)))
-                    .addComponent(messageScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
+                            .addComponent(debugCheckbox))))
                 .addContainerGap())
         );
 
@@ -353,7 +379,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                         MimeMessage message =
                                 new MimeMessage(session);
                         message.setFrom(new InternetAddress(fromField.getText()));
-                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(targetField.getText()));
+                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientField.getText()));
                         message.setSubject(getRand(subjectLength));
                         message.setText(bodyQueue.poll());
                         message.saveChanges();
@@ -371,7 +397,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                         };
                         SwingUtilities.invokeLater(updateProgressBar);
                     }
-                    tr.close();
+                    messageTextArea.append("Operation completed successfully!\n");
                 }
                 catch (SMTPSendFailedException ex)
                 {
@@ -413,7 +439,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
             FileWriter fout = new FileWriter(".jmailloadgenerator");
             fout.write(serverField.getText() + "\n");
             fout.write(userNameField.getText() + "\n");
-            fout.write(targetField.getText() + "\n");
+            fout.write(recipientField.getText() + "\n");
             fout.write(fromField.getText() + "\n");
             fout.write(Integer.toString(getCount()) + "\n");
             fout.write(Integer.toString(getSubjectLength()) + "\n");
@@ -522,12 +548,12 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel progressLabel;
+    private javax.swing.JTextField recipientField;
+    private javax.swing.JLabel recipientLabel;
     private javax.swing.JTextField serverField;
     private javax.swing.JLabel serverLabel;
     private javax.swing.JLabel subjectLengthLabel;
     private javax.swing.JSpinner subjectLengthSpinner;
-    private javax.swing.JTextField targetField;
-    private javax.swing.JLabel targetLabel;
     private javax.swing.JTextField userNameField;
     private javax.swing.JLabel userNameLabel;
     // End of variables declaration//GEN-END:variables
