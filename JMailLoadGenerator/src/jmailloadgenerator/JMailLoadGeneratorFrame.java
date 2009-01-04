@@ -139,7 +139,6 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
 
         passwordLabel.setText(i18n.getString("JMailLoadGeneratorFrame.passwordLabel.text")); // NOI18N
 
-        passwordField.setText(i18n.getString("JMailLoadGeneratorFrame.passwordField.text")); // NOI18N
         passwordField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.passwordField.toolTipText")); // NOI18N
         passwordField.setNextFocusableComponent(countSpinner);
 
@@ -159,7 +158,6 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
 
         recipientLabel.setText(i18n.getString("JMailLoadGeneratorFrame.recipientLabel.text")); // NOI18N
 
-        recipientField.setText(i18n.getString("JMailLoadGeneratorFrame.recipientField.text")); // NOI18N
         recipientField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.recipientField.toolTipText")); // NOI18N
         recipientField.setNextFocusableComponent(fromField);
 
@@ -176,7 +174,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
         subjectLengthSpinner.setNextFocusableComponent(bodyLengthSpinner);
 
         mailProgressBar.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.mailProgressBar.toolTipText")); // NOI18N
-        mailProgressBar.setString(i18n.getString("JMailLoadGeneratorFrame.mailProgressBar.string")); // NOI18N
+        mailProgressBar.setString("0" + i18n.getString("_mails_sent")); // NOI18N
         mailProgressBar.setStringPainted(true);
 
         messageTextArea.setColumns(20);
@@ -357,7 +355,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                     mailProgressBar.setEnabled(true);
                     mailProgressBar.setMaximum(count);
                     mailProgressBar.setValue(0);
-                    mailProgressBar.setString(i18n.getString("0_mails_sent"));
+                    mailProgressBar.setString("0" + i18n.getString("_mails_sent")); //NOI18N
                     //Start a thread to fill the body queue
                     startBodyGenThread();
                     //Initialize the transport object the
@@ -388,7 +386,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                         };
                         SwingUtilities.invokeLater(updateProgressBar);
                     }
-                    messageTextArea.append(i18n.getString("Operation_completed_successfully!\n"));
+                    messageTextArea.append(i18n.getString("Operation_completed_successfully!") + "\n"); //NOI18N
                 }
                 catch (SMTPSendFailedException ex)
                 {

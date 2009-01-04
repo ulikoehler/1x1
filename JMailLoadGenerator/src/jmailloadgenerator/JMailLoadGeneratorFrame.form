@@ -206,9 +206,6 @@
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.passwordField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.passwordField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
@@ -259,9 +256,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="recipientField">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.recipientField.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.recipientField.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
@@ -314,7 +308,7 @@
           <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.mailProgressBar.toolTipText" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
         <Property name="string" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="JMailLoadGeneratorFrame.mailProgressBar.string" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jmailloadgenerator/Bundle.properties" key="_mails_sent" replaceFormat="&quot;0&quot; + i18n.getString(&quot;{key}&quot;)"/>
         </Property>
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
