@@ -1,4 +1,4 @@
-package jmassmailer;
+package jmailloadgenerator;
 import java.io.*;
 import java.util.*;
 
