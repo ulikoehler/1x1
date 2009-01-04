@@ -39,23 +39,14 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
 {
 
     public static final String alphanumericCharset =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; //NOI18N
 
     /** Creates new form JMailLoadGeneratorFrame */
     public JMailLoadGeneratorFrame()
     {
         initComponents();
-        try
-        {
-            //Init members
-            digest = MessageDigest.getInstance("SHA-1");
-        }
-        catch (NoSuchAlgorithmException ex)
-        {
-            Logger.getLogger(JMailLoadGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
         //If the config file exists, read the data from the previous session
-        File configFile = new File(".jmailloadgenerator");
+        File configFile = new File(".jmailloadgenerator"); //NOI18N
         if (configFile.exists())
         {
             LineNumberReader lr = null;
@@ -174,7 +165,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
 
         fromLabel.setText(i18n.getString("JMailLoadGeneratorFrame.fromLabel.text")); // NOI18N
 
-        fromField.setText(i18n.getString("JMailLoadGeneratorFrame.fromField.text")); // NOI18N
+        fromField.setText("test@test.tk"); // NOI18N
         fromField.setToolTipText(i18n.getString("JMailLoadGeneratorFrame.fromField.toolTipText")); // NOI18N
         fromField.setNextFocusableComponent(okButton);
 
@@ -315,7 +306,7 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
          */
         if(running)
         {
-            JOptionPane.showMessageDialog(this, "You cannot run two sender threads at once!", "Already started", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, i18n.getString("You_cannot_run_two_sender_threads_at_once!"), i18n.getString("Already_started"), JOptionPane.ERROR_MESSAGE);
             return;
         }
         /**
@@ -331,22 +322,22 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                 try
                 {
                     Properties props = System.getProperties();
-                    props.put("mail.smtp.host", serverField.getText());
-                    props.put("mail.smtp.starttls.enable", true);
-                    props.put("mail.smtp.user", userNameField.getText());
-                    props.put("mail.transport.protocol", "smtp");
-                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.host", serverField.getText()); //NOI18N
+                    props.put("mail.smtp.starttls.enable", true); //NOI18N
+                    props.put("mail.smtp.user", userNameField.getText()); //NOI18N
+                    props.put("mail.transport.protocol", "smtp"); //NOI18N
+                    props.put("mail.smtp.auth", "true"); //NOI18N
                     /**
                      * Check whether we should enable debug mode
                      * (displays mail server communication on stdout)
                      */
                     if (debugCheckbox.isSelected())
                     {
-                        props.put("mail.debug", "true");
+                        props.put("mail.debug", "true"); //NOI18N
                     }
                     else
                     {
-                        props.put("mail.debug", "false");
+                        props.put("mail.debug", "false"); //NOI18N
                     }
                     Session session =
                             Session.getInstance(props,
@@ -366,11 +357,11 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                     mailProgressBar.setEnabled(true);
                     mailProgressBar.setMaximum(count);
                     mailProgressBar.setValue(0);
-                    mailProgressBar.setString("0 mails sent");
+                    mailProgressBar.setString(i18n.getString("0_mails_sent"));
                     //Start a thread to fill the body queue
                     startBodyGenThread();
                     //Initialize the transport object the
-                    tr = session.getTransport("smtp");
+                    tr = session.getTransport("smtp"); //NOI18N
                     tr.connect(serverField.getText(), userNameField.getText(), new String(passwordField.getPassword()));
                     //Maind send loop
                     for (i = 0; i < count; i++) //i is a field to get access from a runnable
@@ -392,12 +383,12 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
                             public void run()
                             {
                                 mailProgressBar.setValue(i);
-                                mailProgressBar.setString(Integer.toString(i) + " mails sent");
+                                mailProgressBar.setString(Integer.toString(i) + i18n.getString("_mails_sent"));
                             }
                         };
                         SwingUtilities.invokeLater(updateProgressBar);
                     }
-                    messageTextArea.append("Operation completed successfully!\n");
+                    messageTextArea.append(i18n.getString("Operation_completed_successfully!\n"));
                 }
                 catch (SMTPSendFailedException ex)
                 {
@@ -435,15 +426,16 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
         {
             /**
              * Write the text field values (except password) to the config file
+
              */
-            FileWriter fout = new FileWriter(".jmailloadgenerator");
-            fout.write(serverField.getText() + "\n");
-            fout.write(userNameField.getText() + "\n");
-            fout.write(recipientField.getText() + "\n");
-            fout.write(fromField.getText() + "\n");
-            fout.write(Integer.toString(getCount()) + "\n");
-            fout.write(Integer.toString(getSubjectLength()) + "\n");
-            fout.write(Integer.toString(getBodyLength()) + "\n");
+            FileWriter fout = new FileWriter(".jmailloadgenerator"); //NOI18N
+            fout.write(serverField.getText() + "\n"); //NOI18N
+            fout.write(userNameField.getText() + "\n"); //NOI18N
+            fout.write(recipientField.getText() + "\n"); //NOI18N
+            fout.write(fromField.getText() + "\n"); //NOI18N
+            fout.write(Integer.toString(getCount()) + "\n"); //NOI18N
+            fout.write(Integer.toString(getSubjectLength()) + "\n"); //NOI18N
+            fout.write(Integer.toString(getBodyLength()) + "\n"); //NOI18N
             fout.close();
         }
         catch (IOException ex)
@@ -529,7 +521,6 @@ public class JMailLoadGeneratorFrame extends javax.swing.JFrame
     private ResourceBundle i18n =
             ResourceBundle.getBundle("jmailloadgenerator/Bundle");
     private MersenneTwisterFast mt = new MersenneTwisterFast();
-    private MessageDigest digest;
     private Queue<String> bodyQueue = new LinkedBlockingDeque<String>(); //Contains random bodies
     private int i;
     private boolean running = false; //true if a sending thread is running
