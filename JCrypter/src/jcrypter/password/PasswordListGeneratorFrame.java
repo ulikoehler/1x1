@@ -274,6 +274,9 @@ latexSettingsDialog.setVisible(true);
             {
                 Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch (NullPointerException ex)
+            {
+            }
         }
     }
     

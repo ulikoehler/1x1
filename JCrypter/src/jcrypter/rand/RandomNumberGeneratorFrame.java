@@ -579,7 +579,7 @@ private void boundsEnabledCheckBoxStateChanged(javax.swing.event.ChangeEvent evt
     private MersenneTwisterFast mt =
             new MersenneTwisterFast(PasswordGenerator.generateMTSeed(JCrypterFrame.rand));
     private ResourceBundle i18n =
-            ResourceBundle.getBundle("jcrypter/rand/Bundle");
+            ResourceBundle.getBundle("jpasswordgenerator/rand/Bundle");
     private JFileChooser fileChooser = JCrypterFrame.mainFrame.fileChooser;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton booleanRadioButton;
