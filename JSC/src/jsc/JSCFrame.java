@@ -37,6 +37,14 @@ public class JSCFrame extends javax.swing.JFrame
     public JSCFrame()
     {
         initComponents();
+        //Start a thread to initalize the random number generator
+        new Thread(new Runnable() {
+
+            public void run()
+            {
+                initRandAndClasses();
+            }
+        }).start();
     }
 
     /** This method is called from within the constructor to
@@ -275,7 +283,7 @@ public class JSCFrame extends javax.swing.JFrame
 
             //Generate the salt
             byte[] salt = new byte[8];
-            rand.nextBytes(salt);
+            srand.nextBytes(salt);
 
             //Hash the password together with the salt
             Digest digest = new SHA256Digest();
@@ -337,6 +345,31 @@ public class JSCFrame extends javax.swing.JFrame
         }
 }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
 
+
+    /**
+     * Initializes the random number generator member variable
+     * and loads the used BouncyCastle classes
+     */
+    private void initRandAndClasses()
+    {
+        srand = new SecureRandom();
+        //Load the Bouncy Castle classes (performance tweak
+        try
+        {
+            Class.forName("TwofishEngine");
+            Class.forName("BufferedBlockCipher");
+            Class.forName("PaddedBufferedBlockCipher");
+            Class.forName("Base64");
+            Class.forName("Digest");
+            Class.forName("SHA256Digest");
+            Class.forName("KeyParameter");
+        }
+        catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(JSCFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveToFileMenuItemActionPerformed
     {//GEN-HEADEREND:event_saveToFileMenuItemActionPerformed
         FileOutputStream fout = null;
@@ -385,7 +418,7 @@ public class JSCFrame extends javax.swing.JFrame
     }
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jsc/Bundle"); //NOI18N
-    private SecureRandom rand = new SecureRandom();
+    private SecureRandom srand = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
