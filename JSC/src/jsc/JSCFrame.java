@@ -36,8 +36,11 @@ public class JSCFrame extends javax.swing.JFrame
     /** Creates new form JSCFrame */
     public JSCFrame()
     {
-        initComponents();
-        //Start a thread to initalize the random number generator
+        /**
+         * Start a thread to initalize the random number generator.
+         * Doesn't nedd any GUI components so it can run while
+         * the GUI is initalized
+         */
         new Thread(new Runnable() {
 
             public void run()
@@ -45,6 +48,8 @@ public class JSCFrame extends javax.swing.JFrame
                 initRandAndClasses();
             }
         }).start();
+
+        initComponents();
     }
 
     /** This method is called from within the constructor to
@@ -356,13 +361,14 @@ public class JSCFrame extends javax.swing.JFrame
         //Load the Bouncy Castle classes (performance tweak
         try
         {
-            Class.forName("TwofishEngine");
-            Class.forName("BufferedBlockCipher");
-            Class.forName("PaddedBufferedBlockCipher");
-            Class.forName("Base64");
-            Class.forName("Digest");
-            Class.forName("SHA256Digest");
-            Class.forName("KeyParameter");
+            Class.forName("org.bouncycastle.crypto.engines.TwofishEngine");
+            Class.forName("org.bouncycastle.crypto.modes.CBCBlockCipher");
+            Class.forName("org.bouncycastle.crypto.BufferedBlockCipher");
+            Class.forName("org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher");
+            Class.forName("org.bouncycastle.util.encoders.Base64");
+            Class.forName("org.bouncycastle.crypto.Digest");
+            Class.forName("org.bouncycastle.crypto.digests.SHA256Digest");
+            Class.forName("org.bouncycastle.crypto.params.KeyParameter");
         }
         catch (ClassNotFoundException ex)
         {
