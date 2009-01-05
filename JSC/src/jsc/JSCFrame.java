@@ -200,7 +200,6 @@ public class JSCFrame extends javax.swing.JFrame
     {
         try
         {
-            //Init cipher
             BlockCipher engine = new TwofishEngine();
             BufferedBlockCipher cipher =
                     new PaddedBufferedBlockCipher(new CBCBlockCipher(engine));
@@ -208,26 +207,30 @@ public class JSCFrame extends javax.swing.JFrame
             byte[] passwordBytes = new String(passwordField.getPassword()).getBytes();
             byte[] input;
             byte[] output;
+
             //Base64-decode the ciphertext
             input = Base64.decode(inputField.getText().getBytes());
-            input = inputField.getText().getBytes();
+
             //Generate the salt
             byte[] salt = new byte[8];
             System.arraycopy(input, 0, salt, 0, 8);
-            rand.nextBytes(salt);
+
             //Hash the password together with the salt
             Digest digest = new SHA256Digest();
             digest.update(salt, 0, salt.length);
             digest.update(passwordBytes, 0, passwordBytes.length);
             byte[] hashedKey = new byte[32];
+            //Do the actual encryption
             digest.doFinal(hashedKey, 0);
+            //Init cipher
             cipher.init(false, new KeyParameter(hashedKey));
-            int outputLen = 0;
             /**
+             * Do the actual encryption:
              * input.length-8:
-             * the input array also contains the seed which is 8 bytes long
-             * if decrypting
+             *  the input array also contains the seed which is 8 bytes long
+             *  if decrypting
              */
+            int outputLen = 0;
             output = new byte[cipher.getOutputSize(input.length - 8)];
             outputLen = cipher.processBytes(input, 8, input.length - 8, output, 0);
             cipher.doFinal(output, outputLen);
@@ -260,7 +263,6 @@ public class JSCFrame extends javax.swing.JFrame
              *
              * The whole block is Base64 encoded
              */
-            //Init cipher
             BlockCipher engine = new TwofishEngine();
             BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CBCBlockCipher(engine));
             //Get data and encrypt
@@ -281,9 +283,9 @@ public class JSCFrame extends javax.swing.JFrame
             digest.update(passwordBytes, 0, passwordBytes.length);
             byte[] hashedKeys = new byte[32];
             digest.doFinal(hashedKeys, 0);
-
+            //Init cipher
             cipher.init(true, new KeyParameter(hashedKeys));
-
+            //Do the actual encryption
             int outputLen = 0;
             output = new byte[cipher.getOutputSize(input.length)];
             outputLen = cipher.processBytes(input, 0, input.length, output, 0);
