@@ -244,7 +244,7 @@ public class JSCFrame extends javax.swing.JFrame
             if (decryptCheckbox.isSelected())
             {
                 output = new byte[cipher.getOutputSize(input.length)];
-                outputLen = cipher.processBytes(input, 8, input.length, output, 0);
+                outputLen = cipher.processBytes(input, 8, input.length-8, output, 0);
             }
             else
             {
@@ -253,15 +253,16 @@ public class JSCFrame extends javax.swing.JFrame
             }
             cipher.doFinal(output, outputLen);
 
+            bout.write(salt);
             bout.write(output);
             //Print the output into outputField and Base64-encode if we have to encrypt
             if (decryptCheckbox.isSelected())
             {
-                outputField.setText(new String(output));
+                outputField.setText(new String(bout.toString()));
             }
             else
             {
-                outputField.setText(new String(Base64.encode(output)));
+                outputField.setText(new String(Base64.encode(bout.toByteArray())));
             }
         }
         catch (IOException ex)
