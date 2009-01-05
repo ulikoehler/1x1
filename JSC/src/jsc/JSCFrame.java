@@ -234,26 +234,34 @@ public class JSCFrame extends javax.swing.JFrame
             Digest digest = new SHA256Digest();
             digest.update(salt, 0, salt.length);
             digest.update(passwordBytes, 0, passwordBytes.length);
-            byte[] keyBytes = new byte[32];
-            digest.doFinal(keyBytes, 0);
+            byte[] hashedKeys = new byte[32];
+            digest.doFinal(hashedKeys, 0);
             
-            cipher.init(!decryptCheckbox.isSelected(), new KeyParameter(keyBytes));
+            cipher.init(!decryptCheckbox.isSelected(), new KeyParameter(hashedKeys));
 
             int outputLen = 0;
 
             if (decryptCheckbox.isSelected())
             {
-                output = new byte[cipher.getOutputSize(input.length)];
+                /**
+                 * input.length-8:
+                 * the input array also contains the seed which is 8 bytes long
+                 * if decrypting
+                 */
+                output = new byte[cipher.getOutputSize(input.length-8)];
                 outputLen = cipher.processBytes(input, 8, input.length-8, output, 0);
             }
             else
             {
-                output = new byte[cipher.getOutputSize(input.length-8)];
+                output = new byte[cipher.getOutputSize(input.length)];
                 outputLen = cipher.processBytes(input, 0, input.length, output, 0);
             }
             cipher.doFinal(output, outputLen);
 
-            bout.write(salt);
+            if(!decryptCheckbox.isSelected())
+            {
+                bout.write(salt);
+            }
             bout.write(output);
             //Print the output into outputField and Base64-encode if we have to encrypt
             if (decryptCheckbox.isSelected())
