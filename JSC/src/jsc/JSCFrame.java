@@ -10,13 +10,10 @@
  */
 package jsc;
 
-import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -152,6 +149,7 @@ public class JSCFrame extends javax.swing.JFrame
         extrasMenu.setMnemonic('e');
         extrasMenu.setText( i18n.getString("JSCFrame.extrasMenu.text")); // NOI18N
 
+        copyToClipboardCheckboxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         copyToClipboardCheckboxMenuItem.setMnemonic('c');
         copyToClipboardCheckboxMenuItem.setSelected(true);
         copyToClipboardCheckboxMenuItem.setText( i18n.getString("JSCFrame.copyToClipboardCheckboxMenuItem.text")); // NOI18N
