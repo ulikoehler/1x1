@@ -10,6 +10,13 @@
  */
 package jsc;
 
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -41,7 +48,8 @@ public class JSCFrame extends javax.swing.JFrame
          * Doesn't nedd any GUI components so it can run while
          * the GUI is initalized
          */
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
 
             public void run()
             {
@@ -61,7 +69,6 @@ public class JSCFrame extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         inputLabel = new javax.swing.JLabel();
@@ -76,8 +83,8 @@ public class JSCFrame extends javax.swing.JFrame
         fileMenu = new javax.swing.JMenu();
         loadFromFileMenuItem = new javax.swing.JMenuItem();
         saveToFileMenuItem = new javax.swing.JMenuItem();
-
-        jFormattedTextField1.setText( i18n.getString("JSCFrame.jFormattedTextField1.text")); // NOI18N
+        extrasMenu = new javax.swing.JMenu();
+        copyToClipboardCheckboxMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JSCFrame.title")); // NOI18N
@@ -92,6 +99,7 @@ public class JSCFrame extends javax.swing.JFrame
         inputField.setLineWrap(true);
         inputField.setRows(5);
         plaintextScrollPane.setViewportView(inputField);
+        inputField.getAccessibleContext().setAccessibleParent(outputField);
 
         ciphertextLabel.setDisplayedMnemonic('o');
         ciphertextLabel.setText(i18n.getString("JSCFrame.ciphertextLabel.text")); // NOI18N
@@ -112,6 +120,7 @@ public class JSCFrame extends javax.swing.JFrame
         outputField.setLineWrap(true);
         outputField.setRows(5);
         ciphertextScrollPane.setViewportView(outputField);
+        outputField.getAccessibleContext().setAccessibleParent(okButton);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText(i18n.getString("JSCFrame.fileMenu.text")); // NOI18N
@@ -140,13 +149,23 @@ public class JSCFrame extends javax.swing.JFrame
 
         menuBar.add(fileMenu);
 
+        extrasMenu.setMnemonic('e');
+        extrasMenu.setText( i18n.getString("JSCFrame.extrasMenu.text")); // NOI18N
+
+        copyToClipboardCheckboxMenuItem.setMnemonic('c');
+        copyToClipboardCheckboxMenuItem.setSelected(true);
+        copyToClipboardCheckboxMenuItem.setText( i18n.getString("JSCFrame.copyToClipboardCheckboxMenuItem.text")); // NOI18N
+        copyToClipboardCheckboxMenuItem.setToolTipText( i18n.getString("JSCFrame.copyToClipboardCheckboxMenuItem.toolTipText")); // NOI18N
+        extrasMenu.add(copyToClipboardCheckboxMenuItem);
+
+        menuBar.add(extrasMenu);
+
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 314, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +192,6 @@ public class JSCFrame extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 353, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,6 +212,9 @@ public class JSCFrame extends javax.swing.JFrame
                 .addContainerGap())
         );
 
+        passwordField.getAccessibleContext().setAccessibleParent(inputField);
+        okButton.getAccessibleContext().setAccessibleParent(passwordField);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -206,6 +227,14 @@ public class JSCFrame extends javax.swing.JFrame
         else
         {
             encryptSymmetric();
+            /**
+             * Copy the output field's contents into the system clipboard if enables
+             */
+            if (copyToClipboardCheckboxMenuItem.isSelected())
+            {
+                Transferable outputText = new StringSelection(outputField.getText());
+                systemClipboard.setContents(outputText, null);
+            }
         }
     }//GEN-LAST:event_okButtonMouseClicked
 
@@ -350,7 +379,6 @@ public class JSCFrame extends javax.swing.JFrame
         }
 }//GEN-LAST:event_loadFromFileMenuItemActionPerformed
 
-
     /**
      * Initializes the random number generator member variable
      * and loads the used BouncyCastle classes
@@ -375,7 +403,7 @@ public class JSCFrame extends javax.swing.JFrame
             Logger.getLogger(JSCFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void saveToFileMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveToFileMenuItemActionPerformed
     {//GEN-HEADEREND:event_saveToFileMenuItemActionPerformed
         FileOutputStream fout = null;
@@ -425,14 +453,16 @@ public class JSCFrame extends javax.swing.JFrame
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jsc/Bundle"); //NOI18N
     private SecureRandom srand = null;
+    private Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ciphertextLabel;
     private javax.swing.JScrollPane ciphertextScrollPane;
+    private javax.swing.JCheckBoxMenuItem copyToClipboardCheckboxMenuItem;
     private javax.swing.JCheckBox decryptCheckbox;
+    private javax.swing.JMenu extrasMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTextArea inputField;
     private javax.swing.JLabel inputLabel;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JMenuItem loadFromFileMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton okButton;
