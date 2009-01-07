@@ -49,10 +49,10 @@
                           <Component id="rocketWeightField" alignment="0" pref="266" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Component id="okButton" pref="426" max="32767" attributes="1"/>
+                  <Component id="okButton" alignment="0" pref="429" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="526" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="529" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -98,8 +98,8 @@
                           <Component id="precisionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="precisionField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="okButton" pref="242" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="okButton" min="-2" pref="134" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>

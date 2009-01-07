@@ -123,9 +123,9 @@ public class JRocketStartSimulatorFrame extends javax.swing.JFrame {
                             .addComponent(fuelEmissionField)
                             .addComponent(fuelWeightField)
                             .addComponent(rocketWeightField, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)))
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -162,8 +162,8 @@ public class JRocketStartSimulatorFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(precisionLabel)
                             .addComponent(precisionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)))
+                        .addGap(56, 56, 56)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -204,17 +204,18 @@ public class JRocketStartSimulatorFrame extends javax.swing.JFrame {
                 //Calculate the acceleration
                 acceleration = (nForce - newtonWeight) / mass;
                 //Check if there is any fuel to burn
-                if(fuelWeight > 0) {fuelWeight -= fuelEm;}
+                if(fuelWeight > 0) {fuelWeight -= fuelEm * res;}
                 else //Burning has ended
                     {
                         fuelWeight = 0;
                         nForce = 0;
                     }
-                //Recalculate scalars
+                //Recalculate scalars: Needed for next iteration
                 velocity += acceleration * res;
                 height += velocity * res;
                 mass = rocketWeight + fuelWeight;
                 newtonWeight = mass * gravity;
+
                 //Print out the results
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format(Locale.US, formatstring, time));
