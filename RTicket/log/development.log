@@ -1,0 +1,118 @@
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (134.8ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (108.7ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateMessages (20090107165304)
+  [4;36;1mSQL (206.1ms)[0m   [0;1mCREATE TABLE "messages" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "body" varchar(255), "viewsleft" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (150.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090107165304')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("messages")[0m
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-01-07 17:57:00) [GET]
+
+
+ActionController::RoutingError (No route matches "/rticket" with {:method=>:get}):
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/webrick_server.rb:103:in `handle_dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/webrick_server.rb:74:in `service'
+    /usr/lib64/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib64/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib64/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib64/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib64/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib64/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:82:in `start'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/webrick_server.rb:60:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/servers/webrick.rb:66
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    /usr/lib64/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /usr/lib64/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /usr/lib64/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/server.rb:49
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    script/server:3
+
+Rendering /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-01-07 17:57:04) [GET]
+
+
+ActionController::RoutingError (No route matches "/RTicket" with {:method=>:get}):
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/webrick_server.rb:103:in `handle_dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/webrick_server.rb:74:in `service'
+    /usr/lib64/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /usr/lib64/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /usr/lib64/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /usr/lib64/ruby/1.8/webrick/server.rb:162:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /usr/lib64/ruby/1.8/webrick/server.rb:95:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:92:in `each'
+    /usr/lib64/ruby/1.8/webrick/server.rb:92:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:23:in `start'
+    /usr/lib64/ruby/1.8/webrick/server.rb:82:in `start'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/webrick_server.rb:60:in `dispatch'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/servers/webrick.rb:66
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    /usr/lib64/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /usr/lib64/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /usr/lib64/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /usr/lib64/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/server.rb:49
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /usr/lib64/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    script/server:3
+
+Rendering /usr/lib64/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing MessagesController#index (for 127.0.0.1 at 2009-01-07 18:03:47) [GET]
+  [4;36;1mMessage Load (0.4ms)[0m   [0;1mSELECT * FROM "messages" [0m
+Rendering template within layouts/messages
+Rendering messages/index
+Completed in 8ms (View: 3, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing MessagesController#new (for 127.0.0.1 at 2009-01-07 18:03:54) [GET]
+Rendering template within layouts/messages
+Rendering messages/new
+Completed in 9ms (View: 5, DB: 0) | 200 OK [http://localhost/messages/new]
