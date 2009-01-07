@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090107165304) do
+ActiveRecord::Schema.define(:version => 20090107172237) do
 
   create_table "messages", :force => true do |t|
     t.string   "title"
@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20090107165304) do
     t.integer  "viewsleft"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "uid"
   end
 
 end

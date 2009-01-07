@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
   # GET /messages/1
   # GET /messages/1.xml
   def show
-    @message = Message.find(params[:id])
+    @message = Message.find(params[:uid])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,6 +25,7 @@ class MessagesController < ApplicationController
   # GET /messages/new.xml
   def new
     @message = Message.new
+    @message.uid = rand(1000000)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,7 +35,7 @@ class MessagesController < ApplicationController
 
   # GET /messages/1/edit
   def edit
-    @message = Message.find(params[:id])
+    @message = Message.find(params[:uid])
   end
 
   # POST /messages
