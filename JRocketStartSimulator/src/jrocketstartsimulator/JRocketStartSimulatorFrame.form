@@ -25,36 +25,32 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="rocketWeightLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
-                      <Component id="rocketWeightField" pref="219" max="32767" attributes="1"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="fuelWeightLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-                      <Component id="fuelWeightField" pref="219" max="32767" attributes="1"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="gravityLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                      <Component id="gravityField" pref="219" max="32767" attributes="1"/>
-                  </Group>
-                  <Component id="okButton" alignment="0" pref="379" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="1" pref="400" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="fuelVelocityLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="gravityLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="fuelWeightLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="rocketWeightLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="fuelEmissionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="resolutionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="fuelVelocityLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="precisionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="fuelEmissionField" alignment="0" pref="219" max="32767" attributes="1"/>
-                          <Component id="fuelVelocityField" alignment="0" pref="219" max="32767" attributes="1"/>
+                          <Component id="fuelVelocityField" pref="240" max="32767" attributes="0"/>
+                          <Component id="fuelWeightField" alignment="0" pref="240" max="32767" attributes="1"/>
+                          <Component id="rocketWeightField" alignment="0" pref="240" max="32767" attributes="1"/>
+                          <Component id="fuelEmissionField" alignment="0" pref="240" max="32767" attributes="0"/>
+                          <Component id="gravityField" alignment="0" pref="240" max="32767" attributes="0"/>
+                          <Component id="resolutionField" alignment="0" pref="240" max="32767" attributes="0"/>
+                          <Component id="precisionField" alignment="0" pref="240" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="okButton" alignment="0" pref="400" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -78,19 +74,31 @@
                   <Component id="fuelEmissionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fuelEmissionField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fuelVelocityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fuelVelocityField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fuelVelocityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="gravityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="gravityField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="resolutionField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="resolutionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="precisionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="precisionField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="okButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="209" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -137,39 +145,85 @@
           <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.okButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="okButtonMouseClicked"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="gravityField">
+    <Component class="javax.swing.JLabel" name="resolutionLabel">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="########0.##################### m/s&#xb2;" subtype="-1" type="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.resolutionLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="fuelVelocityField">
+    <Component class="javax.swing.JTextField" name="resolutionField">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="#,##0.### m/s" subtype="-1" type="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.resolutionField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="fuelEmissionField">
+    <Component class="javax.swing.JTextField" name="gravityField">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="########0.##################### kg/s" subtype="-1" type="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.gravityField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="fuelWeightField">
+    <Component class="javax.swing.JTextField" name="fuelVelocityField">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="########0.##################### kg" subtype="-1" type="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.fuelVelocityField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="rocketWeightField">
+    <Component class="javax.swing.JTextField" name="fuelEmissionField">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="" subtype="-1" type="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.fuelEmissionField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="fuelWeightField">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.fuelWeightField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="rocketWeightField">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.rocketWeightField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="outputTextArea">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="precisionLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.precisionLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="precisionField">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jrocketstartsimulator/Bundle.properties" key="JRocketStartSimulatorFrame.precisionField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
