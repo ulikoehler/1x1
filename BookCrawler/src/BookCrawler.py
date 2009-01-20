@@ -3,6 +3,7 @@ from __future__ import with_statement
 import urllib2
 import re
 import sqlite3
+from threading import Thread
 
 __author__="uli"
 __date__ ="$19.01.2009 19:52:53$"
@@ -13,7 +14,7 @@ isbnRegex = re.compile("<li><b>ISBN-13\\:</b> (\\d{3}-\\d{10})</li>", re.L)
 priceRegex = re.compile("<b class=\"priceLarge\">EUR ([1-9,]+)</b>", re.L)
 pagesRegex = re.compile("<li><b>[A-Za-z0-9 \\:]+</b> (\\d+) Seiten</li>", re.L)
 relatedRegex = re.compile("<a href=\"(http://www.amazon.de[^ <>]+/dp/\\d+[^ <>]*)\"><img src=\"", re.L)
-#re.compile("<td align=\"left\" valign=\"top\"><div style=\"width: 166px; height: 190px;\">\n
+
 def downloadUrl(url):
     try:
         response = urllib2.urlopen(url)
@@ -38,6 +39,8 @@ def parseConfigFile():
                 num = int(split[1])
             elif split[0] == "starturl":
                 starturl = split[1]
+            elif split[0] == "threads":
+                threads = int(split[1])
     return (num,starturl)
 
 def getISBN(html):
@@ -56,11 +59,6 @@ def getPageCount(html):
     match = pagesRegex.search(html)
     return int(match.group(1))
 
-#DEBUG
-def printIntoTestFile(s):
-    with open("test.txt", "w") as o:
-        o.write(s)
-
 def parseURL(url):
     html = downloadUrl(url)
     #Find the ISBN(-13)
@@ -73,7 +71,6 @@ def parseURL(url):
     ##################
     #Find the title
     title = getTitle(html)
-    print "Parsing \"" + title + "\""
     #Find the price
     price = getPrice(html)
     #Find the page count
@@ -88,8 +85,22 @@ def parseURL(url):
         #Add the URL to the queue
         urlQueue.append(match)
         queueAddCounter += 1
-    #Inform the user about how many relations have been added to the database
-    print "Added %i relations to the queue" % queueAddCounter
+    #Inform the user about the parsed book and the relations
+    return "Parsed \"%s\"\nAdded %i relations to the queue\n" % (title,queueAddCounter)
+
+class BookCrawlerThread(Thread):
+   def run(self):
+      #Start the HTML analyzer if there are URLs
+    while len(urlQueue) != 0:
+        if counter > 0:
+            counter -= 1
+            #ParseURL returns a message string to concatenate with the "n books to parse" message
+            #This is required not to mix the thread outputs
+            print parseURL(urlQueue.pop(0)) + "%i books to parse" % counter #pops the oldest entry
+        else:
+            print "Exiting due to lack of queued relations"
+            sys.exit(0)
+
 
 
 #####
@@ -107,16 +118,14 @@ if __name__ == "__main__":
     #Init the database
     conn = sqlite3.connect('books.sqlite3')
     conn.execute('''CREATE TABLE IF NOT EXISTS Books(Title VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
-    #Main queue controller
-    #Start the HTML analyzer if there are page-checks left
-    while len(urlQueue) != 0:
-        if counter > 0:
-            parseURL(urlQueue.pop())
-            counter -= 1
-            print "%i books to parse" % counter
-        else:
-            print "Exiting due to lack of queued relations"
-            sys.exit(0)
+    #Start the threads
+    threads = []
+    for i in xrange(threads):
+        t = BookCrawlerThread()
+        t.start()
+        threads.append(t)
+    for t in threads:
+        t.join()
     conn.close()
     print "Exiting due to counter limit"
     
