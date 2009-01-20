@@ -9,17 +9,16 @@ __date__ ="$19.01.2009 19:52:53$"
 #Main
 #####
 if __name__ == "__main__":
+    htmlQueue = []
     #Ask for the URL
-    count = int(raw_input("Number of URLs to crawl: "))
+    counter = int(raw_input("Number of URLs to crawl: "))
     url = raw_input("Start URL: ")
     #Download the URL and push it into the queue
+    htmlQueue.push()
     #Init the database
     conn = sqlite3.connect('books.sqlite3')
     if not len(con.execute("SELECT COUNT(*) FROM sqlite_master WHERE name=\"Books\"").fetchone()) > 0:
         conn.execute('''CREATE TABLE Books(Name VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
-
-    urlQueue = []
-    htmlQueue = []
 
     #Find the book price
     titleRegex = re.compile("<span id=\"btAsinTitle\" >[:alnum:]+</span>", re.L)
@@ -29,8 +28,13 @@ if __name__ == "__main__":
     relatedRegex = re.compile("<td align=\"left\" valign=\"top\"><div style=\"width: 166px; height: 190px;\">\n<a href=\"[:alnum:/]+\"><div class=\"image-title\">", re.L)
 
     #Main queue controller
+    #Start the HTML analyzer if there are page-checks left
     while(len(queue > 0)):
-        parseUrl(queue.pop())
+        if counter > 0:
+            parseUrl(queue.pop())
+            counter -= 1
+        else:
+            sys.exit(0)
 
 def downloadUrl(url):
     try:
@@ -80,9 +84,6 @@ def parseHTML(html):
     ##################
     ##Parse the data##
     ##################
-    #Check if there are page-checks left
-    if counter == 0:
-        sys.exit(0)
     counter -= 1
     #Find the title
     title = getTitle(html)
