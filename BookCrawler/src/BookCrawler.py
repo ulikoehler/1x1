@@ -85,7 +85,7 @@ if __name__ == "__main__":
     htmlQueue.append(downloadUrl(url))
     #Init the database
     conn = sqlite3.connect('books.sqlite3')
-    if not len(con.execute("SELECT COUNT(*) FROM sqlite_master WHERE name=\"Books\"").fetchone()) > 0:
+    if not len(conn.execute("SELECT COUNT(*) FROM sqlite_master WHERE name=\"Books\"").fetchone()) > 0:
         conn.execute('''CREATE TABLE Books(Name VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
 
     #Find the book price
@@ -97,9 +97,9 @@ if __name__ == "__main__":
 
     #Main queue controller
     #Start the HTML analyzer if there are page-checks left
-    while(len(queue > 0)):
+    while len(htmlQueue) > 0:
         if counter > 0:
-            parseUrl(htmlQueue.pop())
+            parseHTML(htmlQueue.pop())
             counter -= 1
         else:
             sys.exit(0)
