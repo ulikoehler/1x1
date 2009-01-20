@@ -12,7 +12,7 @@ testURLPrice = 54.95
 
 class TestParsers(unittest.TestCase):
     def setUp(self):
-        self.html = downloadUrl(testURL)
+        self.html = html
 
     def testTitle(self):
         title = getTitle(self.html)
@@ -34,4 +34,5 @@ __author__="uli"
 __date__ ="$19.01.2009 19:52:53$"
 
 if __name__ == '__main__':
+    html = downloadUrl(testURL) #Speeds up the test by avoiding to download each time
     unittest.main()

@@ -7,10 +7,10 @@ __author__="uli"
 __date__ ="$19.01.2009 19:52:53$"
 
 #Global regexes
-titleRegex = re.compile("<span id\\=\"btAsinTitle\" >([:alnum:]+)</span>", re.L)
-isbnRegex = re.compile("<li><b>ISBN-13\\:</b> ([1-9]{3,3}-[1-9]{10,10})</li>", re.L)
+titleRegex = re.compile("<span id=\"btAsinTitle\" >(.+?)</span>", re.L)
+isbnRegex = re.compile("<li><b>ISBN-13\\:</b> (\\d{3}-\\d{10})</li>", re.L)
 priceRegex = re.compile("<b class=\"priceLarge\">EUR ([1-9,]+)</b>", re.L)
-pagesRegex = re.compile("<li><b>[A-Za-z0-9\\:]+</b> (\d+) Seiten</li>", re.L)
+pagesRegex = re.compile("<li><b>[A-Za-z0-9\\:]+</b> (\\d+) Seiten</li>", re.L)
 relatedRegex = re.compile("<td align=\"left\" valign=\"top\"><div style=\"width: 166px; height: 190px;\">\n<a href=\"([:alnum:/]+)\"><div class=\"image-title\">", re.L)
 
 def downloadUrl(url):
@@ -42,7 +42,7 @@ def getPrice(html):
 
 def getPageCount(html):
     match = pagesRegex.search(html)
-    return match.group(1)
+    return int(match.group(1))
 
 def parseHTML(html):
     #Find the ISBN(-13)
