@@ -10,7 +10,7 @@ testURLTitle = "Anatomie. Duale Reihe (Broschiert)"
 testURLPages = 1344
 testURLPrice = 54.95
 
-class TestParsers(unittest.TestCase):
+class TestParserRegex(unittest.TestCase):
     def setUp(self):
         self.html = html
 
