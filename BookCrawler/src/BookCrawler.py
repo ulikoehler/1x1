@@ -41,7 +41,7 @@ def parseConfigFile():
                 starturl = split[1]
             elif split[0] == "threads":
                 threads = int(split[1])
-    return (num,starturl)
+    return (num,starturl,threads)
 
 def getISBN(html):
     match = isbnRegex.search(html)
@@ -112,6 +112,7 @@ if __name__ == "__main__":
     config = parseConfigFile()
     counter = config[0]
     url = config[1]
+    threads = config[2]
     print "%i books to parse" % counter
     #Download the URL and push it into the queue
     urlQueue.append(url)
@@ -119,12 +120,12 @@ if __name__ == "__main__":
     conn = sqlite3.connect('books.sqlite3')
     conn.execute('''CREATE TABLE IF NOT EXISTS Books(Title VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
     #Start the threads
-    threads = []
+    threadList = []
     for i in xrange(threads):
         t = BookCrawlerThread()
         t.start()
-        threads.append(t)
-    for t in threads:
+        threadList.append(t)
+    for t in threadList:
         t.join()
     conn.close()
     print "Exiting due to counter limit"
