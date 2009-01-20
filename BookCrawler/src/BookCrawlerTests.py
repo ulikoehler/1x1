@@ -1,7 +1,11 @@
 #!/usr/bin/env python
+from __future__ import with_statement
 from BookCrawler import getTitle
 from BookCrawler import getPageCount
 from BookCrawler import getPrice
+from BookCrawler import relatedRegex
+from BookCrawler import printIntoTestFile
+from BookCrawler import downloadUrl
 import unittest
 from BookCrawler import *
 testURL = "http://www.amazon.de/Anatomie-Duale-Reihe-Gerhard-Aum%C3%BCller/dp/3131360410/ref=pd_bxgy_b_img_b"
@@ -21,6 +25,11 @@ class TestParserRegex(unittest.TestCase):
     def testPages(self):
         pages = getPageCount(self.html)
         self.assertEqual(pages, testURLPages)
+
+    def testRelatedRegex(self):
+        res = relatedRegex.findall(self.html)
+        printIntoTestFile(html)
+        self.assertTrue(len(res) > 0, "Result: %s" % res)
 
     def testPrice(self):
         price = getPrice(self.html)
