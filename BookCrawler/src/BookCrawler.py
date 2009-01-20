@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import with_statement
 import urllib2
 import re
 import sqlite3
@@ -24,9 +25,19 @@ def downloadUrl(url):
 def checkUrl(html, isbn):
     global conn
     #Check if this book has not yet been crawled
-    if len(conn.execute('''SELECT COUNT(Title) FROM BOOKS WHERE ISBN = ?''', isbn).fetchone()) > 0:
+    if len(conn.execute('''SELECT COUNT(Title) FROM Books WHERE ISBN = ?''', (isbn,)).fetchone()) > 0:
         return 1
     return 0
+
+def parseConfigFile():
+    with open("config.cfg") as cfg:
+        for line in cfg:
+            split = line.split("=")
+            if split[0] == "num":
+                num = int(split[1])
+            elif split[0] == "starturl":
+                starturl = split[1]
+    return (num,starturl)
 
 def getISBN(html):
     match = isbnRegex.search(html)
@@ -78,15 +89,15 @@ def parseHTML(html):
 #####
 if __name__ == "__main__":
     htmlQueue = []
-    #Ask for the URL
-    counter = int(raw_input("Number of URLs to crawl: "))
-    url = raw_input("Start URL: ")
+    #Read the number of books to read and the start URL from the config file
+    config = parseConfigFile()
+    counter = config[0]
+    url = config[1]
     #Download the URL and push it into the queue
     htmlQueue.append(downloadUrl(url))
     #Init the database
     conn = sqlite3.connect('books.sqlite3')
-    if not len(conn.execute("SELECT COUNT(*) FROM sqlite_master WHERE name=\"Books\"").fetchone()) > 0:
-        conn.execute('''CREATE TABLE Books(Name VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
+    conn.execute('''CREATE TABLE IF NOT EXISTS Books(Title VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
 
     #Main queue controller
     #Start the HTML analyzer if there are page-checks left
