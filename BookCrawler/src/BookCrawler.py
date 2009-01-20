@@ -11,7 +11,7 @@ __date__ ="$19.01.2009 19:52:53$"
 titleRegex = re.compile("<span id=\"btAsinTitle\" >(.+?)</span>", re.L)
 isbnRegex = re.compile("<li><b>ISBN-13\\:</b> (\\d{3}-\\d{10})</li>", re.L)
 priceRegex = re.compile("<b class=\"priceLarge\">EUR ([1-9,]+)</b>", re.L)
-pagesRegex = re.compile("<li><b>[A-Za-z0-9\\:]+</b> (\\d+) Seiten</li>", re.L)
+pagesRegex = re.compile("<li><b>[A-Za-z0-9 \\:]+</b> (\\d+) Seiten</li>", re.L)
 relatedRegex = re.compile("<a href=\"(http://www.amazon.de[^ <>]+/dp/\\d+[^ <>]*)\"><img src=\"", re.L)
 #re.compile("<td align=\"left\" valign=\"top\"><div style=\"width: 166px; height: 190px;\">\n
 def downloadUrl(url):
@@ -61,7 +61,8 @@ def printIntoTestFile(s):
     with open("test.txt", "w") as o:
         o.write(s)
 
-def parseHTML(html):
+def parseURL(url):
+    html = downloadUrl(url)
     #Find the ISBN(-13)
     isbn = getISBN(html)
     #Check if this book has not yet been crawled
@@ -84,13 +85,9 @@ def parseHTML(html):
     queueAddCounter = 0 #Count the queue add
     matches = relatedRegex.findall(html)
     for match in matches:
-        #Download the page and check if the book has already been covered, if not push it into queue
-        html = downloadUrl(match) #Match[1] == match.group(1) when findall is used
-        if checkUrl(getISBN(html)) == 0:
-            htmlQueue.append(html)
-            queueAddCounter += 1
-        else:
-            print "Relation %s already in database" % getTitle(html)
+        #Add the URL to the queue
+        urlQueue.append(match)
+        queueAddCounter += 1
     #Inform the user about how many relations have been added to the database
     print "Added %i relations to the queue" % queueAddCounter
 
@@ -99,28 +96,29 @@ def parseHTML(html):
 #Main
 #####
 if __name__ == "__main__":
-    htmlQueue = []
+    urlQueue = []
     #Read the number of books to read and the start URL from the config file
     config = parseConfigFile()
     counter = config[0]
     url = config[1]
     print "%i books to parse" % counter
     #Download the URL and push it into the queue
-    htmlQueue.append(downloadUrl(url))
+    urlQueue.append(url)
     #Init the database
     conn = sqlite3.connect('books.sqlite3')
     conn.execute('''CREATE TABLE IF NOT EXISTS Books(Title VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
     #Main queue controller
     #Start the HTML analyzer if there are page-checks left
-    while len(htmlQueue) > 0:
+    while len(urlQueue) != 0:
         if counter > 0:
-            parseHTML(htmlQueue.pop())
+            parseURL(urlQueue.pop())
+            counter -= 1
             print "%i books to parse" % counter
         else:
             print "Exiting due to lack of queued relations"
             sys.exit(0)
     conn.close()
-    print "Exiting due to"
+    print "Exiting due to counter limit"
     
 
 
