@@ -6,6 +6,13 @@ import sqlite3
 __author__="uli"
 __date__ ="$19.01.2009 19:52:53$"
 
+#Global regexes
+titleRegex = re.compile("<span id\\=\"btAsinTitle\" >([:alnum:]+)</span>", re.L)
+isbnRegex = re.compile("<li><b>ISBN-13\\:</b> ([1-9]{3,3}-[1-9]{10,10})</li>", re.L)
+priceRegex = re.compile("<b class=\"priceLarge\">EUR ([1-9,]+)</b>", re.L)
+pagesRegex = re.compile("<li><b>[A-Za-z0-9\\:]+</b> (\d+) Seiten</li>", re.L)
+relatedRegex = re.compile("<td align=\"left\" valign=\"top\"><div style=\"width: 166px; height: 190px;\">\n<a href=\"([:alnum:/]+)\"><div class=\"image-title\">", re.L)
+
 def downloadUrl(url):
     try:
         response = urllib2.urlopen(url)
@@ -23,27 +30,19 @@ def checkUrl(html, isbn):
 
 def getISBN(html):
     match = isbnRegex.search(html)
-    matchStart = match.start() + len("<li><b>ISBN-13:</b> ")
-    matchEnd = match.end() - len("</li>")
-    return html[matchStart:matchEnd]
+    return match.group(1)
 
 def getTitle(html):
     match = titleRegex.search(html)
-    matchStart = match.start() + len("<span id=\"btAsinTitle\" >")
-    matchEnd = match.end() - len("</span>")
-    return html[matchStart:matchEnd]
+    return match.group(1)
 
 def getPrice(html):
     match = priceRegex.search(html)
-    matchStart = match.start() + len("<b class=\"priceLarge\">EUR ")
-    matchEnd = match.end() - len("</b>")
-    return float(html[matchStart:matchEnd].replace(",","."))
+    return float(match.group(1).replace(",","."))
 
 def getPageCount(html):
-    match = priceRegex.search(html)
-    matchStart = match.start() + len("<li><b>[:alpha:]+</b> ")
-    matchEnd = match.end() - len(" Seiten</li>")
-    return int(html[matchStart:matchEnd])
+    match = pagesRegex.search(html)
+    return match.group(1)
 
 def parseHTML(html):
     #Find the ISBN(-13)
@@ -88,13 +87,6 @@ if __name__ == "__main__":
     conn = sqlite3.connect('books.sqlite3')
     if not len(conn.execute("SELECT COUNT(*) FROM sqlite_master WHERE name=\"Books\"").fetchone()) > 0:
         conn.execute('''CREATE TABLE Books(Name VARCHAR(100), ISBN CHAR(14), Price REAL, Pages INTEGER)''')
-
-    #Find the book price
-    titleRegex = re.compile("<span id=\"btAsinTitle\" >[:alnum:]+</span>", re.L)
-    isbnRegex = re.compile("<li><b>ISBN-13:</b> [1-9]{3,3}-[1-9]{10,10}</li>", re.L)
-    priceRegex = re.compile("<b class=\"priceLarge\">EUR [1-9,]+</b>", re.L)
-    pagesRegex = re.compile("<li><b>[:alpha:]+</b> \d+ Seiten</li>", re.L)
-    relatedRegex = re.compile("<td align=\"left\" valign=\"top\"><div style=\"width: 166px; height: 190px;\">\n<a href=\"[:alnum:/]+\"><div class=\"image-title\">", re.L)
 
     #Main queue controller
     #Start the HTML analyzer if there are page-checks left
