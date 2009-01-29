@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.BufferedBlockCipher;
 import org.bouncycastle.crypto.DataLengthException;
@@ -65,11 +66,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
             byte[] passwordBytes =
                     new String(passwordField.getPassword()).getBytes();
 
-
-            //All data is written to this stream
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-
-            //Hash the password to fit it into the right size (with salt)
+            //Hash the password
             byte[] keyBytes = new byte[32]; //256
 
             Digest digest = new SHA256Digest(); //Assume a 256-bit key
@@ -85,7 +82,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
             fin.read(input);
 
             //Perform the encryption/decryption
-            byte[] output = new byte[cipher.getOutputSize(inlen)];
+            byte[] output = new byte[cipher.getOutputSize(input.length)];
 
             int outlen = cipher.processBytes(input, 0, inlen, output, 0);
             cipher.doFinal(output, outlen);
@@ -94,6 +91,9 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
             
             fin.close();
             fout.close();
+            //Display a success message
+            JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            return; //Don't show the error dialog
         }
         catch (DataLengthException ex)
         {
@@ -111,6 +111,8 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
         {
             Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //If a exception occured this message is displayed
+        JOptionPane.showMessageDialog(this, "Operation error!", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
 
@@ -250,7 +252,9 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
 
     private void selectOutputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectOutputFileButtonActionPerformed
     {//GEN-HEADEREND:event_selectOutputFileButtonActionPerformed
-        // TODO add your handling code here:
+        fileChooser.setSelectedFile(new File(inputFileField.getText()));
+        fileChooser.showSaveDialog(this);
+        outputFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectOutputFileButtonActionPerformed
 
     /**
