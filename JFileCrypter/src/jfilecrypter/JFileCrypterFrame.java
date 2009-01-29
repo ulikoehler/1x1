@@ -8,11 +8,9 @@
  *
  * Created on 29.01.2009, 15:22:29
  */
-
 package jfilecrypter;
 
 import java.io.File;
-import java.security.SecureRandom;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,14 +21,15 @@ import javax.swing.JOptionPane;
  *
  * @author uli
  */
-public class JFileCrypterFrame extends javax.swing.JFrame {
+public class JFileCrypterFrame extends javax.swing.JFrame
+{
 
     /** Creates new form JFileCrypterFrame */
-    public JFileCrypterFrame() {
+    public JFileCrypterFrame()
+    {
         initComponents();
-        //Force RNG seeding
+    //Force RNG seeding
     }
-
 
     private void cryptSymmetric(boolean encrypt)
     {
@@ -38,30 +37,30 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
         {
             //Init the cipher
             Runtime r = Runtime.getRuntime();
-            StringBuilder cmdBuilder = new StringBuilder("openssl aes-256-cbc");
+            StringBuilder cmdBuilder = new StringBuilder("openssl aes-256-cbc");//NOI18N
             //I/O filenames
-            cmdBuilder.append(" -in \"" + inputFileField.getText() + "\"");
-            cmdBuilder.append(" -out \"" + outputFileField.getText() + "\"");
+            cmdBuilder.append(" -in \"" + inputFileField.getText() + "\""); //NOI18N
+            cmdBuilder.append(" -out \"" + outputFileField.getText() + "\""); //NOI18N
             //Encrypt/decrypt
-            if(decryptCheckbox.isSelected())
+            if (decryptCheckbox.isSelected())
             {
-                cmdBuilder.append(" -d");
+                cmdBuilder.append(" -d"); //NOI18N
             }
             else
             {
-                cmdBuilder.append(" -e");
+                cmdBuilder.append(" -e"); //NOI18N
             }
             //Password
-            cmdBuilder.append(" -k \"" + new String(passwordField.getPassword()) + "\"");
+            cmdBuilder.append(" -k \"" + new String(passwordField.getPassword()) + "\""); //NOI18N
 
             /**
              * Execute the command
              */
             r.exec(cmdBuilder.toString());
-            System.out.println("\"" + cmdBuilder.toString() + "\"");
-            
+            System.out.println("\"" + cmdBuilder.toString() + "\""); //NOI18N
+
             //Display a success message
-            JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,  i18n.getString("Operation_successful!"),  i18n.getString("Success"), JOptionPane.INFORMATION_MESSAGE);
             return; //Don't show the error dialog
         }
         catch (Exception ex)
@@ -69,9 +68,8 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
             Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         //If a exception occured this message is displayed
-        JOptionPane.showMessageDialog(this, "Operation error!", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this,  i18n.getString("Operation_error!"),  i18n.getString("Error"), JOptionPane.ERROR_MESSAGE);
     }
-
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -151,8 +149,8 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
                                     .addComponent(inputFileField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(selectOutputFileButton)
-                                    .addComponent(selectInputFileButton)))
+                                    .addComponent(selectInputFileButton)
+                                    .addComponent(selectOutputFileButton)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(decryptCheckbox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -215,18 +213,20 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_selectOutputFileButtonActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+
+            public void run()
+            {
                 new JFileCrypterFrame().setVisible(true);
             }
         });
     }
-
     private JFileChooser fileChooser = new JFileChooser();
-    private SecureRandom rand = new SecureRandom();
     private ResourceBundle i18n = ResourceBundle.getBundle("jfilecrypter/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox decryptCheckbox;
@@ -240,5 +240,4 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
     private javax.swing.JButton selectInputFileButton;
     private javax.swing.JButton selectOutputFileButton;
     // End of variables declaration//GEN-END:variables
-
 }
