@@ -11,27 +11,13 @@
 
 package jfilecrypter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.BufferedBlockCipher;
-import org.bouncycastle.crypto.DataLengthException;
-import org.bouncycastle.crypto.Digest;
-import org.bouncycastle.crypto.InvalidCipherTextException;
-import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.bouncycastle.crypto.engines.TwofishEngine;
-import org.bouncycastle.crypto.modes.CBCBlockCipher;
-import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
-import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
  *
@@ -51,63 +37,34 @@ public class JFileCrypterFrame extends javax.swing.JFrame {
         try
         {
             //Init the cipher
-            BlockCipher engine = new TwofishEngine();
-            BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CBCBlockCipher(engine));
+            Runtime r = Runtime.getRuntime();
+            StringBuilder cmdBuilder = new StringBuilder("openssl aes-256-cbc");
+            //I/O filenames
+            cmdBuilder.append(" -in \"" + inputFileField.getText() + "\"");
+            cmdBuilder.append(" -out \"" + outputFileField.getText() + "\"");
+            //Encrypt/decrypt
+            if(decryptCheckbox.isSelected())
+            {
+                cmdBuilder.append(" -d");
+            }
+            else
+            {
+                cmdBuilder.append(" -e");
+            }
+            //Password
+            cmdBuilder.append(" -k \"" + new String(passwordField.getPassword()) + "\"");
 
-            File outfile = new File(outputFileField.getText());
-            File infile = new File(inputFileField.getText());
-            int inlen = (int)infile.length();
-            FileInputStream fin = new FileInputStream(infile);
-            FileOutputStream fout = new FileOutputStream(outfile);
-
-            int bs = cipher.getBlockSize(); //Blocksize
-
-            //Get data
-            byte[] passwordBytes =
-                    new String(passwordField.getPassword()).getBytes();
-
-            //Hash the password
-            byte[] keyBytes = new byte[32]; //256
-
-            Digest digest = new SHA256Digest(); //Assume a 256-bit key
-            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
-            digest.doFinal(keyBytes, 0); //Do the final hashing
-
-            KeyParameter keyParam = new KeyParameter(keyBytes);
-
-            cipher.init(encrypt, keyParam);
-
-            //Read the input
-            byte[] input = new byte[inlen];
-            fin.read(input);
-
-            //Perform the encryption/decryption
-            byte[] output = new byte[cipher.getOutputSize(input.length)];
-
-            int outlen = cipher.processBytes(input, 0, inlen, output, 0);
-            cipher.doFinal(output, outlen);
-
-            fout.write(output);
+            /**
+             * Execute the command
+             */
+            r.exec(cmdBuilder.toString());
+            System.out.println("\"" + cmdBuilder.toString() + "\"");
             
-            fin.close();
-            fout.close();
             //Display a success message
             JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             return; //Don't show the error dialog
         }
-        catch (DataLengthException ex)
-        {
-            Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IllegalStateException ex)
-        {
-            Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InvalidCipherTextException ex)
-        {
-            Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
