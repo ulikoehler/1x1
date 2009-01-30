@@ -8,7 +8,7 @@
  *
  * Created on 29.01.2009, 15:22:29
  */
-package jfilecrypter;
+package jopensslgui;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,6 +103,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame
         randomSizeSpinner = new javax.swing.JSpinner();
         randomSizeSuffixComboBox = new javax.swing.JComboBox();
         randomFileOKButton = new javax.swing.JButton();
+        generateKeyPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JFileCrypterFrame.title")); // NOI18N
@@ -271,6 +272,19 @@ public class JFileCrypterFrame extends javax.swing.JFrame
 
         mainTabbedPane.addTab( i18n.getString("JFileCrypterFrame.randomFilePanel.TabConstraints.tabTitle"), randomFilePanel); // NOI18N
 
+        javax.swing.GroupLayout generateKeyPanelLayout = new javax.swing.GroupLayout(generateKeyPanel);
+        generateKeyPanel.setLayout(generateKeyPanelLayout);
+        generateKeyPanelLayout.setHorizontalGroup(
+            generateKeyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 349, Short.MAX_VALUE)
+        );
+        generateKeyPanelLayout.setVerticalGroup(
+            generateKeyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 139, Short.MAX_VALUE)
+        );
+
+        mainTabbedPane.addTab( i18n.getString("JFileCrypterFrame.generateKeyPanel.TabConstraints.tabTitle"), generateKeyPanel); // NOI18N
+
         getContentPane().add(mainTabbedPane);
 
         pack();
@@ -370,12 +384,13 @@ public class JFileCrypterFrame extends javax.swing.JFrame
         });
     }
     private JFileChooser fileChooser = new JFileChooser();
-    private ResourceBundle i18n = ResourceBundle.getBundle("jfilecrypter/Bundle"); //NOI18N
+    private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JTextField encryptionInputField;
     private javax.swing.JButton fileEncryptionOKButton;
     private javax.swing.JPanel fileEncryptionPanel;
+    private javax.swing.JPanel generateKeyPanel;
     private javax.swing.JLabel inputFileLabel;
     private javax.swing.JTabbedPane mainTabbedPane;
     private javax.swing.JTextField outputFileField;

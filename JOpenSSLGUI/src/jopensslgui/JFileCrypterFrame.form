@@ -4,7 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-      <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.title" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+      <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.title" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -34,7 +34,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="File encryption">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.fileEncryptionPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.fileEncryptionPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -119,28 +119,28 @@
             <Component class="javax.swing.JLabel" name="inputFileLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.inputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.inputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="encryptionInputField">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.encryptionInputField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.encryptionInputField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="outputFileLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.outputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.outputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="outputFileField">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.outputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.outputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -148,7 +148,7 @@
               <Properties>
                 <Property name="mnemonic" type="int" value="100"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.decryptCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.decryptCheckbox.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -156,7 +156,7 @@
               <Properties>
                 <Property name="mnemonic" type="int" value="111"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.fileEncryptionOKButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.fileEncryptionOKButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -169,14 +169,14 @@
               <Properties>
                 <Property name="displayedMnemonic" type="int" value="112"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.passwordLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.passwordLabel.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="selectInputFileButton">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.selectInputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.selectInputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -186,7 +186,7 @@
             <Component class="javax.swing.JButton" name="selectOutputFileButton">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.selectOutputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.selectOutputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -200,7 +200,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Random file">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.randomFilePanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.randomFilePanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -259,7 +259,7 @@
             <Component class="javax.swing.JButton" name="selectOutputFileButton1">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.selectOutputFileButton1.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.selectOutputFileButton1.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -269,21 +269,21 @@
             <Component class="javax.swing.JLabel" name="outputFileLabel1">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.outputFileLabel1.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.outputFileLabel1.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="randomOutputFileField">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.randomOutputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.randomOutputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="sizeLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.sizeLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.sizeLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -310,7 +310,7 @@
             <Component class="javax.swing.JButton" name="randomFileOKButton">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="jfilecrypter/Bundle.properties" key="JFileCrypterFrame.randomFileOKButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.randomFileOKButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -318,6 +318,30 @@
               </Events>
             </Component>
           </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="generateKeyPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="tab3">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="jopensslgui/Bundle.properties" key="JFileCrypterFrame.generateKeyPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+                </Property>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="349" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="139" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
         </Container>
       </SubComponents>
     </Container>
