@@ -62,16 +62,14 @@ public class JFileCrypterFrame extends javax.swing.JFrame
             System.out.println("\"" + cmdBuilder.toString() + "\""); //NOI18N
 
             //Display a success message
-            JOptionPane.showMessageDialog(this, i18n.getString("Operation_successful!"), i18n.
-                    getString("Success"), JOptionPane.INFORMATION_MESSAGE);
+            displaySuccessMessage();
             return; //Don't show the error dialog
         }
         catch (Exception ex)
         {
             Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //If a exception occured this message is displayed
-        JOptionPane.showMessageDialog(this, i18n.getString("Operation_error!"), i18n.getString("Error"), JOptionPane.ERROR_MESSAGE);
+        displayErrorMessage();
     }
 
     /** This method is called from within the constructor to
@@ -323,6 +321,21 @@ public class JFileCrypterFrame extends javax.swing.JFrame
         randomOutputFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectRandomOutputFileButtonActionPerformed
 
+    private void displaySuccessMessage()
+    {
+        JOptionPane.showMessageDialog(this, i18n.getString("Operation_successful!"), i18n.getString("Success"), JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void displayErrorMessage(String message)
+    {
+        JOptionPane.showMessageDialog(this, i18n.getString("Operation_error:" + message), i18n.
+                getString("Error"), JOptionPane.ERROR_MESSAGE);
+    }
+    private void displayErrorMessage()
+    {
+        displayErrorMessage("");
+    }
+
     private void randomFileOKButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_randomFileOKButtonActionPerformed
     {//GEN-HEADEREND:event_randomFileOKButtonActionPerformed
         try
@@ -361,7 +374,21 @@ public class JFileCrypterFrame extends javax.swing.JFrame
              */
             String outfileName = randomOutputFileField.getText();
             Runtime r = Runtime.getRuntime();
-            r.exec("openssl rand -out \"" + outfileName + "\" " + Long.toString(size));
+            Process p = r.exec("openssl rand -out \"" + outfileName + "\" " + Long.toString(size));
+            p.waitFor();
+            int exitValue = p.exitValue();
+            if (exitValue == 0)
+            {
+                displaySuccessMessage();
+            }
+            else
+            {
+                displayErrorMessage(Integer.toString(exitValue));
+            }
+        }
+        catch (InterruptedException ex)
+        {
+            Logger.getLogger(JFileCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
