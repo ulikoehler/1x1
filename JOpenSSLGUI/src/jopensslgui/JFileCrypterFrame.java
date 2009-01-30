@@ -12,6 +12,7 @@ package jopensslgui;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,10 +103,11 @@ public class JFileCrypterFrame extends javax.swing.JFrame
         randomSizeSuffixComboBox = new javax.swing.JComboBox();
         randomFileOKButton = new javax.swing.JButton();
         generateKeyPanel = new javax.swing.JPanel();
+        statusPanel = new javax.swing.JPanel();
+        statusLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JFileCrypterFrame.title")); // NOI18N
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         inputFileLabel.setText( i18n.getString("JFileCrypterFrame.inputFileLabel.text")); // NOI18N
 
@@ -156,8 +158,8 @@ public class JFileCrypterFrame extends javax.swing.JFrame
                             .addComponent(outputFileLabel))
                         .addGap(7, 7, 7)
                         .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(encryptionInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                            .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                            .addComponent(encryptionInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE))
                         .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -173,8 +175,8 @@ public class JFileCrypterFrame extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(decryptCheckbox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileEncryptionOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
-                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))))
+                                .addComponent(fileEncryptionOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
+                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         fileEncryptionPanelLayout.setVerticalGroup(
@@ -198,7 +200,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame
                 .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fileEncryptionOKButton)
                     .addComponent(decryptCheckbox))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab( i18n.getString("JFileCrypterFrame.fileEncryptionPanel.TabConstraints.tabTitle"), fileEncryptionPanel); // NOI18N
@@ -235,20 +237,20 @@ public class JFileCrypterFrame extends javax.swing.JFrame
             .addGroup(randomFilePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(outputFileLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sizeLabel))
+                    .addComponent(outputFileLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(randomFilePanelLayout.createSequentialGroup()
-                        .addComponent(randomOutputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                        .addComponent(randomOutputFileField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectOutputFileButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(randomFileOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                        .addComponent(selectOutputFileButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(randomFileOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, randomFilePanelLayout.createSequentialGroup()
-                        .addComponent(randomSizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addComponent(randomSizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(randomSizeSuffixComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18))
+                .addGap(369, 369, 369))
         );
         randomFilePanelLayout.setVerticalGroup(
             randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,7 +267,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame
                     .addComponent(randomSizeSuffixComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(randomFileOKButton)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab( i18n.getString("JFileCrypterFrame.randomFilePanel.TabConstraints.tabTitle"), randomFilePanel); // NOI18N
@@ -274,16 +276,23 @@ public class JFileCrypterFrame extends javax.swing.JFrame
         generateKeyPanel.setLayout(generateKeyPanelLayout);
         generateKeyPanelLayout.setHorizontalGroup(
             generateKeyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 349, Short.MAX_VALUE)
+            .addGap(0, 709, Short.MAX_VALUE)
         );
         generateKeyPanelLayout.setVerticalGroup(
             generateKeyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 139, Short.MAX_VALUE)
+            .addGap(0, 179, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab( i18n.getString("JFileCrypterFrame.generateKeyPanel.TabConstraints.tabTitle"), generateKeyPanel); // NOI18N
 
-        getContentPane().add(mainTabbedPane);
+        getContentPane().add(mainTabbedPane, java.awt.BorderLayout.CENTER);
+
+        statusPanel.setLayout(new javax.swing.BoxLayout(statusPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        statusLabel.setText( i18n.getString("JFileCrypterFrame.statusLabel.text")); // NOI18N
+        statusPanel.add(statusLabel);
+
+        getContentPane().add(statusPanel, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -328,7 +337,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame
 
     private void displayErrorMessage(String message)
     {
-        JOptionPane.showMessageDialog(this, i18n.getString("Operation_error:" + message), i18n.
+        JOptionPane.showMessageDialog(this, i18n.getString("Operation_error:") + message, i18n.
                 getString("Error"), JOptionPane.ERROR_MESSAGE);
     }
     private void displayErrorMessage()
@@ -374,7 +383,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame
              */
             String outfileName = randomOutputFileField.getText();
             Runtime r = Runtime.getRuntime();
-            Process p = r.exec("openssl rand -out \"" + outfileName + "\" " + Long.toString(size));
+            Process p = r.exec("openssl rand -out " + outfileName + " " + Long.toString(size));
             p.waitFor();
             int exitValue = p.exitValue();
             if (exitValue == 0)
@@ -434,5 +443,7 @@ public class JFileCrypterFrame extends javax.swing.JFrame
     private javax.swing.JButton selectOutputFileButton;
     private javax.swing.JButton selectOutputFileButton1;
     private javax.swing.JLabel sizeLabel;
+    private javax.swing.JLabel statusLabel;
+    private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
 }
