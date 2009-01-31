@@ -39,7 +39,7 @@ public class RandomFilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        outputFileLabel1 = new javax.swing.JLabel();
+        outputFileLabel = new javax.swing.JLabel();
         randomOutputFileField = new javax.swing.JTextField();
         selectOutputFileButton1 = new javax.swing.JButton();
         sizeLabel = new javax.swing.JLabel();
@@ -47,7 +47,7 @@ public class RandomFilePanel extends javax.swing.JPanel {
         randomSizeSuffixComboBox = new javax.swing.JComboBox();
         randomFileOKButton = new javax.swing.JButton();
 
-        outputFileLabel1.setText( i18n.getString("RandomFilePanel.outputFileLabel1.text")); // NOI18N
+        outputFileLabel.setText( i18n.getString("RandomFilePanel.outputFileLabel.text")); // NOI18N
 
         randomOutputFileField.setText( i18n.getString("RandomFilePanel.randomOutputFileField.text")); // NOI18N
 
@@ -81,7 +81,7 @@ public class RandomFilePanel extends javax.swing.JPanel {
                         .addComponent(sizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(outputFileLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                        .addComponent(outputFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                         .addGap(6, 6, 6)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(randomFileOKButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
@@ -100,7 +100,7 @@ public class RandomFilePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outputFileLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(outputFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(randomOutputFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(selectOutputFileButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -184,7 +184,7 @@ public class RandomFilePanel extends javax.swing.JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel outputFileLabel1;
+    private javax.swing.JLabel outputFileLabel;
     private javax.swing.JButton randomFileOKButton;
     private javax.swing.JTextField randomOutputFileField;
     private javax.swing.JSpinner randomSizeSpinner;

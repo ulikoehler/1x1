@@ -24,7 +24,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="outputFileLabel1" pref="80" max="32767" attributes="0"/>
+                      <Component id="outputFileLabel" pref="80" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -50,7 +50,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="outputFileLabel1" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
+                  <Component id="outputFileLabel" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
                   <Component id="randomOutputFileField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="selectOutputFileButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -68,10 +68,10 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="outputFileLabel1">
+    <Component class="javax.swing.JLabel" name="outputFileLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="RandomFilePanel.outputFileLabel1.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="RandomFilePanel.outputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

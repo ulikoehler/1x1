@@ -32,45 +32,6 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         singleton = this;
     }
 
-    private void cryptSymmetric(boolean encrypt)
-    {
-        try
-        {
-            //Init the cipher
-            Runtime r = Runtime.getRuntime();
-            StringBuilder cmdBuilder = new StringBuilder("openssl aes-256-cbc");//NOI18N
-            //I/O filenames
-            cmdBuilder.append(" -in \"" + encryptionInputField.getText() + "\""); //NOI18N
-            cmdBuilder.append(" -out \"" + outputFileField.getText() + "\""); //NOI18N
-            //Encrypt/decrypt
-            if (decryptCheckbox.isSelected())
-            {
-                cmdBuilder.append(" -d"); //NOI18N
-            }
-            else
-            {
-                cmdBuilder.append(" -e"); //NOI18N
-            }
-            //Password
-            cmdBuilder.append(" -k \"" + new String(passwordField.getPassword()) + "\""); //NOI18N
-
-            /**
-             * Execute the command
-             */
-            r.exec(cmdBuilder.toString());
-            System.out.println("\"" + cmdBuilder.toString() + "\""); //NOI18N
-
-            //Display a success message
-            displaySuccessMessage();
-            return; //Don't show the error dialog
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(JOpenSSLFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        displayErrorMessage();
-    }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -81,195 +42,18 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     private void initComponents() {
 
         mainTabbedPane = new javax.swing.JTabbedPane();
-        fileEncryptionPanel = new javax.swing.JPanel();
-        inputFileLabel = new javax.swing.JLabel();
-        encryptionInputField = new javax.swing.JTextField();
-        outputFileLabel = new javax.swing.JLabel();
-        outputFileField = new javax.swing.JTextField();
-        decryptCheckbox = new javax.swing.JCheckBox();
-        fileEncryptionOKButton = new javax.swing.JButton();
-        passwordField = new javax.swing.JPasswordField();
-        passwordLabel = new javax.swing.JLabel();
-        selectInputFileButton = new javax.swing.JButton();
-        selectOutputFileButton = new javax.swing.JButton();
+        fileEncryptionPanel = new jopensslgui.FileEncryptionPanel();
+        randomFilePanel = new jopensslgui.RandomFilePanel();
         generateKeysPanel = new jopensslgui.GenerateKeysPanel();
-        randomFilePanel = new javax.swing.JPanel();
-        selectOutputFileButton1 = new javax.swing.JButton();
-        outputFileLabel1 = new javax.swing.JLabel();
-        randomOutputFileField = new javax.swing.JTextField();
-        sizeLabel = new javax.swing.JLabel();
-        randomSizeSpinner = new javax.swing.JSpinner();
-        randomSizeSuffixComboBox = new javax.swing.JComboBox();
-        randomFileOKButton = new javax.swing.JButton();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JOpenSSLFrame.title")); // NOI18N
 
-        inputFileLabel.setText( i18n.getString("JOpenSSLFrame.inputFileLabel.text")); // NOI18N
-
-        encryptionInputField.setText( i18n.getString("JOpenSSLFrame.encryptionInputField.text")); // NOI18N
-
-        outputFileLabel.setText( i18n.getString("JOpenSSLFrame.outputFileLabel.text")); // NOI18N
-
-        outputFileField.setText( i18n.getString("JOpenSSLFrame.outputFileField.text")); // NOI18N
-
-        decryptCheckbox.setMnemonic('d');
-        decryptCheckbox.setText(i18n.getString("JOpenSSLFrame.decryptCheckbox.text")); // NOI18N
-
-        fileEncryptionOKButton.setMnemonic('o');
-        fileEncryptionOKButton.setText(i18n.getString("JOpenSSLFrame.fileEncryptionOKButton.text")); // NOI18N
-        fileEncryptionOKButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                fileEncryptionOKButtonMouseClicked(evt);
-            }
-        });
-
-        passwordLabel.setDisplayedMnemonic('p');
-        passwordLabel.setText(i18n.getString("JOpenSSLFrame.passwordLabel.text")); // NOI18N
-
-        selectInputFileButton.setText(i18n.getString("JOpenSSLFrame.selectInputFileButton.text")); // NOI18N
-        selectInputFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectInputFileButtonActionPerformed(evt);
-            }
-        });
-
-        selectOutputFileButton.setText(i18n.getString("JOpenSSLFrame.selectOutputFileButton.text")); // NOI18N
-        selectOutputFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectOutputFileButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout fileEncryptionPanelLayout = new javax.swing.GroupLayout(fileEncryptionPanel);
-        fileEncryptionPanel.setLayout(fileEncryptionPanelLayout);
-        fileEncryptionPanelLayout.setHorizontalGroup(
-            fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
-                        .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputFileLabel)
-                            .addComponent(outputFileLabel))
-                        .addGap(7, 7, 7)
-                        .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-                            .addComponent(encryptionInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
-                        .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectInputFileButton))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileEncryptionPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectOutputFileButton))))
-                    .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
-                        .addComponent(passwordLabel)
-                        .addGap(15, 15, 15)
-                        .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(decryptCheckbox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileEncryptionOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
-                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
-        fileEncryptionPanelLayout.setVerticalGroup(
-            fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fileEncryptionPanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inputFileLabel)
-                    .addComponent(encryptionInputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectInputFileButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outputFileLabel)
-                    .addComponent(outputFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectOutputFileButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordLabel)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fileEncryptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fileEncryptionOKButton)
-                    .addComponent(decryptCheckbox))
-                .addContainerGap(38, Short.MAX_VALUE))
-        );
-
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.fileEncryptionPanel.TabConstraints.tabTitle"), fileEncryptionPanel); // NOI18N
-        mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.generateKeysPanel.TabConstraints.tabTitle"), generateKeysPanel); // NOI18N
-
-        selectOutputFileButton1.setText(i18n.getString("JOpenSSLFrame.selectOutputFileButton1.text")); // NOI18N
-        selectOutputFileButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectRandomOutputFileButtonActionPerformed(evt);
-            }
-        });
-
-        outputFileLabel1.setText( i18n.getString("JOpenSSLFrame.outputFileLabel1.text")); // NOI18N
-
-        randomOutputFileField.setText( i18n.getString("JOpenSSLFrame.randomOutputFileField.text")); // NOI18N
-
-        sizeLabel.setText( i18n.getString("JOpenSSLFrame.sizeLabel.text")); // NOI18N
-
-        randomSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(100), Integer.valueOf(0), null, Integer.valueOf(1)));
-
-        randomSizeSuffixComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bytes", "Kilobytes", "Megabytes", "Gigabytes" }));
-        randomSizeSuffixComboBox.setSelectedIndex(1);
-
-        randomFileOKButton.setText( i18n.getString("JOpenSSLFrame.randomFileOKButton.text")); // NOI18N
-        randomFileOKButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                randomFileOKButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout randomFilePanelLayout = new javax.swing.GroupLayout(randomFilePanel);
-        randomFilePanel.setLayout(randomFilePanelLayout);
-        randomFilePanelLayout.setHorizontalGroup(
-            randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(randomFilePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(outputFileLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                    .addComponent(sizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(randomFilePanelLayout.createSequentialGroup()
-                        .addComponent(randomOutputFileField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectOutputFileButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(randomFileOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, randomFilePanelLayout.createSequentialGroup()
-                        .addComponent(randomSizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(randomSizeSuffixComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(144, 144, 144))
-        );
-        randomFilePanelLayout.setVerticalGroup(
-            randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(randomFilePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outputFileLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(randomOutputFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectOutputFileButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(randomFilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(randomSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sizeLabel)
-                    .addComponent(randomSizeSuffixComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(randomFileOKButton)
-                .addContainerGap(67, Short.MAX_VALUE))
-        );
-
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.randomFilePanel.TabConstraints.tabTitle"), randomFilePanel); // NOI18N
+        mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.generateKeysPanel.TabConstraints.tabTitle"), generateKeysPanel); // NOI18N
 
         statusLabel.setText( i18n.getString("JOpenSSLFrame.statusLabel.text")); // NOI18N
 
@@ -302,99 +86,6 @@ public class JOpenSSLFrame extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void fileEncryptionOKButtonMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_fileEncryptionOKButtonMouseClicked
-    {//GEN-HEADEREND:event_fileEncryptionOKButtonMouseClicked
-        if (decryptCheckbox.isSelected())
-        {
-            cryptSymmetric(false);
-        }
-        else
-        {
-            cryptSymmetric(true);
-        }
-}//GEN-LAST:event_fileEncryptionOKButtonMouseClicked
-
-    private void selectInputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectInputFileButtonActionPerformed
-    {//GEN-HEADEREND:event_selectInputFileButtonActionPerformed
-        fileChooser.setSelectedFile(new File(encryptionInputField.getText()));
-        fileChooser.showSaveDialog(this);
-        encryptionInputField.setText(fileChooser.getSelectedFile().getAbsolutePath());
-}//GEN-LAST:event_selectInputFileButtonActionPerformed
-
-    private void selectOutputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectOutputFileButtonActionPerformed
-    {//GEN-HEADEREND:event_selectOutputFileButtonActionPerformed
-        fileChooser.setSelectedFile(new File(outputFileField.getText()));
-        fileChooser.showSaveDialog(this);
-        outputFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
-}//GEN-LAST:event_selectOutputFileButtonActionPerformed
-
-    private void randomFileOKButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_randomFileOKButtonActionPerformed
-    {//GEN-HEADEREND:event_randomFileOKButtonActionPerformed
-        try
-        {
-            /**
-             * First step: Check which size the file should have
-             */
-            SpinnerNumberModel sizeSpinnerModel =
-                    (SpinnerNumberModel) randomSizeSpinner.getModel();
-            long size = sizeSpinnerModel.getNumber().longValue();
-            switch (randomSizeSuffixComboBox.getSelectedIndex())
-            {
-                case 1:
-                    //Kilobytes
-                {
-                    size *= 1024;
-                    break;
-                }
-                case 2:
-                    //Megabytes
-                {
-                    size *= 1024 * 1024;
-                    break;
-                }
-                case 3:
-                    //Gigabytes
-                {
-                    size *= 1024 * 1024 * 1024;
-                    break;
-                }
-                default:
-                    break; //case 0 --> bytes
-            }
-            /**
-             * Second step: Generate the file
-             */
-            String outfileName = randomOutputFileField.getText();
-            Runtime r = Runtime.getRuntime();
-            Process p = r.exec("openssl rand -out " + outfileName + " " + Long.toString(size));
-            p.waitFor();
-            int exitValue = p.exitValue();
-            if (exitValue == 0)
-            {
-                displaySuccessMessage();
-            }
-            else
-            {
-                displayErrorMessage(Integer.toString(exitValue));
-            }
-        }
-
-        catch (InterruptedException ex)
-        {
-            Logger.getLogger(JOpenSSLFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (IOException ex)
-        {
-            Logger.getLogger(JOpenSSLFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-}//GEN-LAST:event_randomFileOKButtonActionPerformed
-
-    private void selectRandomOutputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectRandomOutputFileButtonActionPerformed
-    {//GEN-HEADEREND:event_selectRandomOutputFileButtonActionPerformed
-        fileChooser.setSelectedFile(new File(randomOutputFileField.getText()));
-        fileChooser.showSaveDialog(this);
-        randomOutputFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
-}//GEN-LAST:event_selectRandomOutputFileButtonActionPerformed
 
     public static void displaySuccessMessage()
     {
@@ -429,27 +120,10 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     private static JOpenSSLFrame singleton = null; //MainFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox decryptCheckbox;
-    private javax.swing.JTextField encryptionInputField;
-    private javax.swing.JButton fileEncryptionOKButton;
-    private javax.swing.JPanel fileEncryptionPanel;
+    private jopensslgui.FileEncryptionPanel fileEncryptionPanel;
     private jopensslgui.GenerateKeysPanel generateKeysPanel;
-    private javax.swing.JLabel inputFileLabel;
     private javax.swing.JTabbedPane mainTabbedPane;
-    private javax.swing.JTextField outputFileField;
-    private javax.swing.JLabel outputFileLabel;
-    private javax.swing.JLabel outputFileLabel1;
-    private javax.swing.JPasswordField passwordField;
-    private javax.swing.JLabel passwordLabel;
-    private javax.swing.JButton randomFileOKButton;
-    private javax.swing.JPanel randomFilePanel;
-    private javax.swing.JTextField randomOutputFileField;
-    private javax.swing.JSpinner randomSizeSpinner;
-    private javax.swing.JComboBox randomSizeSuffixComboBox;
-    private javax.swing.JButton selectInputFileButton;
-    private javax.swing.JButton selectOutputFileButton;
-    private javax.swing.JButton selectOutputFileButton1;
-    private javax.swing.JLabel sizeLabel;
+    private jopensslgui.RandomFilePanel randomFilePanel;
     public javax.swing.JLabel statusLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
