@@ -10,13 +10,8 @@
  */
 package jopensslgui;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -50,6 +45,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JOpenSSLFrame.title")); // NOI18N
+        setLocationByPlatform(true);
 
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.fileEncryptionPanel.TabConstraints.tabTitle"), fileEncryptionPanel); // NOI18N
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.randomFilePanel.TabConstraints.tabTitle"), randomFilePanel); // NOI18N
@@ -61,7 +57,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+            .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
         );
         statusPanelLayout.setVerticalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,7 +68,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+            .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
             .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -116,7 +112,6 @@ public class JOpenSSLFrame extends javax.swing.JFrame
             }
         });
     }
-    private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     private static JOpenSSLFrame singleton = null; //MainFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables

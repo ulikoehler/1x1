@@ -11,7 +11,13 @@
 
 package jopensslgui;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -68,6 +74,11 @@ public class GenerateKeysPanel extends javax.swing.JPanel {
         sizeComboBox.setSelectedIndex(2);
 
         okButton.setText( i18n.getString("GenerateKeysPanel.okButton.text")); // NOI18N
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         passwordLabel.setText( i18n.getString("GenerateKeysPanel.passwordLabel.text")); // NOI18N
 
@@ -152,9 +163,71 @@ public class GenerateKeysPanel extends javax.swing.JPanel {
 
     private void selectOutputFileButtonselectRandomOutputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectOutputFileButtonselectRandomOutputFileButtonActionPerformed
     {//GEN-HEADEREND:event_selectOutputFileButtonselectRandomOutputFileButtonActionPerformed
-        // TODO add your handling code here:
+        fileChooser.setSelectedFile(new File(outputFileField.getText()));
+        fileChooser.showSaveDialog(this);
+        outputFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
 }//GEN-LAST:event_selectOutputFileButtonselectRandomOutputFileButtonActionPerformed
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_okButtonActionPerformed
+    {//GEN-HEADEREND:event_okButtonActionPerformed
+        try
+        {
+            Runtime r = Runtime.getRuntime();
+            //Get the parameters (must be lowercased for the command line)
+            String outFile = outputFileField.getText();
+            String algorithm =
+                    ((String) algorithmComboBox.getSelectedItem()).toLowerCase();
+            String encryptionAlgorithm =
+                    ((String) encryptionAlgorithmComboBox.getSelectedItem()).toLowerCase();
+            String password = new String(passwordField.getPassword());
+            //Build the command string
+            StringBuilder cmdBuilder = new StringBuilder("openssl ");
+            if (algorithm.equals("rsa"))
+            {
+                cmdBuilder.append("genrsa ");
+            }
+            else if (algorithm.equals("dsa"))
+            {
+                cmdBuilder.append("gendsa ");
+            }
+            else if (algorithm.equals("dh"))
+            {
+                cmdBuilder.append("dhparam ");
+            }
+            cmdBuilder.append("-out ");
+            cmdBuilder.append(outFile);
+            if (encryptCheckbox.isSelected())
+            {
+                cmdBuilder.append(" -");
+                cmdBuilder.append(encryptionAlgorithm);
+            }
+
+            cmdBuilder.append(" " + (String) sizeComboBox.getSelectedItem());
+
+            Process p = r.exec(cmdBuilder.toString());
+            OutputStream o = p.getOutputStream();
+            //Write the password and terminate with a newline character two times (including verifying)
+            o.write(password.getBytes());
+            o.write("\n".getBytes());
+            o.write(password.getBytes());
+            o.write("\n".getBytes());
+            o.close();
+            p.waitFor();
+            int exitCode = p.exitValue();
+            //TODO debug
+            System.out.println("Cmd: " + cmdBuilder.toString());
+            System.out.println("Exit code: " + exitCode);
+        }
+        catch (InterruptedException ex)
+        {
+            Logger.getLogger(GenerateKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (IOException ex)
+        {
+            Logger.getLogger(GenerateKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algorithmComboBox;

@@ -172,6 +172,9 @@
           <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.okButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="passwordLabel">
       <Properties>
