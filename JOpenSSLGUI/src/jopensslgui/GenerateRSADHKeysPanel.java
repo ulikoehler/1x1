@@ -4,11 +4,10 @@
  */
 
 /*
- * GenerateKeysPanel.java
+ * GenerateRSADHKeysPanel.java
  *
  * Created on 30.01.2009, 19:26:27
  */
-
 package jopensslgui;
 
 import java.io.File;
@@ -23,10 +22,12 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class GenerateKeysPanel extends javax.swing.JPanel {
+public class GenerateRSADHKeysPanel extends javax.swing.JPanel
+{
 
-    /** Creates new form GenerateKeysPanel */
-    public GenerateKeysPanel() {
+    /** Creates new form GenerateRSADHKeysPanel */
+    public GenerateRSADHKeysPanel()
+    {
         initComponents();
     }
 
@@ -53,40 +54,38 @@ public class GenerateKeysPanel extends javax.swing.JPanel {
         encryptionAlgorithmLabel = new javax.swing.JLabel();
         encryptionAlgorithmComboBox = new javax.swing.JComboBox();
 
-        algorithmLabel.setText( i18n.getString("GenerateKeysPanel.algorithmLabel.text")); // NOI18N
+        algorithmLabel.setText( i18n.getString("GenerateRSADHKeysPanel.algorithmLabel.text")); // NOI18N
 
         algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "RSA", "DSA", "DH" }));
 
-        selectOutputFileButton.setText(i18n.getString("GenerateKeysPanel.selectOutputFileButton.text")); // NOI18N
+        selectOutputFileButton.setText(i18n.getString("GenerateRSADHKeysPanel.selectOutputFileButton.text")); // NOI18N
         selectOutputFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectOutputFileButtonselectRandomOutputFileButtonActionPerformed(evt);
             }
         });
 
-        outputFileField.setText( i18n.getString("GenerateKeysPanel.outputFileField.text")); // NOI18N
+        outputFileLabel.setText( i18n.getString("GenerateRSADHKeysPanel.outputFileLabel.text")); // NOI18N
 
-        outputFileLabel.setText( i18n.getString("GenerateKeysPanel.outputFileLabel.text")); // NOI18N
-
-        sizeLabel.setText( i18n.getString("GenerateKeysPanel.sizeLabel.text")); // NOI18N
+        sizeLabel.setText( i18n.getString("GenerateRSADHKeysPanel.sizeLabel.text")); // NOI18N
 
         sizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "512", "1024", "2048", "4096", "8192", "16384", "32768" }));
         sizeComboBox.setSelectedIndex(2);
 
-        okButton.setText( i18n.getString("GenerateKeysPanel.okButton.text")); // NOI18N
+        okButton.setText( i18n.getString("GenerateRSADHKeysPanel.okButton.text")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
-        passwordLabel.setText( i18n.getString("GenerateKeysPanel.passwordLabel.text")); // NOI18N
+        passwordLabel.setText( i18n.getString("GenerateRSADHKeysPanel.passwordLabel.text")); // NOI18N
 
-        passwordField.setText( i18n.getString("GenerateKeysPanel.passwordField.text")); // NOI18N
+        passwordField.setText( i18n.getString("GenerateRSADHKeysPanel.passwordField.text")); // NOI18N
 
-        encryptCheckbox.setText( i18n.getString("GenerateKeysPanel.encryptCheckbox.text")); // NOI18N
+        encryptCheckbox.setText( i18n.getString("GenerateRSADHKeysPanel.encryptCheckbox.text")); // NOI18N
 
-        encryptionAlgorithmLabel.setText( i18n.getString("GenerateKeysPanel.encryptionAlgorithmLabel.text")); // NOI18N
+        encryptionAlgorithmLabel.setText( i18n.getString("GenerateRSADHKeysPanel.encryptionAlgorithmLabel.text")); // NOI18N
 
         encryptionAlgorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DES", "DES3", "AES128", "AES192", "AES256", "Camellia128", "Camellia192", "Camellia256", "IDEA" }));
         encryptionAlgorithmComboBox.setSelectedIndex(4);
@@ -188,7 +187,7 @@ public class GenerateKeysPanel extends javax.swing.JPanel {
             }
             else if (algorithm.equals("dsa"))
             {
-                cmdBuilder.append("gendsa ");
+                cmdBuilder.append("dsaparam -gendsa ");
             }
             else if (algorithm.equals("dh"))
             {
@@ -205,28 +204,27 @@ public class GenerateKeysPanel extends javax.swing.JPanel {
             cmdBuilder.append(" " + (String) sizeComboBox.getSelectedItem());
 
             Process p = r.exec(cmdBuilder.toString());
-            OutputStream o = p.getOutputStream();
-            //Write the password and terminate with a newline character two times (including verifying)
-            o.write(password.getBytes());
-            o.write("\n".getBytes());
-            o.write(password.getBytes());
-            o.write("\n".getBytes());
-            o.close();
+            if (!(algorithm.equals("dh")))
+            {
+                OutputStream o = p.getOutputStream();
+                //Write the password and terminate with a newline character two times (including verifying)
+                o.write(password.getBytes());
+                o.write("\n".getBytes());
+                o.write(password.getBytes());
+                o.write("\n".getBytes());
+                o.close();
+            }
             p.waitFor();
-            int exitCode = p.exitValue();
-            //TODO debug
-            System.out.println("Cmd: " + cmdBuilder.toString());
-            System.out.println("Exit code: " + exitCode);
         }
+
         catch (InterruptedException ex)
         {
-            Logger.getLogger(GenerateKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerateRSADHKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }        catch (IOException ex)
         {
-            Logger.getLogger(GenerateKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerateRSADHKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_okButtonActionPerformed
-
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -244,5 +242,4 @@ public class GenerateKeysPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox sizeComboBox;
     private javax.swing.JLabel sizeLabel;
     // End of variables declaration//GEN-END:variables
-
 }

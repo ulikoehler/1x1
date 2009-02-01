@@ -104,7 +104,7 @@
     <Component class="javax.swing.JLabel" name="algorithmLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.algorithmLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.algorithmLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -122,7 +122,7 @@
     <Component class="javax.swing.JButton" name="selectOutputFileButton">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.selectOutputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.selectOutputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -130,23 +130,18 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="outputFileField">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.outputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="outputFileLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.outputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.outputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="sizeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.sizeLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.sizeLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -169,7 +164,7 @@
     <Component class="javax.swing.JButton" name="okButton">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.okButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.okButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -179,28 +174,28 @@
     <Component class="javax.swing.JLabel" name="passwordLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.passwordLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.passwordLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordField">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.passwordField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.passwordField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="encryptCheckbox">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.encryptCheckbox.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.encryptCheckbox.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="encryptionAlgorithmLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysPanel.encryptionAlgorithmLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateRSADHKeysPanel.encryptionAlgorithmLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

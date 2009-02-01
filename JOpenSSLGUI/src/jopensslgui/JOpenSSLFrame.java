@@ -39,7 +39,6 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         mainTabbedPane = new javax.swing.JTabbedPane();
         fileEncryptionPanel = new jopensslgui.FileEncryptionPanel();
         randomFilePanel = new jopensslgui.RandomFilePanel();
-        generateKeysPanel = new jopensslgui.GenerateKeysPanel();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
 
@@ -49,7 +48,6 @@ public class JOpenSSLFrame extends javax.swing.JFrame
 
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.fileEncryptionPanel.TabConstraints.tabTitle"), fileEncryptionPanel); // NOI18N
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.randomFilePanel.TabConstraints.tabTitle"), randomFilePanel); // NOI18N
-        mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.generateKeysPanel.TabConstraints.tabTitle"), generateKeysPanel); // NOI18N
 
         statusLabel.setText( i18n.getString("JOpenSSLFrame.statusLabel.text")); // NOI18N
 
@@ -116,7 +114,6 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     private static JOpenSSLFrame singleton = null; //MainFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jopensslgui.FileEncryptionPanel fileEncryptionPanel;
-    private jopensslgui.GenerateKeysPanel generateKeysPanel;
     private javax.swing.JTabbedPane mainTabbedPane;
     private jopensslgui.RandomFilePanel randomFilePanel;
     public javax.swing.JLabel statusLabel;
