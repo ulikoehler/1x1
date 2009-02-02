@@ -38,5 +38,16 @@
         </Constraint>
       </Constraints>
     </Component>
+    <Component class="jopensslgui.GenerateECKeysPanel" name="generateECKeysPanel1">
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+          <JTabbedPaneConstraints tabName="Elliptic curve">
+            <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysTabbedPane.generateECKeysPanel1.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+            </Property>
+          </JTabbedPaneConstraints>
+        </Constraint>
+      </Constraints>
+    </Component>
   </SubComponents>
 </Form>
