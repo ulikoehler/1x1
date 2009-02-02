@@ -4,7 +4,7 @@
  */
 
 /*
- * HashPanel.java
+ * MessageDigestPanel.java
  *
  * Created on 02.02.2009, 14:06:10
  */
@@ -23,11 +23,11 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class HashPanel extends javax.swing.JPanel
+public class MessageDigestPanel extends javax.swing.JPanel
 {
 
-    /** Creates new form HashPanel */
-    public HashPanel()
+    /** Creates new form MessageDigestPanel */
+    public MessageDigestPanel()
     {
         initComponents();
         //Init the algorithm combo box
@@ -48,11 +48,11 @@ public class HashPanel extends javax.swing.JPanel
             algorithmComboBox.setSelectedIndex(3);
             r.close();
         }
+
         catch (IOException ex)
         {
-            Logger.getLogger(HashPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InterruptedException ex)
+            Logger.getLogger(MessageDigestPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (InterruptedException ex)
         {
             Logger.getLogger(GenerateECKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,13 +76,13 @@ public class HashPanel extends javax.swing.JPanel
         hashLabel = new javax.swing.JLabel();
         hashField = new javax.swing.JTextField();
 
-        algorithmLabel.setText( i18n.getString("HashPanel.algorithmLabel.text")); // NOI18N
+        algorithmLabel.setText( i18n.getString("MessageDigestPanel.algorithmLabel.text")); // NOI18N
 
-        inputFileLabel.setText( i18n.getString("HashPanel.inputFileLabel.text")); // NOI18N
+        inputFileLabel.setText( i18n.getString("MessageDigestPanel.inputFileLabel.text")); // NOI18N
 
-        inputFileField.setText( i18n.getString("HashPanel.inputFileField.text")); // NOI18N
+        inputFileField.setText( i18n.getString("MessageDigestPanel.inputFileField.text")); // NOI18N
 
-        selectInputFileButton.setText(i18n.getString("HashPanel.selectInputFileButton.text")); // NOI18N
+        selectInputFileButton.setText(i18n.getString("MessageDigestPanel.selectInputFileButton.text")); // NOI18N
         selectInputFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectInputFileButtonActionPerformed(evt);
@@ -90,7 +90,7 @@ public class HashPanel extends javax.swing.JPanel
         });
 
         okButton.setMnemonic('o');
-        okButton.setText(i18n.getString("HashPanel.okButton.text")); // NOI18N
+        okButton.setText(i18n.getString("MessageDigestPanel.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -102,10 +102,10 @@ public class HashPanel extends javax.swing.JPanel
             }
         });
 
-        hashLabel.setText( i18n.getString("HashPanel.hashLabel.text")); // NOI18N
+        hashLabel.setText( i18n.getString("MessageDigestPanel.hashLabel.text")); // NOI18N
 
         hashField.setEditable(false);
-        hashField.setText( i18n.getString("HashPanel.hashField.text")); // NOI18N
+        hashField.setText( i18n.getString("MessageDigestPanel.hashField.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -175,13 +175,12 @@ public class HashPanel extends javax.swing.JPanel
                     " " + inputFile);
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String hashLine = r.readLine();
-            System.out.println(hashLine);
             String hash = hashLine.split("=")[1].trim();
             hashField.setText(hash);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(HashPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MessageDigestPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_okButtonActionPerformed
     private JFileChooser fileChooser = new JFileChooser();

@@ -72,7 +72,7 @@
     <Component class="javax.swing.JLabel" name="algorithmLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.algorithmLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.algorithmLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -81,21 +81,21 @@
     <Component class="javax.swing.JLabel" name="inputFileLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.inputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.inputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="inputFileField">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.inputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.inputFileField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="selectInputFileButton">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.selectInputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.selectInputFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -106,7 +106,7 @@
       <Properties>
         <Property name="mnemonic" type="int" value="111"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.okButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.okButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -117,7 +117,7 @@
     <Component class="javax.swing.JLabel" name="hashLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.hashLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.hashLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -125,7 +125,7 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="jopensslgui/Bundle.properties" key="HashPanel.hashField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="jopensslgui/Bundle.properties" key="MessageDigestPanel.hashField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

@@ -39,7 +39,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         fileEncryptionPanel = new jopensslgui.FileEncryptionPanel();
         randomFilePanel = new jopensslgui.RandomFilePanel();
         generateKeysTabbedPane1 = new jopensslgui.GenerateKeysTabbedPane();
-        hashPanel1 = new jopensslgui.HashPanel();
+        hashPanel1 = new jopensslgui.MessageDigestPanel();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
 
@@ -118,7 +118,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jopensslgui.FileEncryptionPanel fileEncryptionPanel;
     private jopensslgui.GenerateKeysTabbedPane generateKeysTabbedPane1;
-    private jopensslgui.HashPanel hashPanel1;
+    private jopensslgui.MessageDigestPanel hashPanel1;
     private javax.swing.JTabbedPane mainTabbedPane;
     private jopensslgui.RandomFilePanel randomFilePanel;
     public javax.swing.JLabel statusLabel;
