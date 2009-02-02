@@ -16,12 +16,12 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
   <SubComponents>
-    <Component class="jopensslgui.GenerateRSADHKeysPanel" name="generateRSADHKeysPanel">
+    <Component class="jopensslgui.GenerateRSAKeysPanel" name="generateRSAKeysPanel">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-          <JTabbedPaneConstraints tabName="RSA/DH">
+          <JTabbedPaneConstraints tabName="RSA">
             <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysTabbedPane.generateRSADHKeysPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysTabbedPane.generateRSAKeysPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </JTabbedPaneConstraints>
         </Constraint>
@@ -38,12 +38,23 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="jopensslgui.GenerateECKeysPanel" name="generateECKeysPanel1">
+    <Component class="jopensslgui.GenerateDHKeysPanel" name="generateDHKeysPanel">
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+          <JTabbedPaneConstraints tabName="DH">
+            <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysTabbedPane.generateDHKeysPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+            </Property>
+          </JTabbedPaneConstraints>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="jopensslgui.GenerateECKeysPanel" name="generateECKeysPanel">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
           <JTabbedPaneConstraints tabName="Elliptic curve">
             <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysTabbedPane.generateECKeysPanel1.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="GenerateKeysTabbedPane.generateECKeysPanel.TabConstraints.tabTitle" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </JTabbedPaneConstraints>
         </Constraint>

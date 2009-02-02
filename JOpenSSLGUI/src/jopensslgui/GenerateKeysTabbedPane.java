@@ -34,20 +34,23 @@ public class GenerateKeysTabbedPane extends JTabbedPane {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        generateRSADHKeysPanel = new jopensslgui.GenerateRSADHKeysPanel();
+        generateRSAKeysPanel = new jopensslgui.GenerateRSAKeysPanel();
         generateDSAKeysPanel = new jopensslgui.GenerateDSAKeysPanel();
-        generateECKeysPanel1 = new jopensslgui.GenerateECKeysPanel();
+        generateDHKeysPanel = new jopensslgui.GenerateDHKeysPanel();
+        generateECKeysPanel = new jopensslgui.GenerateECKeysPanel();
 
-        addTab( i18n.getString("GenerateKeysTabbedPane.generateRSADHKeysPanel.TabConstraints.tabTitle"), generateRSADHKeysPanel); // NOI18N
+        addTab( i18n.getString("GenerateKeysTabbedPane.generateRSAKeysPanel.TabConstraints.tabTitle"), generateRSAKeysPanel); // NOI18N
         addTab( i18n.getString("GenerateKeysTabbedPane.generateDSAKeysPanel.TabConstraints.tabTitle"), generateDSAKeysPanel); // NOI18N
-        addTab( i18n.getString("GenerateKeysTabbedPane.generateECKeysPanel1.TabConstraints.tabTitle"), generateECKeysPanel1); // NOI18N
+        addTab( i18n.getString("GenerateKeysTabbedPane.generateDHKeysPanel.TabConstraints.tabTitle"), generateDHKeysPanel); // NOI18N
+        addTab( i18n.getString("GenerateKeysTabbedPane.generateECKeysPanel.TabConstraints.tabTitle"), generateECKeysPanel); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private jopensslgui.GenerateDHKeysPanel generateDHKeysPanel;
     private jopensslgui.GenerateDSAKeysPanel generateDSAKeysPanel;
-    private jopensslgui.GenerateECKeysPanel generateECKeysPanel1;
-    private jopensslgui.GenerateRSADHKeysPanel generateRSADHKeysPanel;
+    private jopensslgui.GenerateECKeysPanel generateECKeysPanel;
+    private jopensslgui.GenerateRSAKeysPanel generateRSAKeysPanel;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -4,7 +4,7 @@
  */
 
 /*
- * GenerateRSADHKeysPanel.java
+ * GenerateRSAKeysPanel.java
  *
  * Created on 30.01.2009, 19:26:27
  */
@@ -22,11 +22,11 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class GenerateRSADHKeysPanel extends javax.swing.JPanel
+public class GenerateRSAKeysPanel extends javax.swing.JPanel
 {
 
-    /** Creates new form GenerateRSADHKeysPanel */
-    public GenerateRSADHKeysPanel()
+    /** Creates new form GenerateRSAKeysPanel */
+    public GenerateRSAKeysPanel()
     {
         initComponents();
     }
@@ -40,8 +40,6 @@ public class GenerateRSADHKeysPanel extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        algorithmLabel = new javax.swing.JLabel();
-        algorithmComboBox = new javax.swing.JComboBox();
         selectOutputFileButton = new javax.swing.JButton();
         outputFileField = new javax.swing.JTextField();
         outputFileLabel = new javax.swing.JLabel();
@@ -54,38 +52,34 @@ public class GenerateRSADHKeysPanel extends javax.swing.JPanel
         encryptionAlgorithmLabel = new javax.swing.JLabel();
         encryptionAlgorithmComboBox = new javax.swing.JComboBox();
 
-        algorithmLabel.setText( i18n.getString("GenerateRSADHKeysPanel.algorithmLabel.text")); // NOI18N
-
-        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "RSA", "DSA", "DH" }));
-
-        selectOutputFileButton.setText(i18n.getString("GenerateRSADHKeysPanel.selectOutputFileButton.text")); // NOI18N
+        selectOutputFileButton.setText(i18n.getString("GenerateRSAKeysPanel.selectOutputFileButton.text")); // NOI18N
         selectOutputFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectOutputFileButtonselectRandomOutputFileButtonActionPerformed(evt);
             }
         });
 
-        outputFileLabel.setText( i18n.getString("GenerateRSADHKeysPanel.outputFileLabel.text")); // NOI18N
+        outputFileLabel.setText( i18n.getString("GenerateRSAKeysPanel.outputFileLabel.text")); // NOI18N
 
-        sizeLabel.setText( i18n.getString("GenerateRSADHKeysPanel.sizeLabel.text")); // NOI18N
+        sizeLabel.setText( i18n.getString("GenerateRSAKeysPanel.sizeLabel.text")); // NOI18N
 
         sizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "512", "1024", "2048", "4096", "8192", "16384", "32768" }));
         sizeComboBox.setSelectedIndex(2);
 
-        okButton.setText( i18n.getString("GenerateRSADHKeysPanel.okButton.text")); // NOI18N
+        okButton.setText( i18n.getString("GenerateRSAKeysPanel.okButton.text")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
-        passwordLabel.setText( i18n.getString("GenerateRSADHKeysPanel.passwordLabel.text")); // NOI18N
+        passwordLabel.setText( i18n.getString("GenerateRSAKeysPanel.passwordLabel.text")); // NOI18N
 
-        passwordField.setText( i18n.getString("GenerateRSADHKeysPanel.passwordField.text")); // NOI18N
+        passwordField.setText( i18n.getString("GenerateRSAKeysPanel.passwordField.text")); // NOI18N
 
-        encryptCheckbox.setText( i18n.getString("GenerateRSADHKeysPanel.encryptCheckbox.text")); // NOI18N
+        encryptCheckbox.setText( i18n.getString("GenerateRSAKeysPanel.encryptCheckbox.text")); // NOI18N
 
-        encryptionAlgorithmLabel.setText( i18n.getString("GenerateRSADHKeysPanel.encryptionAlgorithmLabel.text")); // NOI18N
+        encryptionAlgorithmLabel.setText( i18n.getString("GenerateRSAKeysPanel.encryptionAlgorithmLabel.text")); // NOI18N
 
         encryptionAlgorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DES", "DES3", "AES128", "AES192", "AES256", "Camellia128", "Camellia192", "Camellia256", "IDEA" }));
         encryptionAlgorithmComboBox.setSelectedIndex(4);
@@ -100,29 +94,25 @@ public class GenerateRSADHKeysPanel extends javax.swing.JPanel
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(algorithmLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(algorithmComboBox, 0, 67, Short.MAX_VALUE)
-                                .addGap(24, 24, 24)
-                                .addComponent(sizeLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(outputFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sizeLabel)
+                                .addGap(55, 55, 55)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                .addGap(4, 4, 4)
+                                .addComponent(selectOutputFileButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                                        .addGap(4, 4, 4)
-                                        .addComponent(selectOutputFileButton))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(encryptCheckbox))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(encryptionAlgorithmLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(encryptionAlgorithmComboBox, 0, 156, Short.MAX_VALUE))))))
+                                .addComponent(encryptCheckbox))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(encryptionAlgorithmLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(encryptionAlgorithmComboBox, 0, 156, Short.MAX_VALUE))
+                            .addComponent(sizeComboBox, 0, 234, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(passwordLabel))
@@ -136,10 +126,8 @@ public class GenerateRSADHKeysPanel extends javax.swing.JPanel
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(algorithmLabel)
                     .addComponent(sizeLabel)
-                    .addComponent(sizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(outputFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,27 +162,11 @@ public class GenerateRSADHKeysPanel extends javax.swing.JPanel
             Runtime r = Runtime.getRuntime();
             //Get the parameters (must be lowercased for the command line)
             String outFile = outputFileField.getText();
-            String algorithm =
-                    ((String) algorithmComboBox.getSelectedItem()).toLowerCase();
             String encryptionAlgorithm =
                     ((String) encryptionAlgorithmComboBox.getSelectedItem()).toLowerCase();
             String password = new String(passwordField.getPassword());
             //Build the command string
-            StringBuilder cmdBuilder = new StringBuilder("openssl ");
-            if (algorithm.equals("rsa"))
-            {
-                cmdBuilder.append("genrsa ");
-            }
-            else if (algorithm.equals("dsa"))
-            {
-                cmdBuilder.append("dsaparam -gendsa ");
-            }
-            else if (algorithm.equals("dh"))
-            {
-                cmdBuilder.append("dhparam ");
-            }
-            cmdBuilder.append("-out ");
-            cmdBuilder.append(outFile);
+            StringBuilder cmdBuilder = new StringBuilder("openssl genrsa -out " + outFile);
             if (encryptCheckbox.isSelected())
             {
                 cmdBuilder.append(" -");
@@ -204,32 +176,27 @@ public class GenerateRSADHKeysPanel extends javax.swing.JPanel
             cmdBuilder.append(" " + (String) sizeComboBox.getSelectedItem());
 
             Process p = r.exec(cmdBuilder.toString());
-            if (!(algorithm.equals("dh")))
-            {
-                OutputStream o = p.getOutputStream();
-                //Write the password and terminate with a newline character two times (including verifying)
-                o.write(password.getBytes());
-                o.write("\n".getBytes());
-                o.write(password.getBytes());
-                o.write("\n".getBytes());
-                o.close();
-            }
+            OutputStream o = p.getOutputStream();
+            //Write the password and terminate with a newline character two times (including verifying)
+            o.write(password.getBytes());
+            o.write("\n".getBytes());
+            o.write(password.getBytes());
+            o.write("\n".getBytes());
+            o.close();
             p.waitFor();
         }
-
         catch (InterruptedException ex)
         {
-            Logger.getLogger(GenerateRSADHKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (IOException ex)
+            Logger.getLogger(GenerateRSAKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
         {
-            Logger.getLogger(GenerateRSADHKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerateRSAKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_okButtonActionPerformed
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox algorithmComboBox;
-    private javax.swing.JLabel algorithmLabel;
     private javax.swing.JCheckBox encryptCheckbox;
     private javax.swing.JComboBox encryptionAlgorithmComboBox;
     private javax.swing.JLabel encryptionAlgorithmLabel;

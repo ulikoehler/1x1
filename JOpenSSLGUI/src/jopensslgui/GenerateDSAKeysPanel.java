@@ -45,6 +45,7 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
         sizeComboBox = new javax.swing.JComboBox();
         sizeLabel = new javax.swing.JLabel();
         generateParamButton = new javax.swing.JButton();
+        directGenerationCheckbox = new javax.swing.JCheckBox();
         dsaKeyPanel = new javax.swing.JPanel();
         paramInputFileLabel = new javax.swing.JLabel();
         selectParamInputFileButton = new javax.swing.JButton();
@@ -77,17 +78,21 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
             }
         });
 
+        directGenerationCheckbox.setText( i18n.getString("GenerateDSAKeysPanel.directGenerationCheckbox.text")); // NOI18N
+        directGenerationCheckbox.setToolTipText( i18n.getString("GenerateDSAKeysPanel.directGenerationCheckbox.toolTipText")); // NOI18N
+
         javax.swing.GroupLayout dsaParamPanelLayout = new javax.swing.GroupLayout(dsaParamPanel);
         dsaParamPanel.setLayout(dsaParamPanelLayout);
         dsaParamPanelLayout.setHorizontalGroup(
             dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dsaParamPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dsaParamPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dsaParamPanelLayout.createSequentialGroup()
+                .addGroup(dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(generateParamButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                    .addGroup(dsaParamPanelLayout.createSequentialGroup()
                         .addGroup(dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(dsaParamPanelLayout.createSequentialGroup()
-                                .addComponent(paramOutputFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                                .addComponent(paramOutputFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(dsaParamPanelLayout.createSequentialGroup()
                                 .addComponent(sizeLabel)
@@ -96,11 +101,10 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
                             .addComponent(sizeComboBox, 0, 102, Short.MAX_VALUE)
                             .addComponent(paramOutputFileField))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectParamOutputFileButton)
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dsaParamPanelLayout.createSequentialGroup()
-                        .addComponent(generateParamButton, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGroup(dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(directGenerationCheckbox, 0, 0, Short.MAX_VALUE)
+                            .addComponent(selectParamOutputFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(36, 36, 36))
         );
         dsaParamPanelLayout.setVerticalGroup(
             dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,7 +112,8 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sizeLabel)
-                    .addComponent(sizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(directGenerationCheckbox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dsaParamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(paramOutputFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,7 +171,7 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
                         .addGroup(dsaKeyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(selectParamInputFileButton)
                             .addComponent(selectKeyOutputFileButton))))
-                .addGap(18, 18, 18))
+                .addGap(42, 42, 42))
         );
         dsaKeyPanelLayout.setVerticalGroup(
             dsaKeyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +208,7 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
                 .addComponent(dsaParamPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dsaKeyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -221,6 +226,13 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
             StringBuilder cmdBuilder = new StringBuilder("openssl dsaparam -out ");
             cmdBuilder.append(paramOutputFileField.getText());
             cmdBuilder.append(" " + (String) sizeComboBox.getSelectedItem());
+            if(directGenerationCheckbox.isSelected())
+            {
+                /**
+                 * Make OpenSSL to generate the key directly in one step
+                 */
+                cmdBuilder.append(" -genkey");
+            }
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
         }
@@ -271,6 +283,7 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox directGenerationCheckbox;
     private javax.swing.JPanel dsaKeyPanel;
     private javax.swing.JPanel dsaParamPanel;
     private javax.swing.JButton generateKeyButton;
