@@ -357,12 +357,15 @@ public class SignaturePanel extends javax.swing.JPanel
         try
         {
             String keyFile = publicKeyFileField.getText();
-            String inputFile = verifyInputFileField.getText();
+            String inputFile = inputFileField.getText();
+            String signatureFile = signatureFileField.getText();
             StringBuilder cmdBuilder = new StringBuilder("openssl dgst -verify ");
-            cmdBuilder.append(keyFile + " ");
+            cmdBuilder.append(keyFile + " -signature ");
+            cmdBuilder.append(signatureFile + " ");
+            cmdBuilder.append(inputFile + " ");
             if (dss1CheckBox.isSelected())
             {
-                cmdBuilder.append("-dss1 ");
+                cmdBuilder.append("-dss1");
             }
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();

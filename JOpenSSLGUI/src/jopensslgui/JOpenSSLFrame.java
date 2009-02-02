@@ -40,6 +40,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         randomFilePanel = new jopensslgui.RandomFilePanel();
         generateKeysTabbedPane1 = new jopensslgui.GenerateKeysTabbedPane();
         hashPanel1 = new jopensslgui.MessageDigestPanel();
+        signaturePanel1 = new jopensslgui.SignaturePanel();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
 
@@ -51,6 +52,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.randomFilePanel.TabConstraints.tabTitle"), randomFilePanel); // NOI18N
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.generateKeysTabbedPane1.TabConstraints.tabTitle"), generateKeysTabbedPane1); // NOI18N
         mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.hashPanel1.TabConstraints.tabTitle"), hashPanel1); // NOI18N
+        mainTabbedPane.addTab( i18n.getString("JOpenSSLFrame.signaturePanel1.TabConstraints.tabTitle"), signaturePanel1); // NOI18N
 
         statusLabel.setText( i18n.getString("JOpenSSLFrame.statusLabel.text")); // NOI18N
 
@@ -75,7 +77,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 379, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -121,6 +123,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     private jopensslgui.MessageDigestPanel hashPanel1;
     private javax.swing.JTabbedPane mainTabbedPane;
     private jopensslgui.RandomFilePanel randomFilePanel;
+    private jopensslgui.SignaturePanel signaturePanel1;
     public javax.swing.JLabel statusLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
