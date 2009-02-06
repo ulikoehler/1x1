@@ -10,7 +10,11 @@
  */
 package jopensslgui;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,8 +26,9 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     /** Creates new form JOpenSSLFrame */
     public JOpenSSLFrame()
     {
-        initComponents();
-        singleton = this;
+            initComponents();
+            singleton = this;
+            logger.setFilter(null);
     }
 
     /** This method is called from within the constructor to
@@ -35,6 +40,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        logLevelButtonGroup = new javax.swing.ButtonGroup();
         mainTabbedPane = new javax.swing.JTabbedPane();
         fileEncryptionPanel = new jopensslgui.FileEncryptionPanel();
         randomFilePanel = new jopensslgui.RandomFilePanel();
@@ -43,6 +49,14 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         signaturePanel1 = new jopensslgui.SignaturePanel();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        quitMenuItem = new javax.swing.JMenuItem();
+        LoggingMenuItem = new javax.swing.JMenu();
+        logLevelOffRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
+        logLevelErrorsRadioButton = new javax.swing.JRadioButtonMenuItem();
+        logLevelAllRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
+        fileLoggingCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JOpenSSLFrame.title")); // NOI18N
@@ -67,6 +81,65 @@ public class JOpenSSLFrame extends javax.swing.JFrame
             .addComponent(statusLabel)
         );
 
+        jMenu1.setText( i18n.getString("JOpenSSLFrame.jMenu1.text")); // NOI18N
+
+        quitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        quitMenuItem.setText( i18n.getString("JOpenSSLFrame.quitMenuItem.text")); // NOI18N
+        quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(quitMenuItem);
+
+        jMenuBar1.add(jMenu1);
+
+        LoggingMenuItem.setText( i18n.getString("JOpenSSLFrame.LoggingMenuItem.text")); // NOI18N
+
+        logLevelOffRadioButtonMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        logLevelButtonGroup.add(logLevelOffRadioButtonMenuItem);
+        logLevelOffRadioButtonMenuItem.setText( i18n.getString("JOpenSSLFrame.logLevelOffRadioButtonMenuItem.text")); // NOI18N
+        logLevelOffRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logLevelChanged(evt);
+            }
+        });
+        LoggingMenuItem.add(logLevelOffRadioButtonMenuItem);
+
+        logLevelErrorsRadioButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        logLevelButtonGroup.add(logLevelErrorsRadioButton);
+        logLevelErrorsRadioButton.setSelected(true);
+        logLevelErrorsRadioButton.setText( i18n.getString("JOpenSSLFrame.logLevelErrorsRadioButton.text")); // NOI18N
+        logLevelErrorsRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logLevelChanged(evt);
+            }
+        });
+        LoggingMenuItem.add(logLevelErrorsRadioButton);
+
+        logLevelAllRadioButtonMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        logLevelButtonGroup.add(logLevelAllRadioButtonMenuItem);
+        logLevelAllRadioButtonMenuItem.setText( i18n.getString("JOpenSSLFrame.logLevelAllRadioButtonMenuItem.text")); // NOI18N
+        logLevelAllRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logLevelChanged(evt);
+            }
+        });
+        LoggingMenuItem.add(logLevelAllRadioButtonMenuItem);
+
+        fileLoggingCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        fileLoggingCheckBoxMenuItem.setText( i18n.getString("JOpenSSLFrame.fileLoggingCheckBoxMenuItem.text")); // NOI18N
+        fileLoggingCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileLoggingCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        LoggingMenuItem.add(fileLoggingCheckBoxMenuItem);
+
+        jMenuBar1.add(LoggingMenuItem);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,6 +158,54 @@ public class JOpenSSLFrame extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_quitMenuItemActionPerformed
+    {//GEN-HEADEREND:event_quitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_quitMenuItemActionPerformed
+
+    private void logLevelChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_logLevelChanged
+    {//GEN-HEADEREND:event_logLevelChanged
+        Level logLevel;
+        if (logLevelOffRadioButtonMenuItem.isSelected())
+        {
+            logLevel = Level.OFF;
+        }
+        else if (logLevelErrorsRadioButton.isSelected())
+        {
+            logLevel = Level.SEVERE;
+        }
+        else //if(logLevelAllRadioButtonMenuItem.isSelected())
+        {
+            logLevel = Level.ALL;
+        }
+        logger.setLevel(logLevel);
+        logger.fine("Set log level to " + logLevel.toString());
+    }//GEN-LAST:event_logLevelChanged
+
+    private void fileLoggingCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fileLoggingCheckBoxMenuItemActionPerformed
+    {//GEN-HEADEREND:event_fileLoggingCheckBoxMenuItemActionPerformed
+        if(fileLoggingCheckBoxMenuItem.isSelected())
+        {
+            try
+            {
+                fileHandler = new FileHandler("jopensslgui.log.xml");
+                logger.addHandler(fileHandler);
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(JOpenSSLFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (SecurityException ex)
+            {
+                Logger.getLogger(JOpenSSLFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else
+        {
+             logger.removeHandler(fileHandler);
+        }
+    }//GEN-LAST:event_fileLoggingCheckBoxMenuItemActionPerformed
 
     public static void displaySuccessMessage()
     {
@@ -116,12 +237,23 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         });
     }
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
-    private static JOpenSSLFrame singleton = null; //MainFrame
+    public static JOpenSSLFrame singleton = null; //MainFrame
+    public static Logger logger = Logger.getLogger(JOpenSSLFrame.class.getName());
+    private FileHandler fileHandler = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu LoggingMenuItem;
     private jopensslgui.FileEncryptionPanel fileEncryptionPanel;
+    private javax.swing.JCheckBoxMenuItem fileLoggingCheckBoxMenuItem;
     private jopensslgui.GenerateKeysTabbedPane generateKeysTabbedPane1;
     private jopensslgui.MessageDigestPanel hashPanel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JRadioButtonMenuItem logLevelAllRadioButtonMenuItem;
+    private javax.swing.ButtonGroup logLevelButtonGroup;
+    private javax.swing.JRadioButtonMenuItem logLevelErrorsRadioButton;
+    private javax.swing.JRadioButtonMenuItem logLevelOffRadioButtonMenuItem;
     private javax.swing.JTabbedPane mainTabbedPane;
+    private javax.swing.JMenuItem quitMenuItem;
     private jopensslgui.RandomFilePanel randomFilePanel;
     private jopensslgui.SignaturePanel signaturePanel1;
     public javax.swing.JLabel statusLabel;

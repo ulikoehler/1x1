@@ -238,11 +238,11 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
         }
         catch (InterruptedException ex)
         {
-            Logger.getLogger(GenerateDSAKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(GenerateDSAKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_generateParamButtonActionPerformed
 
@@ -265,23 +265,31 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
         try
         {
             StringBuilder cmdBuilder = new StringBuilder("openssl gendsa -out ");
-            cmdBuilder.append(paramOutputFileField.getText());
+            cmdBuilder.append(keyOutputFileField.getText());
             cmdBuilder.append(" " + paramInputFileField.getText());
+            logger.fine("Executing \'" + cmdBuilder.toString() + "\'");
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
+
+            int exitCode = p.exitValue();
+            if(exitCode != 0)
+            {
+                logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
+            }
         }
         catch (InterruptedException ex)
         {
-            Logger.getLogger(GenerateDSAKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(GenerateDSAKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_generateKeyButtonActionPerformed
 
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
+    private Logger logger = JOpenSSLFrame.logger;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox directGenerationCheckbox;
     private javax.swing.JPanel dsaKeyPanel;

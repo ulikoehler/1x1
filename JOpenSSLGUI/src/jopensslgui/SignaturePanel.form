@@ -79,14 +79,8 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="selectInputFileButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="selectOutputFileButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="selectInputFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="selectOutputFileButton" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="selectPrivateKeyFileButton" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -244,10 +238,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="verifySelectInputFileButton" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="verifySelectInputFileButton" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="selectPublicKeyFileButton" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -290,7 +281,7 @@
                       <Component id="signatureFileField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="selectSignatureFIleButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="verifyOkButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="verifyDssCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>

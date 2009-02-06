@@ -318,15 +318,22 @@ public class SignaturePanel extends javax.swing.JPanel
             String keyFile = privateKeyFileField.getText();
             String inputFile = inputFileField.getText();
             String outputFile = outputFileField.getText();
-            StringBuilder cmdBuilder = new StringBuilder("openssl dgst -sign ");
-            cmdBuilder.append(keyFile + " ");
+            StringBuilder cmdBuilder = new StringBuilder("openssl dgst ");
             if (dss1CheckBox.isSelected())
             {
                 cmdBuilder.append("-dss1 ");
             }
-            cmdBuilder.append(inputFile + " -out " + outputFile);
+            cmdBuilder.append("-sign " + keyFile);
+            cmdBuilder.append(" -out " + outputFile + " " + inputFile);
+            logger.fine("Executing \'" + cmdBuilder.toString() + "\'");
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
+
+            int exitCode = p.exitValue();
+            if(exitCode != 0)
+            {
+                logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
+            }
         }
         catch (InterruptedException ex)
         {
@@ -367,8 +374,15 @@ public class SignaturePanel extends javax.swing.JPanel
             {
                 cmdBuilder.append("-dss1");
             }
+            logger.fine("Executing \'" + cmdBuilder.toString() + "\'");
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
+
+            int exitCode = p.exitValue();
+            if(exitCode != 0)
+            {
+                logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
+            }
         }
         catch (InterruptedException ex)
         {
@@ -386,6 +400,7 @@ public class SignaturePanel extends javax.swing.JPanel
 }//GEN-LAST:event_selectSignatureFIleButtonActionPerformed
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
+    private Logger logger = JOpenSSLFrame.logger;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox dss1CheckBox;
     private javax.swing.JTextField inputFileField;
