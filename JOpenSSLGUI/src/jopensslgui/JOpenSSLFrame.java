@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -236,6 +237,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
             }
         });
     }
+    public JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     public static JOpenSSLFrame singleton = null; //MainFrame
     public static Logger logger = Logger.getLogger(JOpenSSLFrame.class.getName());

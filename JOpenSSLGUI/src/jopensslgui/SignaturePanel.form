@@ -245,7 +245,7 @@
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                  <Component id="verifyDssCheckBox" min="-2" max="-2" attributes="0"/>
+                  <Component id="verifyDss1CheckBox" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="verifyOkButton" pref="267" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -256,7 +256,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="signatureFileField" pref="188" max="32767" attributes="2"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="selectSignatureFIleButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="selectSignatureFileButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -279,12 +279,12 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="signatureFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="signatureFileField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="selectSignatureFIleButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="selectSignatureFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <EmptySpace pref="10" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="verifyOkButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="verifyDssCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="verifyDss1CheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -335,13 +335,13 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="verifyDssCheckBox">
+        <Component class="javax.swing.JCheckBox" name="verifyDss1CheckBox">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jopensslgui/Bundle.properties" key="SignaturePanel.verifyDssCheckBox.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="SignaturePanel.verifyDss1CheckBox.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jopensslgui/Bundle.properties" key="SignaturePanel.verifyDssCheckBox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="SignaturePanel.verifyDss1CheckBox.toolTipText" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
@@ -369,14 +369,14 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="selectSignatureFIleButton">
+        <Component class="javax.swing.JButton" name="selectSignatureFileButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="jopensslgui/Bundle.properties" key="SignaturePanel.selectSignatureFIleButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="jopensslgui/Bundle.properties" key="SignaturePanel.selectSignatureFileButton.text" replaceFormat="i18n.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectSignatureFIleButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectSignatureFileButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

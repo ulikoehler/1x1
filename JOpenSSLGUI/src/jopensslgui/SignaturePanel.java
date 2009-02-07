@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -58,11 +59,11 @@ public class SignaturePanel extends javax.swing.JPanel
         verifySelectInputFileButton = new javax.swing.JButton();
         verifyInputFileField = new javax.swing.JTextField();
         verifyInputLabel = new javax.swing.JLabel();
-        verifyDssCheckBox = new javax.swing.JCheckBox();
+        verifyDss1CheckBox = new javax.swing.JCheckBox();
         verifyOkButton = new javax.swing.JButton();
         signatureFileLabel = new javax.swing.JLabel();
         signatureFileField = new javax.swing.JTextField();
-        selectSignatureFIleButton = new javax.swing.JButton();
+        selectSignatureFileButton = new javax.swing.JButton();
 
         signPanel.setBorder(javax.swing.BorderFactory.createTitledBorder( i18n.getString("SignaturePanel.signPanel.border.title"))); // NOI18N
 
@@ -132,12 +133,8 @@ public class SignaturePanel extends javax.swing.JPanel
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(signPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, signPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(signPanelLayout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(selectInputFileButton))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, signPanelLayout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(selectOutputFileButton)))
+                                .addComponent(selectInputFileButton)
+                                .addComponent(selectOutputFileButton, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addComponent(selectPrivateKeyFileButton, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addComponent(signOkButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                 .addContainerGap())
@@ -188,8 +185,8 @@ public class SignaturePanel extends javax.swing.JPanel
 
         verifyInputLabel.setText( i18n.getString("SignaturePanel.verifyInputLabel.text")); // NOI18N
 
-        verifyDssCheckBox.setText( i18n.getString("SignaturePanel.verifyDssCheckBox.text")); // NOI18N
-        verifyDssCheckBox.setToolTipText( i18n.getString("SignaturePanel.verifyDssCheckBox.toolTipText")); // NOI18N
+        verifyDss1CheckBox.setText( i18n.getString("SignaturePanel.verifyDss1CheckBox.text")); // NOI18N
+        verifyDss1CheckBox.setToolTipText( i18n.getString("SignaturePanel.verifyDss1CheckBox.toolTipText")); // NOI18N
 
         verifyOkButton.setText( i18n.getString("SignaturePanel.verifyOkButton.text")); // NOI18N
         verifyOkButton.addActionListener(new java.awt.event.ActionListener() {
@@ -202,10 +199,10 @@ public class SignaturePanel extends javax.swing.JPanel
 
         signatureFileField.setText( i18n.getString("SignaturePanel.signatureFileField.text")); // NOI18N
 
-        selectSignatureFIleButton.setText(i18n.getString("SignaturePanel.selectSignatureFIleButton.text")); // NOI18N
-        selectSignatureFIleButton.addActionListener(new java.awt.event.ActionListener() {
+        selectSignatureFileButton.setText(i18n.getString("SignaturePanel.selectSignatureFileButton.text")); // NOI18N
+        selectSignatureFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectSignatureFIleButtonActionPerformed(evt);
+                selectSignatureFileButtonActionPerformed(evt);
             }
         });
 
@@ -224,14 +221,12 @@ public class SignaturePanel extends javax.swing.JPanel
                     .addComponent(verifyInputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(verifyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verifyPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(verifySelectInputFileButton))
+                    .addComponent(verifySelectInputFileButton, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(selectPublicKeyFileButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(16, 16, 16))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verifyPanelLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(verifyDssCheckBox)
+                .addComponent(verifyDss1CheckBox)
                 .addGap(18, 18, 18)
                 .addComponent(verifyOkButton, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
                 .addContainerGap())
@@ -241,7 +236,7 @@ public class SignaturePanel extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(signatureFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectSignatureFIleButton)
+                .addComponent(selectSignatureFileButton)
                 .addGap(16, 16, 16))
         );
         verifyPanelLayout.setVerticalGroup(
@@ -260,11 +255,11 @@ public class SignaturePanel extends javax.swing.JPanel
                 .addGroup(verifyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(signatureFileLabel)
                     .addComponent(signatureFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectSignatureFIleButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(selectSignatureFileButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(verifyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(verifyOkButton)
-                    .addComponent(verifyDssCheckBox))
+                    .addComponent(verifyDss1CheckBox))
                 .addContainerGap())
         );
 
@@ -334,7 +329,7 @@ public class SignaturePanel extends javax.swing.JPanel
             {
                 logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
             }
-        }
+        }   
         catch (InterruptedException ex)
         {
             Logger.getLogger(SignaturePanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -364,22 +359,34 @@ public class SignaturePanel extends javax.swing.JPanel
         try
         {
             String keyFile = publicKeyFileField.getText();
-            String inputFile = inputFileField.getText();
+            String inputFile = verifyInputFileField.getText();
             String signatureFile = signatureFileField.getText();
-            StringBuilder cmdBuilder = new StringBuilder("openssl dgst -verify ");
-            cmdBuilder.append(keyFile + " -signature ");
-            cmdBuilder.append(signatureFile + " ");
-            cmdBuilder.append(inputFile + " ");
-            if (dss1CheckBox.isSelected())
+            StringBuilder cmdBuilder = new StringBuilder("openssl dgst ");
+            if (verifyDss1CheckBox.isSelected())
             {
-                cmdBuilder.append("-dss1");
+                cmdBuilder.append("-dss1 ");
             }
+            cmdBuilder.append("-verify " + keyFile);
+            cmdBuilder.append(" -signature " + signatureFile + " ");
+            cmdBuilder.append(inputFile + " ");
             logger.fine("Executing \'" + cmdBuilder.toString() + "\'");
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
 
             int exitCode = p.exitValue();
-            if(exitCode != 0)
+
+            if(exitCode == 0)
+            {
+                JOptionPane.showMessageDialog(this, i18n.getString("VerifiedSignatureSuccessfullyText"));
+                logger.info("Successfully verified the signature");
+            }
+            else if(exitCode == 1)
+            {
+                JOptionPane.showMessageDialog(this, i18n.getString("SignatureVerifyingFailureTest"));
+                logger.info("Failed to verify the signature");
+            }
+
+            if(exitCode > 1)
             {
                 logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
             }
@@ -394,10 +401,12 @@ public class SignaturePanel extends javax.swing.JPanel
         }
 }//GEN-LAST:event_verifyOkButtonActionPerformed
 
-    private void selectSignatureFIleButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectSignatureFIleButtonActionPerformed
-    {//GEN-HEADEREND:event_selectSignatureFIleButtonActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_selectSignatureFIleButtonActionPerformed
+    private void selectSignatureFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectSignatureFileButtonActionPerformed
+    {//GEN-HEADEREND:event_selectSignatureFileButtonActionPerformed
+        fileChooser.setSelectedFile(new File(signatureFileField.getText()));
+        fileChooser.showSaveDialog(this);
+        signatureFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+}//GEN-LAST:event_selectSignatureFileButtonActionPerformed
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     private Logger logger = JOpenSSLFrame.logger;
@@ -415,12 +424,12 @@ public class SignaturePanel extends javax.swing.JPanel
     private javax.swing.JButton selectOutputFileButton;
     private javax.swing.JButton selectPrivateKeyFileButton;
     private javax.swing.JButton selectPublicKeyFileButton;
-    private javax.swing.JButton selectSignatureFIleButton;
+    private javax.swing.JButton selectSignatureFileButton;
     private javax.swing.JButton signOkButton;
     private javax.swing.JPanel signPanel;
     private javax.swing.JTextField signatureFileField;
     private javax.swing.JLabel signatureFileLabel;
-    private javax.swing.JCheckBox verifyDssCheckBox;
+    private javax.swing.JCheckBox verifyDss1CheckBox;
     private javax.swing.JTextField verifyInputFileField;
     private javax.swing.JLabel verifyInputLabel;
     private javax.swing.JButton verifyOkButton;

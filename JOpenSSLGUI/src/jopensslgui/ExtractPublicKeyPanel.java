@@ -154,10 +154,13 @@ public class ExtractPublicKeyPanel extends javax.swing.JPanel {
     {//GEN-HEADEREND:event_okButtonActionPerformed
         try
         {
-            StringBuilder cmdBuilder = new StringBuilder("openssl ");
+            StringBuilder cmdBuilder = new StringBuilder("openssl -pubout ");
             cmdBuilder.append(algorithmComboBox.getSelectedItem().toString().toLowerCase());
             cmdBuilder.append(" -in " + privateKeyFileField.getText());
             cmdBuilder.append(" -out " + outputFileField.getText());
+
+            logger.fine("Executing \'" + cmdBuilder.toString() + "\'");
+            
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
         }
@@ -173,6 +176,7 @@ public class ExtractPublicKeyPanel extends javax.swing.JPanel {
 
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
+    private Logger logger = JOpenSSLFrame.logger;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algorithmComboBox;
     private javax.swing.JLabel algorithmLabel;
