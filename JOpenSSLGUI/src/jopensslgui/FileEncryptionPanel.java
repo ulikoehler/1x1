@@ -10,7 +10,10 @@
  */
 package jopensslgui;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +30,31 @@ public class FileEncryptionPanel extends javax.swing.JPanel
     public FileEncryptionPanel()
     {
         initComponents();
+        initCryptoAlgorithms();
+    }
+
+    private void initCryptoAlgorithms()
+    {
+        try
+        {
+            Process p = Runtime.getRuntime().exec("openssl list-cipher-commands");
+            p.waitFor();
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while (r.ready())
+            {
+                algorithmComboBox.addItem(r.readLine().toUpperCase());
+            }
+            algorithmComboBox.setSelectedIndex(4);
+            r.close();
+        }
+
+        catch (IOException ex)
+        {
+            Logger.getLogger(MessageDigestPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (InterruptedException ex)
+        {
+            Logger.getLogger(GenerateECKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -48,6 +76,8 @@ public class FileEncryptionPanel extends javax.swing.JPanel
         decryptCheckbox = new javax.swing.JCheckBox();
         fileEncryptionOKButton = new javax.swing.JButton();
         passwordField = new javax.swing.JPasswordField();
+        algorithmLabel = new javax.swing.JLabel();
+        algorithmComboBox = new javax.swing.JComboBox();
 
         inputFileLabel.setText( i18n.getString("FileEncryptionPanel.inputFileLabel.text")); // NOI18N
 
@@ -85,44 +115,50 @@ public class FileEncryptionPanel extends javax.swing.JPanel
             }
         });
 
+        algorithmLabel.setText( i18n.getString("FileEncryptionPanel.algorithmLabel.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputFileLabel)
-                            .addComponent(outputFileLabel))
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
-                            .addComponent(encryptionInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectInputFileButton))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectOutputFileButton))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(inputFileLabel)
+                                    .addComponent(outputFileLabel))
+                                .addGap(7, 7, 7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(outputFileField, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                                    .addComponent(encryptionInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(selectInputFileButton))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(selectOutputFileButton))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(passwordLabel)
+                                .addGap(15, 15, 15)
+                                .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(passwordLabel)
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(decryptCheckbox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileEncryptionOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))
-                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))))
+                        .addContainerGap()
+                        .addComponent(algorithmLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(algorithmComboBox, 0, 298, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(decryptCheckbox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fileEncryptionOKButton, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 139, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -140,9 +176,13 @@ public class FileEncryptionPanel extends javax.swing.JPanel
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(algorithmLabel)
+                    .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fileEncryptionOKButton)
                     .addComponent(decryptCheckbox))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -213,6 +253,8 @@ public class FileEncryptionPanel extends javax.swing.JPanel
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox algorithmComboBox;
+    private javax.swing.JLabel algorithmLabel;
     private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JTextField encryptionInputField;
     private javax.swing.JButton fileEncryptionOKButton;
