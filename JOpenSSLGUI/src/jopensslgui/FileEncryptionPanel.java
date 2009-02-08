@@ -47,11 +47,11 @@ public class FileEncryptionPanel extends javax.swing.JPanel
             algorithmComboBox.setSelectedIndex(4);
             r.close();
         }
-
         catch (IOException ex)
         {
             Logger.getLogger(MessageDigestPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (InterruptedException ex)
+        }
+        catch (InterruptedException ex)
         {
             Logger.getLogger(GenerateECKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }

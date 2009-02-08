@@ -8,7 +8,6 @@
  *
  * Created on 02.02.2009, 16:46:55
  */
-
 package jopensslgui;
 
 import java.io.File;
@@ -22,10 +21,12 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class ExtractPublicKeyPanel extends javax.swing.JPanel {
+public class ExtractPublicKeyPanel extends javax.swing.JPanel
+{
 
     /** Creates new form ExtractPublicKeyPanel */
-    public ExtractPublicKeyPanel() {
+    public ExtractPublicKeyPanel()
+    {
         initComponents();
     }
 
@@ -160,20 +161,20 @@ public class ExtractPublicKeyPanel extends javax.swing.JPanel {
             cmdBuilder.append(" -out " + outputFileField.getText());
 
             logger.fine("Executing \'" + cmdBuilder.toString() + "\'");
-            
+
             Process p = Runtime.getRuntime().exec(cmdBuilder.toString());
             p.waitFor();
         }
         catch (InterruptedException ex)
         {
             Logger.getLogger(ExtractPublicKeyPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(ExtractPublicKeyPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_okButtonActionPerformed
-
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     private Logger logger = JOpenSSLFrame.logger;
@@ -188,5 +189,4 @@ public class ExtractPublicKeyPanel extends javax.swing.JPanel {
     private javax.swing.JButton selectOutputFileButton;
     private javax.swing.JButton selectPrivateKeyFileButton;
     // End of variables declaration//GEN-END:variables
-
 }

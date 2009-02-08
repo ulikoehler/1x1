@@ -8,7 +8,6 @@
  *
  * Created on 01.02.2009, 14:56:59
  */
-
 package jopensslgui;
 
 import java.io.File;
@@ -22,10 +21,12 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class GenerateDSAKeysPanel extends javax.swing.JPanel {
+public class GenerateDSAKeysPanel extends javax.swing.JPanel
+{
 
     /** Creates new form GenerateDSAKeysPanel */
-    public GenerateDSAKeysPanel() {
+    public GenerateDSAKeysPanel()
+    {
         initComponents();
     }
 
@@ -226,7 +227,7 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
             StringBuilder cmdBuilder = new StringBuilder("openssl dsaparam -out ");
             cmdBuilder.append(paramOutputFileField.getText());
             cmdBuilder.append(" " + (String) sizeComboBox.getSelectedItem());
-            if(directGenerationCheckbox.isSelected())
+            if (directGenerationCheckbox.isSelected())
             {
                 /**
                  * Make OpenSSL to generate the key directly in one step
@@ -272,7 +273,7 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
             p.waitFor();
 
             int exitCode = p.exitValue();
-            if(exitCode != 0)
+            if (exitCode != 0)
             {
                 logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
             }
@@ -286,7 +287,6 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
             logger.log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_generateKeyButtonActionPerformed
-
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     private Logger logger = JOpenSSLFrame.logger;
@@ -308,5 +308,4 @@ public class GenerateDSAKeysPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox sizeComboBox;
     private javax.swing.JLabel sizeLabel;
     // End of variables declaration//GEN-END:variables
-
 }

@@ -325,11 +325,11 @@ public class SignaturePanel extends javax.swing.JPanel
             p.waitFor();
 
             int exitCode = p.exitValue();
-            if(exitCode != 0)
+            if (exitCode != 0)
             {
                 logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
             }
-        }   
+        }
         catch (InterruptedException ex)
         {
             Logger.getLogger(SignaturePanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -375,18 +375,18 @@ public class SignaturePanel extends javax.swing.JPanel
 
             int exitCode = p.exitValue();
 
-            if(exitCode == 0)
+            if (exitCode == 0)
             {
                 JOptionPane.showMessageDialog(this, i18n.getString("VerifiedSignatureSuccessfullyText"));
                 logger.info("Successfully verified the signature");
             }
-            else if(exitCode == 1)
+            else if (exitCode == 1)
             {
                 JOptionPane.showMessageDialog(this, i18n.getString("SignatureVerifyingFailureTest"));
                 logger.info("Failed to verify the signature");
             }
 
-            if(exitCode > 1)
+            if (exitCode > 1)
             {
                 logger.log(Level.SEVERE, "OpenSSL returned exit status " + exitCode);
             }

@@ -8,7 +8,6 @@
  *
  * Created on 30.01.2009, 19:59:40
  */
-
 package jopensslgui;
 
 import java.io.File;
@@ -23,10 +22,12 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author uli
  */
-public class RandomFilePanel extends javax.swing.JPanel {
+public class RandomFilePanel extends javax.swing.JPanel
+{
 
     /** Creates new form RandomFilePanel */
-    public RandomFilePanel() {
+    public RandomFilePanel()
+    {
         initComponents();
     }
 
@@ -134,19 +135,19 @@ public class RandomFilePanel extends javax.swing.JPanel {
             switch (randomSizeSuffixComboBox.getSelectedIndex())
             {
                 case 1:
-                    //Kilobytes
+                //Kilobytes
                 {
                     size *= 1024;
                     break;
                 }
                 case 2:
-                    //Megabytes
+                //Megabytes
                 {
                     size *= 1024 * 1024;
                     break;
                 }
                 case 3:
-                    //Gigabytes
+                //Gigabytes
                 {
                     size *= 1024 * 1024 * 1024;
                     break;
@@ -180,7 +181,6 @@ public class RandomFilePanel extends javax.swing.JPanel {
             Logger.getLogger(JOpenSSLFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_randomFileOKButtonActionPerformed
-
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -192,5 +192,4 @@ public class RandomFilePanel extends javax.swing.JPanel {
     private javax.swing.JButton selectOutputFileButton1;
     private javax.swing.JLabel sizeLabel;
     // End of variables declaration//GEN-END:variables
-
 }

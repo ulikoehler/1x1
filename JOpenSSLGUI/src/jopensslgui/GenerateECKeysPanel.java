@@ -8,7 +8,6 @@
  *
  * Created on 01.02.2009, 15:53:29
  */
-
 package jopensslgui;
 
 import java.io.BufferedReader;
@@ -26,10 +25,12 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class GenerateECKeysPanel extends javax.swing.JPanel {
+public class GenerateECKeysPanel extends javax.swing.JPanel
+{
 
     /** Creates new form GenerateECKeysPanel */
-    public GenerateECKeysPanel() {
+    public GenerateECKeysPanel()
+    {
         initComponents();
         initCurveComboBox();
     }
@@ -41,11 +42,11 @@ public class GenerateECKeysPanel extends javax.swing.JPanel {
             Process p = Runtime.getRuntime().exec("openssl ecparam -list_curves");
             p.waitFor();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while(r.ready())
+            while (r.ready())
             {
                 String line = r.readLine();
                 Matcher m = curvePattern.matcher(line);
-                if(m.find())
+                if (m.find())
                 {
                     curveComboBox.addItem(m.group(1));
                 }
@@ -55,7 +56,8 @@ public class GenerateECKeysPanel extends javax.swing.JPanel {
         catch (InterruptedException ex)
         {
             Logger.getLogger(GenerateECKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(GenerateECKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,5 +158,4 @@ public class GenerateECKeysPanel extends javax.swing.JPanel {
     private javax.swing.JLabel outputFileLabel;
     private javax.swing.JButton selectParamOutputFileButton;
     // End of variables declaration//GEN-END:variables
-
 }

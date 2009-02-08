@@ -48,11 +48,11 @@ public class MessageDigestPanel extends javax.swing.JPanel
             algorithmComboBox.setSelectedIndex(3);
             r.close();
         }
-
         catch (IOException ex)
         {
             Logger.getLogger(MessageDigestPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }        catch (InterruptedException ex)
+        }
+        catch (InterruptedException ex)
         {
             Logger.getLogger(GenerateECKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,7 +171,8 @@ public class MessageDigestPanel extends javax.swing.JPanel
             String inputFile = inputFileField.getText();
             Process p =
                     Runtime.getRuntime().
-                    exec("openssl dgst -" + algorithmComboBox.getSelectedItem().toString().toLowerCase() +
+                    exec("openssl dgst -" + algorithmComboBox.getSelectedItem().toString().
+                    toLowerCase() +
                     " " + inputFile);
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String hashLine = r.readLine();

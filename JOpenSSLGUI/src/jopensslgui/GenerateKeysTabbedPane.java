@@ -8,7 +8,6 @@
  *
  * Created on 01.02.2009, 15:00:20
  */
-
 package jopensslgui;
 
 import java.util.ResourceBundle;
@@ -18,10 +17,12 @@ import javax.swing.JTabbedPane;
  *
  * @author uli
  */
-public class GenerateKeysTabbedPane extends JTabbedPane {
+public class GenerateKeysTabbedPane extends JTabbedPane
+{
 
     /** Creates new form BeanForm */
-    public GenerateKeysTabbedPane() {
+    public GenerateKeysTabbedPane()
+    {
         initComponents();
     }
 
@@ -46,7 +47,6 @@ public class GenerateKeysTabbedPane extends JTabbedPane {
         addTab( i18n.getString("GenerateKeysTabbedPane.generateECKeysPanel.TabConstraints.tabTitle"), generateECKeysPanel); // NOI18N
         addTab( i18n.getString("GenerateKeysTabbedPane.extractPublicKeyPanel.TabConstraints.tabTitle"), extractPublicKeyPanel); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
-
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jopensslgui.ExtractPublicKeyPanel extractPublicKeyPanel;
@@ -55,5 +55,4 @@ public class GenerateKeysTabbedPane extends JTabbedPane {
     private jopensslgui.GenerateECKeysPanel generateECKeysPanel;
     private jopensslgui.GenerateRSAKeysPanel generateRSAKeysPanel;
     // End of variables declaration//GEN-END:variables
-
 }

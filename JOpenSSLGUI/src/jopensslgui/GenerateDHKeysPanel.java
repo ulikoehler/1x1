@@ -1,6 +1,5 @@
 package jopensslgui;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -18,15 +17,16 @@ import javax.swing.JFileChooser;
  *
  * Created on 02.02.2009, 16:31:56
  */
-
 /**
  *
  * @author uli
  */
-public class GenerateDHKeysPanel extends javax.swing.JPanel {
+public class GenerateDHKeysPanel extends javax.swing.JPanel
+{
 
     /** Creates new form GenerateDHKeysPanel */
-    public GenerateDHKeysPanel() {
+    public GenerateDHKeysPanel()
+    {
         initComponents();
     }
 
@@ -129,7 +129,6 @@ public class GenerateDHKeysPanel extends javax.swing.JPanel {
             Process p = r.exec(cmdBuilder.toString());
             p.waitFor();
         }
-
         catch (InterruptedException ex)
         {
             Logger.getLogger(GenerateDHKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,7 +138,6 @@ public class GenerateDHKeysPanel extends javax.swing.JPanel {
             Logger.getLogger(GenerateDHKeysPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_okButtonActionPerformed
-
     private JFileChooser fileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("jopensslgui/Bundle"); //NOI18N
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -150,5 +148,4 @@ public class GenerateDHKeysPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox sizeComboBox;
     private javax.swing.JLabel sizeLabel;
     // End of variables declaration//GEN-END:variables
-
 }

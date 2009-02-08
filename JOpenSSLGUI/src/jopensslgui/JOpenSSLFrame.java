@@ -27,9 +27,9 @@ public class JOpenSSLFrame extends javax.swing.JFrame
     /** Creates new form JOpenSSLFrame */
     public JOpenSSLFrame()
     {
-            initComponents();
-            singleton = this;
-            logger.setFilter(null);
+        initComponents();
+        singleton = this;
+        logger.setFilter(null);
     }
 
     /** This method is called from within the constructor to
@@ -186,7 +186,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
 
     private void fileLoggingCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fileLoggingCheckBoxMenuItemActionPerformed
     {//GEN-HEADEREND:event_fileLoggingCheckBoxMenuItemActionPerformed
-        if(fileLoggingCheckBoxMenuItem.isSelected())
+        if (fileLoggingCheckBoxMenuItem.isSelected())
         {
             try
             {
@@ -204,7 +204,7 @@ public class JOpenSSLFrame extends javax.swing.JFrame
         }
         else
         {
-             logger.removeHandler(fileHandler);
+            logger.removeHandler(fileHandler);
         }
     }//GEN-LAST:event_fileLoggingCheckBoxMenuItemActionPerformed
 

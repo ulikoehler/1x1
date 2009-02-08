@@ -281,7 +281,7 @@
                       <Component id="signatureFileField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="selectSignatureFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="verifyOkButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="verifyDss1CheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
