@@ -30,7 +30,7 @@ public class BMIAlgo
 
         if (int_bmi <= hypo)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Untergewicht.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#0088fb\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Untergewicht.</p>");
         }
         else if (int_bmi <= norm)
         {
@@ -38,19 +38,19 @@ public class BMIAlgo
         }
         else if (int_bmi <= hyper)
         {
-            JOptionPane.showMessageDialog(null, "<html><p color=\"#de9424\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Übergewicht.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#de9424\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Übergewicht.</p>");
         }
         else if (int_bmi <= adipositas)
         {
-            JOptionPane.showMessageDialog(null, "<html><p color=\"#008739\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Adipositas.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#ff5700\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Adipositas.</p>");
         }
         else if (int_bmi < death)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du schwere Adipositas.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#ff0000\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du schwere Adipositas.</p>");
         }
         else if (int_bmi >= death)
         {
-            JOptionPane.showMessageDialog(null, "<html><p color=\"#FF0000\">Mit einem BMI von " + bmiFormat.format(bmi) + " bist du tot. Tooooooooot!!!!! :)</p>");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#9a0000\">Mit einem BMI von " + bmiFormat.format(bmi) + " bist du tot. Tooooooooot!!!!!:)</p>");
         }
         else
         {
