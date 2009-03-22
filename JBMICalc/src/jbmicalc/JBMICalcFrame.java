@@ -12,6 +12,7 @@
 package jbmicalc;
 
 import java.util.ResourceBundle;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -34,10 +35,10 @@ public class JBMICalcFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         massLabel = new javax.swing.JLabel();
-        jNumberSpinner1 = new jbmicalc.JNumberSpinner();
+        massSpinner = new jbmicalc.JNumberSpinner();
         massUnitLabel = new javax.swing.JLabel();
         sizeLabel = new javax.swing.JLabel();
-        jNumberSpinner2 = new jbmicalc.JNumberSpinner();
+        sizeSpinner = new jbmicalc.JNumberSpinner();
         sizeUnitlabel = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
 
@@ -46,13 +47,13 @@ public class JBMICalcFrame extends javax.swing.JFrame {
 
         massLabel.setText( i18n.getString("JBMICalcFrame.massLabel.text")); // NOI18N
 
-        jNumberSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        massSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(70), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         massUnitLabel.setText( i18n.getString("JBMICalcFrame.massUnitLabel.text")); // NOI18N
 
         sizeLabel.setText( i18n.getString("JBMICalcFrame.sizeLabel.text")); // NOI18N
 
-        jNumberSpinner2.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), Double.valueOf(0.0d), null, Double.valueOf(1.0d)));
+        sizeSpinner.setModel(new SpinnerNumberModel(1.75, 0.1, 5.0, 0.1));
 
         sizeUnitlabel.setText( i18n.getString("JBMICalcFrame.sizeUnitlabel.text")); // NOI18N
 
@@ -76,11 +77,11 @@ public class JBMICalcFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(massLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jNumberSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(massSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(sizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jNumberSpinner2, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
+                                .addComponent(sizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(massUnitLabel)
@@ -93,12 +94,12 @@ public class JBMICalcFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(massLabel)
-                    .addComponent(jNumberSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(massSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(massUnitLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sizeLabel)
-                    .addComponent(jNumberSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sizeUnitlabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
@@ -110,7 +111,9 @@ public class JBMICalcFrame extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_okButtonActionPerformed
     {//GEN-HEADEREND:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        double mass = massSpinner.getDoubleValue();
+        double size = sizeSpinner.getDoubleValue();
+        BMIAlgo.calcBMI(mass, size);
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**
@@ -126,12 +129,12 @@ public class JBMICalcFrame extends javax.swing.JFrame {
 
     private ResourceBundle i18n = ResourceBundle.getBundle("jbmicalc/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private jbmicalc.JNumberSpinner jNumberSpinner1;
-    private jbmicalc.JNumberSpinner jNumberSpinner2;
     private javax.swing.JLabel massLabel;
+    private jbmicalc.JNumberSpinner massSpinner;
     private javax.swing.JLabel massUnitLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JLabel sizeLabel;
+    private jbmicalc.JNumberSpinner sizeSpinner;
     private javax.swing.JLabel sizeUnitlabel;
     // End of variables declaration//GEN-END:variables
 

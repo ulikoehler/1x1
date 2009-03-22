@@ -34,12 +34,12 @@
                           <Group type="102" attributes="0">
                               <Component id="massLabel" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="jNumberSpinner1" min="-2" pref="119" max="-2" attributes="0"/>
+                              <Component id="massSpinner" min="-2" pref="119" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="1">
                               <Component id="sizeLabel" max="32767" attributes="0"/>
                               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                              <Component id="jNumberSpinner2" pref="119" max="32767" attributes="0"/>
+                              <Component id="sizeSpinner" pref="119" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -59,13 +59,13 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="massLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jNumberSpinner1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="massSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="massUnitLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="sizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jNumberSpinner2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sizeSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="sizeUnitlabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -83,10 +83,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="jbmicalc.JNumberSpinner" name="jNumberSpinner1">
+    <Component class="jbmicalc.JNumberSpinner" name="massSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="70" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
     </Component>
@@ -104,10 +104,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="jbmicalc.JNumberSpinner" name="jNumberSpinner2">
+    <Component class="jbmicalc.JNumberSpinner" name="sizeSpinner">
       <Properties>
-        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new SpinnerNumberModel(1.75, 0.1, 5.0, 0.1)" type="code"/>
         </Property>
       </Properties>
     </Component>

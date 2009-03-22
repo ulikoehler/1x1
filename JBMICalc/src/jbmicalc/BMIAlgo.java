@@ -4,7 +4,11 @@
  */
 package jbmicalc;
 
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import javax.swing.JOptionPane;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -25,29 +29,31 @@ public class BMIAlgo
         double bmi = mass / (in_meter * in_meter);
         int int_bmi = (int) Math.round(bmi);
 
+        DecimalFormat bmiFormat = new DecimalFormat("####0.0");
+
         if (int_bmi <= hypo)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + int_bmi + " hast du Untergewicht.");
+            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Untergewicht.");
         }
         else if (int_bmi <= norm)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + int_bmi + " hast du Normalgewicht.");
+            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Normalgewicht.");
         }
         else if (int_bmi <= hyper)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + int_bmi + " hast du Uebergewicht.");
+            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Übergewicht.");
         }
         else if (int_bmi <= adipositas)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + int_bmi + " hast du Adipositas.");
+            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Adipositas.");
         }
         else if (int_bmi < death)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + int_bmi + " hast du schwere Adipositas.");
+            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du schwere Adipositas.");
         }
         else if (int_bmi >= death)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + int_bmi + " bist du tot. Tooooooooot!!!!! :)");
+            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " bist du tot. Tooooooooot!!!!! :)");
         }
         else
         {
