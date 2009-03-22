@@ -4,11 +4,8 @@
  */
 package jbmicalc;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import javax.swing.JOptionPane;
-import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -37,15 +34,15 @@ public class BMIAlgo
         }
         else if (int_bmi <= norm)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Normalgewicht.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#008739\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Normalgewicht.</p>");
         }
         else if (int_bmi <= hyper)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Übergewicht.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#de9424\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Übergewicht.");
         }
         else if (int_bmi <= adipositas)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Adipositas.");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#008739\">Mit einem BMI von " + bmiFormat.format(bmi) + " hast du Adipositas.");
         }
         else if (int_bmi < death)
         {
@@ -53,7 +50,7 @@ public class BMIAlgo
         }
         else if (int_bmi >= death)
         {
-            JOptionPane.showMessageDialog(null, "Mit einem BMI von " + bmiFormat.format(bmi) + " bist du tot. Tooooooooot!!!!! :)");
+            JOptionPane.showMessageDialog(null, "<html><p color=\"#FF0000\">Mit einem BMI von " + bmiFormat.format(bmi) + " bist du tot. Tooooooooot!!!!! :)</p>");
         }
         else
         {
