@@ -30,7 +30,8 @@ public class Main {
         File[] inputFiles = openFileChooser.getSelectedFiles();
 
         //Ask the user where to save the files to
-        JFileChooser saveFileChooser = new JFileChooser();
+        //Uses the directory of the first input file as base directory
+        JFileChooser saveFileChooser = new JFileChooser(inputFiles[0].getAbsolutePath());
             saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             saveFileChooser.setMultiSelectionEnabled(false);
         saveFileChooser.showSaveDialog(null);
