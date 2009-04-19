@@ -5,7 +5,7 @@
 
 package filecat;
 
-import java.io.*
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -41,11 +41,19 @@ public class Main {
             OutputStream fout = new BufferedOutputStream(new FileOutputStream(outputFile));
             
             InputStream fin;
-
+            int read;
+            byte[] buffer = new byte[4096];
+            
             for(File inputFile : inputFiles)
             {
                 fin = new BufferedInputStream(new FileInputStream(inputFile));
-
+              
+                while(fin.available() > 0)
+                {
+                    //Read max. 4096 bytes and write them to the output stream
+                    read = fin.read(buffer);
+                    fout.write(buffer, 0, read);
+                }
                 fin.close();
             }
             fout.close();
