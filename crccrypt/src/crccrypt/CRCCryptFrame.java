@@ -52,6 +52,7 @@ public class CRCCryptFrame extends javax.swing.JFrame
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle( i18n.getString("CRCCryptFrame.title")); // NOI18N
 
         inputFileLabel.setText( i18n.getString("CRCCryptFrame.inputFileLabel.text")); // NOI18N
 
@@ -130,8 +131,18 @@ public class CRCCryptFrame extends javax.swing.JFrame
             byte[] buffer = new byte[4096];
             byte[] randBuffer = new byte[4096];
             int read;
-            fin = new BufferedInputStream(new FileInputStream(inputFileChooser.getSelectedFile()));
-            fout = new BufferedOutputStream(new FileOutputStream(inputFileChooser.getSelectedFile().getAbsolutePath() +
+            String inputFilename = inputFileChooser.getSelectedFile().getAbsolutePath();
+            String outputFilename = inputFilename;
+            if(inputFilename.endsWith(".crypt"))
+            {
+                outputFilename = inputFilename.substring(inputFilename.length() - ".crypt".length());
+            }
+            else
+            {
+                outputFilename += ".crypt";
+            }
+            fin = new BufferedInputStream(inputFilename);
+            fout = new BufferedOutputStream(new FileOutputStream(outputFilename));
                     ".crypt"));
             while (fin.available() > 0)
             {
