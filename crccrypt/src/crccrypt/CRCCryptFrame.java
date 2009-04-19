@@ -141,9 +141,8 @@ public class CRCCryptFrame extends javax.swing.JFrame
             {
                 outputFilename += ".crypt";
             }
-            fin = new BufferedInputStream(inputFilename);
+            fin = new BufferedInputStream(new FileInputStream(inputFilename));
             fout = new BufferedOutputStream(new FileOutputStream(outputFilename));
-                    ".crypt"));
             while (fin.available() > 0)
             {
                 rand.nextBytes(randBuffer);
