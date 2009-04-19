@@ -126,7 +126,7 @@ public class CRCCryptFrame extends javax.swing.JFrame
             long seed = crc.getValue();
 
             //Seed the MT with the checksum
-            MersenneTwisterFast mtf = new MersenneTwisterFast(seed);
+            MersenneTwisterFast rand = new MersenneTwisterFast(seed);
             byte[] buffer = new byte[4096];
             byte[] randBuffer = new byte[4096];
             int read;
@@ -135,6 +135,7 @@ public class CRCCryptFrame extends javax.swing.JFrame
                     ".crypt"));
             while (fin.available() > 0)
             {
+                rand.nextBytes(randBuffer);
                 //Read max. 4096 bytes and write them to the output stream
                 read = fin.read(buffer);
                 for (int i = 0; i < read; i++)
