@@ -8,7 +8,6 @@
  *
  * Created on 19.04.2009, 19:46:16
  */
-
 package crccrypt;
 
 import java.io.BufferedInputStream;
@@ -28,10 +27,12 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class CRCCryptFrame extends javax.swing.JFrame {
+public class CRCCryptFrame extends javax.swing.JFrame
+{
 
     /** Creates new form CRCCryptFrame */
-    public CRCCryptFrame() {
+    public CRCCryptFrame()
+    {
         initComponents();
     }
 
@@ -48,8 +49,6 @@ public class CRCCryptFrame extends javax.swing.JFrame {
         selectInputFileButton = new javax.swing.JButton();
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
-        outputFileLabel = new javax.swing.JLabel();
-        selectOutputFileButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,15 +65,6 @@ public class CRCCryptFrame extends javax.swing.JFrame {
         passwordLabel.setText( i18n.getString("CRCCryptFrame.passwordLabel.text")); // NOI18N
 
         passwordField.setText( i18n.getString("CRCCryptFrame.passwordField.text")); // NOI18N
-
-        outputFileLabel.setText( i18n.getString("CRCCryptFrame.outputFileLabel.text")); // NOI18N
-
-        selectOutputFileButton.setText( i18n.getString("CRCCryptFrame.selectOutputFileButton.text")); // NOI18N
-        selectOutputFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectOutputFileButtonActionPerformed(evt);
-            }
-        });
 
         okButton.setText( i18n.getString("CRCCryptFrame.okButton.text")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -98,10 +88,6 @@ public class CRCCryptFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                             .addComponent(selectInputFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(outputFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectOutputFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
                     .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -116,10 +102,6 @@ public class CRCCryptFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(passwordLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outputFileLabel)
-                    .addComponent(selectOutputFileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -142,14 +124,15 @@ public class CRCCryptFrame extends javax.swing.JFrame {
             CRC32 crc = new CRC32();
             crc.update(new String(passwordField.getPassword()).getBytes());
             long seed = crc.getValue();
-            
+
             //Seed the MT with the checksum
             MersenneTwisterFast mtf = new MersenneTwisterFast(seed);
             byte[] buffer = new byte[4096];
             byte[] randBuffer = new byte[4096];
             int read;
             fin = new BufferedInputStream(new FileInputStream(inputFileChooser.getSelectedFile()));
-            fout = new BufferedOutputStream(new FileOutputStream(outputFileChooser.getSelectedFile()));
+            fout = new BufferedOutputStream(new FileOutputStream(inputFileChooser.getSelectedFile().getAbsolutePath() +
+                    ".crypt"));
             while (fin.available() > 0)
             {
                 //Read max. 4096 bytes and write them to the output stream
@@ -172,7 +155,9 @@ public class CRCCryptFrame extends javax.swing.JFrame {
                 fin.close();
                 fout.close();
             }
-            catch(NullPointerException ex){}
+            catch (NullPointerException ex)
+            {
+            }
             catch (IOException ex)
             {
                 Logger.getLogger(CRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -180,33 +165,27 @@ public class CRCCryptFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void selectOutputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectOutputFileButtonActionPerformed
-    {//GEN-HEADEREND:event_selectOutputFileButtonActionPerformed
-        outputFileChooser.showSaveDialog(this);
-    }//GEN-LAST:event_selectOutputFileButtonActionPerformed
-
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+
+            public void run()
+            {
                 new CRCCryptFrame().setVisible(true);
             }
         });
     }
-
     JFileChooser inputFileChooser = new JFileChooser();
-    JFileChooser outputFileChooser = new JFileChooser();
     private ResourceBundle i18n = ResourceBundle.getBundle("crccrypt/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel inputFileLabel;
     private javax.swing.JButton okButton;
-    private javax.swing.JLabel outputFileLabel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JButton selectInputFileButton;
-    private javax.swing.JButton selectOutputFileButton;
     // End of variables declaration//GEN-END:variables
-
 }

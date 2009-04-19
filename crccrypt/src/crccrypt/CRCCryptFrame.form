@@ -36,11 +36,6 @@
                           <Component id="selectInputFileButton" alignment="0" pref="109" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="outputFileLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="selectOutputFileButton" pref="107" max="32767" attributes="0"/>
-                  </Group>
                   <Component id="okButton" alignment="0" pref="182" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -59,11 +54,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="passwordField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="passwordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="outputFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="selectOutputFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="okButton" min="-2" max="-2" attributes="0"/>
@@ -103,23 +93,6 @@
           <ResourceString bundle="crccrypt/Bundle.properties" key="CRCCryptFrame.passwordField.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="outputFileLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="crccrypt/Bundle.properties" key="CRCCryptFrame.outputFileLabel.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="selectOutputFileButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="crccrypt/Bundle.properties" key="CRCCryptFrame.selectOutputFileButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectOutputFileButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="okButton">
       <Properties>
