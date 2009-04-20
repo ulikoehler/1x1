@@ -1,4 +1,4 @@
-package crccrypt;
+package jcrccrypt;
 import java.io.*;
 import java.util.*;
 

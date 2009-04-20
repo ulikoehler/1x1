@@ -4,11 +4,11 @@
  */
 
 /*
- * CRCCryptFrame.java
+ * JCRCCryptFrame.java
  *
  * Created on 19.04.2009, 19:46:16
  */
-package crccrypt;
+package jcrccrypt;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,11 +27,11 @@ import javax.swing.JFileChooser;
  *
  * @author uli
  */
-public class CRCCryptFrame extends javax.swing.JFrame
+public class JCRCCryptFrame extends javax.swing.JFrame
 {
 
-    /** Creates new form CRCCryptFrame */
-    public CRCCryptFrame()
+    /** Creates new form JCRCCryptFrame */
+    public JCRCCryptFrame()
     {
         initComponents();
     }
@@ -52,22 +52,20 @@ public class CRCCryptFrame extends javax.swing.JFrame
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle( i18n.getString("CRCCryptFrame.title")); // NOI18N
+        setTitle( i18n.getString("JCRCCryptFrame.title")); // NOI18N
 
-        inputFileLabel.setText( i18n.getString("CRCCryptFrame.inputFileLabel.text")); // NOI18N
+        inputFileLabel.setText( i18n.getString("JCRCCryptFrame.inputFileLabel.text")); // NOI18N
 
-        selectInputFileButton.setText( i18n.getString("CRCCryptFrame.selectInputFileButton.text")); // NOI18N
+        selectInputFileButton.setText( i18n.getString("JCRCCryptFrame.selectInputFileButton.text")); // NOI18N
         selectInputFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectInputFileButtonActionPerformed(evt);
             }
         });
 
-        passwordLabel.setText( i18n.getString("CRCCryptFrame.passwordLabel.text")); // NOI18N
+        passwordLabel.setText( i18n.getString("JCRCCryptFrame.passwordLabel.text")); // NOI18N
 
-        passwordField.setText( i18n.getString("CRCCryptFrame.passwordField.text")); // NOI18N
-
-        okButton.setText( i18n.getString("CRCCryptFrame.okButton.text")); // NOI18N
+        okButton.setText( i18n.getString("JCRCCryptFrame.okButton.text")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
@@ -158,7 +156,7 @@ public class CRCCryptFrame extends javax.swing.JFrame
         }
         catch (IOException ex)
         {
-            Logger.getLogger(CRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JCRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -172,7 +170,7 @@ public class CRCCryptFrame extends javax.swing.JFrame
             }
             catch (IOException ex)
             {
-                Logger.getLogger(CRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JCRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_okButtonActionPerformed
@@ -187,12 +185,12 @@ public class CRCCryptFrame extends javax.swing.JFrame
 
             public void run()
             {
-                new CRCCryptFrame().setVisible(true);
+                new JCRCCryptFrame().setVisible(true);
             }
         });
     }
     JFileChooser inputFileChooser = new JFileChooser();
-    private ResourceBundle i18n = ResourceBundle.getBundle("crccrypt/Bundle");
+    private ResourceBundle i18n = ResourceBundle.getBundle("jcrccrypt/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel inputFileLabel;
     private javax.swing.JButton okButton;
