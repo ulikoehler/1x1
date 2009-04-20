@@ -135,7 +135,8 @@ public class CRCCryptFrame extends javax.swing.JFrame
             String outputFilename = inputFilename;
             if(inputFilename.endsWith(".crypt"))
             {
-                outputFilename = inputFilename.substring(inputFilename.length() - ".crypt".length());
+                outputFilename = inputFilename.substring(0, inputFilename.length() - ".crypt".length());
+
             }
             else
             {
