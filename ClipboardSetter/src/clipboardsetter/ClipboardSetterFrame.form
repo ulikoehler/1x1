@@ -78,6 +78,9 @@
           <ResourceString bundle="clipboardsetter/Bundle.properties" key="ClipboardSetterFrame.oesButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="oesButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="oebButton">
       <Properties>
@@ -85,6 +88,9 @@
           <ResourceString bundle="clipboardsetter/Bundle.properties" key="ClipboardSetterFrame.oebButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="oebButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="aesButton">
       <Properties>
@@ -102,6 +108,9 @@
           <ResourceString bundle="clipboardsetter/Bundle.properties" key="ClipboardSetterFrame.aebButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aebButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="uesButton">
       <Properties>
@@ -109,6 +118,9 @@
           <ResourceString bundle="clipboardsetter/Bundle.properties" key="ClipboardSetterFrame.uesButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uesButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="uebButton">
       <Properties>
@@ -116,6 +128,9 @@
           <ResourceString bundle="clipboardsetter/Bundle.properties" key="ClipboardSetterFrame.uebButton.text" replaceFormat=" i18n.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uebButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

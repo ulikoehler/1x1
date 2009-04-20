@@ -8,28 +8,30 @@
  *
  * Created on 28.03.2009, 11:17:43
  */
-
 package clipboardsetter;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.util.ResourceBundle;
 
 /**
  *
  * @author uli
  */
-public class ClipboardSetterFrame extends javax.swing.JFrame {
+public class ClipboardSetterFrame extends javax.swing.JFrame
+{
 
     /** Creates new form ClipboardSetterFrame */
-    public ClipboardSetterFrame() {
+    public ClipboardSetterFrame()
+    {
         initComponents();
     }
 
-    private static void setClipboard(String str) {
+    private static void setClipboard(String str)
+    {
         StringSelection ss = new StringSelection(str);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
     }
-
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -51,8 +53,18 @@ public class ClipboardSetterFrame extends javax.swing.JFrame {
         setTitle( i18n.getString("ClipboardSetterFrame.title")); // NOI18N
 
         oesButton.setText( i18n.getString("ClipboardSetterFrame.oesButton.text")); // NOI18N
+        oesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oesButtonActionPerformed(evt);
+            }
+        });
 
         oebButton.setText( i18n.getString("ClipboardSetterFrame.oebButton.text")); // NOI18N
+        oebButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oebButtonActionPerformed(evt);
+            }
+        });
 
         aesButton.setText( i18n.getString("ClipboardSetterFrame.aesButton.text")); // NOI18N
         aesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -62,10 +74,25 @@ public class ClipboardSetterFrame extends javax.swing.JFrame {
         });
 
         aebButton.setText( i18n.getString("ClipboardSetterFrame.aebButton.text")); // NOI18N
+        aebButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aebButtonActionPerformed(evt);
+            }
+        });
 
         uesButton.setText( i18n.getString("ClipboardSetterFrame.uesButton.text")); // NOI18N
+        uesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uesButtonActionPerformed(evt);
+            }
+        });
 
         uebButton.setText( i18n.getString("ClipboardSetterFrame.uebButton.text")); // NOI18N
+        uebButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uebButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,20 +140,50 @@ public class ClipboardSetterFrame extends javax.swing.JFrame {
 
     private void aesButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_aesButtonActionPerformed
     {//GEN-HEADEREND:event_aesButtonActionPerformed
-        // TODO add your handling code here:
+        setClipboard("ä");
     }//GEN-LAST:event_aesButtonActionPerformed
 
+    private void aebButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_aebButtonActionPerformed
+    {//GEN-HEADEREND:event_aebButtonActionPerformed
+        setClipboard("Ä");
+    }//GEN-LAST:event_aebButtonActionPerformed
+
+    private void oesButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_oesButtonActionPerformed
+    {//GEN-HEADEREND:event_oesButtonActionPerformed
+        setClipboard("ö");
+    }//GEN-LAST:event_oesButtonActionPerformed
+
+    private void oebButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_oebButtonActionPerformed
+    {//GEN-HEADEREND:event_oebButtonActionPerformed
+        setClipboard("Ö");
+    }//GEN-LAST:event_oebButtonActionPerformed
+
+    private void uesButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_uesButtonActionPerformed
+    {//GEN-HEADEREND:event_uesButtonActionPerformed
+        setClipboard("ü");
+    }//GEN-LAST:event_uesButtonActionPerformed
+
+    private void uebButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_uebButtonActionPerformed
+    {//GEN-HEADEREND:event_uebButtonActionPerformed
+        setClipboard("Ü");
+    }//GEN-LAST:event_uebButtonActionPerformed
+
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+
+            public void run()
+            {
                 new ClipboardSetterFrame().setVisible(true);
             }
         });
     }
 
+    private ResourceBundle i18n = ResourceBundle.getBundle("clipboardsetter/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aebButton;
     private javax.swing.JButton aesButton;
@@ -135,5 +192,4 @@ public class ClipboardSetterFrame extends javax.swing.JFrame {
     private javax.swing.JButton uebButton;
     private javax.swing.JButton uesButton;
     // End of variables declaration//GEN-END:variables
-
 }
