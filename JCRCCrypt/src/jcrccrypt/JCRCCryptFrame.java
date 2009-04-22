@@ -21,7 +21,10 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.CRC32;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -50,6 +53,7 @@ public class JCRCCryptFrame extends javax.swing.JFrame
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         okButton = new javax.swing.JButton();
+        decryptCheckbox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle( i18n.getString("JCRCCryptFrame.title")); // NOI18N
@@ -72,6 +76,8 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             }
         });
 
+        decryptCheckbox.setText( i18n.getString("JCRCCryptFrame.decryptCheckbox.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,15 +85,14 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputFileLabel)
-                            .addComponent(passwordLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(selectInputFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)))
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                    .addComponent(inputFileLabel)
+                    .addComponent(passwordLabel)
+                    .addComponent(decryptCheckbox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                    .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                    .addComponent(selectInputFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -102,7 +107,9 @@ public class JCRCCryptFrame extends javax.swing.JFrame
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(passwordLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(okButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(okButton)
+                    .addComponent(decryptCheckbox))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -112,12 +119,28 @@ public class JCRCCryptFrame extends javax.swing.JFrame
     private void selectInputFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectInputFileButtonActionPerformed
     {//GEN-HEADEREND:event_selectInputFileButtonActionPerformed
         inputFileChooser.showOpenDialog(this);
+        inputFilename = inputFileChooser.getSelectedFile().getAbsolutePath();
+        if(inputFilename.endsWith(".crypt"))
+        {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+
+                public void run()
+                {
+                    decryptCheckbox.setSelected(true);
+                }
+            });
+            outputFilename = inputFilename.substring(0, inputFilename.length() - ".crypt".length());
+        }
+        else
+        {
+            outputFilename = inputFilename + ".crypt";
+        }
     }//GEN-LAST:event_selectInputFileButtonActionPerformed
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_okButtonActionPerformed
-    {//GEN-HEADEREND:event_okButtonActionPerformed
+    private void decrypt()
+    {
         InputStream fin = null;
-        OutputStream fout = null;
+        OutputStream out = null;
         try
         {
             CRC32 crc = new CRC32();
@@ -129,19 +152,8 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             byte[] buffer = new byte[4096];
             byte[] randBuffer = new byte[4096];
             int read;
-            String inputFilename = inputFileChooser.getSelectedFile().getAbsolutePath();
-            String outputFilename = inputFilename;
-            if(inputFilename.endsWith(".crypt"))
-            {
-                outputFilename = inputFilename.substring(0, inputFilename.length() - ".crypt".length());
-
-            }
-            else
-            {
-                outputFilename += ".crypt";
-            }
-            fin = new BufferedInputStream(new FileInputStream(inputFilename));
-            fout = new BufferedOutputStream(new FileOutputStream(outputFilename));
+            fin = new BufferedInputStream(new GZIPInputStream(new Base64.InputStream(new FileInputStream(inputFilename))));
+            out = new BufferedOutputStream(new FileOutputStream(outputFilename));
             while (fin.available() > 0)
             {
                 rand.nextBytes(randBuffer);
@@ -151,7 +163,7 @@ public class JCRCCryptFrame extends javax.swing.JFrame
                 {
                     buffer[i] ^= randBuffer[i];
                 }
-                fout.write(buffer, 0, read);
+                out.write(buffer, 0, read);
             }
         }
         catch (IOException ex)
@@ -163,7 +175,7 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             try
             {
                 fin.close();
-                fout.close();
+                out.close();
             }
             catch (NullPointerException ex)
             {
@@ -172,6 +184,73 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             {
                 Logger.getLogger(JCRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    private void encrypt()
+    {
+        InputStream fin = null;
+        OutputStream out = null;
+        try
+        {
+            CRC32 crc = new CRC32();
+            crc.update(new String(passwordField.getPassword()).getBytes());
+            long seed = crc.getValue();
+
+            //Seed the MT with the checksum
+            MersenneTwisterFast rand = new MersenneTwisterFast(seed);
+            byte[] buffer = new byte[4096];
+            byte[] randBuffer = new byte[4096];
+            int read;
+            fin = new BufferedInputStream(new FileInputStream(inputFilename));
+            out = new BufferedOutputStream(new GZIPOutputStream(new Base64.OutputStream(new FileOutputStream(outputFilename))));
+            while (fin.available() > 0)
+            {
+                rand.nextBytes(randBuffer);
+                //Read max. 4096 bytes and write them to the output stream
+                read = fin.read(buffer);
+                for (int i = 0; i < read; i++)
+                {
+                    buffer[i] ^= randBuffer[i];
+                }
+                out.write(buffer, 0, read);
+            }
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JCRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            try
+            {
+                fin.close();
+                out.close();
+            }
+            catch (NullPointerException ex)
+            {
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(JCRCCryptFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_okButtonActionPerformed
+    {//GEN-HEADEREND:event_okButtonActionPerformed
+        if(inputFilename == null)
+        {
+            JOptionPane.showMessageDialog(this, "Select an input file first!", "No input file", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(decryptCheckbox.isSelected())
+        {
+            decrypt();
+        }
+        else
+        {
+            encrypt();
         }
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -189,9 +268,12 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             }
         });
     }
-    JFileChooser inputFileChooser = new JFileChooser();
+    private JFileChooser inputFileChooser = new JFileChooser();
+    private String inputFilename = null;
+            private String outputFilename = null;
     private ResourceBundle i18n = ResourceBundle.getBundle("jcrccrypt/Bundle");
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox decryptCheckbox;
     private javax.swing.JLabel inputFileLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JPasswordField passwordField;
