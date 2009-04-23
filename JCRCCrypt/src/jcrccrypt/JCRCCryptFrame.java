@@ -152,7 +152,7 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             byte[] buffer = new byte[4096];
             byte[] randBuffer = new byte[4096];
             int read;
-            fin = new BufferedInputStream(new GZIPInputStream(new Base64.InputStream(new FileInputStream(inputFilename))));
+            fin = new GZIPInputStream(new Base64.InputStream(new BufferedInputStream(new FileInputStream(inputFilename))));
             out = new BufferedOutputStream(new FileOutputStream(outputFilename));
             while (fin.available() > 0)
             {
@@ -203,7 +203,7 @@ public class JCRCCryptFrame extends javax.swing.JFrame
             byte[] randBuffer = new byte[4096];
             int read;
             fin = new BufferedInputStream(new FileInputStream(inputFilename));
-            out = new BufferedOutputStream(new GZIPOutputStream(new Base64.OutputStream(new FileOutputStream(outputFilename))));
+            out = new GZIPOutputStream(new Base64.OutputStream(new BufferedOutputStream(new FileOutputStream(outputFilename))));
             while (fin.available() > 0)
             {
                 rand.nextBytes(randBuffer);
