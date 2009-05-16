@@ -53,7 +53,7 @@ dist/Debug/${PLATFORM}/swmalign: ${OBJECTFILES}
 
 ${OBJECTDIR}/newmain.o: newmain.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/newmain.o newmain.cpp
+	$(COMPILE.cc) -g -I/usr/include -o ${OBJECTDIR}/newmain.o newmain.cpp
 
 # Subprojects
 .build-subprojects:

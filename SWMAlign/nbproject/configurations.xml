@@ -29,6 +29,11 @@
         <platform>2</platform>
       </toolsSet>
       <compileType>
+        <ccCompilerTool>
+          <includeDirectories>
+            <directoryPath>/usr/include</directoryPath>
+          </includeDirectories>
+        </ccCompilerTool>
         <linkerTool>
           <linkerLibItems>
           </linkerLibItems>
