@@ -29,9 +29,9 @@ string hirschberg(string& x, string& y)
     uint mid = floor (n/2);
     if(n <= 1 && m <= 1)
         {
-            if(x == y)
+            if(x[0] == y[0])
                 {return x;}
-            else {return "-";}
+            else {return y;}
         }
     else if(n == 1)
         {
@@ -40,7 +40,7 @@ string hirschberg(string& x, string& y)
     else if(m == 1)
         {
             string ret;
-            for(int i = 0; i < n; i++){ret += "-";}
+            ret.append(n, '-');
             return ret;
         }
     /**
@@ -112,6 +112,7 @@ string hirschberg(string& x, string& y)
     string bp = y.substr(0,cut);
     string cp = x.substr (mid);
     string dp = y.substr (cut);
+    cout << "HB " << ap << " " << bp << " " << cp << " " << dp << endl;
     return hirschberg (ap,bp)
             + hirschberg (cp,dp);
 }
