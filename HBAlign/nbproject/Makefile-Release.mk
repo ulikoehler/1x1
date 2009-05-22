@@ -34,8 +34,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-march=core2 -m64 -O3
-CXXFLAGS=-march=core2 -m64 -O3
+CCFLAGS=-march=core2 -m64 -O3 -fomit-frame-pointer
+CXXFLAGS=-march=core2 -m64 -O3 -fomit-frame-pointer
 
 # Fortran Compiler Flags
 FFLAGS=

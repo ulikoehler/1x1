@@ -55,7 +55,7 @@
         <ccCompilerTool>
           <developmentMode>6</developmentMode>
           <stripSymbols>true</stripSymbols>
-          <commandLine>-march=core2 -m64 -O3</commandLine>
+          <commandLine>-march=core2 -m64 -O3 -fomit-frame-pointer</commandLine>
         </ccCompilerTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
