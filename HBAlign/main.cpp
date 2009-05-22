@@ -17,25 +17,32 @@ uint pI = 1; //Insertion penalty
 uint pD = 1; //Deletion penalty
 uint pS = 1; //Substitution penalty
 
-/*
- * 
- */
-int
-main (int argc, char** argv)
+string hirschberg(string& x, string& y)
 {
-    string x,y;
-    cout << "x: "; cin >> x;
-    cout << "y: "; cin >> y;
-    size_t xlen = x.length ();
-    size_t ylen = y.length ();
-
     size_t n,m;
 
     uint c,s;
     int sub, del, ins;
 
-    n = xlen;//floor(xlen/2);
-    m = ylen;
+    n = x.length ();
+    m = y.length ();
+    uint mid = floor (n/2);
+    if(n <= 1 && m <= 1)
+        {
+            if(x == y)
+                {return x;}
+            else {return "-";}
+        }
+    else if(n == 1)
+        {
+            return y;
+        }
+    else if(m == 1)
+        {
+            string ret;
+            for(int i = 0; i < n; i++){ret += "-";}
+            return ret;
+        }
     /**
      * Fwd levenshtein
      */
@@ -70,7 +77,7 @@ main (int argc, char** argv)
         {
             backwdArray[i] = backwdArray[i-1] + pI;
         }
-    
+
     for(int i = n-1; i >= 0; i--)
         {
             s = backwdArray[m];
@@ -87,7 +94,39 @@ main (int argc, char** argv)
                 }
         }
 
-    cout << backwdArray[0] << "    " << fwdArray[m] << endl;
+    int cut;
+    //n=j1; m=j2
+    for(int j = 1; j <= m;j++)
+        {
+           if(j == 1) {cut = j;}
+           else if ((fwdArray[j] + backwdArray[j]) < (fwdArray[cut] + backwdArray[cut]))
+               {
+                   cut = j;
+               }
+        }
+
+    delete[] fwdArray;
+    delete[] backwdArray;
+    
+    string ap = x.substr (0,mid);
+    string bp = y.substr(0,cut);
+    string cp = x.substr (mid);
+    string dp = y.substr (cut);
+    return hirschberg (ap,bp)
+            + hirschberg (cp,dp);
+}
+
+/*
+ * 
+ */
+int
+main (int argc, char** argv)
+{
+    string x,y;
+    cout << "x: "; cin >> x;
+    cout << "y: "; cin >> y;
+
+    cout << hirschberg (x,y);
 
 
 
