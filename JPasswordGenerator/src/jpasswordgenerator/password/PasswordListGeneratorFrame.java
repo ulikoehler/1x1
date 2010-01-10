@@ -17,6 +17,9 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
 
 /**
  *
@@ -53,6 +56,7 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
         columnsLabel = new javax.swing.JLabel();
         columnSpinner = new javax.swing.JSpinner();
         enumerateCheckbox = new javax.swing.JCheckBox();
+        generateManyListsButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         settingsMenu = new javax.swing.JMenu();
         latexSettingsMenuItem = new javax.swing.JMenuItem();
@@ -74,7 +78,7 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
 
         countLabel.setText(i18n.getString("PasswordListGeneratorFrame.countLabel.text")); // NOI18N
 
-        countSpinner.setModel(new SpinnerNumberModel(100,0,2000000,1));
+        countSpinner.setModel(new SpinnerNumberModel(247,0,2000000,1));
 
         okButton.setText(i18n.getString("PasswordListGeneratorFrame.okButton.text")); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,10 +89,18 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
 
         columnsLabel.setText(i18n.getString("PasswordListGeneratorFrame.columnsLabel.text")); // NOI18N
 
-        columnSpinner.setModel(new SpinnerNumberModel(2,0,50,1));
+        columnSpinner.setModel(new SpinnerNumberModel(4,0,50,1));
 
         enumerateCheckbox.setSelected(true);
         enumerateCheckbox.setText(i18n.getString("PasswordListGeneratorFrame.enumerateCheckbox.text")); // NOI18N
+
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jpasswordgenerator/password/Bundle"); // NOI18N
+        generateManyListsButton.setText(bundle.getString("PasswordListGeneratorFrame.generateManyListsButton.text")); // NOI18N
+        generateManyListsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateManyListsButtonActionPerformed(evt);
+            }
+        });
 
         settingsMenu.setText(i18n.getString("PasswordListGeneratorFrame.settingsMenu.text")); // NOI18N
 
@@ -112,7 +124,7 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(outputTypePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                    .addComponent(outputTypePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(columnsLabel)
@@ -122,7 +134,8 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
                             .addComponent(countSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                             .addComponent(enumerateCheckbox)
                             .addComponent(columnSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
-                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                    .addComponent(generateManyListsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,7 +155,9 @@ public class PasswordListGeneratorFrame extends javax.swing.JFrame
                 .addComponent(enumerateCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(generateManyListsButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -166,8 +181,42 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_okButtonMouseClicked
 
 private void latexSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latexSettingsMenuItemActionPerformed
-latexSettingsDialog.setVisible(true);
+    latexSettingsDialog.setVisible(true);
 }//GEN-LAST:event_latexSettingsMenuItemActionPerformed
+
+private void generateManyListsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateManyListsButtonActionPerformed
+{//GEN-HEADEREND:event_generateManyListsButtonActionPerformed
+    genMulti();
+}//GEN-LAST:event_generateManyListsButtonActionPerformed
+
+    private void genMulti()
+    {
+                DefaultExecutor ex = new DefaultExecutor();
+                ex.setWorkingDirectory(new File("/dev/shm"));
+        for (int i = 0; i < 100; i++)
+        {
+            try
+            {
+                String filenameBase = String.format("/dev/shm/%d", i);
+                generateLaTeXList(new File(filenameBase + ".tex"));
+                ex.execute(CommandLine.parse(String.format("pdflatex %s.tex", filenameBase)));
+                ex.execute(CommandLine.parse(String.format("shred -u %s.tex", filenameBase)));
+                ex.execute(CommandLine.parse(String.format("shred -u %s.aux", filenameBase)));
+                ex.execute(CommandLine.parse(String.format("shred -u %s.log", filenameBase)));
+            }
+            catch (ExecuteException ex1)
+            {
+                Logger.getLogger(PasswordListGeneratorFrame.class.getName()).
+                        log(Level.SEVERE, null, ex1);
+            }
+            catch (IOException ex1)
+            {
+                Logger.getLogger(PasswordListGeneratorFrame.class.getName()).
+                        log(Level.SEVERE, null, ex1);
+            }
+
+        }
+    }
 
     private void generateLaTeXList(File file)
     {
@@ -181,38 +230,44 @@ latexSettingsDialog.setVisible(true);
             fw = new FileWriter(file);
             //Generate the password list
             List<char[]> pwList =
-                    pwgen.generatePasswordList(parent.getLength(), count);
+                         pwgen.generatePasswordList(parent.getLength(), count);
             //Main write directives and loop
             //Write header
             fw.write(latexSettingsDialog.getDocumentclassDirective() + " \n"); //Write documentclass directive //NOI18N
             fw.write("\\usepackage{multicol}\n"); //NOI18N
+            fw.write(
+                    "\\usepackage[paper=a4paper,left=20mm,right=20mm,top=20mm,bottom=20mm]{geometry}\n"); //NOI18N
             fw.write(latexSettingsDialog.getAdditionalDirectives() + " \n"); //NOI18N
             fw.write("\\parindent 0pt \n\n"); //NOI18N
-            fw.write("\\begin{document} \n"); //NOI18N
-            fw.write(latexSettingsDialog.getMulticolDirective().replaceAll("%n", Integer.toString(cols)) + "\n"); //NOI18N
+            fw.write("\\begin{document}\\thispagestyle{empty}\\noindent \n"); //NOI18N
+            fw.write(latexSettingsDialog.getMulticolDirective().replaceAll("%n", Integer.toString(
+                    cols)) + "\n"); //NOI18N
             //Main loop preparations
             String passwordString;
             boolean enumerate = enumerateCheckbox.isSelected();
             Iterator<char[]> pwIterator = pwList.iterator();
-            
+
             for (int i = 1; i <= count; i++)
             {
                 //Write the formatted password number if selected
                 if (enumerate)
                 {
-                    fw.write(latexSettingsDialog.getEnumMarkup().replaceAll("%n", Integer.toString(i) + ": ")); //NOI18N
+                    fw.write(latexSettingsDialog.getEnumMarkup().replaceAll("%n", Integer.toString(i)
+                                                                                  + ": ")); //NOI18N
                 }
                 //Write the formatted password
                 passwordString = new String(pwIterator.next());
-                fw.write(latexSettingsDialog.getPasswordMarkup().replaceAll("%s", passwordString) + "\\\\ \n"); //Write the password //NOI18N
+                fw.write(latexSettingsDialog.getPasswordMarkup().replaceAll("%s", passwordString)
+                         + "\\\\ \n"); //Write the password //NOI18N
             }
             //Write the end directives
             fw.write("\\end{multicols} \n"); //NOI18N
-            fw.write("\\end{document}\\noindend \n"); //NOI18N
+            fw.write("\\end{document} \n"); //NOI18N
         }
         catch (IOException ex)
         {
-            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"),
+                    JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -222,11 +277,12 @@ latexSettingsDialog.setVisible(true);
             }
             catch (IOException ex)
             {
-                Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null,
+                        ex);
             }
         }
     }
-    
+
     private void generatePlaintextList(File file)
     {
         //Initialize the file writer
@@ -239,7 +295,7 @@ latexSettingsDialog.setVisible(true);
             fw = new FileWriter(file);
             //Generate the password list
             List<char[]> pwList =
-                    pwgen.generatePasswordList(parent.getLength(), count);
+                         pwgen.generatePasswordList(parent.getLength(), count);
             //Main write loop
             int colCount = 0;
             boolean enumerate = enumerateCheckbox.isSelected();
@@ -262,7 +318,8 @@ latexSettingsDialog.setVisible(true);
         }
         catch (IOException ex)
         {
-            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getLocalizedMessage(), i18n.getString("IO_Error"),
+                    JOptionPane.ERROR_MESSAGE);
         }
         finally
         {
@@ -272,7 +329,8 @@ latexSettingsDialog.setVisible(true);
             }
             catch (IOException ex)
             {
-                Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PasswordListGeneratorFrame.class.getName()).log(Level.SEVERE, null,
+                        ex);
             }
             catch (NullPointerException ex)
             {
@@ -281,16 +339,17 @@ latexSettingsDialog.setVisible(true);
     }
     private PasswordGeneratorFrame parent = null;
     private ResourceBundle i18n =
-            ResourceBundle.getBundle("jpasswordgenerator/password/Bundle");
+                           ResourceBundle.getBundle("jpasswordgenerator/password/Bundle");
     private JFileChooser fileChooser = new JFileChooser();
     private LaTeXSettingsDialog latexSettingsDialog =
-            new LaTeXSettingsDialog(this, true);
+                                new LaTeXSettingsDialog(this, true);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner columnSpinner;
     private javax.swing.JLabel columnsLabel;
     private javax.swing.JLabel countLabel;
     private javax.swing.JSpinner countSpinner;
     private javax.swing.JCheckBox enumerateCheckbox;
+    private javax.swing.JButton generateManyListsButton;
     private javax.swing.JRadioButton latexRadioButton;
     private javax.swing.JMenuItem latexSettingsMenuItem;
     private javax.swing.JMenuBar menuBar;
@@ -300,17 +359,18 @@ latexSettingsDialog.setVisible(true);
     private javax.swing.JRadioButton plaintextRadioButton;
     private javax.swing.JMenu settingsMenu;
     // End of variables declaration//GEN-END:variables
+
     private int getCount()
     {
         SpinnerNumberModel countModel =
-                (SpinnerNumberModel) countSpinner.getModel();
+                           (SpinnerNumberModel) countSpinner.getModel();
         return countModel.getNumber().intValue();
     }
 
     private int getColumns()
     {
         SpinnerNumberModel columnModel =
-                (SpinnerNumberModel) columnSpinner.getModel();
+                           (SpinnerNumberModel) columnSpinner.getModel();
         return columnModel.getNumber().intValue();
     }
 }

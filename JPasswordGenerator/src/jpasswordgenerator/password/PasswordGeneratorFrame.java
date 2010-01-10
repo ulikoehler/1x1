@@ -84,7 +84,7 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
 
         lengthLabel.setText(i18n.getString("PasswordGeneratorFrame.lengthLabel.text")); // NOI18N
 
-        lengthSpinner.setModel(new SpinnerNumberModel(20, 1, 2500, 1));
+        lengthSpinner.setModel(new SpinnerNumberModel(10, 1, 2500, 1));
 
         qualityLabel.setText(i18n.getString("PasswordGeneratorFrame.qualityLabel.text")); // NOI18N
 
@@ -144,12 +144,12 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
                             .addComponent(useSpecifiedCharacterSetRadioButton)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(21, 21, 21)
-                                .addComponent(characterSetField, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE))))
+                                .addComponent(characterSetField, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(newPasswordLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(newPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                        .addComponent(newPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(generatePasswordButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -160,7 +160,7 @@ public class PasswordGeneratorFrame extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(qualityLabel)
                         .addGap(2, 2, 2)
-                        .addComponent(qualityBar, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))
+                        .addComponent(qualityBar, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

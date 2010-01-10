@@ -30,6 +30,7 @@ public class PasswordGenerator
     private MersenneTwisterFast mt;
     private final int mtSeedSize = 2496;
 
+
     /**
      * Seeds using the seed generation algorithm of randomSource
      * @param randomSource The random source to be used
@@ -39,7 +40,7 @@ public class PasswordGenerator
         this.randomSource = randomSource;
         mt = new MersenneTwisterFast(generateMTSeed(randomSource));
         //Set standard charset
-        this.charset = alphanumericCharset;
+        setCharset(alphanumericCharset);
     }
 
     public PasswordGenerator()
