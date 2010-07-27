@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import jcrypter.JCrypterFrame;
 
 /**
@@ -38,7 +39,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
-        
+
         updateComboBoxContents();
     }
 
@@ -48,8 +49,8 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
     public void updateComboBoxContents()
     {
         Iterable<String> ciphers = JCrypterFrame.mainFrame.getCiphers();
-        Iterable<String> modes = JCrypterFrame.mainFrame.getModes();
-        Iterable<String> paddings = JCrypterFrame.mainFrame.getPaddings();
+        Iterable<String> modes = JCrypterFrame.getModes();
+        Iterable<String> paddings = JCrypterFrame.getPaddings();
         //Remove combo box items
         cipherComboBox.removeAllItems();
         modeComboBox.removeAllItems();
@@ -89,6 +90,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
         okButton = new javax.swing.JButton();
         paddingLabel = new javax.swing.JLabel();
         paddingComboBox = new javax.swing.JComboBox();
+        policyWorkaroundCheckbox = new javax.swing.JCheckBox();
 
         setTitle(i18n.getString("Select_Cipher")); // NOI18N
         setBackground(java.awt.Color.lightGray);
@@ -97,6 +99,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
 
         cipherLabel.setText(i18n.getString("CipherLabel.text")); // NOI18N
 
+        cipherComboBox.setEnabled(false);
         cipherComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 comboBoxPropertyChange(evt);
@@ -105,6 +108,7 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
 
         modeLabel.setText(i18n.getString("ModeLabel.text")); // NOI18N
 
+        modeComboBox.setEnabled(false);
         modeComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 comboBoxPropertyChange(evt);
@@ -120,9 +124,18 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
 
         paddingLabel.setText(i18n.getString("PaddingLabel.text")); // NOI18N
 
+        paddingComboBox.setEnabled(false);
         paddingComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 comboBoxPropertyChange(evt);
+            }
+        });
+
+        policyWorkaroundCheckbox.setSelected(true);
+        policyWorkaroundCheckbox.setText("Policy workaround (overrides algorithm)");
+        policyWorkaroundCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                policyWorkaroundCheckboxActionPerformed(evt);
             }
         });
 
@@ -131,18 +144,25 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(modeLabel)
-                    .addComponent(paddingLabel)
-                    .addComponent(cipherLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(paddingComboBox, 0, 98, Short.MAX_VALUE)
-                    .addComponent(modeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cipherComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 258, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(modeLabel)
+                            .addComponent(paddingLabel)
+                            .addComponent(cipherLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(paddingComboBox, 0, 98, Short.MAX_VALUE)
+                            .addComponent(modeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cipherComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 258, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(65, Short.MAX_VALUE)
+                        .addComponent(policyWorkaroundCheckbox)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,22 +179,48 @@ public class CipherModePaddingSelectorDialog extends javax.swing.JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(paddingLabel)
                     .addComponent(paddingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(policyWorkaroundCheckbox)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-    this.setVisible(false);
-    updateCipher();
+        this.setVisible(false);
+        updateCipher();
 }//GEN-LAST:event_okButtonMouseClicked
 
 private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_comboBoxPropertyChange
     changed = true;
 }//GEN-LAST:event_comboBoxPropertyChange
+
+private void policyWorkaroundCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_policyWorkaroundCheckboxActionPerformed
+{//GEN-HEADEREND:event_policyWorkaroundCheckboxActionPerformed
+    //Enable or disable the inputs
+    SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run()
+            {
+                if(policyWorkaroundCheckbox.isSelected())
+                {
+                    cipherComboBox.setEnabled(false);
+                    modeComboBox.setEnabled(false);
+                    paddingComboBox.setEnabled(false);
+                }
+                else
+                {
+                    cipherComboBox.setEnabled(true);
+                    modeComboBox.setEnabled(true);
+                    paddingComboBox.setEnabled(true);
+                }
+            }
+        });
+}//GEN-LAST:event_policyWorkaroundCheckboxActionPerformed
 
     //Getters
     public String getCipher()
@@ -192,6 +238,7 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
         return (String) paddingComboBox.getSelectedItem() + "Padding";
     }
     //Setters
+
     public void setCipher(String cipher)
     {
         cipherComboBox.setSelectedItem(cipher);
@@ -226,28 +273,26 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
             {
                 try
                 {
-                    JCrypterFrame.mainFrame.setCipher(Cipher.getInstance(getCipher() +
-                                                        "/" +
-                                                        getMode() +
-                                                        "/" +
-                                                        getPadding()));
+                    JCrypterFrame.mainFrame.setCipher(Cipher.getInstance(
+                            getCipher() + "/" + getMode() + "/" + getPadding()));
+                    
                 }
                 catch (NoSuchAlgorithmException ex)
                 {
-                    Logger.getLogger(CipherModePaddingSelectorDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CipherModePaddingSelectorDialog.class.
+                            getName()).log(Level.SEVERE, null, ex);
                 }
                 catch (NoSuchPaddingException ex)
                 {
-                    Logger.getLogger(CipherModePaddingSelectorDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CipherModePaddingSelectorDialog.class.
+                            getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
-    
     private String defaultCipher = "TWOFISH";
     private String defaultMode = "OFB";
     private String defaultPadding = "PKCS7";
-    
     boolean changed; //True if parameters have changed
     //Resource bundles
     ResourceBundle i18n = ResourceBundle.getBundle("jcrypter/utils/Bundle");
@@ -259,5 +304,6 @@ private void comboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
     private javax.swing.JButton okButton;
     private javax.swing.JComboBox paddingComboBox;
     private javax.swing.JLabel paddingLabel;
+    private javax.swing.JCheckBox policyWorkaroundCheckbox;
     // End of variables declaration//GEN-END:variables
 }

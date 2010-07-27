@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.security.*;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -34,6 +36,7 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.naming.BinaryRefAddr;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import jcrypter.signature.SignatureFrame;
@@ -46,6 +49,12 @@ import jcrypter.rand.RandomFileCreatorFrame;
 import jcrypter.rand.RandomNumberGeneratorFrame;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.engines.BlowfishEngine;
+import org.bouncycastle.crypto.engines.TwofishEngine;
+import org.bouncycastle.crypto.paddings.PKCS7Padding;
+import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
+import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -146,6 +155,7 @@ public class JCrypterFrame extends javax.swing.JFrame
         cmpDialog.updateCipher();
         //Test if the usr has installed the Unlimited Strength Policy Files
         testUnlimitedPolicy();
+
     }
 
     /** This method is called from within the constructor to
@@ -379,11 +389,11 @@ public class JCrypterFrame extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(passwordLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
+                        .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(inputLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
+                        .addComponent(plaintextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ciphertextLabel)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -394,7 +404,7 @@ public class JCrypterFrame extends javax.swing.JFrame
                                 .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)))))
+                                .addComponent(ciphertextScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -585,7 +595,6 @@ private void randomNumberGeneratorMenuItemActionPerformed(java.awt.event.ActionE
             CipherInputStream cin = new CipherInputStream(bin, cipher);
 
             //Print the input (minus the IV, if decrypting) into cout
-
             byte[] plaintext = new byte[bin.available()];
             cin.read(plaintext); //Decrypts the rest data in bin
             //Close the cipher stream
@@ -605,6 +614,70 @@ private void randomNumberGeneratorMenuItemActionPerformed(java.awt.event.ActionE
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void decryptWithBypass() //TODO this is only a test, review!!
+    {
+
+        try //TODO this is only a test, review!!
+        {
+            PaddedBufferedBlockCipher bc =
+                                      new PaddedBufferedBlockCipher(new TwofishEngine(),
+                                                                    new PKCS7Padding());
+            int bs = bc.getBlockSize(); //Blocksize
+            //Get data
+            byte[] passwordBytes =
+                   new String(passwordField.getPassword()).getBytes();
+            byte[] input;
+            //Base64-decode the ciphertext
+            input =
+            Base64.decode(inputField.getText().getBytes());
+            //All data will be read from this stream
+            ByteArrayInputStream bin = new ByteArrayInputStream(input);
+            //Hash the password to fit it into the right size (with salt)
+            byte[] salt = new byte[8];
+            byte[] keyBytes = new byte[32];
+            bin.read(salt); //Get the salt from the input stream
+            Digest digest = new SHA256Digest();
+            digest.update(salt, 0, salt.length); //Add the salt...
+            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
+            digest.doFinal(keyBytes, 0); //Do the final hashing
+
+            //IV generation/retrievement
+            byte[] iv = new byte[cipher.getBlockSize()]; //Using iv array only with offset
+            bin.read(iv);
+
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+            /*
+             * IMPORTANT NOTE:
+             * This implementation bypasses the policy but does only support TWOFISH/ECB
+             */
+
+            CipherParameters params = new ParametersWithIV(new KeyParameter(keyBytes), iv);
+            bc.init(false, params);
+            byte[] plaintext = new byte[bc.getOutputSize(bin.available())]; //All at once
+            byte[] buffer = new byte[bs];
+            byte[] oBuffer = new byte[bs]; //OutputBuffer
+            while(bin.available() > 0)
+            {
+                int read = bin.read(buffer);
+                bc.processBytes(buffer, 0, read, oBuffer, 0);
+                bout.write(oBuffer);
+            }
+
+            outputField.setText(new String(bout.toByteArray()));
+
+
+
+            
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JCrypterFrame.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void encryptSymmetric()
@@ -669,6 +742,74 @@ private void randomNumberGeneratorMenuItemActionPerformed(java.awt.event.ActionE
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void encryptWithBypass() //TODO this is only a test, review!!
+    {
+
+        try //TODO this is only a test, review!!
+        {
+            PaddedBufferedBlockCipher bc =
+                                      new PaddedBufferedBlockCipher(
+                    new TwofishEngine(),
+                                                                    new PKCS7Padding());
+            //Using BouncyCastle JCEs
+            int bs = cipher.getBlockSize(); //Blocksize
+            //Get data
+            byte[] passwordBytes =
+                   new String(passwordField.getPassword()).getBytes();
+            byte[] input;
+            //Base64-decode the ciphertext
+            input = inputField.getText().getBytes();
+
+            ByteArrayInputStream bin = new ByteArrayInputStream(input);
+            //All data is written to this stream
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+            //Hash the password to fit it into the right size (with salt)
+            byte[] salt = new byte[8];
+            byte[] keyBytes = new byte[32]; //Assume a 256-bit key
+            rand.nextBytes(salt);
+            bout.write(salt); //Write the salt to the stream
+
+            Digest digest = new SHA256Digest(); //Assume a 256-bit key
+            digest.update(salt, 0, salt.length); //Add the salt...
+            digest.update(passwordBytes, 0, passwordBytes.length); //...and the password to the generator
+            digest.doFinal(keyBytes, 0); //Do the final hashing
+
+            //Generate the iv and the IvParameter spec
+            byte[] iv = new byte[cipher.getBlockSize()];
+            rand.nextBytes(iv);
+
+            /*
+             * IMPORTANT NOTE:
+             * This implementation bypasses the policy but does only support TWOFISH/ECB
+             */
+
+            CipherParameters params = new ParametersWithIV(new KeyParameter(keyBytes), iv);
+            bc.init(true, params);
+            byte[] plaintext = new byte[bc.getOutputSize(bin.available())]; //All at once
+            byte[] buffer = new byte[bs];
+            byte[] oBuffer = new byte[bs]; //OutputBuffer
+            while(bin.available() > 0)
+            {
+                int read = bin.read(buffer);
+                bc.processBytes(buffer, 0, read, oBuffer, 0);
+                bout.write(oBuffer);
+            }
+
+            outputField.setText(new String(bout.toByteArray()));
+
+
+
+
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(JCrypterFrame.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -789,18 +930,21 @@ private void randomNumberGeneratorMenuItemActionPerformed(java.awt.event.ActionE
 
             // create a 64 bit secret key from raw bytes
 
-            SecretKey key64 = new SecretKeySpec(new byte[]
+            byte[] key = new byte[]
                     {
                         0x00, 0x01, 0x02,
                         0x03, 0x04, 0x05, 0x06, 0x07
-                    }, "Blowfish"); //NOI18N
+                    }; //NOI18N
+
+            byte[] out = new byte[256];
 
             // create a cipher and attempt to encrypt the data block with our key
 
-            Cipher c = Cipher.getInstance("Blowfish/ECB/NoPadding"); //NOI18N
+            BlockCipher c = new BlowfishEngine();
 
-            c.init(Cipher.ENCRYPT_MODE, key64);
-            c.doFinal(data);
+            c.init(true, new KeyParameter(key));
+            c.processBlock(data,0,out,0);
+            c.reset();
 
             // create a 192 bit secret key from raw bytes
 
@@ -814,17 +958,17 @@ private void randomNumberGeneratorMenuItemActionPerformed(java.awt.event.ActionE
 
             // now try encrypting with the larger key
 
-            c.init(Cipher.ENCRYPT_MODE, key192);
-            c.doFinal(data);
-
+            c.init(true, new KeyParameter(out));
+            c.processBlock(data,0,out,0);
+            //If no exception is thrown before
             System.out.println(i18n.getString("Unrestricted_policy_test:_passed"));
         }
-        catch (InvalidKeyException ex)
+        /*catch (InvalidKeyException ex)
         {
             JOptionPane.showMessageDialog(this, i18n.getString("The_Unrestricted_Policy_Files_are_not_installed_in_your_JRE.") +
                     i18n.getString("Please_install_them_to_enable_strong_cryptography!"), i18n.getString("Restricted_policy_files"),
                     JOptionPane.ERROR_MESSAGE);
-        }
+        }*/
         catch (Exception ex)
         {
             Logger.getLogger(JCrypterFrame.class.getName()).log(Level.SEVERE, null, ex);

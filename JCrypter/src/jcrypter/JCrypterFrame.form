@@ -249,12 +249,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="passwordLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="passwordField" pref="241" max="32767" attributes="0"/>
+                      <Component id="passwordField" pref="243" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="inputLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="plaintextScrollPane" pref="262" max="32767" attributes="0"/>
+                      <Component id="plaintextScrollPane" pref="271" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="ciphertextLabel" min="-2" max="-2" attributes="0"/>
@@ -267,7 +267,7 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ciphertextScrollPane" pref="257" max="32767" attributes="0"/>
+                              <Component id="ciphertextScrollPane" pref="260" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>

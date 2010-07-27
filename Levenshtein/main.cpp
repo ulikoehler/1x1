@@ -20,12 +20,27 @@ uint levenshtein(string& x, string& y)
     uint n = x.length ();
     uint m = y.length ();
     uint* backwdArray = new uint[m+1];
+
+    asm
+       (
+    "mov %%eax, 0;"
+    "mov %%ecx, %2;"
+    "lep:"
+    "add %%eax, %0;"
+    "mov %%ebx,%%ecx;"
+    "lea %%ebx,[%%ecx*4];"
+    "mov [%1+%%ebx],%%eax;"
+    "loop lep;"
+        :
+        :"d"(pI),"o"(backwdArray),"m"(m)
+        :"%eax","%ecx","%ebx"
+        );
     
-    backwdArray[m] = 0;
+    //backwdArray[m] = 0;
     for(int i = m-1; i >= 0; i--)
         {
-            backwdArray[i] = backwdArray[i-1] + pI;
-        }
+            cout << backwdArray[i] << " ";// = backwdArray[i-1] + pI;
+        }cout << "\n";
 
     uint c,s;
     int sub, del, ins;
