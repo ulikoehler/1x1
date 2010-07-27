@@ -6,3 +6,4 @@
 *.jar
 *.class
 *.QueryCache
+*/.dep.inc
