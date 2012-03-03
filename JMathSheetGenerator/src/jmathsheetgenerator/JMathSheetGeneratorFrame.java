@@ -29,12 +29,10 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author uli
  */
-public class JMathSheetGeneratorFrame extends javax.swing.JFrame
-{
+public class JMathSheetGeneratorFrame extends javax.swing.JFrame {
 
     /** Creates new form JMathSheetGeneratorFrame */
-    public JMathSheetGeneratorFrame()
-    {
+    public JMathSheetGeneratorFrame() {
         initComponents();
         //Initialize the Mersenne Twister
         mt = new MersenneTwisterFast(generateMTSeed());
@@ -42,13 +40,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         readConfigFile();
     }
 
-    private void writeConfigFile()
-    {
-        try
-        {
+    private void writeConfigFile() {
+        try {
             //Make sure the config file exists
-            if (!configFile.exists())
-            {
+            if (!configFile.exists()) {
                 configFile.createNewFile();
             }
 
@@ -74,28 +69,22 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             props.setProperty("lineLength", lineLengthField.getText());
             //Other
             File fcSelectedFile = fc.getSelectedFile();
-            if (fcSelectedFile != null)
-            {
+            if (fcSelectedFile != null) {
                 props.setProperty("fileChooserSelected", fcSelectedFile.getAbsolutePath());
             }
             //Write the properties to the config file
             props.store(new FileWriter(configFile), "JMathSheetGenerator options");
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void readConfigFile()
-    {
+    private void readConfigFile() {
         /**
          * Try to load settings from the config file
          */
-        if (configFile.exists())
-        {
-            try
-            {
+        if (configFile.exists()) {
+            try {
                 Properties props = new Properties();
                 props.load(new FileReader(configFile));
                 //Exercises per line
@@ -106,30 +95,26 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                 setResultFrom(new Integer(props.getProperty("resultFrom")));
                 setResultTo(new Integer(props.getProperty("resultTo")));
                 //Operator checkboxes
-                plusCheckbox.setSelected(new Boolean(props.getProperty("plusEnabled")));
-                minusCheckbox.setSelected(new Boolean(props.getProperty("minusEnabled")));
-                multCheckbox.setSelected(new Boolean(props.getProperty("multEnabled")));
-                divCheckbox.setSelected(new Boolean(props.getProperty("divEnabled")));
+                plusCheckbox.setSelected(Boolean.valueOf(props.getProperty("plusEnabled")));
+                minusCheckbox.setSelected(Boolean.valueOf(props.getProperty("minusEnabled")));
+                multCheckbox.setSelected(Boolean.valueOf(props.getProperty("multEnabled")));
+
+                divCheckbox.setSelected(Boolean.valueOf(props.getProperty("divEnabled")));
                 //Options checkboxes
-                realResultsCheckbox.setSelected(new Boolean(props.getProperty("realResults")));
-                alignNumbersCheckbox.setSelected(new Boolean(props.getProperty("alignNumbers")));
-                schoolOperatorsCheckbox.setSelected(new Boolean(props.getProperty("schoolOperators")));
+                realResultsCheckbox.setSelected(Boolean.valueOf(props.getProperty("realResults")));
+                alignNumbersCheckbox.setSelected(Boolean.valueOf(props.getProperty("alignNumbers")));
+                schoolOperatorsCheckbox.setSelected(Boolean.valueOf(props.getProperty("schoolOperators")));
                 //Text fields
                 titleField.setText(props.getProperty("title"));
                 lineLengthField.setText(props.getProperty("lineLength"));
                 //Other
                 String fcSelectedFileName = props.getProperty("fileChooserSelected");
-                if (fcSelectedFileName != null)
-                {
+                if (fcSelectedFileName != null) {
                     fc.setSelectedFile(new File(fcSelectedFileName));
                 }
-            }
-            catch (NumberFormatException ex)
-            {
+            } catch (NumberFormatException ex) {
                 Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -396,115 +381,95 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private int getLinesPerCol()
-    {
+    private int getLinesPerCol() {
         SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
-    private void setLinesPerCol(int val)
-    {
+    private void setLinesPerCol(int val) {
         SpinnerNumberModel sm = (SpinnerNumberModel) linesPerColSpinner.getModel();
         sm.setValue(val);
     }
 
-    private int getPageCount()
-    {
+    private int getPageCount() {
         SpinnerNumberModel sm = (SpinnerNumberModel) pageCountSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
-    private void setPageCount(int val)
-    {
+    private void setPageCount(int val) {
         SpinnerNumberModel sm = (SpinnerNumberModel) pageCountSpinner.getModel();
         sm.setValue(val);
     }
 
-    private int getNumberFrom()
-    {
+    private int getNumberFrom() {
         SpinnerNumberModel sm = (SpinnerNumberModel) numberFromSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
-    private void setNumberFrom(int val)
-    {
+    private void setNumberFrom(int val) {
         SpinnerNumberModel sm = (SpinnerNumberModel) numberFromSpinner.getModel();
         sm.setValue(val);
     }
 
-    private int getNumberTo()
-    {
+    private int getNumberTo() {
         SpinnerNumberModel sm = (SpinnerNumberModel) numberToSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
-    private void setNumberTo(int val)
-    {
+    private void setNumberTo(int val) {
         SpinnerNumberModel sm = (SpinnerNumberModel) numberToSpinner.getModel();
         sm.setValue(val);
     }
 
-    private int getResultFrom()
-    {
+    private int getResultFrom() {
         SpinnerNumberModel sm = (SpinnerNumberModel) resultFromSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
-    private void setResultFrom(int val)
-    {
+    private void setResultFrom(int val) {
         SpinnerNumberModel sm = (SpinnerNumberModel) resultFromSpinner.getModel();
         sm.setValue(val);
     }
 
-    private int getResultTo()
-    {
+    private int getResultTo() {
         SpinnerNumberModel sm = (SpinnerNumberModel) resultToSpinner.getModel();
         return sm.getNumber().intValue();
     }
 
-    private void setResultTo(int val)
-    {
+    private void setResultTo(int val) {
         SpinnerNumberModel sm = (SpinnerNumberModel) resultToSpinner.getModel();
         sm.setValue(val);
     }
 
-    private int[] getRandNums(int lowerLimit, int upperLimit)
-    {
+    private int[] getRandNums(int lowerLimit, int upperLimit) {
         int[] ret = new int[2];
         ret[0] = mt.nextInt(upperLimit - lowerLimit) + lowerLimit;
         ret[1] = mt.nextInt(upperLimit - lowerLimit) + lowerLimit;
         return ret;
     }
 
-    private boolean inRange(int arg, int lower, int upper)
-    {
+    private boolean inRange(int arg, int lower, int upper) {
         return (arg >= lower && arg < upper);
     }
 
-    private void writeCol(int exercises)
-    {
-        try
-        {
+    private void writeCol(int exercises) {
+        try {
             fw.write("\\begin{tabular}{" + tabularColFormatString + "}\n"); //NOI18N
             String placeholder = "\\underline{\\hspace{" + lineLengthField.getText() + "}}";
             //Escape characters in the placeholder string
             placeholder.replaceAll("_", "\\\\_");
             //Build a string containing all operators
             String operators = "";
-            if (plusCheckbox.isSelected())
-            {
+            if (plusCheckbox.isSelected()) {
                 operators += "+";
             }
-            if (minusCheckbox.isSelected())
-            {
+            if (minusCheckbox.isSelected()) {
                 operators += "-";
             }
-            if (multCheckbox.isSelected())
-            {
+            if (multCheckbox.isSelected()) {
                 operators += "*";
             }
-            if (divCheckbox.isSelected())
-            {
+            if (divCheckbox.isSelected()) {
                 operators += "/";
             }
             int opNum = operators.length(); //Number of operators
@@ -518,46 +483,36 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             String opString = "";
             //Declare a reference to the operators array
             String opArray[] = stdOperators;
-            if (schoolOperatorsCheckbox.isSelected())
-            {
+            if (schoolOperatorsCheckbox.isSelected()) {
                 opArray = schoolOperators;
             }
             for (int i = 0; i < exercises;
-                    i++)
-            {
-                do
-                {
+                    i++) {
+                do {
                     nums = getRandNums(numberLowerLimit, numberUpperLimit);
                     op = operators.charAt(mt.nextInt(opNum));
-                    switch (op)
-                    {
-                        case '+':
-                        {
+                    switch (op) {
+                        case '+': {
                             result = nums[0] + nums[1];
                             opString = opArray[0];
                             break;
                         }
-                        case '-':
-                        {
+                        case '-': {
                             result = nums[0] - nums[1];
                             opString = opArray[1];
                             break;
                         }
-                        case '*':
-                        {
+                        case '*': {
                             result = nums[0] * nums[1];
                             opString = opArray[2];
                             break;
                         }
-                        case '/':
-                        {
-                            if (nums[1] == 0)
-                            {
+                        case '/': {
+                            if (nums[1] == 0) {
                                 continue;
                             }
                             result = nums[0] / nums[1];
-                            if (realResultsCheckbox.isSelected())
-                            {
+                            if (realResultsCheckbox.isSelected()) {
                                 float fResult = nums[0] / nums[1];
                                 if ((float) result != fResult) //result has decimal places
                                 {
@@ -570,25 +525,21 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
                         default:
                             result = 0;
                     }
-                }
-                while (!(inRange(result, resultLowerLimit, resultUpperLimit)));
+                } while (!(inRange(result, resultLowerLimit, resultUpperLimit)));
                 //Write the exercise line
-                fw.write("" + Integer.toString(nums[0]) + " & " + opString + " & " +
-                        Integer.toString(nums[1]) + " & = & " + placeholder + " \\\\\n");
+                fw.write("" + Integer.toString(nums[0]) + " & " + opString + " & "
+                        + Integer.toString(nums[1]) + " & = & " + placeholder + " \\\\\n");
             }
             //Write the footer
             fw.write("\\end{tabular}\n");
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_okButtonMouseClicked
     {//GEN-HEADEREND:event_okButtonMouseClicked
-        try
-        {
+        try {
             fc.showSaveDialog(this);
             File selectedFile = fc.getSelectedFile();
             if (selectedFile == null) //User aborted the save dialog
@@ -598,30 +549,27 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fw = new FileWriter(selectedFile);
             //Write the header
             fw.write("\\documentclass[a4paper,twocolumn]{scrartcl}\n"); //NOI18N
+            fw.write("\\usepackage[paper=a4paper,includefoot,includehead,left=20mm,right=20mm,top=20mm,bottom=20mm]{geometry}\n");
             fw.write("\\usepackage[utf8]{inputenc}\n"); //NOI18N
             fw.write("\\usepackage[T1]{fontenc}\n"); //NOI18N
             fw.write("\\usepackage[ngerman]{babel}\n"); //NOI18N
             fw.write("\\parindent 0pt \n"); //NOI18N
             //Write the title if the title is not empty
             String title = titleField.getText();
-            if (!title.isEmpty())
-            {
+            if (!title.isEmpty()) {
                 fw.write("\\title{" + title + "}\n"); //NOI18N
                 fw.write("\\date{}\n"); //NOI18N
                 fw.write("\\author{}\n"); //NOI18N
             }
-            if (!pageNumberingCheckbox.isSelected())
-            {
+            if (!pageNumberingCheckbox.isSelected()) {
                 fw.write("\\pagestyle{empty}\n\n");
             } //NOI18N
 
             fw.write("\\begin{document}\n"); //NOI18N
             //Write the title page if the title is not empty
-            if (!title.isEmpty())
-            {
+            if (!title.isEmpty()) {
                 fw.write("\\maketitle\n");
-                if (!pageNumberingCheckbox.isSelected())
-                {
+                if (!pageNumberingCheckbox.isSelected()) {
                     fw.write("\\thispagestyle{empty}\n");
                 }
             }
@@ -629,58 +577,41 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
              * Change the tabular column format string
              * if number aligning is not activated
              */
-            if (!alignNumbersCheckbox.isSelected())
-            {
+            if (!alignNumbersCheckbox.isSelected()) {
                 tabularColFormatString = "ccccc"; //NOI18N
             }
             //Main page writing loop
             int pageCount = getPageCount();
             int linesPerCol = getLinesPerCol();
-            for (int i = getPageCount(); i > 0; i--)
-            {
+            for (int i = getPageCount(); i > 0; i--) {
                 //Write the two columns
                 //Title page: 10 lines less
-                if (i == pageCount && !title.isEmpty())
-                {
+                if (i == pageCount && !title.isEmpty()) {
                     writeCol(linesPerCol - 10);
                     writeCol(linesPerCol - 10);
-                }
-                else
-                {
+                } else {
                     writeCol(linesPerCol);
                     writeCol(linesPerCol);
                 }
-                if (i > 1)
-                {
+                if (i > 1) {
                     fw.write("\\newpage\n");
                 }
             }
             //Write the main footer
             fw.write("\\end{document}\n");
-        }
-        catch (NullPointerException ex) //Occurs if the user aborted the file selection dialog
+        } catch (NullPointerException ex) //Occurs if the user aborted the file selection dialog
         {
             Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
-            try
-            {
-                if (fw != null)
-                {
+        } finally {
+            try {
+                if (fw != null) {
                     fw.close();
                 }
-            }
-            catch (NullPointerException ex)
-            {
+            } catch (NullPointerException ex) {
                 Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -695,13 +626,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 
-    private byte[] getUrandMTSeed()
-    {
-        try
-        {
+    private byte[] getUrandMTSeed() {
+        try {
             File urandom = new File("/dev/urandom"); //NOI18N
-            if (!urandom.exists())
-            {
+            if (!urandom.exists()) {
                 return null;
             }
             byte[] seed = new byte[2496];
@@ -709,38 +637,31 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
             fin.read(seed);
             fin.close();
             return seed;
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(JMathSheetGeneratorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null; //Never occurs
     }
 
-    private int[] generateMTSeed()
-    {
+    private int[] generateMTSeed() {
         return generateMTSeed(new SecureRandom());
     }
 
-    private int[] generateMTSeed(SecureRandom randomSource)
-    {
+    private int[] generateMTSeed(SecureRandom randomSource) {
         //Seed; 624(*4) = max number of seed bytes
         final int mtSeedSize = 2496;
         byte[] seedBytes = null;
         seedBytes = getUrandMTSeed();
-        if (seedBytes == null)
-        {
+        if (seedBytes == null) {
             seedBytes = new byte[mtSeedSize];
             randomSource.nextBytes(seedBytes);
         }
         return byteToInt(seedBytes);
     }
 
-    private static int[] byteToInt(byte[] input)
-    {
+    private static int[] byteToInt(byte[] input) {
         int[] array = new int[input.length / 4]; //sizeof(int) = 4 bytes
-        for (int i = 0; i < array.length; i++)
-        {
+        for (int i = 0; i < array.length; i++) {
             array[i] = (int) input[4 * i];
             array[i] += (int) input[4 * i + 1] << 8;
             array[i] += (int) input[4 * i + 2] << 16;
@@ -752,13 +673,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[])
-    {
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
 
-            public void run()
-            {
+            public void run() {
                 new JMathSheetGeneratorFrame().setVisible(true);
             }
         });
@@ -769,12 +687,10 @@ public class JMathSheetGeneratorFrame extends javax.swing.JFrame
     private ResourceBundle i18n = ResourceBundle.getBundle("jmathsheetgenerator/Bundle"); //NOI18N
     private String tabularColFormatString = "rcrcc"; //LaTeX table format string //NOI18N
     private final File configFile = new File(".jmsgen"); //NOI18N
-    private static final String[] stdOperators =
-    {
+    private static final String[] stdOperators = {
         "+", "-", "*", "/"
     };
-    private static final String[] schoolOperators =
-    {
+    private static final String[] schoolOperators = {
         "+", "-", "$\\cdot$", ":"
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables

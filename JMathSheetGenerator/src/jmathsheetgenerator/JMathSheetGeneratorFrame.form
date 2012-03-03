@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
@@ -54,14 +54,14 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="titleField" alignment="0" pref="230" max="32767" attributes="2"/>
-                          <Component id="linesPerColSpinner" alignment="0" pref="230" max="32767" attributes="1"/>
-                          <Component id="pageCountSpinner" alignment="1" pref="230" max="32767" attributes="0"/>
-                          <Component id="lineLengthField" alignment="0" pref="230" max="32767" attributes="1"/>
+                          <Component id="titleField" alignment="0" pref="243" max="32767" attributes="2"/>
+                          <Component id="linesPerColSpinner" alignment="0" pref="243" max="32767" attributes="1"/>
+                          <Component id="pageCountSpinner" alignment="1" pref="243" max="32767" attributes="0"/>
+                          <Component id="lineLengthField" alignment="0" pref="243" max="32767" attributes="1"/>
                       </Group>
                   </Group>
                   <Component id="resultLimitsPanel" alignment="0" max="32767" attributes="1"/>
-                  <Component id="okButton" alignment="0" pref="317" max="32767" attributes="0"/>
+                  <Component id="okButton" alignment="0" pref="334" max="32767" attributes="0"/>
                   <Component id="schoolOperatorsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="realResultsCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -237,7 +237,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="69" max="32767" attributes="0"/>
+                  <EmptySpace pref="84" max="32767" attributes="0"/>
                   <Component id="numbersFromLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="resultFromSpinner" min="-2" pref="47" max="-2" attributes="0"/>
@@ -309,7 +309,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="69" max="32767" attributes="0"/>
+                  <EmptySpace pref="84" max="32767" attributes="0"/>
                   <Component id="numbersFromLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="numberFromSpinner" min="-2" pref="47" max="-2" attributes="0"/>
